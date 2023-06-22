@@ -1,12 +1,5 @@
-package com.example.cusCom.model.parts
+package com.example.cusCom.estimate.model.parts
 
-import lombok.AllArgsConstructor
-import lombok.Data
-import lombok.NoArgsConstructor
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 data class CPUCooler(val name:String,
                      val manufacturer:String,
                      val coolingType:String,

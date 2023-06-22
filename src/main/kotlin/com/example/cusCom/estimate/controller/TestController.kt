@@ -1,4 +1,4 @@
-package com.example.cusCom.controller
+package com.example.cusCom.estimate.controller
 
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController

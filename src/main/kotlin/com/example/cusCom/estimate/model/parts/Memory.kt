@@ -4,5 +4,4 @@ data class Memory(val name:String,
                   val manufacturer:String,
                   val type:String,
                   val capacity:Int,
-                  val bandwidth:Int,
                   val height:Int){}

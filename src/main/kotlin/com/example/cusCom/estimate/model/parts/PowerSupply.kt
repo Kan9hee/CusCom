@@ -5,5 +5,4 @@ data class PowerSupply(val name:String,
                        val power:Int,
                        val efficiency:String,
                        val modular:String,
-                       val length:Int,
-                       val warranty:Int){}
+                       val length:Int){}

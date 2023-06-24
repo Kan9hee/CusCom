@@ -10,32 +10,35 @@ import jakarta.persistence.Table
 @Table(name="estimates")
 @Entity
 class EstimateEntity(userName:String,
+                     cpu:String,
                      motherBoard:String,
                      memory:String,
                      dataStorage:String,
                      graphicsCard:String,
                      cpuCooler:String,
                      powerSupply:String,
-                     case:String) {
+                     desktopCase:String) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id:Long?=null
     @Column(nullable = false, unique = true)
-    var userName:String=userName
+    val userName:String=userName
 
     @Column(nullable = false)
-    var motherBoard:String=motherBoard
+    val cpu:String=cpu
     @Column(nullable = false)
-    var memory:String=memory
+    val motherBoard:String=motherBoard
     @Column(nullable = false)
-    var dataStorage:String=dataStorage
+    val memory:String=memory
     @Column(nullable = false)
-    var graphicsCard:String=graphicsCard
+    val dataStorage:String=dataStorage
     @Column(nullable = false)
-    var cpuCooler:String=cpuCooler
+    val graphicsCard:String=graphicsCard
     @Column(nullable = false)
-    var powerSupply:String=powerSupply
+    val cpuCooler:String=cpuCooler
     @Column(nullable = false)
-    var desktopCase:String=case
+    val powerSupply:String=powerSupply
+    @Column(nullable = false)
+    val desktopCase:String=desktopCase
 }

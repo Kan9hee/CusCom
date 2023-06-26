@@ -12,10 +12,7 @@ class DataStorageEntity(name:String,
                         readSpeed:Int,
                         writeSpeed:Int){
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id:Long?=null
-
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     val name:String=name
     @Column(nullable = false)
     val manufacturer:String=manufacturer

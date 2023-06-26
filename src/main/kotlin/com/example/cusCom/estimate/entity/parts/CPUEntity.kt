@@ -14,10 +14,7 @@ class CPUEntity(name:String,
                 builtInGraphicName:String,
                 TDP:Int){
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id:Long?=null
-
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     val name:String=name
     @Column(nullable = false)
     val manufacturer:String=manufacturer
@@ -30,9 +27,9 @@ class CPUEntity(name:String,
     @Column(nullable = false)
     val thread:Int=thread
     @Column(nullable = false)
-    val isBuiltInGraphics:Boolean=isBuiltInGraphics
-    @Column(nullable = false)
-    val builtInGraphicName:String=builtInGraphicName
-    @Column(nullable = false)
     val TDP:Int=TDP
+    @Column(nullable = false)
+    val isBuiltInGraphics:Boolean=isBuiltInGraphics
+    @Column
+    val builtInGraphicName:String=builtInGraphicName
 }

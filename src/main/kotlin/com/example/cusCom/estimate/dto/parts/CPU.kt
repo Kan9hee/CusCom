@@ -7,5 +7,5 @@ data class CPU(val name:String,
                val core:Int,
                val thread:Int,
                val isBuiltInGraphics:Boolean,
-               val builtInGraphicName:String,
+               val builtInGraphicName:String?,
                val TDP:Int){}

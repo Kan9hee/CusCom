@@ -1,4 +1,4 @@
-package com.example.cusCom.estimate.model.parts
+package com.example.cusCom.estimate.dto.parts
 
 data class CPU(val name:String,
                val manufacturer:String,

@@ -1,4 +1,4 @@
-package com.example.cusCom.estimate.model
+package com.example.cusCom.estimate.dto
 
 data class Estimate(var cpu:String,
                     var motherBoard:String,

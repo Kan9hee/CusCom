@@ -1,4 +1,4 @@
-package com.example.cusCom.estimate.model.parts
+package com.example.cusCom.estimate.dto.parts
 
 data class Memory(val name:String,
                   val manufacturer:String,

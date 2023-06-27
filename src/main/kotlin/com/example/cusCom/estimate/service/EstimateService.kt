@@ -13,6 +13,5 @@ class EstimateService(private val estimateRepo:EstimateRepository,
     @Transactional(readOnly=true)
     fun getMotherboardSize(formFactor:String){
         val formFactor:MotherBoardFormFactorEntity=motherBoardRepo.findById(formFactor).get()
-        println("${formFactor.form_factor} length is ${formFactor.length}, and width is ${formFactor.width}.")
     }
 }

@@ -1,5 +1,6 @@
 package com.example.cusCom.estimate.service
 
+import com.example.cusCom.estimate.dto.Estimate
 import com.example.cusCom.estimate.entity.MotherBoardFormFactorEntity
 import com.example.cusCom.estimate.repository.EstimateRepository
 import com.example.cusCom.estimate.repository.MotherBoardFormFactorRepository
@@ -13,5 +14,10 @@ class EstimateService(private val estimateRepo:EstimateRepository,
     @Transactional(readOnly=true)
     fun getMotherboardSize(formFactor:String){
         val formFactor:MotherBoardFormFactorEntity=motherBoardRepo.findById(formFactor).get()
+    }
+
+    @Transactional
+    fun saveUserEstimate(information:Estimate,userName:String){
+        estimateRepo.save(information.toEstimateEntity(userName))
     }
 }

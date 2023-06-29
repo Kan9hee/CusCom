@@ -17,7 +17,7 @@ class EstimateService(private val estimateRepo:EstimateRepository,
     }
 
     @Transactional
-    fun saveUserEstimate(information:Estimate,userName:String){
-        estimateRepo.save(information.toEstimateEntity(userName))
+    fun saveUserEstimate(information:Estimate){
+        estimateRepo.save(information.toEstimateEntity())
     }
 }

@@ -1,5 +1,6 @@
 package com.example.cusCom.estimate.entity
 
+import com.example.cusCom.estimate.dto.parts.*
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -10,14 +11,14 @@ import jakarta.persistence.Table
 @Table(name="estimates")
 @Entity
 class EstimateEntity(userName:String,
-                     cpu:String,
-                     motherBoard:String,
-                     memory:String,
-                     dataStorage:String,
-                     graphicsCard:String,
-                     cpuCooler:String,
-                     powerSupply:String,
-                     desktopCase:String) {
+                     cpu: CPU,
+                     motherBoard:MotherBoard,
+                     memory:Memory,
+                     dataStorage:DataStorage,
+                     graphicsCard:GraphicsCard,
+                     cpuCooler:CPUCooler,
+                     powerSupply:PowerSupply,
+                     desktopCase:Case) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,19 +27,19 @@ class EstimateEntity(userName:String,
     val userName:String=userName
 
     @Column(nullable = false)
-    val cpu:String=cpu
+    val cpu:String=cpu.name
     @Column(nullable = false)
-    val motherBoard:String=motherBoard
+    val motherBoard:String=motherBoard.name
     @Column(nullable = false)
-    val memory:String=memory
+    val memory:String=memory.name
     @Column(nullable = false)
-    val dataStorage:String=dataStorage
+    val dataStorage:String=dataStorage.name
     @Column(nullable = false)
-    val graphicsCard:String=graphicsCard
+    val graphicsCard:String=graphicsCard.name
     @Column(nullable = false)
-    val cpuCooler:String=cpuCooler
+    val cpuCooler:String=cpuCooler.name
     @Column(nullable = false)
-    val powerSupply:String=powerSupply
+    val powerSupply:String=powerSupply.name
     @Column(nullable = false)
-    val desktopCase:String=desktopCase
+    val desktopCase:String=desktopCase.name
 }

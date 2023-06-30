@@ -1,9 +1,12 @@
 package com.example.cusCom.estimate.controller
 
 import com.example.cusCom.estimate.dto.Estimate
+import com.example.cusCom.estimate.exception.EstimateException
 import com.example.cusCom.estimate.service.EstimateService
 import com.example.cusCom.estimate.service.parts.*
 import com.google.gson.Gson
+import org.springframework.ui.Model
+import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -33,7 +36,20 @@ class TestController(private val caseService:CaseService,
     }
 
     @PostMapping("/test")
-    fun postDataTest(@RequestParam("estimate") estimateJSON:String){
-        estimateService.saveUserEstimate(Gson().fromJson(estimateJSON,Estimate::class.java))
+    fun postDataTest(@RequestParam("estimate") estimateJSON:String):String{
+            val tempEstimates = Gson().fromJson(estimateJSON,Estimate::class.java)
+            estimateService.checkDesktopSpace(tempEstimates)
+            return "clear"
+    }
+
+    @GetMapping("clear")
+    fun testClearPage(){}
+    @GetMapping("fail")
+    fun testFailPage(){}
+
+    @ExceptionHandler(EstimateException::class)
+    fun estimateException(ex:EstimateException,model:Model):String{
+        model.addAttribute("errorMsg",ex.message)
+        return "fail"
     }
 }

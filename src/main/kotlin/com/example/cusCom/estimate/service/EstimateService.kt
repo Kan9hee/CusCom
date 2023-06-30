@@ -23,26 +23,20 @@ class EstimateService(private val estimateRepo:EstimateRepository,
         estimateRepo.save(information.toEstimateEntity())
     }
 
-    fun checkDesktopSpace(case: Case,
-                          cpuCooler: CPUCooler,
-                          graphicsCard: GraphicsCard,
-                          memory: Memory,
-                          motherBoard: MotherBoard,
-                          powerSupply: PowerSupply){
+    fun checkDesktopSpace(estimate: Estimate){
+        val caseMaxFormFactor=getMotherboardSize(estimate.case.maxMotherBoard)
+        val motherBoardFormFactor=getMotherboardSize(estimate.motherBoard.formFactor)
 
-        val caseMaxFormFactor=getMotherboardSize(case.maxMotherBoard)
-        val motherBoardFormFactor=getMotherboardSize(motherBoard.formFactor)
-
-        if(cpuCooler.height>case.cpuCoolerHeight)
-            throw EstimateException("쿨러 허용 높이 초과: ${cpuCooler.height-case.cpuCoolerHeight}mm")
-        if(graphicsCard.length>case.graphicsCardLength)
-            throw EstimateException("그래픽카드 허용 길이 초과: ${graphicsCard.length-case.graphicsCardLength}mm")
-        if(memory.height>44)
+        if(estimate.cpuCooler.height>estimate.case.cpuCoolerHeight)
+            throw EstimateException("쿨러 허용 높이 초과")
+        if(estimate.graphicsCard.length>estimate.case.graphicsCardLength)
+            throw EstimateException("그래픽카드 허용 길이 초과")
+        if(estimate.memory.height>44)
             throw EstimateException("램 간섭 발생")
         if(motherBoardFormFactor.length>caseMaxFormFactor.length
             ||motherBoardFormFactor.width>caseMaxFormFactor.width)
             throw EstimateException("마더보드 허용 규격 초과")
-        if(powerSupply.length>case.powerLength)
+        if(estimate.powerSupply.length>estimate.case.powerLength)
             throw EstimateException("파워서플라이 허용 규격 초과")
     }
 }

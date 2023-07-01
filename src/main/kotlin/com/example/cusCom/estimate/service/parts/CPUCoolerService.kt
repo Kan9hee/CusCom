@@ -18,7 +18,8 @@ class CPUCoolerService(private val cpuCoolerRepo:CPUCoolerRepository) {
             entity.coolerForm,
             entity.height,
             entity.length,
-            entity.width)
+            entity.width,
+            entity.tdp)
         }
         for(e: CPUCooler in cpuCoolerList)
             println("this cpuCooler is ${e.name}")

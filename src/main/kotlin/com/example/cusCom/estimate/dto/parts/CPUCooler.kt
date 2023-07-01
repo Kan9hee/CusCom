@@ -6,4 +6,5 @@ data class CPUCooler(val name:String,
                      val coolerForm:String,
                      val height:Int,
                      val length:Int,
-                     val width:Int){}
+                     val width:Int,
+                     val TDP:Int){}

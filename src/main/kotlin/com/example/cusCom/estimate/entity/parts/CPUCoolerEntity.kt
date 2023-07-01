@@ -10,7 +10,8 @@ class CPUCoolerEntity(name:String,
                       coolerForm:String,
                       height:Int,
                       length:Int,
-                      width:Int){
+                      width:Int,
+                      TDP:Int){
     @Id
     @Column(nullable = false)
     val name:String=name
@@ -26,4 +27,6 @@ class CPUCoolerEntity(name:String,
     val length:Int=length
     @Column(nullable = false)
     val width:Int=width
+    @Column(nullable = false)
+    val tdp:Int=TDP
 }

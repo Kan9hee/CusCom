@@ -23,7 +23,7 @@ class EstimateService(private val estimateRepo:EstimateRepository,
         estimateRepo.save(information.toEstimateEntity())
     }
 
-    fun checkDesktopSpace(estimate: Estimate){
+    fun checkDesktopEstimate(estimate: Estimate){
         val caseMaxFormFactor=getMotherboardSize(estimate.case.maxMotherBoard)
         val motherBoardFormFactor=getMotherboardSize(estimate.motherBoard.formFactor)
 
@@ -38,5 +38,12 @@ class EstimateService(private val estimateRepo:EstimateRepository,
             throw EstimateException("마더보드 허용 규격 초과")
         if(estimate.powerSupply.length>estimate.case.powerLength)
             throw EstimateException("파워서플라이 허용 규격 초과")
+
+        if(estimate.memory.type!=estimate.motherBoard.memoryType)
+            throw EstimateException("메모리 규격 불일치")
+
+        if(estimate.graphicsCard.maxPower + estimate.cpu.TDP + estimate.cpuCooler.TDP
+            > estimate.powerSupply.power)
+            throw EstimateException("파워서플라이 전력 부족")
     }
 }

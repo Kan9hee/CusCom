@@ -37,9 +37,9 @@ class TestController(private val caseService:CaseService,
 
     @PostMapping("/test")
     fun postDataTest(@RequestParam("estimate") estimateJSON:String):String{
-            val tempEstimates = Gson().fromJson(estimateJSON,Estimate::class.java)
-            estimateService.checkDesktopSpace(tempEstimates)
-            return "clear"
+        val tempEstimates = Gson().fromJson(estimateJSON,Estimate::class.java)
+        estimateService.checkDesktopEstimate(tempEstimates)
+        return "clear"
     }
 
     @GetMapping("clear")

@@ -12,6 +12,7 @@ data class Estimate(var userName: String,
                     var cpuCooler:CPUCooler,
                     var powerSupply:PowerSupply,
                     var case:Case){
+
     fun toEstimateEntity():EstimateEntity{
         return EstimateEntity(userName,cpu,motherBoard,memory,dataStorage,graphicsCard,cpuCooler,powerSupply,case)
     }

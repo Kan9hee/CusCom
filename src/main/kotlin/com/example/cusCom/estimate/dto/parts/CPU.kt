@@ -8,4 +8,9 @@ data class CPU(val name:String,
                val thread:Int,
                val isBuiltInGraphics:Boolean,
                val builtInGraphicName:String?,
-               val TDP:Int){}
+               val TDP:Int){
+
+    fun toCPUEntity():CPUEntity{
+        return CPUEntity(name,manufacturer,socket,memoryType,core,thread,isBuiltInGraphics,builtInGraphicName,TDP)
+    }
+}

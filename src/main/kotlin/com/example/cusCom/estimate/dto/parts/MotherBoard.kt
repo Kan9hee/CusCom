@@ -9,4 +9,9 @@ data class MotherBoard(val name:String,
                        val memoryType:String,
                        val memorySlot:Int,
                        val ssdM2Slot:Int,
-                       val ssdSATASlot:Int){}
+                       val ssdSATASlot:Int){
+
+    fun toMotherBoardEntity():MotherBoardEntity{
+        return MotherBoardEntity(name, manufacturer, cpuType, socket, chipset, formFactor, memoryType, memorySlot, ssdM2Slot, ssdSATASlot)
+    }
+}

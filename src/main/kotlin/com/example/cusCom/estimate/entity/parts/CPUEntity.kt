@@ -11,7 +11,7 @@ class CPUEntity(name:String,
                 core:Int,
                 thread:Int,
                 isBuiltInGraphics:Boolean,
-                builtInGraphicName:String,
+                builtInGraphicName:String?,
                 TDP:Int){
     @Id
     @Column(nullable = false)
@@ -27,9 +27,9 @@ class CPUEntity(name:String,
     @Column(nullable = false)
     val thread:Int=thread
     @Column(nullable = false)
-    val TDP:Int=TDP
-    @Column(nullable = false)
     val isBuiltInGraphics:Boolean=isBuiltInGraphics
     @Column
-    val builtInGraphicName:String=builtInGraphicName
+    val builtInGraphicName:String?=builtInGraphicName
+    @Column(nullable = false)
+    val TDP:Int=TDP
 }

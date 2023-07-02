@@ -7,4 +7,9 @@ data class CPUCooler(val name:String,
                      val height:Int,
                      val length:Int,
                      val width:Int,
-                     val TDP:Int){}
+                     val TDP:Int){
+
+    fun toCPUCoolerEntity():CPUCoolerEntity{
+        return CPUCoolerEntity(name, manufacturer, coolingType, coolerForm, height, length, width, TDP)
+    }
+}

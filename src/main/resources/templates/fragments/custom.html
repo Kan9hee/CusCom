@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="content">>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+    <div>
+        <div style="width:30%; overflow:auto">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="case : ${caseList}">
+                        <td th:text="${case.name}"/>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>cpuCooler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="cpuCooler : ${cpuCoolerList}">
+                        <td th:text="${cpuCooler.name}"/>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>cpu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="cpu : ${cpuList}">
+                        <td th:text="${cpu.name}"/>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>dataStorage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="dataStorage : ${dataStorageList}">
+                        <td th:text="${dataStorage.name}"/>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>graphicsCard</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="graphicsCard : ${graphicsCardList}">
+                        <td th:text="${graphicsCard.name}"/>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>memory</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="memory : ${memoryList}">
+                        <td th:text="${memory.name}"/>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>motherBoard</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="motherBoard : ${motherBoardList}">
+                        <td th:text="${motherBoard.name}"/>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>powerSupply</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="powerSupply : ${powerSupplyList}">
+                        <td th:text="${powerSupply.name}"/>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

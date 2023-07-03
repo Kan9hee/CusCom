@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>customPage</title>
+    <div th:replace="~{fragments/setup :: setup}"/>
+</head>
+<body>
+    <div th:replace="~{fragments/header :: header}"/>
+    <div th:replace="~{fragments/custom :: content}"/>
+</body>
+</html>

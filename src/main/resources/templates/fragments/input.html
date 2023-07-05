@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="content">>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+    이름<input type="text" name="name" id="name"><br>
+    제조사<input type="text" name="manufacture" id="manufacture"><br>
+    소켓<input type="text" name="socket" id="socket"><br>
+    메모리 타입<input type="text" name="memoryType" id="memoryType"><br>
+    코어<input type="number" name="core" id="core"><br>
+    스레드<input type="number" name="thread" id="thread"><br>
+    내장그래픽 여부<input type="checkbox"  name="isBuiltInGraphics" id="isBuiltInGraphics"><br>
+    내장그래픽 이름<input type="text"  name="builtInGraphicName" id="builtInGraphicName"><br>
+    TDP<input type="number" name="tdp" id="tdp"><br>
+    <form method="post" onsubmit="submitForm(event)">
+        <input type="hidden" id="CPU" name="CPU">
+        <button type="submit" id="save" class="btn btn-primary">저장</button>
+    </form>
+    <script type="text/javascript">
+        function submitForm(event) {
+            event.preventDefault();
+
+            var CPU = {
+                name: document.getElementById('name').value,
+                manufacture: document.getElementById('manufacture').value,
+                socket: document.getElementById('socket').value,
+                memoryType: document.getElementById('memoryType').value,
+                core: document.getElementById('core').value,
+                thread: document.getElementById('thread').value,
+                isBuiltInGraphics: document.getElementById('isBuiltInGraphics').checked,
+                builtInGraphicName: document.getElementById('builtInGraphicName').value,
+                tdp: document.getElementById('tdp').value
+            };
+            var jsonData = JSON.stringify(CPU);
+
+            document.getElementById('CPU').value = jsonData;
+            event.target.submit();
+        }
+    </script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 package com.example.cusCom.estimate.controller
 
 import com.example.cusCom.estimate.dto.Estimate
+import com.example.cusCom.estimate.dto.parts.CPU
 import com.example.cusCom.estimate.exception.EstimateException
 import com.example.cusCom.estimate.service.DesktopPartsService
 import com.example.cusCom.estimate.service.EstimateService
@@ -30,11 +31,17 @@ class TestController(private val desktopPartsService: DesktopPartsService,
         return "customPage"
     }
 
+    @GetMapping("/postTest")
+    fun dataTest():String{
+        return "dataInputPage"
+    }
+
     @PostMapping("/postTest")
-    fun postDataTest(@RequestParam("estimate") estimateJSON:String):String{
-        val tempEstimates = Gson().fromJson(estimateJSON,Estimate::class.java)
-        estimateService.checkDesktopEstimate(tempEstimates)
-        return "clearView"
+    fun postDataTest(@RequestParam("CPU") cpuJSON:String):String{
+        println(cpuJSON)
+        val tempCPU = Gson().fromJson(cpuJSON,CPU::class.java)
+        desktopPartsService.createCPU(tempCPU)
+        return "redirect:/test"
     }
 
     @GetMapping("/clear")
@@ -42,9 +49,9 @@ class TestController(private val desktopPartsService: DesktopPartsService,
     @GetMapping("/fail")
     fun testFailPage(){}
 
-    @ExceptionHandler(EstimateException::class)
-    fun estimateException(ex:EstimateException,model:Model):String{
-        model.addAttribute("errorMsg",ex.message)
-        return "failView"
-    }
+    //@ExceptionHandler(EstimateException::class)
+    //fun estimateException(ex:EstimateException,model:Model):String{
+    //    model.addAttribute("errorMsg",ex.message)
+    //    return "failView"
+    //}
 }

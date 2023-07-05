@@ -9,10 +9,7 @@ import com.example.cusCom.estimate.service.parts.*
 import com.google.gson.Gson
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.ExceptionHandler
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 
 @Controller
 class TestController(private val desktopPartsService: DesktopPartsService,
@@ -38,9 +35,7 @@ class TestController(private val desktopPartsService: DesktopPartsService,
 
     @PostMapping("/postTest")
     fun postDataTest(@RequestParam("CPU") cpuJSON:String):String{
-        println(cpuJSON)
-        val tempCPU = Gson().fromJson(cpuJSON,CPU::class.java)
-        desktopPartsService.createCPU(tempCPU)
+        desktopPartsService.createCPU(Gson().fromJson(cpuJSON,CPU::class.java))
         return "redirect:/test"
     }
 
@@ -49,9 +44,9 @@ class TestController(private val desktopPartsService: DesktopPartsService,
     @GetMapping("/fail")
     fun testFailPage(){}
 
-    //@ExceptionHandler(EstimateException::class)
-    //fun estimateException(ex:EstimateException,model:Model):String{
-    //    model.addAttribute("errorMsg",ex.message)
-    //    return "failView"
-    //}
+    @ExceptionHandler(EstimateException::class)
+    fun estimateException(ex:EstimateException,model:Model):String{
+        model.addAttribute("errorMsg",ex.message)
+        return "failView"
+    }
 }

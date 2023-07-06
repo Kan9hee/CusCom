@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="content">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+        <div class="container-fluid" style="width:60%; overflow:auto">
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingCase">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseCase" aria-expanded="false" aria-controls="collapseCase">
+                                케이스
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseCase" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCase">
+                        <div class="panel-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="case : ${caseList}">
+                                        <td th:text="${case.name}">케이스 이름</td>
+                                        <td><button class="btn btn-primary">edit</button></td>
+                                        <td><button class="btn btn-primary">delete</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingCPUCooler">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseCPUCooler" aria-expanded="false" aria-controls="collapseCPUCooler">
+                                CPU 쿨러
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseCPUCooler" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCPUCooler">
+                        <div class="panel-body">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="cpuCooler : ${cpuCoolerList}">
+                                    <td th:text="${cpuCooler.name}">쿨러 이름</td>
+                                    <td><button class="btn btn-primary">edit</button></td>
+                                    <td><button class="btn btn-primary">delete</button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingCPU">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseCPU" aria-expanded="false" aria-controls="collapseCPU">
+                                CPU
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseCPU" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCPU">
+                        <div class="panel-body">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="cpu : ${cpuList}">
+                                    <td th:text="${cpu.name}">CPU 이름</td>
+                                    <td><button class="btn btn-primary">edit</button></td>
+                                    <td><button class="btn btn-primary">delete</button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingDataStorage">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseDataStorage" aria-expanded="false" aria-controls="collapseDataStorage">
+                                저장장치
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseDataStorage" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDataStorage">
+                        <div class="panel-body">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="dataStorage : ${dataStorageList}">
+                                    <td th:text="${dataStorage.name}">저장장치 이름</td>
+                                    <td><button class="btn btn-primary">edit</button></td>
+                                    <td><button class="btn btn-primary">delete</button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingGraphicsCard">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseGraphicsCard" aria-expanded="false" aria-controls="collapseGraphicsCard">
+                                그래픽카드
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseGraphicsCard" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingGraphicsCard">
+                        <div class="panel-body">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="graphicsCard : ${graphicsCardList}">
+                                    <td th:text="${graphicsCard.name}">그래픽카드 이름</td>
+                                    <td><button class="btn btn-primary">edit</button></td>
+                                    <td><button class="btn btn-primary">delete</button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingMemory">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMemory" aria-expanded="false" aria-controls="collapseMemory">
+                                메모리
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseMemory" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingMemory">
+                        <div class="panel-body">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="memory : ${memoryList}">
+                                    <td th:text="${memory.name}">메모리 이름</td>
+                                    <td><button class="btn btn-primary">edit</button></td>
+                                    <td><button class="btn btn-primary">delete</button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingMotherBoard">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMotherBoard" aria-expanded="false" aria-controls="collapseMotherBoard">
+                                마더보드
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseMotherBoard" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingMotherBoard">
+                        <div class="panel-body">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="motherBoard : ${motherBoardList}">
+                                    <td th:text="${motherBoard.name}">마더보드 이름</td>
+                                    <td><button class="btn btn-primary">edit</button></td>
+                                    <td><button class="btn btn-primary">delete</button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingPowerSupply">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePowerSupply" aria-expanded="false" aria-controls="collapsePowerSupply">
+                                파워서플라이
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapsePowerSupply" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingPowerSupply">
+                        <div class="panel-body">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="powerSupply : ${powerSupplyList}">
+                                    <td th:text="${powerSupply.name}">파워서플라이 이름</td>
+                                    <td><button class="btn btn-primary">edit</button></td>
+                                    <td><button class="btn btn-primary">delete</button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+</body>
+</html>

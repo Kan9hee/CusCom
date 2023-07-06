@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.*
 class TestController(private val desktopPartsService: DesktopPartsService,
                      private val estimateService: EstimateService) {
 
+    @GetMapping("/main")
+    fun getWelcome():String{
+        return "mainPage"
+    }
+
     @GetMapping("/test")
     fun getDataTest(model:Model):String{
         model.addAttribute("caseList",desktopPartsService.getCaseList())

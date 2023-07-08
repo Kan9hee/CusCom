@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.*
 class TestController(private val desktopPartsService: DesktopPartsService,
                      private val estimateService: EstimateService) {
 
+    @GetMapping("/CusCom/login")
+    fun loginPage():String{
+        return "loginPage"
+    }
+
     @GetMapping("/main")
     fun getWelcome():String{
         return "mainPage"

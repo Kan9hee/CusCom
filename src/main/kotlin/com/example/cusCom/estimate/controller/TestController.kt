@@ -1,9 +1,10 @@
 package com.example.cusCom.estimate.controller
 
-import com.example.cusCom.estimate.dto.Estimate
+import com.example.cusCom.estimate.dto.User
 import com.example.cusCom.estimate.exception.EstimateException
 import com.example.cusCom.estimate.service.DesktopPartsService
 import com.example.cusCom.estimate.service.EstimateService
+import com.example.cusCom.estimate.service.UserService
 import com.example.cusCom.estimate.service.parts.*
 import com.google.gson.Gson
 import org.springframework.stereotype.Controller
@@ -11,12 +12,29 @@ import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 
 @Controller
-class TestController(private val desktopPartsService: DesktopPartsService,
+class TestController(private val userService: UserService,
+                     private val desktopPartsService: DesktopPartsService,
                      private val estimateService: EstimateService) {
 
     @GetMapping("/CusCom/login")
     fun loginPage():String{
         return "loginPage"
+    }
+
+    @GetMapping("/CusCom/join")
+    fun joinPage():String{
+        return "joinPage"
+    }
+
+    @PostMapping("/CusCom/join")
+    fun postDataTest(@RequestParam("user") userJSON:String):String{
+        userService.joinUser(Gson().fromJson(userJSON, User::class.java))
+        return "redirect:/CusCom/login"
+    }
+
+    @PostMapping("/main")
+    fun logout():String{
+        return "/CusCom/login"
     }
 
     @GetMapping("/main")

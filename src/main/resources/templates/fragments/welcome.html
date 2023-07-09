@@ -8,6 +8,14 @@
         <h1>CUS-COM</h1>
         <button class="btn btn-primary" onclick="location.href='/test'">user</button>
         <button class="btn btn-primary" onclick="location.href='/adminPage/main'">admin</button>
+        <form method="post" action="/logout">
+            <button type="submit" id="logout" class="btn btn-lg btn-primary btn-block">로그아웃</button>
+        </form>
     </div>
+    <script type="text/javascript">
+        document.getElementById('logout').addEventListener('click',()=>{
+            sessionStorage.setItem('userid','');
+        });
+    </script>
 </body>
 </html>

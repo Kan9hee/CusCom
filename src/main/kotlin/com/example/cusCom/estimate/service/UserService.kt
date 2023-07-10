@@ -8,10 +8,11 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class UserService(private val userRepo: UserRepository) {
+class UserService(private val passwordEncoder: PasswordEncoder,
+                  private val userRepo: UserRepository) {
     @Transactional
     fun joinUser(information:User){
-        userRepo.save(information.toEntity())
+        userRepo.save(information.joinEntity(passwordEncoder))
     }
 
     @Transactional(readOnly = true)

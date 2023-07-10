@@ -10,4 +10,8 @@ data class User(val userName: String,
     fun toEntity(): UserEntity {
         return UserEntity(userName, userPassword, userRole)
     }
+
+    fun joinEntity(passwordEncoder:PasswordEncoder):UserEntity{
+        return UserEntity(userName, passwordEncoder.encode(userPassword), userRole)
+    }
 }

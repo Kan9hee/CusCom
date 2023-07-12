@@ -2,11 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
     <div th:replace="~{fragments/setup :: setup}"/>
     <div th:replace="~{fragments/header :: header}"/>
 </head>
 <body>
-    <div th:replace="~{fragments/listByAdmin :: content}"/>
+    <div th:replace="~{fragments/parts/memoryInput :: content}"/>
 </body>
 </html>

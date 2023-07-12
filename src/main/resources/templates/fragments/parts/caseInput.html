@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="content">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+    이름<input type="text" name="name" id="name"><br>
+    제조사<input type="text" name="manufacturer" id="manufacturer"><br>
+    구분<input type="text" name="caseType" id="caseType"><br>
+    최대 마더보드 호환성<input type="text" name="maxMotherBoard" id="maxMotherBoard"><br>
+    최대 쿨링팬 개수<input type="number" name="maxCoolingFan" id="maxCoolingFan"><br>
+    기본 쿨링팬 개수<input type="number" name="builtInCoolingFan" id="builtInCoolingFan"><br>
+    높이<input type="number" name="height" id="height"><br>
+    길이<input type="number" name="length" id="length"><br>
+    너비<input type="number"  name="width" id="width"><br>
+    최대 파워서플라이 크기<input type="number" name="powerLength" id="powerLength"><br>
+    최대 CPU 쿨러 높이<input type="number" name="cpuCoolerHeight" id="cpuCoolerHeight"><br>
+    최대 그래픽카드 길이<input type="number" name="graphicsCardLength" id="graphicsCardLength"><br>
+    <form method="post" onsubmit="submitForm(event)">
+        <input type="hidden" id="Case" name="Case">
+        <button type="submit" id="save" class="btn btn-primary">저장</button>
+    </form>
+    <script type="text/javascript">
+        function submitForm(event) {
+            event.preventDefault();
+
+            var Case = {
+                name: document.getElementById('name').value,
+                manufacturer: document.getElementById('manufacturer').value,
+                caseType: document.getElementById('caseType').value,
+                maxMotherBoard: document.getElementById('maxMotherBoard').value,
+                maxCoolingFan: document.getElementById('maxCoolingFan').value,
+                builtInCoolingFan: document.getElementById('builtInCoolingFan').value,
+                height: document.getElementById('height').value,
+                length: document.getElementById('length').value,
+                width: document.getElementById('width').value,
+                powerLength: document.getElementById('powerLength').value,
+                cpuCoolerHeight: document.getElementById('cpuCoolerHeight').value,
+                graphicsCardLength: document.getElementById('graphicsCardLength').value
+            };
+            var jsonData = JSON.stringify(Case);
+
+            document.getElementById('Case').value = jsonData;
+            event.target.submit();
+        }
+    </script>
+</body>
+</html>

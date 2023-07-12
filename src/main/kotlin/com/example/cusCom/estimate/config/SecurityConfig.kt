@@ -16,7 +16,7 @@ class SecurityConfig {
         http.csrf{
             it.disable().authorizeHttpRequests{ authorize -> authorize
                 .requestMatchers("/test","/CusCom/join").permitAll()
-                .requestMatchers("/adminPage/main").hasRole("ADMIN")
+                .requestMatchers("/adminPage/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             }
         }

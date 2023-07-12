@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="content">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+    이름<input type="text" name="name" id="name"><br>
+    제조사<input type="text" name="manufacturer" id="manufacturer"><br>
+    쿨링 방식<input type="text" name="coolingType" id="coolingType"><br>
+    쿨러 형태<input type="text" name="coolerForm" id="coolerForm"><br>
+    높이<input type="number" name="height" id="height"><br>
+    길이<input type="number" name="length" id="length"><br>
+    너비<input type="number"  name="width" id="width"><br>
+    TDP<input type="number" name="TDP" id="TDP"><br>
+    <form method="post" onsubmit="submitForm(event)">
+        <input type="hidden" id="CPUCooler" name="CPUCooler">
+        <button type="submit" id="save" class="btn btn-primary">저장</button>
+    </form>
+    <script type="text/javascript">
+        function submitForm(event) {
+            event.preventDefault();
+
+            var CPUCooler = {
+                name: document.getElementById('name').value,
+                manufacturer: document.getElementById('manufacturer').value,
+                coolingType: document.getElementById('coolingType').value,
+                coolerForm: document.getElementById('coolerForm').value,
+                height: document.getElementById('height').value,
+                length: document.getElementById('length').value,
+                width: document.getElementById('width').checked,
+                TDP: document.getElementById('TDP').value
+            };
+            var jsonData = JSON.stringify(CPUCooler);
+
+            document.getElementById('CPUCooler').value = jsonData;
+            event.target.submit();
+        }
+    </script>
+</body>
+</html>

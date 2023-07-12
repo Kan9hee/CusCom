@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="content">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+    이름<input type="text" name="name" id="name"><br>
+    제조사<input type="text" name="manufacturer" id="manufacturer"><br>
+    구분<input type="text" name="cpuType" id="cpuType"><br>
+    소켓<input type="text" name="socket" id="socket"><br>
+    칩셋<input type="text" name="chipset" id="chipset"><br>
+    폼팩터<input type="text" name="formFactor" id="formFactor"><br>
+    메모리 타입<input type="text" name="memoryType" id="memoryType"><br>
+    메모리 슬롯 개수<input type="number" name="memorySlot" id="memorySlot"><br>
+    SSD 슬롯 개수(M.2)<input type="number"  name="ssdM2Slot" id="ssdM2Slot"><br>
+    SSD 슬롯 개수(SATA)<input type="number" name="ssdSATASlot" id="ssdSATASlot"><br>
+    <form method="post" onsubmit="submitForm(event)">
+        <input type="hidden" id="MotherBoard" name="MotherBoard">
+        <button type="submit" id="save" class="btn btn-primary">저장</button>
+    </form>
+    <script type="text/javascript">
+        function submitForm(event) {
+            event.preventDefault();
+
+            var MotherBoard = {
+                name: document.getElementById('name').value,
+                manufacturer: document.getElementById('manufacturer').value,
+                cpuType: document.getElementById('cpuType').value,
+                socket: document.getElementById('socket').value,
+                chipset: document.getElementById('chipset').value,
+                formFactor: document.getElementById('formFactor').value,
+                memoryType: document.getElementById('memoryType').value,
+                memorySlot: document.getElementById('memorySlot').value,
+                ssdM2Slot: document.getElementById('ssdM2Slot').value,
+                ssdSATASlot: document.getElementById('ssdSATASlot').value,
+            };
+            var jsonData = JSON.stringify(MotherBoard);
+
+            document.getElementById('MotherBoard').value = jsonData;
+            event.target.submit();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="content">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+    이름<input type="text" name="name" id="name"><br>
+    제조사<input type="text" name="manufacturer" id="manufacturer"><br>
+    최대출력<input type="number" name="power" id="power"><br>
+    80PLUS 효율<input type="text" name="efficiency" id="efficiency"><br>
+    모듈러<input type="text" name="modular" id="modular"><br>
+    길이<input type="number" name="length" id="length"><br>
+    <form method="post" onsubmit="submitForm(event)">
+        <input type="hidden" id="PowerSupply" name="PowerSupply">
+        <button type="submit" id="save" class="btn btn-primary">저장</button>
+    </form>
+    <script type="text/javascript">
+        function submitForm(event) {
+            event.preventDefault();
+
+            var PowerSupply = {
+                name: document.getElementById('name').value,
+                manufacturer: document.getElementById('manufacturer').value,
+                power: document.getElementById('power').value,
+                efficiency: document.getElementById('efficiency').value,
+                modular: document.getElementById('modular').value,
+                length: document.getElementById('length').value
+            };
+            var jsonData = JSON.stringify(PowerSupply);
+
+            document.getElementById('PowerSupply').value = jsonData;
+            event.target.submit();
+        }
+    </script>
+</body>
+</html>

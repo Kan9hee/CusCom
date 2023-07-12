@@ -1,9 +1,8 @@
 package com.example.cusCom.estimate.controller
 
-import com.example.cusCom.estimate.dto.parts.CPU
+import com.example.cusCom.estimate.dto.parts.*
 import com.example.cusCom.estimate.service.DesktopPartsService
 import com.google.gson.Gson
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -28,14 +27,91 @@ class AdminController(private val desktopPartsService: DesktopPartsService) {
         return "adminMainPage"
     }
 
+    @GetMapping("/editCase")
+    fun editCaseData():String{
+        return "caseEditPage"
+    }
+
     @GetMapping("/editCPU")
-    fun dataTest():String{
-        return "dataInputPage"
+    fun editCPUData():String{
+        return "cpuEditPage"
+    }
+
+    @GetMapping("/editCPUCooler")
+    fun editCPUCoolerData():String{
+        return "cpuCoolerEditPage"
+    }
+
+    @GetMapping("/editDataStorage")
+    fun editDataStorageData():String{
+        return "dataStorageEditPage"
+    }
+
+    @GetMapping("/editGraphicsCard")
+    fun editGraphicsCardData():String{
+        return "graphicsCardEditPage"
+    }
+
+    @GetMapping("/editMemory")
+    fun editMemoryData():String{
+        return "memoryEditPage"
+    }
+
+    @GetMapping("/editMotherBoard")
+    fun editMotherBoardData():String{
+        return "motherBoardEditPage"
+    }
+
+    @GetMapping("/editPowerSupply")
+    fun editPowerSupplyData():String{
+        return "powerSupplyEditPage"
+    }
+
+    @PostMapping("/editCase")
+    fun saveCaseData(@RequestParam("Case") caseJSON:String):String{
+        desktopPartsService.createCase(Gson().fromJson(caseJSON, Case::class.java))
+        return "redirect:/adminPage/main"
     }
 
     @PostMapping("/editCPU")
-    fun postDataTest(@RequestParam("CPU") cpuJSON:String):String{
+    fun saveCPUData(@RequestParam("CPU") cpuJSON:String):String{
         desktopPartsService.createCPU(Gson().fromJson(cpuJSON, CPU::class.java))
-        return "redirect:/main"
+        return "redirect:/adminPage/main"
+    }
+
+    @PostMapping("/editCPUCooler")
+    fun saveCPUCoolerData(@RequestParam("CPUCooler") cpuCoolerJSON:String):String{
+        desktopPartsService.createCPUCooler(Gson().fromJson(cpuCoolerJSON, CPUCooler::class.java))
+        return "redirect:/adminPage/main"
+    }
+
+    @PostMapping("/editDataStorage")
+    fun saveDataStorageData(@RequestParam("DataStorage") dataStorageJSON:String):String{
+        desktopPartsService.createDataStorage(Gson().fromJson(dataStorageJSON, DataStorage::class.java))
+        return "redirect:/adminPage/main"
+    }
+
+    @PostMapping("/editGraphicsCard")
+    fun saveGraphicsCardData(@RequestParam("GraphicsCard") graphicsCardJSON:String):String{
+        desktopPartsService.createGraphicsCard(Gson().fromJson(graphicsCardJSON, GraphicsCard::class.java))
+        return "redirect:/adminPage/main"
+    }
+
+    @PostMapping("/editMemory")
+    fun saveMemoryData(@RequestParam("Memory") memoryJSON:String):String{
+        desktopPartsService.createMemory(Gson().fromJson(memoryJSON, Memory::class.java))
+        return "redirect:/adminPage/main"
+    }
+
+    @PostMapping("/editMotherBoard")
+    fun saveMotherBoard(@RequestParam("MotherBoard") motherBoardJSON:String):String{
+        desktopPartsService.createMotherBoard(Gson().fromJson(motherBoardJSON, MotherBoard::class.java))
+        return "redirect:/adminPage/main"
+    }
+
+    @PostMapping("/editPowerSupply")
+    fun savePowerSupplyData(@RequestParam("PowerSupply") powerSupplyJSON:String):String{
+        desktopPartsService.createPowerSupply(Gson().fromJson(powerSupplyJSON, PowerSupply::class.java))
+        return "redirect:/adminPage/main"
     }
 }

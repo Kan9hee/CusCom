@@ -7,7 +7,7 @@ import com.example.cusCom.estimate.service.EstimateService
 import com.example.cusCom.estimate.service.UserService
 import com.example.cusCom.estimate.service.parts.*
 import com.google.gson.Gson
-import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
@@ -23,12 +23,12 @@ class TestController(private val userService: UserService,
     }
 
     @GetMapping("/CusCom/join")
-    fun joinPage():String{
+    fun getUserJoin():String{
         return "joinPage"
     }
 
     @PostMapping("/CusCom/join")
-    fun postDataTest(@RequestParam("user") userJSON:String):String{
+    fun postUserJoin(@RequestParam("user") userJSON:String):String{
         userService.joinUser(Gson().fromJson(userJSON, User::class.java))
         return "redirect:/CusCom/login"
     }
@@ -43,8 +43,9 @@ class TestController(private val userService: UserService,
         return "mainPage"
     }
 
-    @GetMapping("/test")
+    @GetMapping("/estimate")
     fun getDataTest(model:Model):String{
+        model.addAttribute("userName",SecurityContextHolder.getContext().authentication.name)
         model.addAttribute("caseList",desktopPartsService.getCaseList())
         model.addAttribute("cpuCoolerList",desktopPartsService.getCpuCoolerList())
         model.addAttribute("cpuList",desktopPartsService.getCPUList())
@@ -54,6 +55,12 @@ class TestController(private val userService: UserService,
         model.addAttribute("motherBoardList",desktopPartsService.getMotherBoardList())
         model.addAttribute("powerSupplyList",desktopPartsService.getPowerSupplyList())
         return "customPage"
+    }
+
+    @PostMapping("/estimate")
+    fun postDataTest(@RequestParam("Estimates") estimateJSON:String):String{
+        println("estimate is $estimateJSON")
+        return "redirect:/main"
     }
 
     @GetMapping("/clear")

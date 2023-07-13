@@ -6,7 +6,6 @@
 <body>
 <div class="container-fluid" style="width:40%; overflow:auto">
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingCase">
                 <h4 class="panel-title">
@@ -27,7 +26,7 @@
                         <tbody>
                         <tr th:each="case : ${caseList}">
                             <td th:text="${case.name}">케이스 이름</td>
-                            <td><button class="btn btn-primary">추가</button></td>
+                            <td><button class="btn btn-primary btn-add" datatype="case">추가</button></td>
                         </tr>
                         </tbody>
                     </table>
@@ -55,7 +54,7 @@
                         <tbody>
                         <tr th:each="cpuCooler : ${cpuCoolerList}">
                             <td th:text="${cpuCooler.name}">쿨러 이름</td>
-                            <td><button class="btn btn-primary">추가</button></td>
+                            <td><button class="btn btn-primary btn-add" datatype="cpuCooler">추가</button></td>
                         </tr>
                         </tbody>
                     </table>
@@ -83,7 +82,7 @@
                         <tbody>
                         <tr th:each="cpu : ${cpuList}">
                             <td th:text="${cpu.name}">CPU 이름</td>
-                            <td><button class="btn btn-primary">추가</button></td>
+                            <td><button class="btn btn-primary btn-add" datatype="cpu">추가</button></td>
                         </tr>
                         </tbody>
                     </table>
@@ -111,7 +110,7 @@
                         <tbody>
                         <tr th:each="dataStorage : ${dataStorageList}">
                             <td th:text="${dataStorage.name}">저장장치 이름</td>
-                            <td><button class="btn btn-primary">추가</button></td>
+                            <td><button class="btn btn-primary btn-add" datatype="dataStorage">추가</button></td>
                         </tr>
                         </tbody>
                     </table>
@@ -139,7 +138,7 @@
                         <tbody>
                         <tr th:each="graphicsCard : ${graphicsCardList}">
                             <td th:text="${graphicsCard.name}">그래픽카드 이름</td>
-                            <td><button class="btn btn-primary">추가</button></td>
+                            <td><button class="btn btn-primary btn-add" datatype="graphicsCard">추가</button></td>
                         </tr>
                         </tbody>
                     </table>
@@ -167,7 +166,7 @@
                         <tbody>
                         <tr th:each="memory : ${memoryList}">
                             <td th:text="${memory.name}">메모리 이름</td>
-                            <td><button class="btn btn-primary">추가</button></td>
+                            <td><button class="btn btn-primary btn-add" datatype="memory">추가</button></td>
                         </tr>
                         </tbody>
                     </table>
@@ -195,7 +194,7 @@
                         <tbody>
                         <tr th:each="motherBoard : ${motherBoardList}">
                             <td th:text="${motherBoard.name}">마더보드 이름</td>
-                            <td><button class="btn btn-primary">추가</button></td>
+                            <td><button class="btn btn-primary btn-add" datatype="motherBoard">추가</button></td>
                         </tr>
                         </tbody>
                     </table>
@@ -223,15 +222,76 @@
                         <tbody>
                         <tr th:each="powerSupply : ${powerSupplyList}">
                             <td th:text="${powerSupply.name}">파워서플라이 이름</td>
-                            <td><button class="btn btn-primary">추가</button></td>
+                            <td><button class="btn btn-primary btn-add" datatype="powerSupply">추가</button></td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-
     </div>
+    <form method="post" onsubmit="submitForm(event)">
+        <input type="hidden" id="Estimates" name="Estimates">
+        <button type="submit" id="save" class="btn btn-primary">저장</button>
+    </form>
 </div>
+<script type="text/javascript">
+    var Estimates = {
+        userName=[[${userName}]],
+        cpu="",
+        motherBoard="",
+        memory="",
+        dataStorage="",
+        graphicsCard="",
+        cpuCooler="",
+        powerSupply="",
+        desktopCase=""
+    }
+
+    function addParts(button){
+        var name=button.closest('tr').querySelector('td:first-child').innerText;
+        var type=button.getAttribute('data-type');
+        console.log("상품명: "+name+"부품유형"+type);
+        switch(type){
+            case 'cpu':
+                Estimates.cpu=name;
+                break;
+            case 'motherBoard':
+                Estimates.motherBoard=motherBoard;
+                break;
+            case 'memory':
+                Estimates.memory=memory;
+                break;
+            case 'dataStorage':
+                Estimates.dataStorage=dataStorage;
+                break;
+            case 'graphicsCard':
+                Estimates.graphicsCard=graphicsCard;
+                break;
+            case 'cpuCooler':
+                Estimates.cpuCooler=cpuCooler;
+                break;
+            case 'powerSupply':
+                Estimates.powerSupply=powerSupply;
+                break;
+            case 'desktopCase':
+                Estimates.desktopCase=desktopCase;
+                break;
+            default:
+                console.log("분류되지 않은 데이터");
+                break;
+        }
+    }
+
+    document.querySelectorAll('.btn-add').forEach(function(button){
+        button.addEventListener('click',function(){addParts(button);});
+    });
+
+    function submitForm(event) {
+        event.preventDefault();
+        document.getElementById('Estimates').value=JSON.stringify(Estimates);
+        event.target.submit();
+    }
+</script>
 </body>
 </html>

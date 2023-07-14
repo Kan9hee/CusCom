@@ -1,16 +1,22 @@
 package com.example.cusCom.estimate.controller
 
+import com.example.cusCom.estimate.dto.Estimate
 import com.example.cusCom.estimate.dto.User
 import com.example.cusCom.estimate.exception.EstimateException
 import com.example.cusCom.estimate.service.DesktopPartsService
+import com.example.cusCom.estimate.service.EstimateDeserializer
 import com.example.cusCom.estimate.service.EstimateService
 import com.example.cusCom.estimate.service.UserService
 import com.example.cusCom.estimate.service.parts.*
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
+import java.io.UnsupportedEncodingException
+import java.net.URLDecoder
+
 
 @Controller
 class TestController(private val userService: UserService,
@@ -59,7 +65,15 @@ class TestController(private val userService: UserService,
 
     @PostMapping("/estimate")
     fun postDataTest(@RequestParam("Estimates") estimateJSON:String):String{
-        println("estimate is $estimateJSON")
+        try {
+            val estimate=GsonBuilder()
+                .registerTypeAdapter(Estimate::class.java,EstimateDeserializer(desktopPartsService))
+                .create()
+                .fromJson(estimateJSON, Estimate::class.java)
+            estimateService.saveUserEstimate(estimate)
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+        }
         return "redirect:/main"
     }
 

@@ -2,8 +2,10 @@ package com.example.cusCom.estimate.service
 
 import com.example.cusCom.estimate.dto.parts.*
 import com.example.cusCom.estimate.repository.parts.*
+import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 @Service
 class DesktopPartsService(private val caseRepo: CaseRepository,
@@ -32,6 +34,23 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
             entity.graphicsCardLength)
         }
         return caseList
+    }
+
+    @Transactional
+    fun findCase(name:String): Case {
+        val entity = caseRepo.findById(name).orElseThrow { EntityNotFoundException("CPUCooler ${name}을 찾을 수가 없습니다.") }
+        return Case(entity.name,
+            entity.manufacturer,
+            entity.caseType,
+            entity.maxMotherBoard,
+            entity.maxCoolingFan,
+            entity.builtInCoolingFan,
+            entity.height,
+            entity.length,
+            entity.width,
+            entity.powerLength,
+            entity.cpuCoolerHeight,
+            entity.graphicsCardLength)
     }
 
     @Transactional
@@ -66,6 +85,20 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                 entity.tdp)
         }
         return cpuCoolerList
+    }
+
+    @Transactional
+    fun findCpuCooler(name:String): CPUCooler {
+        val entity = cpuCoolerRepo.findById(name).orElseThrow { EntityNotFoundException("CPUCooler ${name}을 찾을 수가 없습니다.") }
+        return CPUCooler(
+            entity.name,
+            entity.manufacturer,
+            entity.coolingType,
+            entity.coolerForm,
+            entity.height,
+            entity.length,
+            entity.width,
+            entity.tdp)
     }
 
     @Transactional
@@ -104,6 +137,22 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
+    fun findCpu(name: String): CPU {
+        val entity = cpuRepo.findById(name).orElseThrow { EntityNotFoundException("CPU ${name}을 찾을 수가 없습니다.") }
+        return CPU(
+            entity.name,
+            entity.manufacturer,
+            entity.socket,
+            entity.memoryType,
+            entity.core,
+            entity.thread,
+            entity.isBuiltInGraphics,
+            entity.builtInGraphicName,
+            entity.TDP
+        )
+    }
+
+    @Transactional
     fun createCPU(cpu: CPU): CPUEntity {
         return cpuRepo.save(cpu.toCPUEntity())
     }
@@ -134,6 +183,18 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                 entity.writeSpeed)
         }
         return dataStorageList
+    }
+
+    @Transactional
+    fun findDataStorage(name:String): DataStorage {
+        val entity = dataStorageRepo.findById(name).orElseThrow { EntityNotFoundException("CPUCooler ${name}을 찾을 수가 없습니다.") }
+        return DataStorage(entity.name,
+            entity.manufacturer,
+            entity.storageInterface,
+            entity.formFactor,
+            entity.capacity,
+            entity.readSpeed,
+            entity.writeSpeed)
     }
 
     @Transactional
@@ -170,6 +231,19 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
+    fun findGraphicsCard(name:String): GraphicsCard {
+        val entity = graphicsCardRepo.findById(name).orElseThrow { EntityNotFoundException("CPUCooler ${name}을 찾을 수가 없습니다.") }
+        return GraphicsCard(entity.name,
+            entity.manufacturer,
+            entity.chipsetManufacturer,
+            entity.gpuType,
+            entity.length,
+            entity.basicPower,
+            entity.maxPower,
+            entity.phase)
+    }
+
+    @Transactional
     fun createGraphicsCard(graphicsCard: GraphicsCard): GraphicsCardEntity {
         return graphicsCardRepo.save(graphicsCard.toGraphicsCardEntity())
     }
@@ -197,6 +271,16 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
             entity.height)
         }
         return memoryList
+    }
+
+    @Transactional
+    fun findMemory(name:String): Memory {
+        val entity = memoryRepo.findById(name).orElseThrow { EntityNotFoundException("CPUCooler ${name}을 찾을 수가 없습니다.") }
+        return Memory(entity.name,
+            entity.manufacturer,
+            entity.type,
+            entity.capacity,
+            entity.height)
     }
 
     @Transactional
@@ -235,6 +319,21 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
+    fun findMotherBoard(name:String): MotherBoard {
+        val entity = motherBoardRepo.findById(name).orElseThrow { EntityNotFoundException("CPUCooler ${name}을 찾을 수가 없습니다.") }
+        return MotherBoard(entity.name,
+            entity.manufacturer,
+            entity.cpuType,
+            entity.socket,
+            entity.chipset,
+            entity.formFactor,
+            entity.memoryType,
+            entity.memorySlot,
+            entity.ssdM2Slot,
+            entity.ssdSATASlot)
+    }
+
+    @Transactional
     fun createMotherBoard(motherBoard: MotherBoard): MotherBoardEntity {
         return motherBoardRepo.save(motherBoard.toMotherBoardEntity())
     }
@@ -262,6 +361,17 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
             entity.modular,
             entity.length)}
         return powerSupplyList
+    }
+
+    @Transactional
+    fun findPowerSupply(name:String): PowerSupply {
+        val entity = powerSupplyRepo.findById(name).orElseThrow { EntityNotFoundException("CPUCooler ${name}을 찾을 수가 없습니다.") }
+        return PowerSupply(entity.name,
+            entity.manufacturer,
+            entity.power,
+            entity.efficiency,
+            entity.modular,
+            entity.length)
     }
 
     @Transactional

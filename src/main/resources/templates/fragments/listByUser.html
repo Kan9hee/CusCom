@@ -26,7 +26,7 @@
                         <tbody>
                         <tr th:each="case : ${caseList}">
                             <td th:text="${case.name}">케이스 이름</td>
-                            <td><button class="btn btn-primary btn-add" datatype="case">추가</button></td>
+                            <td><button class="btn btn-primary btn-add" datatype="desktopCase">추가</button></td>
                         </tr>
                         </tbody>
                     </table>
@@ -236,46 +236,47 @@
     </form>
 </div>
 <script type="text/javascript">
+
     var Estimates = {
-        userName=[[${userName}]],
-        cpu="",
-        motherBoard="",
-        memory="",
-        dataStorage="",
-        graphicsCard="",
-        cpuCooler="",
-        powerSupply="",
-        desktopCase=""
+        userName:"[[${userName}]]",
+        cpu:"",
+        motherBoard:"",
+        memory:"",
+        dataStorage:"",
+        graphicsCard:"",
+        cpuCooler:"",
+        powerSupply:"",
+        desktopCase:""
     }
 
     function addParts(button){
         var name=button.closest('tr').querySelector('td:first-child').innerText;
-        var type=button.getAttribute('data-type');
-        console.log("상품명: "+name+"부품유형"+type);
-        switch(type){
+        var datatype=button.getAttribute('datatype');
+        console.log("상품명: "+name+"부품유형"+datatype);
+        switch(datatype){
             case 'cpu':
                 Estimates.cpu=name;
                 break;
             case 'motherBoard':
-                Estimates.motherBoard=motherBoard;
+                Estimates.motherBoard=name;
                 break;
             case 'memory':
-                Estimates.memory=memory;
+                Estimates.memory=name;
                 break;
             case 'dataStorage':
-                Estimates.dataStorage=dataStorage;
+                Estimates.dataStorage=name;
                 break;
             case 'graphicsCard':
-                Estimates.graphicsCard=graphicsCard;
+                Estimates.graphicsCard=name;
                 break;
             case 'cpuCooler':
-                Estimates.cpuCooler=cpuCooler;
+                Estimates.cpuCooler=name;
                 break;
             case 'powerSupply':
-                Estimates.powerSupply=powerSupply;
+                Estimates.powerSupply=name;
                 break;
             case 'desktopCase':
-                Estimates.desktopCase=desktopCase;
+                Estimates.desktopCase=name;
                 break;
             default:
                 console.log("분류되지 않은 데이터");

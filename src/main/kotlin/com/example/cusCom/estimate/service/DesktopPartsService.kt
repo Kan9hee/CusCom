@@ -38,7 +38,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional
     fun findCase(name:String): Case {
-        val entity = caseRepo.findById(name).orElseThrow { EntityNotFoundException("CPUCooler ${name}을 찾을 수가 없습니다.") }
+        val entity = caseRepo.findById(name).orElseThrow { EntityNotFoundException("Case ${name}을 찾을 수가 없습니다.") }
         return Case(entity.name,
             entity.manufacturer,
             entity.caseType,
@@ -187,7 +187,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional
     fun findDataStorage(name:String): DataStorage {
-        val entity = dataStorageRepo.findById(name).orElseThrow { EntityNotFoundException("CPUCooler ${name}을 찾을 수가 없습니다.") }
+        val entity = dataStorageRepo.findById(name).orElseThrow { EntityNotFoundException("DataStorage ${name}을 찾을 수가 없습니다.") }
         return DataStorage(entity.name,
             entity.manufacturer,
             entity.storageInterface,
@@ -232,7 +232,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional
     fun findGraphicsCard(name:String): GraphicsCard {
-        val entity = graphicsCardRepo.findById(name).orElseThrow { EntityNotFoundException("CPUCooler ${name}을 찾을 수가 없습니다.") }
+        val entity = graphicsCardRepo.findById(name).orElseThrow { EntityNotFoundException("GraphicsCard ${name}을 찾을 수가 없습니다.") }
         return GraphicsCard(entity.name,
             entity.manufacturer,
             entity.chipsetManufacturer,
@@ -275,7 +275,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional
     fun findMemory(name:String): Memory {
-        val entity = memoryRepo.findById(name).orElseThrow { EntityNotFoundException("CPUCooler ${name}을 찾을 수가 없습니다.") }
+        val entity = memoryRepo.findById(name).orElseThrow { EntityNotFoundException("Memory ${name}을 찾을 수가 없습니다.") }
         return Memory(entity.name,
             entity.manufacturer,
             entity.type,
@@ -320,7 +320,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional
     fun findMotherBoard(name:String): MotherBoard {
-        val entity = motherBoardRepo.findById(name).orElseThrow { EntityNotFoundException("CPUCooler ${name}을 찾을 수가 없습니다.") }
+        val entity = motherBoardRepo.findById(name).orElseThrow { EntityNotFoundException("MotherBoard ${name}을 찾을 수가 없습니다.") }
         return MotherBoard(entity.name,
             entity.manufacturer,
             entity.cpuType,
@@ -365,7 +365,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional
     fun findPowerSupply(name:String): PowerSupply {
-        val entity = powerSupplyRepo.findById(name).orElseThrow { EntityNotFoundException("CPUCooler ${name}을 찾을 수가 없습니다.") }
+        val entity = powerSupplyRepo.findById(name).orElseThrow { EntityNotFoundException("PowerSupply ${name}을 찾을 수가 없습니다.") }
         return PowerSupply(entity.name,
             entity.manufacturer,
             entity.power,

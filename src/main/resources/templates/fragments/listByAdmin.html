@@ -2,6 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org" th:fragment="content">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style>
+    .panel-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    tr{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .button-group {
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
 </head>
 <body>
         <div class="container-fluid" style="width:60%; overflow:auto">
@@ -14,7 +30,7 @@
                                 케이스
                             </a>
                             <form class="form-signin" method="get" action="/adminPage/editCase">
-                                <button class="btn btn-lg btn-primary btn-block" type="submit">추가</button>
+                                <button class="btn btn-lg btn-primary btn-block" type="submit" style="border: none;">추가</button>
                             </form>
                         </h4>
                     </div>
@@ -22,18 +38,21 @@
                         <div class="panel-body">
                             <table class="table">
                                 <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="case : ${caseList}">
-                                        <td th:text="${case.name}">케이스 이름</td>
-                                        <td><button class="btn btn-primary">edit</button></td>
-                                        <td><button class="btn btn-primary">delete</button></td>
-                                    </tr>
+                                <tr th:each="case : ${caseList}" >
+                                    <td th:text="${case.name}">케이스 이름</td>
+                                    <td>
+                                        <div class="button-container">
+                                            <button class="btn btn-primary" style="border: none;">edit</button>
+                                            <button class="btn btn-primary" style="background-color: red; color: white; border: none;">delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -47,7 +66,7 @@
                                 CPU 쿨러
                             </a>
                             <form class="form-signin" method="get" action="/adminPage/editCPUCooler">
-                                <button class="btn btn-lg btn-primary btn-block" type="submit">추가</button>
+                                <button class="btn btn-lg btn-primary btn-block" type="submit" style="border: none;">추가</button>
                             </form>
                         </h4>
                     </div>
@@ -58,14 +77,17 @@
                                 <tr>
                                     <th></th>
                                     <th></th>
-                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="cpuCooler : ${cpuCoolerList}">
                                     <td th:text="${cpuCooler.name}">쿨러 이름</td>
-                                    <td><button class="btn btn-primary">edit</button></td>
-                                    <td><button class="btn btn-primary">delete</button></td>
+                                    <td>
+                                        <div class="button-container">
+                                            <button class="btn btn-primary" style="border: none;">edit</button>
+                                            <button class="btn btn-primary" style="background-color: red; color: white; border: none;">delete</button>
+                                        </div>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -80,7 +102,7 @@
                                 CPU
                             </a>
                             <form class="form-signin" method="get" action="/adminPage/editCPU">
-                                <button class="btn btn-lg btn-primary btn-block" type="submit">추가</button>
+                                <button class="btn btn-lg btn-primary btn-block" type="submit" style="border: none;">추가</button>
                             </form>
                         </h4>
                     </div>
@@ -91,14 +113,16 @@
                                 <tr>
                                     <th></th>
                                     <th></th>
-                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="cpu : ${cpuList}">
-                                    <td th:text="${cpu.name}">CPU 이름</td>
-                                    <td><button class="btn btn-primary">edit</button></td>
-                                    <td><button class="btn btn-primary">delete</button></td>
+                                    <td th:text="${cpu.name}">CPU 이름</td><td>
+                                    <div class="button-container">
+                                        <button class="btn btn-primary" style="border: none;">edit</button>
+                                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;">delete</button>
+                                    </div>
+                                </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -113,7 +137,7 @@
                                 저장장치
                             </a>
                             <form class="form-signin" method="get" action="/adminPage/editDataStorage">
-                                <button class="btn btn-lg btn-primary btn-block" type="submit">추가</button>
+                                <button class="btn btn-lg btn-primary btn-block" type="submit" style="border: none;">추가</button>
                             </form>
                         </h4>
                     </div>
@@ -124,14 +148,16 @@
                                 <tr>
                                     <th></th>
                                     <th></th>
-                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="dataStorage : ${dataStorageList}">
-                                    <td th:text="${dataStorage.name}">저장장치 이름</td>
-                                    <td><button class="btn btn-primary">edit</button></td>
-                                    <td><button class="btn btn-primary">delete</button></td>
+                                    <td th:text="${dataStorage.name}">저장장치 이름</td><td>
+                                    <div class="button-container">
+                                        <button class="btn btn-primary" style="border: none;">edit</button>
+                                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;">delete</button>
+                                    </div>
+                                </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -146,7 +172,7 @@
                                 그래픽카드
                             </a>
                             <form class="form-signin" method="get" action="/adminPage/editGraphicsCard">
-                                <button class="btn btn-lg btn-primary btn-block" type="submit">추가</button>
+                                <button class="btn btn-lg btn-primary btn-block" type="submit" style="border: none;">추가</button>
                             </form>
                         </h4>
                     </div>
@@ -157,14 +183,16 @@
                                 <tr>
                                     <th></th>
                                     <th></th>
-                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="graphicsCard : ${graphicsCardList}">
-                                    <td th:text="${graphicsCard.name}">그래픽카드 이름</td>
-                                    <td><button class="btn btn-primary">edit</button></td>
-                                    <td><button class="btn btn-primary">delete</button></td>
+                                    <td th:text="${graphicsCard.name}">그래픽카드 이름</td><td>
+                                    <div class="button-container">
+                                        <button class="btn btn-primary" style="border: none;">edit</button>
+                                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;">delete</button>
+                                    </div>
+                                </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -179,7 +207,7 @@
                                 메모리
                             </a>
                             <form class="form-signin" method="get" action="/adminPage/editMemory">
-                                <button class="btn btn-lg btn-primary btn-block" type="submit">추가</button>
+                                <button class="btn btn-lg btn-primary btn-block" type="submit" style="border: none;">추가</button>
                             </form>
                         </h4>
                     </div>
@@ -190,14 +218,16 @@
                                 <tr>
                                     <th></th>
                                     <th></th>
-                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="memory : ${memoryList}">
-                                    <td th:text="${memory.name}">메모리 이름</td>
-                                    <td><button class="btn btn-primary">edit</button></td>
-                                    <td><button class="btn btn-primary">delete</button></td>
+                                    <td th:text="${memory.name}">메모리 이름</td><td>
+                                    <div class="button-container">
+                                        <button class="btn btn-primary" style="border: none;">edit</button>
+                                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;">delete</button>
+                                    </div>
+                                </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -212,7 +242,7 @@
                                 마더보드
                             </a>
                             <form class="form-signin" method="get" action="/adminPage/editMotherBoard">
-                                <button class="btn btn-lg btn-primary btn-block" type="submit">추가</button>
+                                <button class="btn btn-lg btn-primary btn-block" type="submit" style="border: none;">추가</button>
                             </form>
                         </h4>
                     </div>
@@ -223,14 +253,16 @@
                                 <tr>
                                     <th></th>
                                     <th></th>
-                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="motherBoard : ${motherBoardList}">
-                                    <td th:text="${motherBoard.name}">마더보드 이름</td>
-                                    <td><button class="btn btn-primary">edit</button></td>
-                                    <td><button class="btn btn-primary">delete</button></td>
+                                    <td th:text="${motherBoard.name}">마더보드 이름</td><td>
+                                    <div class="button-container">
+                                        <button class="btn btn-primary" style="border: none;">edit</button>
+                                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;">delete</button>
+                                    </div>
+                                </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -245,7 +277,7 @@
                                 파워서플라이
                             </a>
                             <form class="form-signin" method="get" action="/adminPage/editPowerSupply">
-                                <button class="btn btn-lg btn-primary btn-block" type="submit">추가</button>
+                                <button class="btn btn-lg btn-primary btn-block" type="submit" style="border: none;">추가</button>
                             </form>
                         </h4>
                     </div>
@@ -256,14 +288,16 @@
                                 <tr>
                                     <th></th>
                                     <th></th>
-                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="powerSupply : ${powerSupplyList}">
-                                    <td th:text="${powerSupply.name}">파워서플라이 이름</td>
-                                    <td><button class="btn btn-primary">edit</button></td>
-                                    <td><button class="btn btn-primary">delete</button></td>
+                                    <td th:text="${powerSupply.name}">파워서플라이 이름</td><td>
+                                    <div class="button-container">
+                                        <button class="btn btn-primary" style="border: none;">edit</button>
+                                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;">delete</button>
+                                    </div>
+                                </td>
                                 </tr>
                                 </tbody>
                             </table>

@@ -66,8 +66,8 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun deleteCase(case: Case){
-        return caseRepo.deleteById(case.name)
+    fun deleteCase(case: String){
+        return caseRepo.deleteById(case)
     }
 
 
@@ -114,8 +114,8 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun deleteCPUCooler(cpuCooler: CPUCooler){
-        return cpuCoolerRepo.deleteById(cpuCooler.name)
+    fun deleteCPUCooler(cpuCooler: String){
+        return cpuCoolerRepo.deleteById(cpuCooler)
     }
 
 
@@ -165,8 +165,8 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun deleteCPU(cpu: CPU){
-        return cpuRepo.deleteById(cpu.name)
+    fun deleteCPU(cpu: String){
+        return cpuRepo.deleteById(cpu)
     }
 
 
@@ -210,8 +210,8 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun deleteDataStorage(dataStorage: DataStorage){
-        return dataStorageRepo.deleteById(dataStorage.name)
+    fun deleteDataStorage(dataStorage: String){
+        return dataStorageRepo.deleteById(dataStorage)
     }
 
 
@@ -256,8 +256,8 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun deleteGraphicsCard(graphicsCard: GraphicsCard){
-        return graphicsCardRepo.deleteById(graphicsCard.name)
+    fun deleteGraphicsCard(graphicsCard: String){
+        return graphicsCardRepo.deleteById(graphicsCard)
     }
 
 
@@ -296,8 +296,8 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun deleteMemory(memory: Memory){
-        return memoryRepo.deleteById(memory.name)
+    fun deleteMemory(memory: String){
+        return memoryRepo.deleteById(memory)
     }
 
 
@@ -346,8 +346,8 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun deleteMotherBoard(motherBoard: MotherBoard){
-        return motherBoardRepo.deleteById(motherBoard.name)
+    fun deleteMotherBoard(motherBoard: String){
+        return motherBoardRepo.deleteById(motherBoard)
     }
 
 
@@ -387,7 +387,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun deletePowerSupply(powerSupply: PowerSupply){
-        return powerSupplyRepo.deleteById(powerSupply.name)
+    fun deletePowerSupply(powerSupply: String){
+        return powerSupplyRepo.deleteById(powerSupply)
     }
 }

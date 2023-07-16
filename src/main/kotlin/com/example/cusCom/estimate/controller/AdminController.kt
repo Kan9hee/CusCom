@@ -2,13 +2,13 @@ package com.example.cusCom.estimate.controller
 
 import com.example.cusCom.estimate.dto.parts.*
 import com.example.cusCom.estimate.service.DesktopPartsService
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.Gson
+import net.minidev.json.JSONObject
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/adminPage")
@@ -113,5 +113,22 @@ class AdminController(private val desktopPartsService: DesktopPartsService) {
     fun savePowerSupplyData(@RequestParam("PowerSupply") powerSupplyJSON:String):String{
         desktopPartsService.createPowerSupply(Gson().fromJson(powerSupplyJSON, PowerSupply::class.java))
         return "redirect:/adminPage/main"
+    }
+
+    @PostMapping("/deleteParts")
+    @ResponseBody
+    fun deleteParts(@RequestBody requestJSON:String): ResponseEntity<String> {
+        val request= ObjectMapper().readTree(java.net.URLDecoder.decode(requestJSON, "UTF-8"))
+        when(request["type"].asText()){
+            "case"->desktopPartsService.deleteCase(request["name"].asText())
+            "cpu"->desktopPartsService.deleteCPU(request["name"].asText())
+            "cpuCooler"->desktopPartsService.deleteCPUCooler(request["name"].asText())
+            "dataStorage"->desktopPartsService.deleteDataStorage(request["name"].asText())
+            "graphicsCard"->desktopPartsService.deleteGraphicsCard(request["name"].asText())
+            "memory"->desktopPartsService.deleteMemory(request["name"].asText())
+            "motherBoard"->desktopPartsService.deleteMotherBoard(request["name"].asText())
+            "powerSupply"->desktopPartsService.deletePowerSupply(request["name"].asText())
+        }
+        return ResponseEntity.ok("Deleted")
     }
 }

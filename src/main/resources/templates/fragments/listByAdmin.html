@@ -3,21 +3,43 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <style>
-    .panel-title {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    tr{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .button-group {
-        display: flex;
-        justify-content: space-between;
-    }
-</style>
+        .panel-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        tr{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+    <script th:inline="javascript">
+        function deleteItem(button) {
+            var requestData = {
+                name: button.getAttribute("data-item-id"),
+                type: $(button).closest("tr").attr("id")
+            };
+            console.log(requestData);
+
+            $.ajax({
+                url: "/adminPage/deleteParts",
+                method: "post",
+                data: JSON.stringify(requestData),
+                dataType: "json",
+                success: function(){
+                    $("#" + requestData.name).remove();
+                },
+                error: function(error) {
+                    console.log("Error:", error);
+                }
+            });
+        }
+    </script>
 </head>
 <body>
         <div class="container-fluid" style="width:60%; overflow:auto">
@@ -44,12 +66,12 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="case : ${caseList}" >
+                                <tr th:each="case : ${caseList}" th:id="case">
                                     <td th:text="${case.name}">케이스 이름</td>
                                     <td>
                                         <div class="button-container">
-                                            <button class="btn btn-primary" style="border: none;">edit</button>
-                                            <button class="btn btn-primary" style="background-color: red; color: white; border: none;">delete</button>
+                                            <button class="btn btn-primary edit-button" data-item-id="${case.name}" style="border: none;">edit</button>
+                                            <button class="btn btn-primary" th:attr="data-item-id=${case.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -80,12 +102,12 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="cpuCooler : ${cpuCoolerList}">
+                                <tr th:each="cpuCooler : ${cpuCoolerList}" th:id="cpuCooler">
                                     <td th:text="${cpuCooler.name}">쿨러 이름</td>
                                     <td>
                                         <div class="button-container">
                                             <button class="btn btn-primary" style="border: none;">edit</button>
-                                            <button class="btn btn-primary" style="background-color: red; color: white; border: none;">delete</button>
+                                            <button class="btn btn-primary" th:attr="data-item-id=${case.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -116,13 +138,14 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="cpu : ${cpuList}">
-                                    <td th:text="${cpu.name}">CPU 이름</td><td>
-                                    <div class="button-container">
-                                        <button class="btn btn-primary" style="border: none;">edit</button>
-                                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;">delete</button>
-                                    </div>
-                                </td>
+                                <tr th:each="cpu : ${cpuList}" th:id="cpu">
+                                    <td th:text="${cpu.name}">CPU 이름</td>
+                                    <td>
+                                        <div class="button-container">
+                                            <button class="btn btn-primary" style="border: none;">edit</button>
+                                            <button class="btn btn-primary" th:attr="data-item-id=${case.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                                        </div>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -151,13 +174,14 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="dataStorage : ${dataStorageList}">
-                                    <td th:text="${dataStorage.name}">저장장치 이름</td><td>
-                                    <div class="button-container">
-                                        <button class="btn btn-primary" style="border: none;">edit</button>
-                                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;">delete</button>
-                                    </div>
-                                </td>
+                                <tr th:each="dataStorage : ${dataStorageList}" th:id="dataStorage">
+                                    <td th:text="${dataStorage.name}">저장장치 이름</td>
+                                    <td>
+                                        <div class="button-container">
+                                            <button class="btn btn-primary" style="border: none;">edit</button>
+                                            <button class="btn btn-primary" th:attr="data-item-id=${case.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                                        </div>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -186,13 +210,14 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="graphicsCard : ${graphicsCardList}">
-                                    <td th:text="${graphicsCard.name}">그래픽카드 이름</td><td>
-                                    <div class="button-container">
-                                        <button class="btn btn-primary" style="border: none;">edit</button>
-                                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;">delete</button>
-                                    </div>
-                                </td>
+                                <tr th:each="graphicsCard : ${graphicsCardList}" th:id="graphicsCardList">
+                                    <td th:text="${graphicsCard.name}">그래픽카드 이름</td>
+                                    <td>
+                                        <div class="button-container">
+                                            <button class="btn btn-primary" style="border: none;">edit</button>
+                                            <button class="btn btn-primary" th:attr="data-item-id=${case.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                                        </div>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -221,13 +246,14 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="memory : ${memoryList}">
-                                    <td th:text="${memory.name}">메모리 이름</td><td>
-                                    <div class="button-container">
-                                        <button class="btn btn-primary" style="border: none;">edit</button>
-                                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;">delete</button>
-                                    </div>
-                                </td>
+                                <tr th:each="memory : ${memoryList}" th:id="memoryList">
+                                    <td th:text="${memory.name}">메모리 이름</td>
+                                    <td>
+                                        <div class="button-container">
+                                            <button class="btn btn-primary" style="border: none;">edit</button>
+                                            <button class="btn btn-primary" th:attr="data-item-id=${case.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                                        </div>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -256,13 +282,14 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="motherBoard : ${motherBoardList}">
-                                    <td th:text="${motherBoard.name}">마더보드 이름</td><td>
-                                    <div class="button-container">
-                                        <button class="btn btn-primary" style="border: none;">edit</button>
-                                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;">delete</button>
-                                    </div>
-                                </td>
+                                <tr th:each="motherBoard : ${motherBoardList}" th:id="motherBoardList">
+                                    <td th:text="${motherBoard.name}">마더보드 이름</td>
+                                    <td>
+                                        <div class="button-container">
+                                            <button class="btn btn-primary" style="border: none;">edit</button>
+                                            <button class="btn btn-primary" th:attr="data-item-id=${case.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                                        </div>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -291,13 +318,14 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="powerSupply : ${powerSupplyList}">
-                                    <td th:text="${powerSupply.name}">파워서플라이 이름</td><td>
-                                    <div class="button-container">
-                                        <button class="btn btn-primary" style="border: none;">edit</button>
-                                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;">delete</button>
-                                    </div>
-                                </td>
+                                <tr th:each="powerSupply : ${powerSupplyList}" th:id="powerSupplyList">
+                                    <td th:text="${powerSupply.name}">파워서플라이 이름</td>
+                                    <td>
+                                        <div class="button-container">
+                                            <button class="btn btn-primary" style="border: none;">edit</button>
+                                            <button class="btn btn-primary" th:attr="data-item-id=${case.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                                        </div>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>

@@ -24,14 +24,12 @@
                 name: button.getAttribute("data-item-id"),
                 type: $(button).closest("tr").attr("id")
             };
-            console.log(requestData);
-
             $.ajax({
                 url: "/adminPage/deleteParts",
                 method: "post",
                 data: JSON.stringify(requestData),
                 dataType: "json",
-                success: function(){
+                success: function(data){
                     $("#" + requestData.name).remove();
                 },
                 error: function(error) {
@@ -107,7 +105,7 @@
                                     <td>
                                         <div class="button-container">
                                             <button class="btn btn-primary" style="border: none;">edit</button>
-                                            <button class="btn btn-primary" th:attr="data-item-id=${case.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                                            <button class="btn btn-primary" th:attr="data-item-id=${cpuCooler.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -143,7 +141,7 @@
                                     <td>
                                         <div class="button-container">
                                             <button class="btn btn-primary" style="border: none;">edit</button>
-                                            <button class="btn btn-primary" th:attr="data-item-id=${case.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                                            <button class="btn btn-primary" th:attr="data-item-id=${cpu.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -179,7 +177,7 @@
                                     <td>
                                         <div class="button-container">
                                             <button class="btn btn-primary" style="border: none;">edit</button>
-                                            <button class="btn btn-primary" th:attr="data-item-id=${case.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                                            <button class="btn btn-primary" th:attr="data-item-id=${dataStorage.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -215,7 +213,7 @@
                                     <td>
                                         <div class="button-container">
                                             <button class="btn btn-primary" style="border: none;">edit</button>
-                                            <button class="btn btn-primary" th:attr="data-item-id=${case.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                                            <button class="btn btn-primary" th:attr="data-item-id=${graphicsCard.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -251,7 +249,7 @@
                                     <td>
                                         <div class="button-container">
                                             <button class="btn btn-primary" style="border: none;">edit</button>
-                                            <button class="btn btn-primary" th:attr="data-item-id=${case.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                                            <button class="btn btn-primary" th:attr="data-item-id=${memory.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -287,7 +285,7 @@
                                     <td>
                                         <div class="button-container">
                                             <button class="btn btn-primary" style="border: none;">edit</button>
-                                            <button class="btn btn-primary" th:attr="data-item-id=${case.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                                            <button class="btn btn-primary" th:attr="data-item-id=${motherBoard.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -323,7 +321,7 @@
                                     <td>
                                         <div class="button-container">
                                             <button class="btn btn-primary" style="border: none;">edit</button>
-                                            <button class="btn btn-primary" th:attr="data-item-id=${case.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                                            <button class="btn btn-primary" th:attr="data-item-id=${powerSupply.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
                                         </div>
                                     </td>
                                 </tr>

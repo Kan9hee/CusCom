@@ -4,11 +4,13 @@ import com.example.cusCom.estimate.dto.parts.*
 import com.example.cusCom.estimate.service.DesktopPartsService
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.Gson
-import net.minidev.json.JSONObject
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder
+import org.springframework.web.servlet.view.RedirectView
+import org.springframework.web.util.UriComponentsBuilder
 
 @Controller
 @RequestMapping("/adminPage")
@@ -67,52 +69,20 @@ class AdminController(private val desktopPartsService: DesktopPartsService) {
         return "powerSupplyEditPage"
     }
 
-    @PostMapping("/editCase")
-    fun saveCaseData(@RequestParam("Case") caseJSON:String):String{
-        desktopPartsService.createCase(Gson().fromJson(caseJSON, Case::class.java))
-        return "redirect:/adminPage/main"
-    }
-
-    @PostMapping("/editCPU")
-    fun saveCPUData(@RequestParam("CPU") cpuJSON:String):String{
-        desktopPartsService.createCPU(Gson().fromJson(cpuJSON, CPU::class.java))
-        return "redirect:/adminPage/main"
-    }
-
-    @PostMapping("/editCPUCooler")
-    fun saveCPUCoolerData(@RequestParam("CPUCooler") cpuCoolerJSON:String):String{
-        desktopPartsService.createCPUCooler(Gson().fromJson(cpuCoolerJSON, CPUCooler::class.java))
-        return "redirect:/adminPage/main"
-    }
-
-    @PostMapping("/editDataStorage")
-    fun saveDataStorageData(@RequestParam("DataStorage") dataStorageJSON:String):String{
-        desktopPartsService.createDataStorage(Gson().fromJson(dataStorageJSON, DataStorage::class.java))
-        return "redirect:/adminPage/main"
-    }
-
-    @PostMapping("/editGraphicsCard")
-    fun saveGraphicsCardData(@RequestParam("GraphicsCard") graphicsCardJSON:String):String{
-        desktopPartsService.createGraphicsCard(Gson().fromJson(graphicsCardJSON, GraphicsCard::class.java))
-        return "redirect:/adminPage/main"
-    }
-
-    @PostMapping("/editMemory")
-    fun saveMemoryData(@RequestParam("Memory") memoryJSON:String):String{
-        desktopPartsService.createMemory(Gson().fromJson(memoryJSON, Memory::class.java))
-        return "redirect:/adminPage/main"
-    }
-
-    @PostMapping("/editMotherBoard")
-    fun saveMotherBoard(@RequestParam("MotherBoard") motherBoardJSON:String):String{
-        desktopPartsService.createMotherBoard(Gson().fromJson(motherBoardJSON, MotherBoard::class.java))
-        return "redirect:/adminPage/main"
-    }
-
-    @PostMapping("/editPowerSupply")
-    fun savePowerSupplyData(@RequestParam("PowerSupply") powerSupplyJSON:String):String{
-        desktopPartsService.createPowerSupply(Gson().fromJson(powerSupplyJSON, PowerSupply::class.java))
-        return "redirect:/adminPage/main"
+    @PostMapping("/editParts")
+    fun editParts(@RequestParam("Type") type:String,
+                  @RequestParam("Data") requestJSON:String): RedirectView {
+        when(type){
+            "case"->desktopPartsService.createCase(Gson().fromJson(requestJSON, Case::class.java))
+            "cpu"->desktopPartsService.createCPU(Gson().fromJson(requestJSON, CPU::class.java))
+            "cpuCooler"->desktopPartsService.createCPUCooler(Gson().fromJson(requestJSON, CPUCooler::class.java))
+            "dataStorage"->desktopPartsService.createDataStorage(Gson().fromJson(requestJSON, DataStorage::class.java))
+            "graphicsCard"->desktopPartsService.createGraphicsCard(Gson().fromJson(requestJSON, GraphicsCard::class.java))
+            "memory"->desktopPartsService.createMemory(Gson().fromJson(requestJSON, Memory::class.java))
+            "motherBoard"->desktopPartsService.createMotherBoard(Gson().fromJson(requestJSON, MotherBoard::class.java))
+            "powerSupply"->desktopPartsService.createPowerSupply(Gson().fromJson(requestJSON, PowerSupply::class.java))
+        }
+        return RedirectView("/adminPage/main")
     }
 
     @PostMapping("/deleteParts")

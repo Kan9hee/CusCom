@@ -4,18 +4,48 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <body>
-    이름<input type="text" name="name" id="name"><br>
-    제조사<input type="text" name="manufacturer" id="manufacturer"><br>
-    구분<input type="text" name="chipsetManufacturer" id="chipsetManufacturer"><br>
-    GPU<input type="text" name="gpuType" id="gpuType"><br>
-    길이<input type="number" name="length" id="length"><br>
-    기본전력<input type="number" name="basicPower" id="basicPower"><br>
-    최대전력<input type="number" name="maxPower" id="maxPower"><br>
-    페이즈 수<input type="number" name="phase" id="phase"><br>
-    <form method="post" onsubmit="submitForm(event)">
-        <input type="hidden" id="GraphicsCard" name="GraphicsCard">
-        <button type="submit" id="save" class="btn btn-primary">저장</button>
-    </form>
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>그래픽카드 등록 페이지</h2>
+        </div>
+        <form th:action>
+            <div>
+                <label for="name">이름</label>
+                <input type="text" name="name" id="name" class="form-control"><br>
+            </div>
+            <div>
+                <label for="manufacturer">제조사</label>
+                <input type="text" name="manufacturer" id="manufacturer" class="form-control"><br>
+            </div>
+            <div>
+                <label for="chipsetManufacturer">구분</label>
+                <input type="text" name="chipsetManufacturer" id="chipsetManufacturer" class="form-control"><br>
+            </div>
+            <div>
+                <label for="gpuType">GPU</label>
+                <input type="text" name="gpuType" id="gpuType" class="form-control"><br>
+            </div>
+            <div>
+                <label for="length">길이</label>
+                <input type="number" name="length" id="length" class="form-control"><br>
+            </div>
+            <div>
+                <label for="basicPower">기본전력</label>
+                <input type="number" name="basicPower" id="basicPower" class="form-control"><br>
+            </div>
+            <div>
+                <label for="maxPower">최대전력</label>
+                <input type="number"  name="maxPower" id="maxPower" class="form-control"><br>
+            </div>
+            <div>
+                <label for="phase">페이즈 수</label>
+                <input type="number"  name="phase" id="phase" class="form-control"><br>
+            </div>
+        </form>
+        <form method="post" onsubmit="submitForm(event)">
+            <button type="submit" id="save" class="btn btn-primary">저장</button>
+        </form>
+    </div>
     <script type="text/javascript">
         function submitForm(event) {
             event.preventDefault();
@@ -30,10 +60,20 @@
                 maxPower: document.getElementById('maxPower').value,
                 phase: document.getElementById('phase').value
             };
-            var jsonData = JSON.stringify(GraphicsCard);
-
-            document.getElementById('GraphicsCard').value = jsonData;
-            event.target.submit();
+            $.ajax({
+                url: "/adminPage/editParts",
+                type: "post",
+                data: {
+                    Type : "GraphicsCard",
+                    Data : JSON.stringify(GraphicsCard)
+                },
+                success: function(response) {
+                    window.location.href = response.url;
+                },
+                error: function(error) {
+                    console.log("Error:", error);
+                }
+            });
         }
     </script>
 </body>

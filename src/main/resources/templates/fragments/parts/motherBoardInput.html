@@ -4,20 +4,56 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <body>
-    이름<input type="text" name="name" id="name"><br>
-    제조사<input type="text" name="manufacturer" id="manufacturer"><br>
-    구분<input type="text" name="cpuType" id="cpuType"><br>
-    소켓<input type="text" name="socket" id="socket"><br>
-    칩셋<input type="text" name="chipset" id="chipset"><br>
-    폼팩터<input type="text" name="formFactor" id="formFactor"><br>
-    메모리 타입<input type="text" name="memoryType" id="memoryType"><br>
-    메모리 슬롯 개수<input type="number" name="memorySlot" id="memorySlot"><br>
-    SSD 슬롯 개수(M.2)<input type="number"  name="ssdM2Slot" id="ssdM2Slot"><br>
-    SSD 슬롯 개수(SATA)<input type="number" name="ssdSATASlot" id="ssdSATASlot"><br>
-    <form method="post" onsubmit="submitForm(event)">
-        <input type="hidden" id="MotherBoard" name="MotherBoard">
-        <button type="submit" id="save" class="btn btn-primary">저장</button>
-    </form>
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>마더보드 등록 페이지</h2>
+        </div>
+        <form th:action>
+            <div>
+                <label for="name">이름</label>
+                <input type="text" name="name" id="name" class="form-control"><br>
+            </div>
+            <div>
+                <label for="manufacturer">제조사</label>
+                <input type="text" name="manufacturer" id="manufacturer" class="form-control"><br>
+            </div>
+            <div>
+                <label for="cpuType">구분</label>
+                <input type="text" name="cpuType" id="cpuType" class="form-control"><br>
+            </div>
+            <div>
+                <label for="socket">소켓</label>
+                <input type="text" name="socket" id="socket" class="form-control"><br>
+            </div>
+            <div>
+                <label for="chipset">칩셋</label>
+                <input type="text" name="chipset" id="chipset" class="form-control"><br>
+            </div>
+            <div>
+                <label for="formFactor">폼팩터</label>
+                <input type="text" name="formFactor" id="formFactor" class="form-control"><br>
+            </div>
+            <div>
+                <label for="memoryType">메모리 타입</label>
+                <input type="text" name="memoryType" id="memoryType" class="form-control"><br>
+            </div>
+            <div>
+                <label for="memorySlot">메모리 슬롯 개수</label>
+                <input type="number" name="memorySlot" id="memorySlot" class="form-control"><br>
+            </div>
+            <div>
+                <label for="ssdM2Slot">SSD 슬롯 개수(M.2)</label>
+                <input type="number"  name="ssdM2Slot" id="ssdM2Slot" class="form-control"><br>
+            </div>
+            <div>
+                <label for="ssdSATASlot">SSD 슬롯 개수(SATA)</label>
+                <input type="number"  name="ssdSATASlot" id="ssdSATASlot" class="form-control"><br>
+            </div>
+        </form>
+        <form method="post" onsubmit="submitForm(event)">
+            <button type="submit" id="save" class="btn btn-primary">저장</button>
+        </form>
+    </div>
     <script type="text/javascript">
         function submitForm(event) {
             event.preventDefault();
@@ -34,10 +70,20 @@
                 ssdM2Slot: document.getElementById('ssdM2Slot').value,
                 ssdSATASlot: document.getElementById('ssdSATASlot').value,
             };
-            var jsonData = JSON.stringify(MotherBoard);
-
-            document.getElementById('MotherBoard').value = jsonData;
-            event.target.submit();
+            $.ajax({
+                url: "/adminPage/editParts",
+                type: "post",
+                data: {
+                    Type : "MotherBoard",
+                    Data : JSON.stringify(MotherBoard)
+                },
+                success: function(response) {
+                    window.location.href = response.url;
+                },
+                error: function(error) {
+                    console.log("Error:", error);
+                }
+            });
         }
     </script>
 </body>

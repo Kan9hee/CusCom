@@ -4,17 +4,44 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <body>
-    이름<input type="text" name="name" id="name"><br>
-    제조사<input type="text" name="manufacturer" id="manufacturer"><br>
-    인터페이스<input type="text" name="storageInterface" id="storageInterface"><br>
-    폼팩터<input type="text" name="formFactor" id="formFactor"><br>
-    용량<input type="text" name="capacity" id="capacity"><br>
-    읽기성능<input type="number" name="readSpeed" id="readSpeed"><br>
-    쓰기성능<input type="number" name="writeSpeed" id="writeSpeed"><br>
-    <form method="post" onsubmit="submitForm(event)">
-        <input type="hidden" id="DataStorage" name="DataStorage">
-        <button type="submit" id="save" class="btn btn-primary">저장</button>
-    </form>
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>저장장치 등록 페이지</h2>
+        </div>
+        <form th:action>
+            <div>
+                <label for="name">이름</label>
+                <input type="text" name="name" id="name" class="form-control"><br>
+            </div>
+            <div>
+                <label for="manufacturer">제조사</label>
+                <input type="text" name="manufacturer" id="manufacturer" class="form-control"><br>
+            </div>
+            <div>
+                <label for="storageInterface">인터페이스</label>
+                <input type="text" name="storageInterface" id="storageInterface" class="form-control"><br>
+            </div>
+            <div>
+                <label for="formFactor">폼팩터</label>
+                <input type="text" name="formFactor" id="formFactor" class="form-control"><br>
+            </div>
+            <div>
+                <label for="capacity">용량</label>
+                <input type="text" name="capacity" id="capacity" class="form-control"><br>
+            </div>
+            <div>
+                <label for="readSpeed">읽기성능</label>
+                <input type="number" name="readSpeed" id="readSpeed" class="form-control"><br>
+            </div>
+            <div>
+                <label for="writeSpeed">쓰기성능</label>
+                <input type="number"  name="writeSpeed" id="writeSpeed" class="form-control"><br>
+            </div>
+        </form>
+        <form method="post" onsubmit="submitForm(event)">
+            <button type="submit" id="save" class="btn btn-primary">저장</button>
+        </form>
+    </div>
     <script type="text/javascript">
         function submitForm(event) {
             event.preventDefault();
@@ -28,10 +55,20 @@
                 readSpeed: document.getElementById('readSpeed').value,
                 writeSpeed: document.getElementById('writeSpeed').value
             };
-            var jsonData = JSON.stringify(DataStorage);
-
-            document.getElementById('DataStorage').value = jsonData;
-            event.target.submit();
+            $.ajax({
+                url: "/adminPage/editParts",
+                type: "post",
+                data: {
+                    Type : "DataStorage",
+                    Data : JSON.stringify(DataStorage)
+                },
+                success: function(response) {
+                    window.location.href = response.url;
+                },
+                error: function(error) {
+                    console.log("Error:", error);
+                }
+            });
         }
     </script>
 </body>

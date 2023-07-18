@@ -4,15 +4,36 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <body>
-    이름<input type="text" name="name" id="name"><br>
-    제조사<input type="text" name="manufacturer" id="manufacturer"><br>
-    타입<input type="text" name="type" id="type"><br>
-    용량<input type="number" name="capacity" id="capacity"><br>
-    높이<input type="number" name="height" id="height"><br>
-    <form method="post" onsubmit="submitForm(event)">
-        <input type="hidden" id="Memory" name="Memory">
-        <button type="submit" id="save" class="btn btn-primary">저장</button>
-    </form>
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>메모리 등록 페이지</h2>
+        </div>
+        <form th:action>
+            <div>
+                <label for="name">이름</label>
+                <input type="text" name="name" id="name" class="form-control"><br>
+            </div>
+            <div>
+                <label for="manufacturer">제조사</label>
+                <input type="text" name="manufacturer" id="manufacturer" class="form-control"><br>
+            </div>
+            <div>
+                <label for="type">타입</label>
+                <input type="text" name="type" id="type" class="form-control"><br>
+            </div>
+            <div>
+                <label for="capacity">용량</label>
+                <input type="number"  name="capacity" id="capacity" class="form-control"><br>
+            </div>
+            <div>
+                <label for="height">높이</label>
+                <input type="number"  name="height" id="height" class="form-control"><br>
+            </div>
+        </form>
+        <form method="post" onsubmit="submitForm(event)">
+            <button type="submit" id="save" class="btn btn-primary">저장</button>
+        </form>
+    </div>
     <script type="text/javascript">
         function submitForm(event) {
             event.preventDefault();
@@ -24,10 +45,20 @@
                 capacity: document.getElementById('capacity').value,
                 height: document.getElementById('height').value
             };
-            var jsonData = JSON.stringify(Memory);
-
-            document.getElementById('Memory').value = jsonData;
-            event.target.submit();
+            $.ajax({
+                url: "/adminPage/editParts",
+                type: "post",
+                data: {
+                    Type : "Memory",
+                    Data : JSON.stringify(Memory)
+                },
+                success: function(response) {
+                    window.location.href = response.url;
+                },
+                error: function(error) {
+                    console.log("Error:", error);
+                }
+            });
         }
     </script>
 </body>

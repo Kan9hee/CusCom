@@ -4,19 +4,55 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <body>
-    이름<input type="text" name="name" id="name"><br>
-    제조사<input type="text" name="manufacturer" id="manufacturer"><br>
-    소켓<input type="text" name="socket" id="socket"><br>
-    메모리 타입<input type="text" name="memoryType" id="memoryType"><br>
-    코어<input type="number" name="core" id="core"><br>
-    스레드<input type="number" name="thread" id="thread"><br>
-    내장그래픽 여부<input type="checkbox"  name="isBuiltInGraphics" id="isBuiltInGraphics"><br>
-    내장그래픽 이름<input type="text"  name="builtInGraphicName" id="builtInGraphicName"><br>
-    TDP<input type="number" name="TDP" id="TDP"><br>
-    <form method="post" onsubmit="submitForm(event)">
-        <input type="hidden" id="CPU" name="CPU">
-        <button type="submit" id="save" class="btn btn-primary">저장</button>
-    </form>
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>CPU 등록 페이지</h2>
+        </div>
+        <form th:action>
+            <div>
+                <label for="name">이름</label>
+                <input type="text" name="name" id="name" class="form-control"><br>
+            </div>
+            <div>
+                <label for="manufacturer">제조사</label>
+                <input type="text" name="manufacturer" id="manufacturer" class="form-control"><br>
+            </div>
+            <div>
+                <label for="socket">소켓</label>
+                <input type="text" name="socket" id="socket" class="form-control"><br>
+            </div>
+            <div>
+                <label for="memoryType">메모리 타입</label>
+                <input type="text" name="memoryType" id="memoryType" class="form-control"><br>
+            </div>
+            <div>
+                <label for="core">코어</label>
+                <input type="number" name="core" id="core" class="form-control"><br>
+            </div>
+            <div>
+                <label for="thread">스레드</label>
+                <input type="number" name="thread" id="thread" class="form-control"><br>
+            </div>
+            <div>
+                <label for="isBuiltInGraphics">내장그래픽 여부</label>
+                <div>
+                    <input type="checkbox" name="isBuiltInGraphics" id="isBuiltInGraphics" class="form-check-input">
+                </div>
+                <br>
+            </div>
+            <div>
+                <label for="builtInGraphicName">내장그래픽 이름</label>
+                <input type="text" name="builtInGraphicName" id="builtInGraphicName" class="form-control"><br>
+            </div>
+            <div>
+                <label for="TDP">TDP</label>
+                <input type="number"  name="TDP" id="TDP" class="form-control"><br>
+            </div>
+        </form>
+        <form method="post" onsubmit="submitForm(event)">
+            <button type="submit" id="save" class="btn btn-primary">저장</button>
+        </form>
+    </div>
     <script type="text/javascript">
         function submitForm(event) {
             event.preventDefault();
@@ -32,10 +68,20 @@
                 builtInGraphicName: document.getElementById('builtInGraphicName').value,
                 TDP: document.getElementById('TDP').value
             };
-            var jsonData = JSON.stringify(CPU);
-
-            document.getElementById('CPU').value = jsonData;
-            event.target.submit();
+            $.ajax({
+                url: "/adminPage/editParts",
+                type: "post",
+                data: {
+                    Type : "CPU",
+                    Data : JSON.stringify(CPU)
+                },
+                success: function(response) {
+                    window.location.href = response.url;
+                },
+                error: function(error) {
+                    console.log("Error:", error);
+                }
+            });
         }
     </script>
 </body>

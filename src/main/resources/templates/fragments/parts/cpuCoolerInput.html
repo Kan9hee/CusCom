@@ -4,18 +4,48 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <body>
-    이름<input type="text" name="name" id="name"><br>
-    제조사<input type="text" name="manufacturer" id="manufacturer"><br>
-    쿨링 방식<input type="text" name="coolingType" id="coolingType"><br>
-    쿨러 형태<input type="text" name="coolerForm" id="coolerForm"><br>
-    높이<input type="number" name="height" id="height"><br>
-    길이<input type="number" name="length" id="length"><br>
-    너비<input type="number"  name="width" id="width"><br>
-    TDP<input type="number" name="TDP" id="TDP"><br>
-    <form method="post" onsubmit="submitForm(event)">
-        <input type="hidden" id="CPUCooler" name="CPUCooler">
-        <button type="submit" id="save" class="btn btn-primary">저장</button>
-    </form>
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>CPU 쿨러 등록 페이지</h2>
+        </div>
+        <form th:action>
+            <div>
+                <label for="name">이름</label>
+                <input type="text" name="name" id="name" class="form-control"><br>
+            </div>
+            <div>
+                <label for="manufacturer">제조사</label>
+                <input type="text" name="manufacturer" id="manufacturer" class="form-control"><br>
+            </div>
+            <div>
+                <label for="coolingType">쿨링 방식</label>
+                <input type="text" name="coolingType" id="coolingType" class="form-control"><br>
+            </div>
+            <div>
+                <label for="coolerForm">쿨러 형태</label>
+                <input type="text" name="coolerForm" id="coolerForm" class="form-control"><br>
+            </div>
+            <div>
+                <label for="height">높이</label>
+                <input type="number" name="height" id="height" class="form-control"><br>
+            </div>
+            <div>
+                <label for="length">길이</label>
+                <input type="number" name="length" id="length" class="form-control"><br>
+            </div>
+            <div>
+                <label for="width">너비</label>
+                <input type="number"  name="width" id="width" class="form-control"><br>
+            </div>
+            <div>
+                <label for="TDP">TDP</label>
+                <input type="number"  name="TDP" id="TDP" class="form-control"><br>
+            </div>
+        </form>
+        <form method="post" onsubmit="submitForm(event)">
+            <button type="submit" id="save" class="btn btn-primary">저장</button>
+        </form>
+    </div>
     <script type="text/javascript">
         function submitForm(event) {
             event.preventDefault();
@@ -30,10 +60,20 @@
                 width: document.getElementById('width').checked,
                 TDP: document.getElementById('TDP').value
             };
-            var jsonData = JSON.stringify(CPUCooler);
-
-            document.getElementById('CPUCooler').value = jsonData;
-            event.target.submit();
+            $.ajax({
+                url: "/adminPage/editParts",
+                type: "post",
+                data: {
+                    Type : "CPUCooler",
+                    Data : JSON.stringify(CPUCooler)
+                },
+                success: function(response) {
+                    window.location.href = response.url;
+                },
+                error: function(error) {
+                    console.log("Error:", error);
+                }
+            });
         }
     </script>
 </body>

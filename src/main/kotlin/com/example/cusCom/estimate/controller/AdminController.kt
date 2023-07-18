@@ -73,14 +73,14 @@ class AdminController(private val desktopPartsService: DesktopPartsService) {
     fun editParts(@RequestParam("Type") type:String,
                   @RequestParam("Data") requestJSON:String): RedirectView {
         when(type){
-            "case"->desktopPartsService.createCase(Gson().fromJson(requestJSON, Case::class.java))
-            "cpu"->desktopPartsService.createCPU(Gson().fromJson(requestJSON, CPU::class.java))
-            "cpuCooler"->desktopPartsService.createCPUCooler(Gson().fromJson(requestJSON, CPUCooler::class.java))
-            "dataStorage"->desktopPartsService.createDataStorage(Gson().fromJson(requestJSON, DataStorage::class.java))
-            "graphicsCard"->desktopPartsService.createGraphicsCard(Gson().fromJson(requestJSON, GraphicsCard::class.java))
-            "memory"->desktopPartsService.createMemory(Gson().fromJson(requestJSON, Memory::class.java))
-            "motherBoard"->desktopPartsService.createMotherBoard(Gson().fromJson(requestJSON, MotherBoard::class.java))
-            "powerSupply"->desktopPartsService.createPowerSupply(Gson().fromJson(requestJSON, PowerSupply::class.java))
+            "Case"->desktopPartsService.createCase(Gson().fromJson(requestJSON, Case::class.java))
+            "CPU"->desktopPartsService.createCPU(Gson().fromJson(requestJSON, CPU::class.java))
+            "CPUCooler"->desktopPartsService.createCPUCooler(Gson().fromJson(requestJSON, CPUCooler::class.java))
+            "DataStorage"->desktopPartsService.createDataStorage(Gson().fromJson(requestJSON, DataStorage::class.java))
+            "GraphicsCard"->desktopPartsService.createGraphicsCard(Gson().fromJson(requestJSON, GraphicsCard::class.java))
+            "Memory"->desktopPartsService.createMemory(Gson().fromJson(requestJSON, Memory::class.java))
+            "MotherBoard"->desktopPartsService.createMotherBoard(Gson().fromJson(requestJSON, MotherBoard::class.java))
+            "PowerSupply"->desktopPartsService.createPowerSupply(Gson().fromJson(requestJSON, PowerSupply::class.java))
         }
         return RedirectView("/adminPage/main")
     }

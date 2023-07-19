@@ -71,7 +71,7 @@ class AdminController(private val desktopPartsService: DesktopPartsService) {
 
     @PostMapping("/editParts")
     fun editParts(@RequestParam("Type") type:String,
-                  @RequestParam("Data") requestJSON:String): RedirectView {
+                  @RequestParam("Data") requestJSON:String): ResponseEntity<String> {
         when(type){
             "Case"->desktopPartsService.createCase(Gson().fromJson(requestJSON, Case::class.java))
             "CPU"->desktopPartsService.createCPU(Gson().fromJson(requestJSON, CPU::class.java))
@@ -82,7 +82,7 @@ class AdminController(private val desktopPartsService: DesktopPartsService) {
             "MotherBoard"->desktopPartsService.createMotherBoard(Gson().fromJson(requestJSON, MotherBoard::class.java))
             "PowerSupply"->desktopPartsService.createPowerSupply(Gson().fromJson(requestJSON, PowerSupply::class.java))
         }
-        return RedirectView("/adminPage/main")
+        return ResponseEntity.ok("Success")
     }
 
     @PostMapping("/deleteParts")
@@ -90,15 +90,15 @@ class AdminController(private val desktopPartsService: DesktopPartsService) {
     fun deleteParts(@RequestBody requestJSON:String): ResponseEntity<String> {
         val request= ObjectMapper().readTree(java.net.URLDecoder.decode(requestJSON, "UTF-8"))
         when(request["type"].asText()){
-            "case"->desktopPartsService.deleteCase(request["name"].asText())
-            "cpu"->desktopPartsService.deleteCPU(request["name"].asText())
-            "cpuCooler"->desktopPartsService.deleteCPUCooler(request["name"].asText())
-            "dataStorage"->desktopPartsService.deleteDataStorage(request["name"].asText())
-            "graphicsCard"->desktopPartsService.deleteGraphicsCard(request["name"].asText())
-            "memory"->desktopPartsService.deleteMemory(request["name"].asText())
-            "motherBoard"->desktopPartsService.deleteMotherBoard(request["name"].asText())
-            "powerSupply"->desktopPartsService.deletePowerSupply(request["name"].asText())
+            "Case"->desktopPartsService.deleteCase(request["name"].asText())
+            "CPU"->desktopPartsService.deleteCPU(request["name"].asText())
+            "CPUCooler"->desktopPartsService.deleteCPUCooler(request["name"].asText())
+            "DataStorage"->desktopPartsService.deleteDataStorage(request["name"].asText())
+            "GraphicsCard"->desktopPartsService.deleteGraphicsCard(request["name"].asText())
+            "Memory"->desktopPartsService.deleteMemory(request["name"].asText())
+            "MotherBoard"->desktopPartsService.deleteMotherBoard(request["name"].asText())
+            "PowerSupply"->desktopPartsService.deletePowerSupply(request["name"].asText())
         }
-        return ResponseEntity.ok("Deleted")
+        return ResponseEntity.ok("Success")
     }
 }

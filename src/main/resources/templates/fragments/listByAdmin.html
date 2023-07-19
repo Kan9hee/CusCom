@@ -28,19 +28,17 @@
                 url: "/adminPage/deleteParts",
                 method: "post",
                 data: JSON.stringify(requestData),
-                dataType: "json",
-                success: function(data){
-                    $("#" + requestData.name).remove();
-                },
-                error: function(error) {
-                    console.log("Error:", error);
-                }
+                dataType: "json"
+            }).done(function() {
+                $(button).closest("tr").remove();
+            }).fail(function(error) {
+                console.log("Error:", error);
             });
         }
     </script>
 </head>
 <body>
-        <div class="container-fluid" style="width:60%; overflow:auto">
+        <div class="container-fluid" style="width:40%; overflow:auto">
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
                 <div class="panel panel-default">
@@ -64,11 +62,11 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="case : ${caseList}" th:id="case">
+                                <tr th:each="case : ${caseList}" th:id="Case">
                                     <td th:text="${case.name}">케이스 이름</td>
                                     <td>
                                         <div class="button-container">
-                                            <button class="btn btn-primary edit-button" data-item-id="${case.name}" style="border: none;">edit</button>
+                                            <button class="btn btn-primary edit-button" th:attr="data-item-id=${case.name}" style="border: none;">edit</button>
                                             <button class="btn btn-primary" th:attr="data-item-id=${case.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
                                         </div>
                                     </td>
@@ -100,7 +98,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="cpuCooler : ${cpuCoolerList}" th:id="cpuCooler">
+                                <tr th:each="cpuCooler : ${cpuCoolerList}" th:id="CPUCooler">
                                     <td th:text="${cpuCooler.name}">쿨러 이름</td>
                                     <td>
                                         <div class="button-container">
@@ -136,7 +134,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="cpu : ${cpuList}" th:id="cpu">
+                                <tr th:each="cpu : ${cpuList}" th:id="CPU">
                                     <td th:text="${cpu.name}">CPU 이름</td>
                                     <td>
                                         <div class="button-container">
@@ -172,7 +170,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="dataStorage : ${dataStorageList}" th:id="dataStorage">
+                                <tr th:each="dataStorage : ${dataStorageList}" th:id="DataStorage">
                                     <td th:text="${dataStorage.name}">저장장치 이름</td>
                                     <td>
                                         <div class="button-container">
@@ -208,7 +206,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="graphicsCard : ${graphicsCardList}" th:id="graphicsCardList">
+                                <tr th:each="graphicsCard : ${graphicsCardList}" th:id="GraphicsCard">
                                     <td th:text="${graphicsCard.name}">그래픽카드 이름</td>
                                     <td>
                                         <div class="button-container">
@@ -244,7 +242,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="memory : ${memoryList}" th:id="memoryList">
+                                <tr th:each="memory : ${memoryList}" th:id="Memory">
                                     <td th:text="${memory.name}">메모리 이름</td>
                                     <td>
                                         <div class="button-container">
@@ -280,7 +278,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="motherBoard : ${motherBoardList}" th:id="motherBoardList">
+                                <tr th:each="motherBoard : ${motherBoardList}" th:id="MotherBoard">
                                     <td th:text="${motherBoard.name}">마더보드 이름</td>
                                     <td>
                                         <div class="button-container">
@@ -316,7 +314,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="powerSupply : ${powerSupplyList}" th:id="powerSupplyList">
+                                <tr th:each="powerSupply : ${powerSupplyList}" th:id="PowerSupply">
                                     <td th:text="${powerSupply.name}">파워서플라이 이름</td>
                                     <td>
                                         <div class="button-container">

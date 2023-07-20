@@ -6,7 +6,7 @@
 <body>
     <div class="container">
         <div class="py-5 text-center">
-            <h2>케이스 등록 페이지</h2>
+            <h2>케이스 데이터 저장 페이지</h2>
         </div>
         <form th:action>
             <div>
@@ -61,6 +61,7 @@
         <form method="post" onsubmit="submitForm(event)">
             <button type="submit" id="save" class="btn btn-primary">저장</button>
         </form>
+        <button type="submit" id="cancel" class="btn btn-primary" onclick="returnForm()">취소</button>
     </div>
     <script type="text/javascript">
         function submitForm(event) {
@@ -92,6 +93,10 @@
             }).fail(function(error) {
                 console.log("Error:", error);
             });
+        }
+
+        function returnForm(){
+            history.go(-1);
         }
     </script>
 </body>

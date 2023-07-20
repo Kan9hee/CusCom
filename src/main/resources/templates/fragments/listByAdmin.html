@@ -47,7 +47,7 @@
                             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseCase" aria-expanded="false" aria-controls="collapseCase">
                                 케이스
                             </a>
-                            <form class="form-signin" method="get" action="/adminPage/editCase">
+                            <form method="get" action="/adminPage/editCase">
                                 <button class="btn btn-lg btn-primary btn-block" type="submit" style="border: none;">추가</button>
                             </form>
                         </h4>
@@ -66,7 +66,10 @@
                                     <td th:text="${case.name}">케이스 이름</td>
                                     <td>
                                         <div class="button-container">
-                                            <button class="btn btn-primary edit-button" th:attr="data-item-id=${case.name}" style="border: none;">edit</button>
+                                            <form method="get" action="/adminPage/editCase">
+                                                <input type="hidden" id="Target" name="Target" th:value="${case.name}">
+                                                <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                                            </form>
                                             <button class="btn btn-primary" th:attr="data-item-id=${case.name}" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
                                         </div>
                                     </td>

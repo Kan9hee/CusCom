@@ -4,6 +4,8 @@ import com.example.cusCom.estimate.dto.parts.*
 import com.example.cusCom.estimate.service.DesktopPartsService
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.Gson
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -30,47 +32,79 @@ class AdminController(private val desktopPartsService: DesktopPartsService) {
     }
 
     @GetMapping("/editCase")
-    fun editCaseData():String{
-        return "caseEditPage"
+    fun editCaseData(@RequestParam("Target") data:String?, model:Model):String{
+        if(data!=null) {
+            model.addAttribute("item", desktopPartsService.findCase(data))
+            return "editPages/caseEditPage"
+        }
+        return "createPages/caseCreatePage"
     }
 
     @GetMapping("/editCPU")
-    fun editCPUData():String{
-        return "cpuEditPage"
+    fun editCPUData(@RequestParam("Target") data:String?, model:Model):String{
+        if(data!=null) {
+            model.addAttribute("item", desktopPartsService.findCpu(data))
+            return "editPages/cpuEditPage"
+        }
+        return "createPages/cpuCreatePage"
     }
 
     @GetMapping("/editCPUCooler")
-    fun editCPUCoolerData():String{
-        return "cpuCoolerEditPage"
+    fun editCPUCoolerData(@RequestParam("Target") data:String?, model:Model):String{
+        if(data!=null) {
+            model.addAttribute("item", desktopPartsService.findCpuCooler(data))
+            return "editPages/cpuCoolerEditPage"
+        }
+        return "createPages/cpuCoolerCreatePage"
     }
 
     @GetMapping("/editDataStorage")
-    fun editDataStorageData():String{
-        return "dataStorageEditPage"
+    fun editDataStorageData(@RequestParam("Target") data:String?, model:Model):String{
+        if(data!=null) {
+            model.addAttribute("item", desktopPartsService.findDataStorage(data))
+            return "editPages/dataStorageEditPage"
+        }
+        return "createPages/dataStorageCreatePage"
     }
 
     @GetMapping("/editGraphicsCard")
-    fun editGraphicsCardData():String{
-        return "graphicsCardEditPage"
+    fun editGraphicsCardData(@RequestParam("Target") data:String?, model:Model):String{
+        if(data!=null) {
+            model.addAttribute("item", desktopPartsService.findGraphicsCard(data))
+            return "editPages/graphicsCardEditPage"
+        }
+        return "createPages/graphicsCardCreatePage"
     }
 
     @GetMapping("/editMemory")
-    fun editMemoryData():String{
-        return "memoryEditPage"
+    fun editMemoryData(@RequestParam("Target") data:String?, model:Model):String{
+        if(data!=null) {
+            model.addAttribute("item", desktopPartsService.findMemory(data))
+            return "editPages/memoryEditPage"
+        }
+        return "createPages/memoryCreatePage"
     }
 
     @GetMapping("/editMotherBoard")
-    fun editMotherBoardData():String{
-        return "motherBoardEditPage"
+    fun editMotherBoardData(@RequestParam("Target") data:String?, model:Model):String{
+        if(data!=null) {
+            model.addAttribute("item", desktopPartsService.findMotherBoard(data))
+            return "editPages/motherBoardEditPage"
+        }
+        return "createPages/motherBoardCreatePage"
     }
 
     @GetMapping("/editPowerSupply")
-    fun editPowerSupplyData():String{
-        return "powerSupplyEditPage"
+    fun editPowerSupplyData(@RequestParam("Target") data:String?, model:Model):String{
+        if(data!=null) {
+            model.addAttribute("item", desktopPartsService.findPowerSupply(data))
+            return "editPages/powerSupplyEditPage"
+        }
+        return "createPages/powerSupplyCreatePage"
     }
 
-    @PostMapping("/editParts")
-    fun editParts(@RequestParam("Type") type:String,
+    @PostMapping("/createParts")
+    fun createParts(@RequestParam("Type") type:String,
                   @RequestParam("Data") requestJSON:String): ResponseEntity<String> {
         when(type){
             "Case"->desktopPartsService.createCase(Gson().fromJson(requestJSON, Case::class.java))
@@ -81,6 +115,22 @@ class AdminController(private val desktopPartsService: DesktopPartsService) {
             "Memory"->desktopPartsService.createMemory(Gson().fromJson(requestJSON, Memory::class.java))
             "MotherBoard"->desktopPartsService.createMotherBoard(Gson().fromJson(requestJSON, MotherBoard::class.java))
             "PowerSupply"->desktopPartsService.createPowerSupply(Gson().fromJson(requestJSON, PowerSupply::class.java))
+        }
+        return ResponseEntity.ok("Success")
+    }
+
+    @PostMapping("/updateParts")
+    fun updateParts(@RequestParam("Type") type:String,
+                  @RequestParam("Data") requestJSON:String): ResponseEntity<String> {
+        when(type){
+            "Case"->desktopPartsService.updateCase(Gson().fromJson(requestJSON, Case::class.java))
+            "CPU"->desktopPartsService.updateCPU(Gson().fromJson(requestJSON, CPU::class.java))
+            "CPUCooler"->desktopPartsService.updateCPUCooler(Gson().fromJson(requestJSON, CPUCooler::class.java))
+            "DataStorage"->desktopPartsService.updateDataStorage(Gson().fromJson(requestJSON, DataStorage::class.java))
+            "GraphicsCard"->desktopPartsService.updateGraphicsCard(Gson().fromJson(requestJSON, GraphicsCard::class.java))
+            "Memory"->desktopPartsService.updateMemory(Gson().fromJson(requestJSON, Memory::class.java))
+            "MotherBoard"->desktopPartsService.updateMotherBoard(Gson().fromJson(requestJSON, MotherBoard::class.java))
+            "PowerSupply"->desktopPartsService.updatePowerSupply(Gson().fromJson(requestJSON, PowerSupply::class.java))
         }
         return ResponseEntity.ok("Success")
     }

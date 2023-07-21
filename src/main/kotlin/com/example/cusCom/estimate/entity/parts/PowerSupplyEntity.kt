@@ -12,15 +12,24 @@ class PowerSupplyEntity(name:String,
                         length:Int){
     @Id
     @Column(nullable = false)
-    val name:String=name
+    var name:String=name
     @Column(nullable = false)
-    val manufacturer:String=manufacturer
+    var manufacturer:String=manufacturer
     @Column(nullable = false)
-    val power:Int=power
+    var power:Int=power
     @Column(nullable = false)
-    val efficiency:String=efficiency
+    var efficiency:String=efficiency
     @Column(nullable = false)
-    val modular:String=modular
+    var modular:String=modular
     @Column(nullable = false)
-    val length:Int=length
+    var length:Int=length
+
+    fun update(powerSupply: PowerSupply){
+        this.name=powerSupply.name
+        this.manufacturer=powerSupply.manufacturer
+        this.power=powerSupply.power
+        this.efficiency=powerSupply.efficiency
+        this.modular=powerSupply.modular
+        this.length=powerSupply.length
+    }
 }

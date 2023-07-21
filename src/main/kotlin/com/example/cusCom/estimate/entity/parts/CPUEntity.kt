@@ -15,21 +15,33 @@ class CPUEntity(name:String,
                 TDP:Int){
     @Id
     @Column(nullable = false)
-    val name:String=name
+    var name:String=name
     @Column(nullable = false)
-    val manufacturer:String=manufacturer
+    var manufacturer:String=manufacturer
     @Column(nullable = false)
-    val socket:String=socket
+    var socket:String=socket
     @Column(nullable = false)
-    val memoryType:String=memoryType
+    var memoryType:String=memoryType
     @Column(nullable = false)
-    val core:Int=core
+    var core:Int=core
     @Column(nullable = false)
-    val thread:Int=thread
+    var thread:Int=thread
     @Column(nullable = false)
-    val isBuiltInGraphics:Boolean=isBuiltInGraphics
+    var isBuiltInGraphics:Boolean=isBuiltInGraphics
     @Column
-    val builtInGraphicName:String?=builtInGraphicName
+    var builtInGraphicName:String?=builtInGraphicName
     @Column(nullable = false)
-    val TDP:Int=TDP
+    var TDP:Int=TDP
+
+    fun update(cpu: CPU){
+        this.name=cpu.name
+        this.manufacturer=cpu.manufacturer
+        this.socket=cpu.socket
+        this.memoryType=cpu.memoryType
+        this.core=cpu.core
+        this.thread=cpu.thread
+        this.isBuiltInGraphics=cpu.isBuiltInGraphics
+        this.builtInGraphicName=cpu.builtInGraphicName
+        this.TDP=TDP
+    }
 }

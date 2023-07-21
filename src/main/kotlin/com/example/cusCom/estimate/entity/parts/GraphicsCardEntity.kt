@@ -14,19 +14,29 @@ class GraphicsCardEntity(name:String,
                          phase:Int){
     @Id
     @Column(nullable = false)
-    val name:String=name
+    var name:String=name
     @Column(nullable = false)
-    val manufacturer:String=manufacturer
+    var manufacturer:String=manufacturer
     @Column(nullable = false)
-    val chipsetManufacturer:String=chipsetManufacturer
+    var chipsetManufacturer:String=chipsetManufacturer
     @Column(nullable = false)
-    val gpuType:String=gpuType
+    var gpuType:String=gpuType
     @Column(nullable = false)
-    val length:Int=length
+    var length:Int=length
     @Column(nullable = false)
-    val basicPower:Int=basicPower
+    var basicPower:Int=basicPower
     @Column(nullable = false)
-    val maxPower:Int=maxPower
+    var maxPower:Int=maxPower
     @Column(nullable = false)
-    val phase:Int=phase
+    var phase:Int=phase
+
+    fun update(graphicsCard: GraphicsCard){
+        this.name=graphicsCard.name
+        this.manufacturer=graphicsCard.manufacturer
+        this.chipsetManufacturer=graphicsCard.chipsetManufacturer
+        this.gpuType=graphicsCard.gpuType
+        this.length=graphicsCard.length
+        this.maxPower=graphicsCard.maxPower
+        this.phase=graphicsCard.phase
+    }
 }

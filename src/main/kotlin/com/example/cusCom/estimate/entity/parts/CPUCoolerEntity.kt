@@ -14,19 +14,30 @@ class CPUCoolerEntity(name:String,
                       TDP:Int){
     @Id
     @Column(nullable = false)
-    val name:String=name
+    var name:String=name
     @Column(nullable = false)
-    val manufacturer:String=manufacturer
+    var manufacturer:String=manufacturer
     @Column(nullable = false)
-    val coolingType:String=coolingType
+    var coolingType:String=coolingType
     @Column(nullable = false)
-    val coolerForm:String=coolerForm
+    var coolerForm:String=coolerForm
     @Column(nullable = false)
-    val height:Int=height
+    var height:Int=height
     @Column(nullable = false)
-    val length:Int=length
+    var length:Int=length
     @Column(nullable = false)
-    val width:Int=width
+    var width:Int=width
     @Column(nullable = false)
-    val tdp:Int=TDP
+    var tdp:Int=TDP
+
+    fun update(cpuCooler: CPUCooler) {
+        this.name=cpuCooler.name
+        this.manufacturer=cpuCooler.manufacturer
+        this.coolingType=cpuCooler.coolingType
+        this.coolerForm=cpuCooler.coolerForm
+        this.height=cpuCooler.height
+        this.length=cpuCooler.length
+        this.width=cpuCooler.width
+        this.tdp=cpuCooler.TDP
+    }
 }

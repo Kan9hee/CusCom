@@ -60,8 +60,8 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional
     fun updateCase(case: Case): CaseEntity {
-        var temp=caseRepo.findById(case.name).get()
-        temp=case.toCaseEntity()
+        val temp=caseRepo.findById(case.name).get()
+        temp.update(case)
         return temp
     }
 
@@ -109,7 +109,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun updateCPUCooler(cpuCooler: CPUCooler): CPUCoolerEntity {
         var temp=cpuCoolerRepo.findById(cpuCooler.name).get()
-        temp=cpuCooler.toCPUCoolerEntity()
+        temp.update(cpuCooler)
         return temp
     }
 
@@ -160,7 +160,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun updateCPU(cpu: CPU): CPUEntity {
         var temp=cpuRepo.findById(cpu.name).get()
-        temp=cpu.toCPUEntity()
+        temp.update(cpu)
         return temp
     }
 
@@ -205,7 +205,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun updateDataStorage(dataStorage: DataStorage): DataStorageEntity {
         var temp=dataStorageRepo.findById(dataStorage.name).get()
-        temp=dataStorage.toDataStorageEntity()
+        temp.update(dataStorage)
         return temp
     }
 
@@ -251,7 +251,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun updateGraphicsCard(graphicsCard: GraphicsCard): GraphicsCardEntity {
         var temp=graphicsCardRepo.findById(graphicsCard.name).get()
-        temp=graphicsCard.toGraphicsCardEntity()
+        temp.update(graphicsCard)
         return temp
     }
 
@@ -291,7 +291,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun updateMemory(memory: Memory): MemoryEntity {
         var temp=memoryRepo.findById(memory.name).get()
-        temp=memory.toMemoryEntity()
+        temp.update(memory)
         return temp
     }
 
@@ -341,7 +341,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun updateMotherBoard(motherBoard: MotherBoard): MotherBoardEntity {
         var temp=motherBoardRepo.findById(motherBoard.name).get()
-        temp=motherBoard.toMotherBoardEntity()
+        temp.update(motherBoard)
         return temp
     }
 
@@ -382,7 +382,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun updatePowerSupply(powerSupply: PowerSupply): PowerSupplyEntity {
         var temp=powerSupplyRepo.findById(powerSupply.name).get()
-        temp=powerSupply.toPowerSupplyEntity()
+        temp.update(powerSupply)
         return temp
     }
 

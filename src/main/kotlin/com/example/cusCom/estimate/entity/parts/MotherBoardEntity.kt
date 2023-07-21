@@ -16,23 +16,36 @@ class MotherBoardEntity(name:String,
                         ssdSATASlot:Int){
     @Id
     @Column(nullable = false)
-    val name:String=name
+    var name:String=name
     @Column(nullable = false)
-    val manufacturer:String=manufacturer
+    var manufacturer:String=manufacturer
     @Column(nullable = false)
-    val cpuType:String=cpuType
+    var cpuType:String=cpuType
     @Column(nullable = false)
-    val socket:String=socket
+    var socket:String=socket
     @Column(nullable = false)
-    val chipset:String=chipset
+    var chipset:String=chipset
     @Column(nullable = false)
-    val formFactor:String=formFactor
+    var formFactor:String=formFactor
     @Column(nullable = false)
-    val memoryType:String=memoryType
+    var memoryType:String=memoryType
     @Column(nullable = false)
-    val memorySlot:Int=memorySlot
+    var memorySlot:Int=memorySlot
     @Column(nullable = false)
-    val ssdM2Slot:Int=ssdM2Slot
+    var ssdM2Slot:Int=ssdM2Slot
     @Column(nullable = false)
-    val ssdSATASlot:Int=ssdSATASlot
+    var ssdSATASlot:Int=ssdSATASlot
+
+    fun update(motherBoard: MotherBoard){
+        this.name=motherBoard.name
+        this.manufacturer=motherBoard.manufacturer
+        this.cpuType=motherBoard.cpuType
+        this.socket=motherBoard.socket
+        this.chipset=motherBoard.chipset
+        this.formFactor=motherBoard.formFactor
+        this.memoryType=motherBoard.memoryType
+        this.memorySlot=motherBoard.memorySlot
+        this.ssdM2Slot=motherBoard.ssdM2Slot
+        this.ssdSATASlot=motherBoard.ssdSATASlot
+    }
 }

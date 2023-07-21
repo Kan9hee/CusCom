@@ -13,17 +13,27 @@ class DataStorageEntity(name:String,
                         writeSpeed:Int){
     @Id
     @Column(nullable = false)
-    val name:String=name
+    var name:String=name
     @Column(nullable = false)
-    val manufacturer:String=manufacturer
+    var manufacturer:String=manufacturer
     @Column(nullable = false)
-    val storageInterface:String=storageInterface
+    var storageInterface:String=storageInterface
     @Column(nullable = false)
-    val formFactor:String=formFactor
+    var formFactor:String=formFactor
     @Column(nullable = false)
-    val capacity:String=capacity
+    var capacity:String=capacity
     @Column(nullable = false)
-    val readSpeed:Int=readSpeed
+    var readSpeed:Int=readSpeed
     @Column(nullable = false)
-    val writeSpeed:Int=writeSpeed
+    var writeSpeed:Int=writeSpeed
+
+    fun update(dataStorage: DataStorage){
+        this.name=dataStorage.name
+        this.manufacturer=dataStorage.manufacturer
+        this.storageInterface=dataStorage.storageInterface
+        this.formFactor=dataStorage.formFactor
+        this.capacity=dataStorage.capacity
+        this.readSpeed=dataStorage.readSpeed
+        this.writeSpeed=dataStorage.writeSpeed
+    }
 }

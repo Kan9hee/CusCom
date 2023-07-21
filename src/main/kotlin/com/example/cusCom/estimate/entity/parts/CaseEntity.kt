@@ -18,27 +18,42 @@ class CaseEntity(name:String,
                  graphicsCardLength:Int){
     @Id
     @Column(nullable = false)
-    val name:String=name
+    var name:String=name
     @Column(nullable = false)
-    val manufacturer:String=manufacturer
+    var manufacturer:String=manufacturer
     @Column(nullable = false)
-    val caseType:String=caseType
+    var caseType:String=caseType
     @Column(nullable = false)
-    val maxMotherBoard:String=maxMotherBoard
+    var maxMotherBoard:String=maxMotherBoard
     @Column(nullable = false)
-    val maxCoolingFan:Int=maxCoolingFan
+    var maxCoolingFan:Int=maxCoolingFan
     @Column(nullable = false)
-    val builtInCoolingFan:Int=builtInCoolingFan
+    var builtInCoolingFan:Int=builtInCoolingFan
     @Column(nullable = false)
-    val height:Int=height
+    var height:Int=height
     @Column(nullable = false)
-    val length:Int=length
+    var length:Int=length
     @Column(nullable = false)
-    val width:Int=width
+    var width:Int=width
     @Column(nullable = false)
-    val powerLength:Int=powerLength
+    var powerLength:Int=powerLength
     @Column(nullable = false)
-    val cpuCoolerHeight:Int=cpuCoolerHeight
+    var cpuCoolerHeight:Int=cpuCoolerHeight
     @Column(nullable = false)
-    val graphicsCardLength:Int=graphicsCardLength
+    var graphicsCardLength:Int=graphicsCardLength
+
+    fun update(case: Case){
+        this.name=case.name
+        this.manufacturer=case.manufacturer
+        this.caseType=case.caseType
+        this.maxMotherBoard=case.maxMotherBoard
+        this.maxCoolingFan=case.maxCoolingFan
+        this.builtInCoolingFan=case.builtInCoolingFan
+        this.height=case.height
+        this.length=case.length
+        this.width=case.width
+        this.powerLength=case.powerLength
+        this.cpuCoolerHeight=case.cpuCoolerHeight
+        this.graphicsCardLength=case.graphicsCardLength
+    }
 }

@@ -4,15 +4,10 @@ import com.example.cusCom.estimate.dto.parts.*
 import com.example.cusCom.estimate.service.DesktopPartsService
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.Gson
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder
-import org.springframework.web.servlet.view.RedirectView
-import org.springframework.web.util.UriComponentsBuilder
 
 @Controller
 @RequestMapping("/adminPage")
@@ -32,7 +27,7 @@ class AdminController(private val desktopPartsService: DesktopPartsService) {
     }
 
     @GetMapping("/editCase")
-    fun editCaseData(@RequestParam("Target") data:String?, model:Model):String{
+    fun editCaseData(@RequestParam("Case") data:String?, model:Model):String{
         if(data!=null) {
             model.addAttribute("item", desktopPartsService.findCase(data))
             return "editPages/caseEditPage"
@@ -41,7 +36,7 @@ class AdminController(private val desktopPartsService: DesktopPartsService) {
     }
 
     @GetMapping("/editCPU")
-    fun editCPUData(@RequestParam("Target") data:String?, model:Model):String{
+    fun editCPUData(@RequestParam("CPU") data:String?, model:Model):String{
         if(data!=null) {
             model.addAttribute("item", desktopPartsService.findCpu(data))
             return "editPages/cpuEditPage"
@@ -50,7 +45,7 @@ class AdminController(private val desktopPartsService: DesktopPartsService) {
     }
 
     @GetMapping("/editCPUCooler")
-    fun editCPUCoolerData(@RequestParam("Target") data:String?, model:Model):String{
+    fun editCPUCoolerData(@RequestParam("CPUCooler") data:String?, model:Model):String{
         if(data!=null) {
             model.addAttribute("item", desktopPartsService.findCpuCooler(data))
             return "editPages/cpuCoolerEditPage"
@@ -59,7 +54,7 @@ class AdminController(private val desktopPartsService: DesktopPartsService) {
     }
 
     @GetMapping("/editDataStorage")
-    fun editDataStorageData(@RequestParam("Target") data:String?, model:Model):String{
+    fun editDataStorageData(@RequestParam("DataStorage") data:String?, model:Model):String{
         if(data!=null) {
             model.addAttribute("item", desktopPartsService.findDataStorage(data))
             return "editPages/dataStorageEditPage"
@@ -68,7 +63,7 @@ class AdminController(private val desktopPartsService: DesktopPartsService) {
     }
 
     @GetMapping("/editGraphicsCard")
-    fun editGraphicsCardData(@RequestParam("Target") data:String?, model:Model):String{
+    fun editGraphicsCardData(@RequestParam("GraphicsCard") data:String?, model:Model):String{
         if(data!=null) {
             model.addAttribute("item", desktopPartsService.findGraphicsCard(data))
             return "editPages/graphicsCardEditPage"
@@ -77,7 +72,7 @@ class AdminController(private val desktopPartsService: DesktopPartsService) {
     }
 
     @GetMapping("/editMemory")
-    fun editMemoryData(@RequestParam("Target") data:String?, model:Model):String{
+    fun editMemoryData(@RequestParam("Memory") data:String?, model:Model):String{
         if(data!=null) {
             model.addAttribute("item", desktopPartsService.findMemory(data))
             return "editPages/memoryEditPage"
@@ -86,7 +81,7 @@ class AdminController(private val desktopPartsService: DesktopPartsService) {
     }
 
     @GetMapping("/editMotherBoard")
-    fun editMotherBoardData(@RequestParam("Target") data:String?, model:Model):String{
+    fun editMotherBoardData(@RequestParam("MotherBoard") data:String?, model:Model):String{
         if(data!=null) {
             model.addAttribute("item", desktopPartsService.findMotherBoard(data))
             return "editPages/motherBoardEditPage"
@@ -95,7 +90,7 @@ class AdminController(private val desktopPartsService: DesktopPartsService) {
     }
 
     @GetMapping("/editPowerSupply")
-    fun editPowerSupplyData(@RequestParam("Target") data:String?, model:Model):String{
+    fun editPowerSupplyData(@RequestParam("PowerSupply") data:String?, model:Model):String{
         if(data!=null) {
             model.addAttribute("item", desktopPartsService.findPowerSupply(data))
             return "editPages/powerSupplyEditPage"

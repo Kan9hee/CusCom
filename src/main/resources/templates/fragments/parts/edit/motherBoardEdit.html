@@ -6,53 +6,54 @@
 <body>
     <div class="container">
         <div class="py-5 text-center">
-            <h2>마더보드 데이터 등록 페이지</h2>
+            <h2>마더보드 데이터 수정 페이지</h2>
         </div>
         <form th:action>
             <div>
                 <label for="name">이름</label>
-                <input type="text" name="name" id="name" class="form-control"><br>
+                <input type="text" name="name" id="name" class="form-control" th:value="${item.name}"><br>
             </div>
             <div>
                 <label for="manufacturer">제조사</label>
-                <input type="text" name="manufacturer" id="manufacturer" class="form-control"><br>
+                <input type="text" name="manufacturer" id="manufacturer" class="form-control" th:value="${item.manufacturer}"><br>
             </div>
             <div>
                 <label for="cpuType">구분</label>
-                <input type="text" name="cpuType" id="cpuType" class="form-control"><br>
+                <input type="text" name="cpuType" id="cpuType" class="form-control" th:value="${item.cpuType}"><br>
             </div>
             <div>
                 <label for="socket">소켓</label>
-                <input type="text" name="socket" id="socket" class="form-control"><br>
+                <input type="text" name="socket" id="socket" class="form-control" th:value="${item.socket}"><br>
             </div>
             <div>
                 <label for="chipset">칩셋</label>
-                <input type="text" name="chipset" id="chipset" class="form-control"><br>
+                <input type="text" name="chipset" id="chipset" class="form-control" th:value="${item.chipset}"><br>
             </div>
             <div>
                 <label for="formFactor">폼팩터</label>
-                <input type="text" name="formFactor" id="formFactor" class="form-control"><br>
+                <input type="text" name="formFactor" id="formFactor" class="form-control" th:value="${item.formFactor}"><br>
             </div>
             <div>
                 <label for="memoryType">메모리 타입</label>
-                <input type="text" name="memoryType" id="memoryType" class="form-control"><br>
+                <input type="text" name="memoryType" id="memoryType" class="form-control" th:value="${item.memoryType}"><br>
             </div>
             <div>
                 <label for="memorySlot">메모리 슬롯 개수</label>
-                <input type="number" name="memorySlot" id="memorySlot" class="form-control"><br>
+                <input type="number" name="memorySlot" id="memorySlot" class="form-control" th:value="${item.memorySlot}"><br>
             </div>
             <div>
                 <label for="ssdM2Slot">SSD 슬롯 개수(M.2)</label>
-                <input type="number"  name="ssdM2Slot" id="ssdM2Slot" class="form-control"><br>
+                <input type="number"  name="ssdM2Slot" id="ssdM2Slot" class="form-control" th:value="${item.ssdM2Slot}"><br>
             </div>
             <div>
                 <label for="ssdSATASlot">SSD 슬롯 개수(SATA)</label>
-                <input type="number"  name="ssdSATASlot" id="ssdSATASlot" class="form-control"><br>
+                <input type="number"  name="ssdSATASlot" id="ssdSATASlot" class="form-control" th:value="${item.ssdSATASlot}"><br>
             </div>
         </form>
         <form method="post" onsubmit="submitForm(event)">
             <button type="submit" id="save" class="btn btn-primary">저장</button>
         </form>
+        <button type="submit" id="cancel" class="btn btn-primary" onclick="returnForm()">취소</button>
     </div>
     <script type="text/javascript">
         function submitForm(event) {
@@ -82,6 +83,10 @@
             }).fail(function(error) {
                 console.log("Error:", error);
             });
+        }
+
+        function returnForm(){
+            history.go(-1);
         }
     </script>
 </body>

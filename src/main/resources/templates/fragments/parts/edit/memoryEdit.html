@@ -6,33 +6,34 @@
 <body>
     <div class="container">
         <div class="py-5 text-center">
-            <h2>메모리 데이터 등록 페이지</h2>
+            <h2>메모리 데이터 수정 페이지</h2>
         </div>
         <form th:action>
             <div>
                 <label for="name">이름</label>
-                <input type="text" name="name" id="name" class="form-control"><br>
+                <input type="text" name="name" id="name" class="form-control" th:value="${item.name}"><br>
             </div>
             <div>
                 <label for="manufacturer">제조사</label>
-                <input type="text" name="manufacturer" id="manufacturer" class="form-control"><br>
+                <input type="text" name="manufacturer" id="manufacturer" class="form-control" th:value="${item.manufacturer}"><br>
             </div>
             <div>
                 <label for="type">타입</label>
-                <input type="text" name="type" id="type" class="form-control"><br>
+                <input type="text" name="type" id="type" class="form-control" th:value="${item.type}"><br>
             </div>
             <div>
                 <label for="capacity">용량</label>
-                <input type="number"  name="capacity" id="capacity" class="form-control"><br>
+                <input type="number"  name="capacity" id="capacity" class="form-control" th:value="${item.capacity}"><br>
             </div>
             <div>
                 <label for="height">높이</label>
-                <input type="number"  name="height" id="height" class="form-control"><br>
+                <input type="number"  name="height" id="height" class="form-control" th:value="${item.height}"><br>
             </div>
         </form>
         <form method="post" onsubmit="submitForm(event)">
             <button type="submit" id="save" class="btn btn-primary">저장</button>
         </form>
+        <button type="submit" id="cancel" class="btn btn-primary" onclick="returnForm()">취소</button>
     </div>
     <script type="text/javascript">
         function submitForm(event) {
@@ -57,6 +58,10 @@
             }).fail(function(error) {
                 console.log("Error:", error);
             });
+        }
+
+        function returnForm(){
+            history.go(-1);
         }
     </script>
 </body>

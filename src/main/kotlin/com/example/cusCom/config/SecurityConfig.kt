@@ -1,4 +1,4 @@
-package com.example.cusCom.estimate.config
+package com.example.cusCom.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -15,7 +15,7 @@ class SecurityConfig {
     fun filterChain(http:HttpSecurity):SecurityFilterChain{
         http.csrf{
             it.disable().authorizeHttpRequests{ authorize -> authorize
-                .requestMatchers("/estimate","/CusCom/join").permitAll()
+                .requestMatchers("/estimate","/CusCom/join","/test").permitAll()
                 .requestMatchers("/adminPage/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             }

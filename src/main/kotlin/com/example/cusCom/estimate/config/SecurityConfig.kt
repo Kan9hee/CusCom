@@ -27,7 +27,12 @@ class SecurityConfig {
             .passwordParameter("pw")
             .defaultSuccessUrl("/main",true)
             .permitAll()
-        }.logout(withDefaults())
+        }
+        .logout{ logout->logout
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/CusCom/login")
+            .deleteCookies("JSESSIONID")
+        }
 
         return http.build()
     }

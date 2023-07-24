@@ -1,6 +1,7 @@
 package com.example.cusCom.provideContent.service
 
 import com.example.cusCom.provideContent.dto.parts.*
+import com.example.cusCom.provideContent.entity.parts.*
 import com.example.cusCom.provideContent.repository.parts.*
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Service
@@ -19,18 +20,18 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getCaseList(): List<Case> {
         val caseList:List<Case> = caseRepo.findAll().map{
-                entity-> Case(entity.name,
-            entity.manufacturer,
-            entity.caseType,
-            entity.maxMotherBoard,
-            entity.maxCoolingFan,
-            entity.builtInCoolingFan,
-            entity.height,
-            entity.length,
-            entity.width,
-            entity.powerLength,
-            entity.cpuCoolerHeight,
-            entity.graphicsCardLength)
+                entity:CaseEntity -> Case(entity.name,
+                    entity.manufacturer,
+                    entity.caseType,
+                    entity.maxMotherBoard,
+                    entity.maxCoolingFan,
+                    entity.builtInCoolingFan,
+                    entity.height,
+                    entity.length,
+                    entity.width,
+                    entity.powerLength,
+                    entity.cpuCoolerHeight,
+                    entity.graphicsCardLength)
         }
         return caseList
     }
@@ -53,15 +54,14 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun createCase(case: Case): CaseEntity {
-        return caseRepo.save(case.toCaseEntity())
+    fun createCase(case: Case){
+        caseRepo.save(CaseEntity(case))
     }
 
     @Transactional
-    fun updateCase(case: Case): CaseEntity {
+    fun updateCase(case: Case){
         val temp=caseRepo.findById(case.name).get()
         temp.update(case)
-        return temp
     }
 
     @Transactional
@@ -73,15 +73,14 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getCpuCoolerList(): List<CPUCooler> {
         val cpuCoolerList:List<CPUCooler> = cpuCoolerRepo.findAll().map{
-                entity->
-            CPUCooler(entity.name,
-                entity.manufacturer,
-                entity.coolingType,
-                entity.coolerForm,
-                entity.height,
-                entity.length,
-                entity.width,
-                entity.tdp)
+                entity:CPUCoolerEntity-> CPUCooler(entity.name,
+                    entity.manufacturer,
+                    entity.coolingType,
+                    entity.coolerForm,
+                    entity.height,
+                    entity.length,
+                    entity.width,
+                    entity.tdp)
         }
         return cpuCoolerList
     }
@@ -101,15 +100,14 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun createCPUCooler(cpuCooler: CPUCooler): CPUCoolerEntity {
-        return cpuCoolerRepo.save(cpuCooler.toCPUCoolerEntity())
+    fun createCPUCooler(cpuCooler: CPUCooler){
+        cpuCoolerRepo.save(CPUCoolerEntity(cpuCooler))
     }
 
     @Transactional
-    fun updateCPUCooler(cpuCooler: CPUCooler): CPUCoolerEntity {
+    fun updateCPUCooler(cpuCooler: CPUCooler){
         var temp=cpuCoolerRepo.findById(cpuCooler.name).get()
         temp.update(cpuCooler)
-        return temp
     }
 
     @Transactional
@@ -121,16 +119,15 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getCPUList(): List<CPU> {
         val cpuList:List<CPU> = cpuRepo.findAll().map{
-                entity->
-            CPU(entity.name,
-            entity.manufacturer,
-            entity.socket,
-            entity.memoryType,
-            entity.core,
-            entity.thread,
-            entity.isBuiltInGraphics,
-            entity.builtInGraphicName,
-            entity.TDP)
+                entity:CPUEntity -> CPU(entity.name,
+                    entity.manufacturer,
+                    entity.socket,
+                    entity.memoryType,
+                    entity.core,
+                    entity.thread,
+                    entity.isBuiltInGraphics,
+                    entity.builtInGraphicName,
+                    entity.TDP)
         }
         return cpuList
     }
@@ -152,15 +149,14 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun createCPU(cpu: CPU): CPUEntity {
-        return cpuRepo.save(cpu.toCPUEntity())
+    fun createCPU(cpu: CPU){
+        cpuRepo.save(CPUEntity(cpu))
     }
 
     @Transactional
-    fun updateCPU(cpu: CPU): CPUEntity {
+    fun updateCPU(cpu: CPU){
         var temp=cpuRepo.findById(cpu.name).get()
         temp.update(cpu)
-        return temp
     }
 
     @Transactional
@@ -172,14 +168,13 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getDataStorageList(): List<DataStorage> {
         val dataStorageList:List<DataStorage> = dataStorageRepo.findAll().map{
-                entity->
-            DataStorage(entity.name,
-                entity.manufacturer,
-                entity.storageInterface,
-                entity.formFactor,
-                entity.capacity,
-                entity.readSpeed,
-                entity.writeSpeed)
+                entity:DataStorageEntity -> DataStorage(entity.name,
+                    entity.manufacturer,
+                    entity.storageInterface,
+                    entity.formFactor,
+                    entity.capacity,
+                    entity.readSpeed,
+                    entity.writeSpeed)
         }
         return dataStorageList
     }
@@ -197,15 +192,14 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun createDataStorage(dataStorage: DataStorage): DataStorageEntity {
-        return dataStorageRepo.save(dataStorage.toDataStorageEntity())
+    fun createDataStorage(dataStorage: DataStorage) {
+        dataStorageRepo.save(DataStorageEntity(dataStorage))
     }
 
     @Transactional
-    fun updateDataStorage(dataStorage: DataStorage): DataStorageEntity {
+    fun updateDataStorage(dataStorage: DataStorage){
         var temp=dataStorageRepo.findById(dataStorage.name).get()
         temp.update(dataStorage)
-        return temp
     }
 
     @Transactional
@@ -217,14 +211,14 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getGraphicsCardList(): List<GraphicsCard> {
         val graphicsCardList:List<GraphicsCard> = graphicsCardRepo.findAll().map{
-                entity-> GraphicsCard(entity.name,
-            entity.manufacturer,
-            entity.chipsetManufacturer,
-            entity.gpuType,
-            entity.length,
-            entity.basicPower,
-            entity.maxPower,
-            entity.phase)
+                entity:GraphicsCardEntity -> GraphicsCard(entity.name,
+                    entity.manufacturer,
+                    entity.chipsetManufacturer,
+                    entity.gpuType,
+                    entity.length,
+                    entity.basicPower,
+                    entity.maxPower,
+                    entity.phase)
         }
         return graphicsCardList
     }
@@ -243,15 +237,14 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun createGraphicsCard(graphicsCard: GraphicsCard): GraphicsCardEntity {
-        return graphicsCardRepo.save(graphicsCard.toGraphicsCardEntity())
+    fun createGraphicsCard(graphicsCard: GraphicsCard) {
+        graphicsCardRepo.save(GraphicsCardEntity(graphicsCard))
     }
 
     @Transactional
-    fun updateGraphicsCard(graphicsCard: GraphicsCard): GraphicsCardEntity {
+    fun updateGraphicsCard(graphicsCard: GraphicsCard){
         var temp=graphicsCardRepo.findById(graphicsCard.name).get()
         temp.update(graphicsCard)
-        return temp
     }
 
     @Transactional
@@ -263,11 +256,11 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getMemoryList(): List<Memory> {
         val memoryList:List<Memory> = memoryRepo.findAll().map{
-                entity-> Memory(entity.name,
-            entity.manufacturer,
-            entity.type,
-            entity.capacity,
-            entity.height)
+                entity:MemoryEntity -> Memory(entity.name,
+                    entity.manufacturer,
+                    entity.type,
+                    entity.capacity,
+                    entity.height)
         }
         return memoryList
     }
@@ -283,15 +276,14 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun createMemory(memory: Memory): MemoryEntity {
-        return memoryRepo.save(memory.toMemoryEntity())
+    fun createMemory(memory: Memory){
+        memoryRepo.save(MemoryEntity(memory))
     }
 
     @Transactional
-    fun updateMemory(memory: Memory): MemoryEntity {
+    fun updateMemory(memory: Memory){
         var temp=memoryRepo.findById(memory.name).get()
         temp.update(memory)
-        return temp
     }
 
     @Transactional
@@ -303,16 +295,16 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getMotherBoardList(): List<MotherBoard> {
         val motherBoardList:List<MotherBoard> = motherBoardRepo.findAll().map{
-                entity-> MotherBoard(entity.name,
-            entity.manufacturer,
-            entity.cpuType,
-            entity.socket,
-            entity.chipset,
-            entity.formFactor,
-            entity.memoryType,
-            entity.memorySlot,
-            entity.ssdM2Slot,
-            entity.ssdSATASlot)
+                entity:MotherBoardEntity -> MotherBoard(entity.name,
+                    entity.manufacturer,
+                    entity.cpuType,
+                    entity.socket,
+                    entity.chipset,
+                    entity.formFactor,
+                    entity.memoryType,
+                    entity.memorySlot,
+                    entity.ssdM2Slot,
+                    entity.ssdSATASlot)
         }
         return motherBoardList
     }
@@ -333,15 +325,14 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun createMotherBoard(motherBoard: MotherBoard): MotherBoardEntity {
-        return motherBoardRepo.save(motherBoard.toMotherBoardEntity())
+    fun createMotherBoard(motherBoard: MotherBoard){
+        motherBoardRepo.save(MotherBoardEntity(motherBoard))
     }
 
     @Transactional
-    fun updateMotherBoard(motherBoard: MotherBoard): MotherBoardEntity {
+    fun updateMotherBoard(motherBoard: MotherBoard){
         var temp=motherBoardRepo.findById(motherBoard.name).get()
         temp.update(motherBoard)
-        return temp
     }
 
     @Transactional
@@ -353,12 +344,13 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getPowerSupplyList(): List<PowerSupply> {
         val powerSupplyList:List<PowerSupply> = powerSupplyRepo.findAll().map{
-                entity->PowerSupply(entity.name,
-            entity.manufacturer,
-            entity.power,
-            entity.efficiency,
-            entity.modular,
-            entity.length)}
+                entity:PowerSupplyEntity -> PowerSupply(entity.name,
+                    entity.manufacturer,
+                    entity.power,
+                    entity.efficiency,
+                    entity.modular,
+                    entity.length)
+        }
         return powerSupplyList
     }
 
@@ -374,15 +366,14 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun createPowerSupply(powerSupply: PowerSupply): PowerSupplyEntity {
-        return powerSupplyRepo.save(powerSupply.toPowerSupplyEntity())
+    fun createPowerSupply(powerSupply: PowerSupply){
+        powerSupplyRepo.save(PowerSupplyEntity(powerSupply))
     }
 
     @Transactional
-    fun updatePowerSupply(powerSupply: PowerSupply): PowerSupplyEntity {
+    fun updatePowerSupply(powerSupply: PowerSupply){
         var temp=powerSupplyRepo.findById(powerSupply.name).get()
         temp.update(powerSupply)
-        return temp
     }
 
     @Transactional

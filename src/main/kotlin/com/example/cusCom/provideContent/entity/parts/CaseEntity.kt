@@ -1,46 +1,36 @@
-package com.example.cusCom.provideContent.dto.parts
+package com.example.cusCom.provideContent.entity.parts
 
+import com.example.cusCom.provideContent.dto.parts.Case
 import jakarta.persistence.*
 
 @Table(name="desktop_case")
 @Entity
-class CaseEntity(name:String,
-                 manufacturer:String,
-                 caseType:String,
-                 maxMotherBoard:String,
-                 maxCoolingFan:Int,
-                 builtInCoolingFan:Int,
-                 height:Int,
-                 length:Int,
-                 width:Int,
-                 powerLength:Int,
-                 cpuCoolerHeight:Int,
-                 graphicsCardLength:Int){
+class CaseEntity(case: Case){
     @Id
     @Column(nullable = false)
-    var name:String=name
+    var name:String=case.name
     @Column(nullable = false)
-    var manufacturer:String=manufacturer
+    var manufacturer:String=case.manufacturer
     @Column(nullable = false)
-    var caseType:String=caseType
+    var caseType:String=case.caseType
     @Column(nullable = false)
-    var maxMotherBoard:String=maxMotherBoard
+    var maxMotherBoard:String=case.maxMotherBoard
     @Column(nullable = false)
-    var maxCoolingFan:Int=maxCoolingFan
+    var maxCoolingFan:Int=case.maxCoolingFan
     @Column(nullable = false)
-    var builtInCoolingFan:Int=builtInCoolingFan
+    var builtInCoolingFan:Int=case.builtInCoolingFan
     @Column(nullable = false)
-    var height:Int=height
+    var height:Int=case.height
     @Column(nullable = false)
-    var length:Int=length
+    var length:Int=case.length
     @Column(nullable = false)
-    var width:Int=width
+    var width:Int=case.width
     @Column(nullable = false)
-    var powerLength:Int=powerLength
+    var powerLength:Int=case.powerLength
     @Column(nullable = false)
-    var cpuCoolerHeight:Int=cpuCoolerHeight
+    var cpuCoolerHeight:Int=case.cpuCoolerHeight
     @Column(nullable = false)
-    var graphicsCardLength:Int=graphicsCardLength
+    var graphicsCardLength:Int=case.graphicsCardLength
 
     fun update(case: Case){
         this.name=case.name

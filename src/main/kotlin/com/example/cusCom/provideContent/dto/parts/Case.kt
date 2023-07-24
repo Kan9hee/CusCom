@@ -12,8 +12,4 @@ data class Case(val name:String,
                 val powerLength:Int,
                 val cpuCoolerHeight:Int,
                 val graphicsCardLength:Int){
-
-    fun toCaseEntity():CaseEntity{
-        return CaseEntity(name,manufacturer, caseType, maxMotherBoard, maxCoolingFan, builtInCoolingFan, height, length, width, powerLength, cpuCoolerHeight, graphicsCardLength)
-    }
 }

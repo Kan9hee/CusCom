@@ -1,40 +1,32 @@
-package com.example.cusCom.provideContent.dto.parts
+package com.example.cusCom.provideContent.entity.parts
 
+import com.example.cusCom.provideContent.dto.parts.MotherBoard
 import jakarta.persistence.*
 
 @Table(name="mother_board")
 @Entity
-class MotherBoardEntity(name:String,
-                        manufacturer:String,
-                        cpuType:String,
-                        socket:String,
-                        chipset:String,
-                        formFactor:String,
-                        memoryType:String,
-                        memorySlot:Int,
-                        ssdM2Slot:Int,
-                        ssdSATASlot:Int){
+class MotherBoardEntity(motherBoard: MotherBoard){
     @Id
     @Column(nullable = false)
-    var name:String=name
+    var name:String=motherBoard.name
     @Column(nullable = false)
-    var manufacturer:String=manufacturer
+    var manufacturer:String=motherBoard.manufacturer
     @Column(nullable = false)
-    var cpuType:String=cpuType
+    var cpuType:String=motherBoard.cpuType
     @Column(nullable = false)
-    var socket:String=socket
+    var socket:String=motherBoard.socket
     @Column(nullable = false)
-    var chipset:String=chipset
+    var chipset:String=motherBoard.chipset
     @Column(nullable = false)
-    var formFactor:String=formFactor
+    var formFactor:String=motherBoard.formFactor
     @Column(nullable = false)
-    var memoryType:String=memoryType
+    var memoryType:String=motherBoard.memoryType
     @Column(nullable = false)
-    var memorySlot:Int=memorySlot
+    var memorySlot:Int=motherBoard.memorySlot
     @Column(nullable = false)
-    var ssdM2Slot:Int=ssdM2Slot
+    var ssdM2Slot:Int=motherBoard.ssdM2Slot
     @Column(nullable = false)
-    var ssdSATASlot:Int=ssdSATASlot
+    var ssdSATASlot:Int=motherBoard.ssdSATASlot
 
     fun update(motherBoard: MotherBoard){
         this.name=motherBoard.name

@@ -1,37 +1,30 @@
-package com.example.cusCom.provideContent.dto.parts
+package com.example.cusCom.provideContent.entity.parts
 
+import com.example.cusCom.provideContent.dto.parts.CPU
 import jakarta.persistence.*
 
 @Table(name="cpu")
 @Entity
-class CPUEntity(name:String,
-                manufacturer:String,
-                socket:String,
-                memoryType:String,
-                core:Int,
-                thread:Int,
-                isBuiltInGraphics:Boolean,
-                builtInGraphicName:String?,
-                TDP:Int){
+class CPUEntity(cpu: CPU){
     @Id
     @Column(nullable = false)
-    var name:String=name
+    var name:String=cpu.name
     @Column(nullable = false)
-    var manufacturer:String=manufacturer
+    var manufacturer:String=cpu.manufacturer
     @Column(nullable = false)
-    var socket:String=socket
+    var socket:String=cpu.socket
     @Column(nullable = false)
-    var memoryType:String=memoryType
+    var memoryType:String=cpu.memoryType
     @Column(nullable = false)
-    var core:Int=core
+    var core:Int=cpu.core
     @Column(nullable = false)
-    var thread:Int=thread
+    var thread:Int=cpu.thread
     @Column(nullable = false)
-    var isBuiltInGraphics:Boolean=isBuiltInGraphics
+    var isBuiltInGraphics:Boolean=cpu.isBuiltInGraphics
     @Column
-    var builtInGraphicName:String?=builtInGraphicName
+    var builtInGraphicName:String?=cpu.builtInGraphicName
     @Column(nullable = false)
-    var TDP:Int=TDP
+    var TDP:Int=cpu.TDP
 
     fun update(cpu: CPU){
         this.name=cpu.name

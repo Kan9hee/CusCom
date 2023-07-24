@@ -11,14 +11,13 @@ import org.springframework.transaction.annotation.Transactional
 class UserService(private val passwordEncoder: PasswordEncoder,
                   private val userRepo: UserRepository) {
     @Transactional
-    fun joinUser(information:User){
-        userRepo.save(information.joinEntity(passwordEncoder))
+    fun joinUser(user:User){
+        userRepo.save(UserEntity(user,passwordEncoder))
     }
 
     @Transactional(readOnly = true)
     fun findUser(userName:String):User?{
-        val foundUser:UserEntity? = userRepo.findByUserName(userName)
-        if(foundUser == null) return null
-        else return User(foundUser.userName,foundUser.userPassword,foundUser.userRole)
+        val foundUser: UserEntity = userRepo.findByUserName(userName) ?: return null
+        return User(foundUser.userName,foundUser.userPassword,foundUser.userRole)
     }
 }

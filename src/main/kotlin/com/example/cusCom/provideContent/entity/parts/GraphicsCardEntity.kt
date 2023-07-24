@@ -1,34 +1,28 @@
-package com.example.cusCom.provideContent.dto.parts
+package com.example.cusCom.provideContent.entity.parts
 
+import com.example.cusCom.provideContent.dto.parts.GraphicsCard
 import jakarta.persistence.*
 
 @Table(name="graphics_card")
 @Entity
-class GraphicsCardEntity(name:String,
-                         manufacturer:String,
-                         chipsetManufacturer:String,
-                         gpuType:String,
-                         length:Int,
-                         basicPower:Int,
-                         maxPower:Int,
-                         phase:Int){
+class GraphicsCardEntity(graphicsCard: GraphicsCard){
     @Id
     @Column(nullable = false)
-    var name:String=name
+    var name:String=graphicsCard.name
     @Column(nullable = false)
-    var manufacturer:String=manufacturer
+    var manufacturer:String=graphicsCard.manufacturer
     @Column(nullable = false)
-    var chipsetManufacturer:String=chipsetManufacturer
+    var chipsetManufacturer:String=graphicsCard.chipsetManufacturer
     @Column(nullable = false)
-    var gpuType:String=gpuType
+    var gpuType:String=graphicsCard.gpuType
     @Column(nullable = false)
-    var length:Int=length
+    var length:Int=graphicsCard.length
     @Column(nullable = false)
-    var basicPower:Int=basicPower
+    var basicPower:Int=graphicsCard.basicPower
     @Column(nullable = false)
-    var maxPower:Int=maxPower
+    var maxPower:Int=graphicsCard.maxPower
     @Column(nullable = false)
-    var phase:Int=phase
+    var phase:Int=graphicsCard.phase
 
     fun update(graphicsCard: GraphicsCard){
         this.name=graphicsCard.name

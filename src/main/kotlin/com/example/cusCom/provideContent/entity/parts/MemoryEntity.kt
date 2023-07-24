@@ -1,25 +1,22 @@
-package com.example.cusCom.provideContent.dto.parts
+package com.example.cusCom.provideContent.entity.parts
 
+import com.example.cusCom.provideContent.dto.parts.Memory
 import jakarta.persistence.*
 
 @Table(name="memory")
 @Entity
-class MemoryEntity(name:String,
-                   manufacturer:String,
-                   type:String,
-                   capacity:Int,
-                   height:Int){
+class MemoryEntity(memory: Memory){
     @Id
     @Column(nullable = false)
-    var name:String=name
+    var name:String=memory.name
     @Column(nullable = false)
-    var manufacturer:String=manufacturer
+    var manufacturer:String=memory.manufacturer
     @Column(nullable = false)
-    var type:String=type
+    var type:String=memory.type
     @Column(nullable = false)
-    var capacity:Int=capacity
+    var capacity:Int=memory.capacity
     @Column(nullable = false)
-    var height:Int=height
+    var height:Int=memory.height
 
     fun update(memory:Memory){
         this.name=memory.name

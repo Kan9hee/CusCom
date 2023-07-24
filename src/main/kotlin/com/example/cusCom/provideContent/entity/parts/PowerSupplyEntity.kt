@@ -1,28 +1,24 @@
-package com.example.cusCom.provideContent.dto.parts
+package com.example.cusCom.provideContent.entity.parts
 
+import com.example.cusCom.provideContent.dto.parts.PowerSupply
 import jakarta.persistence.*
 
 @Table(name="power_supply")
 @Entity
-class PowerSupplyEntity(name:String,
-                        manufacturer:String,
-                        power:Int,
-                        efficiency:String,
-                        modular:String,
-                        length:Int){
+class PowerSupplyEntity(powerSupply: PowerSupply){
     @Id
     @Column(nullable = false)
-    var name:String=name
+    var name:String=powerSupply.name
     @Column(nullable = false)
-    var manufacturer:String=manufacturer
+    var manufacturer:String=powerSupply.manufacturer
     @Column(nullable = false)
-    var power:Int=power
+    var power:Int=powerSupply.power
     @Column(nullable = false)
-    var efficiency:String=efficiency
+    var efficiency:String=powerSupply.efficiency
     @Column(nullable = false)
-    var modular:String=modular
+    var modular:String=powerSupply.modular
     @Column(nullable = false)
-    var length:Int=length
+    var length:Int=powerSupply.length
 
     fun update(powerSupply: PowerSupply){
         this.name=powerSupply.name

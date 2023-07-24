@@ -1,31 +1,26 @@
-package com.example.cusCom.provideContent.dto.parts
+package com.example.cusCom.provideContent.entity.parts
 
+import com.example.cusCom.provideContent.dto.parts.DataStorage
 import jakarta.persistence.*
 
 @Table(name="data_storage")
 @Entity
-class DataStorageEntity(name:String,
-                        manufacturer:String,
-                        storageInterface:String,
-                        formFactor:String,
-                        capacity:String,
-                        readSpeed:Int,
-                        writeSpeed:Int){
+class DataStorageEntity(dataStorage: DataStorage){
     @Id
     @Column(nullable = false)
-    var name:String=name
+    var name:String=dataStorage.name
     @Column(nullable = false)
-    var manufacturer:String=manufacturer
+    var manufacturer:String=dataStorage.manufacturer
     @Column(nullable = false)
-    var storageInterface:String=storageInterface
+    var storageInterface:String=dataStorage.storageInterface
     @Column(nullable = false)
-    var formFactor:String=formFactor
+    var formFactor:String=dataStorage.formFactor
     @Column(nullable = false)
-    var capacity:String=capacity
+    var capacity:String=dataStorage.capacity
     @Column(nullable = false)
-    var readSpeed:Int=readSpeed
+    var readSpeed:Int=dataStorage.readSpeed
     @Column(nullable = false)
-    var writeSpeed:Int=writeSpeed
+    var writeSpeed:Int=dataStorage.writeSpeed
 
     fun update(dataStorage: DataStorage){
         this.name=dataStorage.name

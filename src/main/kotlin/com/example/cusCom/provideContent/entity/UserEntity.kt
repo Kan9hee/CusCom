@@ -1,20 +1,20 @@
 package com.example.cusCom.provideContent.entity
 
+import com.example.cusCom.provideContent.dto.User
 import jakarta.persistence.*
+import org.springframework.security.crypto.password.PasswordEncoder
 
 @Table(name="user")
 @Entity
-class UserEntity(userName:String,
-                 userPassword:String,
-                 userRole:String) {
+class UserEntity(user: User,passwordEncoder: PasswordEncoder) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id:Long?=null
     @Column(nullable = false, unique = true)
-    val userName:String=userName
+    var userName:String=user.userName
     @Column(nullable = false)
-    val userPassword:String=userPassword
+    var userPassword:String=passwordEncoder.encode(user.userPassword)
     @Column(nullable = false)
-    val userRole:String=userRole
+    var userRole:String=user.userRole
 }

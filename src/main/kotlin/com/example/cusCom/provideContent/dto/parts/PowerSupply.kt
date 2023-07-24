@@ -6,8 +6,4 @@ data class PowerSupply(val name:String,
                        val efficiency:String,
                        val modular:String,
                        val length:Int){
-
-    fun toPowerSupplyEntity():PowerSupplyEntity{
-        return PowerSupplyEntity(name, manufacturer, power, efficiency, modular, length)
-    }
 }

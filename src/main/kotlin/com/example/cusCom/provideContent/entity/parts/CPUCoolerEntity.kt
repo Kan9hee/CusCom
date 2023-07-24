@@ -1,34 +1,28 @@
-package com.example.cusCom.provideContent.dto.parts
+package com.example.cusCom.provideContent.entity.parts
 
+import com.example.cusCom.provideContent.dto.parts.CPUCooler
 import jakarta.persistence.*
 
 @Table(name="cpu_cooler")
 @Entity
-class CPUCoolerEntity(name:String,
-                      manufacturer:String,
-                      coolingType:String,
-                      coolerForm:String,
-                      height:Int,
-                      length:Int,
-                      width:Int,
-                      TDP:Int){
+class CPUCoolerEntity(cpuCooler: CPUCooler){
     @Id
     @Column(nullable = false)
-    var name:String=name
+    var name:String=cpuCooler.name
     @Column(nullable = false)
-    var manufacturer:String=manufacturer
+    var manufacturer:String=cpuCooler.manufacturer
     @Column(nullable = false)
-    var coolingType:String=coolingType
+    var coolingType:String=cpuCooler.coolingType
     @Column(nullable = false)
-    var coolerForm:String=coolerForm
+    var coolerForm:String=cpuCooler.coolerForm
     @Column(nullable = false)
-    var height:Int=height
+    var height:Int=cpuCooler.height
     @Column(nullable = false)
-    var length:Int=length
+    var length:Int=cpuCooler.length
     @Column(nullable = false)
-    var width:Int=width
+    var width:Int=cpuCooler.width
     @Column(nullable = false)
-    var tdp:Int=TDP
+    var tdp:Int=cpuCooler.TDP
 
     fun update(cpuCooler: CPUCooler) {
         this.name=cpuCooler.name

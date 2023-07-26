@@ -15,12 +15,12 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
 
     @Transactional
     fun saveUserEstimate(estimate: Estimate){
-        mongoTemplate.insert(EstimateEntity(estimate),"user-estimates")
+        mongoTemplate.insert(EstimateEntity(estimate))
     }
 
     @Transactional
     fun getUserEstimateList(): MutableList<EstimateEntity> {
-        return mongoTemplate.findAll(EstimateEntity::class.java,"user-estimates")
+        return mongoTemplate.findAll(EstimateEntity::class.java)
     }
 
     @Transactional(readOnly=true)

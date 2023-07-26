@@ -14,6 +14,12 @@
                 <input type="text" name="name" id="name" class="form-control" th:value="${item.name}"><br>
             </div>
             <div>
+                <span class="control-fileupload">
+                  <label for="imageFile">부품 이미지</label>
+                  <input type="file" id="imageFile">
+                </span>
+            </div>
+            <div>
                 <label for="manufacturer">제조사</label>
                 <input type="text" name="manufacturer" id="manufacturer" class="form-control" th:value="${item.manufacturer}"><br>
             </div>
@@ -61,13 +67,18 @@
                 maxPower: document.getElementById('maxPower').value,
                 phase: document.getElementById('phase').value
             };
+
+            var formData = new FormData();
+            formData.append('Type', 'GraphicsCard');
+            formData.append('Data', JSON.stringify(GraphicsCard));
+            formData.append('Image', $('#imageFile')[0].files[0]);
+
             $.ajax({
-                url: "/adminPage/updateParts",
+                url: "/adminPage/createParts",
                 type: "post",
-                data: {
-                    Type : "GraphicsCard",
-                    Data : JSON.stringify(GraphicsCard)
-                }
+                data: formData,
+                processData: false,
+                contentType: false
             }).done(function() {
                 window.location.href = '/adminPage/main';
             }).fail(function(error) {

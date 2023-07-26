@@ -11,5 +11,6 @@ data class Case(val name:String,
                 val width:Int,
                 val powerLength:Int,
                 val cpuCoolerHeight:Int,
-                val graphicsCardLength:Int){
+                val graphicsCardLength:Int,
+                val imageUrl:String){
 }

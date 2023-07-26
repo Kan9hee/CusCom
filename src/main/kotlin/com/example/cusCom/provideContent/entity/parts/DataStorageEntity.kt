@@ -9,6 +9,9 @@ class DataStorageEntity(dataStorage: DataStorage){
     @Id
     @Column(nullable = false)
     var name:String=dataStorage.name
+    @Column(nullable=false)
+    var imageUrl:String=dataStorage.imageUrl
+
     @Column(nullable = false)
     var manufacturer:String=dataStorage.manufacturer
     @Column(nullable = false)
@@ -24,6 +27,7 @@ class DataStorageEntity(dataStorage: DataStorage){
 
     fun update(dataStorage: DataStorage){
         this.name=dataStorage.name
+        this.imageUrl=dataStorage.imageUrl
         this.manufacturer=dataStorage.manufacturer
         this.storageInterface=dataStorage.storageInterface
         this.formFactor=dataStorage.formFactor

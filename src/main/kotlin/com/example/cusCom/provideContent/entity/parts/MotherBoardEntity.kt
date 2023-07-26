@@ -9,6 +9,9 @@ class MotherBoardEntity(motherBoard: MotherBoard){
     @Id
     @Column(nullable = false)
     var name:String=motherBoard.name
+    @Column(nullable=false)
+    var imageUrl:String=motherBoard.imageUrl
+
     @Column(nullable = false)
     var manufacturer:String=motherBoard.manufacturer
     @Column(nullable = false)
@@ -30,6 +33,7 @@ class MotherBoardEntity(motherBoard: MotherBoard){
 
     fun update(motherBoard: MotherBoard){
         this.name=motherBoard.name
+        this.imageUrl=motherBoard.imageUrl
         this.manufacturer=motherBoard.manufacturer
         this.cpuType=motherBoard.cpuType
         this.socket=motherBoard.socket

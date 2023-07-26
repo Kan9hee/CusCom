@@ -31,6 +31,8 @@ class CaseEntity(case: Case){
     var cpuCoolerHeight:Int=case.cpuCoolerHeight
     @Column(nullable = false)
     var graphicsCardLength:Int=case.graphicsCardLength
+    @Column(nullable=false)
+    var imageUrl:String=case.imageUrl
 
     fun update(case: Case){
         this.name=case.name
@@ -45,5 +47,6 @@ class CaseEntity(case: Case){
         this.powerLength=case.powerLength
         this.cpuCoolerHeight=case.cpuCoolerHeight
         this.graphicsCardLength=case.graphicsCardLength
+        this.imageUrl=case.imageUrl
     }
 }

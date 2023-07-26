@@ -14,6 +14,12 @@
                 <input type="text" name="name" id="name" class="form-control"><br>
             </div>
             <div>
+                <span class="control-fileupload">
+                  <label for="imageFile">부품 이미지</label>
+                  <input type="file" id="imageFile">
+                </span>
+            </div>
+            <div>
                 <label for="manufacturer">제조사</label>
                 <input type="text" name="manufacturer" id="manufacturer" class="form-control"><br>
             </div>
@@ -70,13 +76,18 @@
                 ssdM2Slot: document.getElementById('ssdM2Slot').value,
                 ssdSATASlot: document.getElementById('ssdSATASlot').value,
             };
+
+            var formData = new FormData();
+            formData.append('Type', 'MotherBoard');
+            formData.append('Data', JSON.stringify(MotherBoard));
+            formData.append('Image', $('#imageFile')[0].files[0]);
+
             $.ajax({
                 url: "/adminPage/createParts",
                 type: "post",
-                data: {
-                    Type : "MotherBoard",
-                    Data : JSON.stringify(MotherBoard)
-                }
+                data: formData,
+                processData: false,
+                contentType: false
             }).done(function() {
                 window.location.href = '/adminPage/main';
             }).fail(function(error) {

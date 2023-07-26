@@ -9,6 +9,9 @@ class GraphicsCardEntity(graphicsCard: GraphicsCard){
     @Id
     @Column(nullable = false)
     var name:String=graphicsCard.name
+    @Column(nullable=false)
+    var imageUrl:String=graphicsCard.imageUrl
+
     @Column(nullable = false)
     var manufacturer:String=graphicsCard.manufacturer
     @Column(nullable = false)
@@ -26,6 +29,7 @@ class GraphicsCardEntity(graphicsCard: GraphicsCard){
 
     fun update(graphicsCard: GraphicsCard){
         this.name=graphicsCard.name
+        this.imageUrl=graphicsCard.imageUrl
         this.manufacturer=graphicsCard.manufacturer
         this.chipsetManufacturer=graphicsCard.chipsetManufacturer
         this.gpuType=graphicsCard.gpuType

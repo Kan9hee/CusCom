@@ -9,6 +9,9 @@ class PowerSupplyEntity(powerSupply: PowerSupply){
     @Id
     @Column(nullable = false)
     var name:String=powerSupply.name
+    @Column(nullable=false)
+    var imageUrl:String=powerSupply.imageUrl
+
     @Column(nullable = false)
     var manufacturer:String=powerSupply.manufacturer
     @Column(nullable = false)
@@ -22,6 +25,7 @@ class PowerSupplyEntity(powerSupply: PowerSupply){
 
     fun update(powerSupply: PowerSupply){
         this.name=powerSupply.name
+        this.imageUrl=powerSupply.imageUrl
         this.manufacturer=powerSupply.manufacturer
         this.power=powerSupply.power
         this.efficiency=powerSupply.efficiency

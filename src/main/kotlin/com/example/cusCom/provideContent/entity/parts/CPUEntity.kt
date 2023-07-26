@@ -9,6 +9,9 @@ class CPUEntity(cpu: CPU){
     @Id
     @Column(nullable = false)
     var name:String=cpu.name
+    @Column(nullable=false)
+    var imageUrl:String=cpu.imageUrl
+
     @Column(nullable = false)
     var manufacturer:String=cpu.manufacturer
     @Column(nullable = false)
@@ -28,6 +31,7 @@ class CPUEntity(cpu: CPU){
 
     fun update(cpu: CPU){
         this.name=cpu.name
+        this.imageUrl=cpu.imageUrl
         this.manufacturer=cpu.manufacturer
         this.socket=cpu.socket
         this.memoryType=cpu.memoryType

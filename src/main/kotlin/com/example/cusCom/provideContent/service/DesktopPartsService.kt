@@ -31,7 +31,8 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                     entity.width,
                     entity.powerLength,
                     entity.cpuCoolerHeight,
-                    entity.graphicsCardLength)
+                    entity.graphicsCardLength,
+                    entity.imageUrl)
         }
         return caseList
     }
@@ -50,7 +51,8 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
             entity.width,
             entity.powerLength,
             entity.cpuCoolerHeight,
-            entity.graphicsCardLength)
+            entity.graphicsCardLength,
+            entity.imageUrl)
     }
 
     @Transactional
@@ -74,6 +76,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun getCpuCoolerList(): List<CPUCooler> {
         val cpuCoolerList:List<CPUCooler> = cpuCoolerRepo.findAll().map{
                 entity:CPUCoolerEntity-> CPUCooler(entity.name,
+                    entity.imageUrl,
                     entity.manufacturer,
                     entity.coolingType,
                     entity.coolerForm,
@@ -90,6 +93,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
         val entity = cpuCoolerRepo.findById(name).orElseThrow { EntityNotFoundException("CPUCooler ${name}을 찾을 수가 없습니다.") }
         return CPUCooler(
             entity.name,
+            entity.imageUrl,
             entity.manufacturer,
             entity.coolingType,
             entity.coolerForm,
@@ -120,6 +124,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun getCPUList(): List<CPU> {
         val cpuList:List<CPU> = cpuRepo.findAll().map{
                 entity:CPUEntity -> CPU(entity.name,
+                    entity.imageUrl,
                     entity.manufacturer,
                     entity.socket,
                     entity.memoryType,
@@ -137,6 +142,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
         val entity = cpuRepo.findById(name).orElseThrow { EntityNotFoundException("CPU ${name}을 찾을 수가 없습니다.") }
         return CPU(
             entity.name,
+            entity.imageUrl,
             entity.manufacturer,
             entity.socket,
             entity.memoryType,
@@ -169,6 +175,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun getDataStorageList(): List<DataStorage> {
         val dataStorageList:List<DataStorage> = dataStorageRepo.findAll().map{
                 entity:DataStorageEntity -> DataStorage(entity.name,
+                    entity.imageUrl,
                     entity.manufacturer,
                     entity.storageInterface,
                     entity.formFactor,
@@ -183,6 +190,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun findDataStorage(name:String): DataStorage {
         val entity = dataStorageRepo.findById(name).orElseThrow { EntityNotFoundException("DataStorage ${name}을 찾을 수가 없습니다.") }
         return DataStorage(entity.name,
+            entity.imageUrl,
             entity.manufacturer,
             entity.storageInterface,
             entity.formFactor,
@@ -212,6 +220,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun getGraphicsCardList(): List<GraphicsCard> {
         val graphicsCardList:List<GraphicsCard> = graphicsCardRepo.findAll().map{
                 entity:GraphicsCardEntity -> GraphicsCard(entity.name,
+                    entity.imageUrl,
                     entity.manufacturer,
                     entity.chipsetManufacturer,
                     entity.gpuType,
@@ -227,6 +236,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun findGraphicsCard(name:String): GraphicsCard {
         val entity = graphicsCardRepo.findById(name).orElseThrow { EntityNotFoundException("GraphicsCard ${name}을 찾을 수가 없습니다.") }
         return GraphicsCard(entity.name,
+            entity.imageUrl,
             entity.manufacturer,
             entity.chipsetManufacturer,
             entity.gpuType,
@@ -257,6 +267,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun getMemoryList(): List<Memory> {
         val memoryList:List<Memory> = memoryRepo.findAll().map{
                 entity:MemoryEntity -> Memory(entity.name,
+                    entity.imageUrl,
                     entity.manufacturer,
                     entity.type,
                     entity.capacity,
@@ -269,6 +280,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun findMemory(name:String): Memory {
         val entity = memoryRepo.findById(name).orElseThrow { EntityNotFoundException("Memory ${name}을 찾을 수가 없습니다.") }
         return Memory(entity.name,
+            entity.imageUrl,
             entity.manufacturer,
             entity.type,
             entity.capacity,
@@ -296,6 +308,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun getMotherBoardList(): List<MotherBoard> {
         val motherBoardList:List<MotherBoard> = motherBoardRepo.findAll().map{
                 entity:MotherBoardEntity -> MotherBoard(entity.name,
+                    entity.imageUrl,
                     entity.manufacturer,
                     entity.cpuType,
                     entity.socket,
@@ -313,6 +326,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun findMotherBoard(name:String): MotherBoard {
         val entity = motherBoardRepo.findById(name).orElseThrow { EntityNotFoundException("MotherBoard ${name}을 찾을 수가 없습니다.") }
         return MotherBoard(entity.name,
+            entity.imageUrl,
             entity.manufacturer,
             entity.cpuType,
             entity.socket,
@@ -345,6 +359,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun getPowerSupplyList(): List<PowerSupply> {
         val powerSupplyList:List<PowerSupply> = powerSupplyRepo.findAll().map{
                 entity:PowerSupplyEntity -> PowerSupply(entity.name,
+                    entity.imageUrl,
                     entity.manufacturer,
                     entity.power,
                     entity.efficiency,
@@ -358,6 +373,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun findPowerSupply(name:String): PowerSupply {
         val entity = powerSupplyRepo.findById(name).orElseThrow { EntityNotFoundException("PowerSupply ${name}을 찾을 수가 없습니다.") }
         return PowerSupply(entity.name,
+            entity.imageUrl,
             entity.manufacturer,
             entity.power,
             entity.efficiency,

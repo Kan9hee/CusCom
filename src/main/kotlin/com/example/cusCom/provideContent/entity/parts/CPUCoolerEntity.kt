@@ -9,6 +9,9 @@ class CPUCoolerEntity(cpuCooler: CPUCooler){
     @Id
     @Column(nullable = false)
     var name:String=cpuCooler.name
+    @Column(nullable=false)
+    var imageUrl:String=cpuCooler.imageUrl
+
     @Column(nullable = false)
     var manufacturer:String=cpuCooler.manufacturer
     @Column(nullable = false)
@@ -26,6 +29,7 @@ class CPUCoolerEntity(cpuCooler: CPUCooler){
 
     fun update(cpuCooler: CPUCooler) {
         this.name=cpuCooler.name
+        this.imageUrl=cpuCooler.imageUrl
         this.manufacturer=cpuCooler.manufacturer
         this.coolingType=cpuCooler.coolingType
         this.coolerForm=cpuCooler.coolerForm

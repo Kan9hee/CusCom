@@ -24,7 +24,6 @@ class BlobService{
         }catch(e:IOException){
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
         }
-
         return blobClient.blobUrl
     }
 }

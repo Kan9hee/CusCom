@@ -9,6 +9,9 @@ class MemoryEntity(memory: Memory){
     @Id
     @Column(nullable = false)
     var name:String=memory.name
+    @Column(nullable=false)
+    var imageUrl:String=memory.imageUrl
+
     @Column(nullable = false)
     var manufacturer:String=memory.manufacturer
     @Column(nullable = false)
@@ -20,6 +23,7 @@ class MemoryEntity(memory: Memory){
 
     fun update(memory:Memory){
         this.name=memory.name
+        this.imageUrl=memory.imageUrl
         this.manufacturer=memory.manufacturer
         this.type=memory.type
         this.capacity=memory.capacity

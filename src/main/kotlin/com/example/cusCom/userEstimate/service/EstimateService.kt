@@ -1,11 +1,13 @@
 package com.example.cusCom.userEstimate.service
 
 import com.example.cusCom.userEstimate.dto.Estimate
-import com.example.cusCom.provideContent.entity.MotherBoardFormFactorEntity
 import com.example.cusCom.userEstimate.exception.EstimateException
 import com.example.cusCom.provideContent.repository.MotherBoardFormFactorRepository
 import com.example.cusCom.userEstimate.entity.EstimateEntity
+import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.data.mongodb.core.query.Criteria
+import org.springframework.data.mongodb.core.query.Query
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.stereotype.Service
 
@@ -23,14 +25,15 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
         return mongoTemplate.findAll(EstimateEntity::class.java)
     }
 
-    @Transactional(readOnly=true)
-    private fun getMotherboardSize(formFactor:String): MotherBoardFormFactorEntity {
-        return motherBoardRepo.findById(formFactor).get()
+    @Transactional
+    fun deleteUserEstimate(estimateID:String){
+        val query= Query(Criteria.where("_id").`is`(ObjectId(estimateID)))
+        mongoTemplate.remove(query, EstimateEntity::class.java)
     }
 
     fun checkDesktopEstimate(estimate: Estimate){
-        val caseMaxFormFactor=getMotherboardSize(estimate.case.maxMotherBoard)
-        val motherBoardFormFactor=getMotherboardSize(estimate.motherBoard.formFactor)
+        val caseMaxFormFactor=motherBoardRepo.findById(estimate.case.maxMotherBoard).get()
+        val motherBoardFormFactor=motherBoardRepo.findById(estimate.motherBoard.formFactor).get()
 
         if(estimate.cpuCooler.height>estimate.case.cpuCoolerHeight)
             throw EstimateException("쿨러 허용 높이 초과")

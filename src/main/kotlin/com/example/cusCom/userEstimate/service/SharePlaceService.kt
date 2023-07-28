@@ -20,16 +20,33 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
     }
 
     @Transactional
-    fun deletePost(postID:String){
-        val query= Query(Criteria.where("_id").`is`(ObjectId(postID)))
+    fun deletePost(value:String){
+        val query= Query(Criteria.where("_id").`is`(ObjectId(value)))
+        deleteComment("postID",value)
         mongoTemplate.remove(query,SharePlacePostEntity::class.java)
     }
 
     @Transactional
-    fun loadPostList(): List<SharePlacePost> {
+    fun getPost(value:String): SharePlacePost? {
+        val query= Query(Criteria.where("_id").`is`(ObjectId(value)))
+        val entity = mongoTemplate.findOne(query,SharePlacePostEntity::class.java)
+        return entity?.let {
+            SharePlacePost(
+                it.estimateID,
+                it.title,
+                it.content,
+                it.tags,
+                it.viewCount,
+                it.likeCount)
+        }
+    }
+
+    @Transactional
+    fun getPostList(): List<SharePlacePost> {
         return mongoTemplate.findAll(SharePlacePostEntity::class.java).map {
             entity:SharePlacePostEntity->SharePlacePost(
                 entity.estimateID,
+                entity.title,
                 entity.content,
                 entity.tags,
                 entity.viewCount,
@@ -44,14 +61,14 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
     }
 
     @Transactional
-    fun deleteComment(commentID:String){
-        val query= Query(Criteria.where("_id").`is`(ObjectId(commentID)))
+    fun deleteComment(option:String,value:String){
+        val query= Query(Criteria.where(option).`is`(ObjectId(value)))
         mongoTemplate.remove(query,CommentEntity::class.java)
     }
 
     @Transactional
-    fun loadCommentList(postID:String): List<Comment> {
-        val query= Query(Criteria.where("postID").`is`(ObjectId(postID)))
+    fun getCommentList(option:String,value:String): List<Comment> {
+        val query= Query(Criteria.where(option).`is`(ObjectId(value)))
         return mongoTemplate.find(query,CommentEntity::class.java).map {
             entity:CommentEntity->Comment(
                 entity.postID,

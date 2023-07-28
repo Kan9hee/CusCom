@@ -26,8 +26,8 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
     }
 
     @Transactional
-    fun deleteUserEstimate(estimateID:String){
-        val query= Query(Criteria.where("_id").`is`(ObjectId(estimateID)))
+    fun deleteUserEstimate(option:String,value:String){
+        val query= Query(Criteria.where(option).`is`(ObjectId(value)))
         mongoTemplate.remove(query, EstimateEntity::class.java)
     }
 

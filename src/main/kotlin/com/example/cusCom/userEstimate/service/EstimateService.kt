@@ -17,7 +17,18 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
 
     @Transactional
     fun saveUserEstimate(estimate: Estimate){
-        mongoTemplate.insert(EstimateEntity(estimate))
+        mongoTemplate.insert(EstimateEntity(
+            ObjectId(),
+            estimate.userName,
+            estimate.cpu.name,
+            estimate.motherBoard.name,
+            estimate.memory.name,
+            estimate.dataStorage.name,
+            estimate.graphicsCard.name,
+            estimate.cpuCooler.name,
+            estimate.powerSupply.name,
+            estimate.case.name)
+        )
     }
 
     @Transactional

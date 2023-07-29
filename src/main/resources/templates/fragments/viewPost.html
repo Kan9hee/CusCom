@@ -7,31 +7,59 @@
 <body>
     <form th:action>
         <div>
-            <h2 th:value="${post.title}">제목</h2>
+            <h2 th:text="${post.title}">제목</h2>
         </div>
         <div>
-            조회수
-            <h3 th:value="${post.viewCount}"></h3>
-            좋아요
-            <h3 th:value="${post.likeCount}"></h3>
-        </div>
-        <div th:value="${post.content}">
-            내용
+            <h3>조회수</h3>
+            <p th:text="${post.viewCount}"></p>
+            <h3>좋아요</h3>
+            <p th:text="${post.likeCount}"></p>
         </div>
         <div>
-            <h4 th:value="${post.tags}">태그</h4>
+            <p th:text="${post.content}">내용</p>
         </div>
         <div>
-            <button>좋아요</button>
+            <h4>태그</h4>
+            <div th:each="tag : ${post.tags}">
+                <p th:text="${tag}">태그</p>
+            </div>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">좋아요</button>
         </div>
         <div>
             <h4>댓글</h4>
-            <textarea></textarea>
-            <button>작성</button>
+            <textarea name="comment" id="comment" class="form-control"></textarea>
         </div>
+    </form>
+    <form method="post" onsubmit="submitComment(event)">
+        <button type="submit" class="btn btn-primary">작성</button>
     </form>
 </body>
 <script type="text/javascript">
+        function submitComment(event) {
+            event.preventDefault();
 
-</script>
+            var data = {
+                _id: "",
+                postID: "[[${post._id}]]",
+                userName: null,
+                content: document.getElementById('comment').value
+            };
+
+            $.ajax({
+                url: "/CusCom/uploadComment",
+                type: "post",
+                data: { "commentData": JSON.stringify(data) }
+            }).done(function() {
+                window.location.href = '/adminPage/main';
+            }).fail(function(error) {
+                console.log("Error:", error);
+            });
+        }
+
+        function returnForm(){
+            history.go(-1);
+        }
+    </script>
 </html>

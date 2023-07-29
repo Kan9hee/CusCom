@@ -16,7 +16,15 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
 
     @Transactional
     fun uploadPost(sharePlacePost: SharePlacePost){
-        mongoTemplate.insert(SharePlacePostEntity(sharePlacePost))
+        mongoTemplate.insert(SharePlacePostEntity(
+            ObjectId(),
+            sharePlacePost.estimateID,
+            sharePlacePost.title,
+            sharePlacePost.content,
+            sharePlacePost.tags,
+            sharePlacePost.viewCount,
+            sharePlacePost.likeCount)
+        )
     }
 
     @Transactional
@@ -32,6 +40,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
         val entity = mongoTemplate.findOne(query,SharePlacePostEntity::class.java)
         return entity?.let {
             SharePlacePost(
+                it._id.toHexString(),
                 it.estimateID,
                 it.title,
                 it.content,
@@ -45,6 +54,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
     fun getPostList(): List<SharePlacePost> {
         return mongoTemplate.findAll(SharePlacePostEntity::class.java).map {
             entity:SharePlacePostEntity->SharePlacePost(
+                entity._id.toHexString(),
                 entity.estimateID,
                 entity.title,
                 entity.content,
@@ -56,8 +66,13 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
     }
 
     @Transactional
-    fun writeComment(comment: Comment){
-        mongoTemplate.insert(CommentEntity(comment))
+    fun uploadComment(comment: Comment){
+        mongoTemplate.insert(CommentEntity(
+            ObjectId(),
+            comment.postID,
+            comment.userName,
+            comment.content)
+        )
     }
 
     @Transactional
@@ -71,6 +86,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
         val query= Query(Criteria.where(option).`is`(ObjectId(value)))
         return mongoTemplate.find(query,CommentEntity::class.java).map {
             entity:CommentEntity->Comment(
+                entity._id.toHexString(),
                 entity.postID,
                 entity.userName,
                 entity.content

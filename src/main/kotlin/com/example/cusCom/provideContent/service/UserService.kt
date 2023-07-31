@@ -12,7 +12,8 @@ class UserService(private val passwordEncoder: PasswordEncoder,
                   private val userRepo: UserRepository) {
     @Transactional
     fun joinUser(user:User){
-        userRepo.save(UserEntity(user,passwordEncoder))
+        user.userPassword=passwordEncoder.encode(user.userPassword)
+        userRepo.save(UserEntity(user))
     }
 
     @Transactional(readOnly = true)

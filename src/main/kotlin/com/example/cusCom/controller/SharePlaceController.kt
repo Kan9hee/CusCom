@@ -26,7 +26,7 @@ class SharePlaceController(private val desktopPartsService: DesktopPartsService,
                            private val sharePlaceService: SharePlaceService) {
 
     @PostMapping("/estimate")
-    fun postDataTest(@RequestParam("Estimates") estimateJSON:String):String{
+    fun postDataTest(@RequestParam("estimate") estimateJSON:String): ResponseEntity<String> {
         try {
             val estimate= GsonBuilder()
                 .registerTypeAdapter(Estimate::class.java, EstimateDeserializer(desktopPartsService))
@@ -36,7 +36,7 @@ class SharePlaceController(private val desktopPartsService: DesktopPartsService,
         } catch (e: UnsupportedEncodingException) {
             e.printStackTrace()
         }
-        return "redirect:/main"
+        return ResponseEntity.ok("Success")
     }
 
     @GetMapping("/CusCom/postUploadPage")
@@ -53,7 +53,8 @@ class SharePlaceController(private val desktopPartsService: DesktopPartsService,
 
     @GetMapping("/CusCom/SharePlace")
     fun getPostPage(@RequestParam("id") postID:ObjectId,model: Model):String{
-        model.addAttribute("post",sharePlaceService.getPost(postID.toHexString()))
+        model.addAttribute("post",sharePlaceService.getPost("_id",postID.toHexString()))
+        model.addAttribute("commentList",sharePlaceService.getCommentList("postID",postID.toHexString()))
         return "viewPostPage"
     }
 
@@ -61,8 +62,7 @@ class SharePlaceController(private val desktopPartsService: DesktopPartsService,
     fun uploadComment(@RequestParam("commentData") commentJSON:String): ResponseEntity<String> {
         val jsonObject=Gson().fromJson(commentJSON, JsonObject::class.java)
         jsonObject.addProperty("userName", SecurityContextHolder.getContext().authentication.name)
-        val completedJSON=Gson().toJson(jsonObject)
-        sharePlaceService.uploadComment(Gson().fromJson(completedJSON, Comment::class.java))
+        sharePlaceService.uploadComment(Gson().fromJson(Gson().toJson(jsonObject), Comment::class.java))
         return ResponseEntity.ok("Success")
     }
 

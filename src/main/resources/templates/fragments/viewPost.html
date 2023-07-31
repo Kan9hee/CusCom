@@ -29,12 +29,16 @@
         </div>
         <div>
             <h4>댓글</h4>
-            <textarea name="comment" id="comment" class="form-control"></textarea>
+            <textarea name="submitComment" id="submitComment" class="form-control"></textarea>
         </div>
     </form>
     <form method="post" onsubmit="submitComment(event)">
         <button type="submit" class="btn btn-primary">작성</button>
     </form>
+    <div th:each="comment : ${commentList}">
+        <p th:text="${comment.userName}">이름</p>
+        <p th:text="${comment.content}"><small class="text-body-secondary">내용</small></p>
+    </div>
 </body>
 <script type="text/javascript">
         function submitComment(event) {
@@ -44,7 +48,7 @@
                 _id: "",
                 postID: "[[${post._id}]]",
                 userName: null,
-                content: document.getElementById('comment').value
+                content: document.getElementById('submitComment').value
             };
 
             $.ajax({

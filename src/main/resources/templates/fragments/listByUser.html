@@ -230,14 +230,13 @@
             </div>
         </div>
     </div>
-    <form method="post" onsubmit="submitForm(event)">
-        <input type="hidden" id="Estimates" name="Estimates">
+    <form method="post" onsubmit="submitEstimate(event)">
         <button type="submit" id="save" class="btn btn-primary">저장</button>
     </form>
 </div>
 <script type="text/javascript">
 
-    var Estimates = {
+    var data = {
         userName:"[[${userName}]]",
         cpu:"",
         motherBoard:"",
@@ -255,28 +254,28 @@
         console.log("상품명: "+name+"부품유형"+datatype);
         switch(datatype){
             case 'cpu':
-                Estimates.cpu=name;
+                data.cpu=name;
                 break;
             case 'motherBoard':
-                Estimates.motherBoard=name;
+                data.motherBoard=name;
                 break;
             case 'memory':
-                Estimates.memory=name;
+                data.memory=name;
                 break;
             case 'dataStorage':
-                Estimates.dataStorage=name;
+                data.dataStorage=name;
                 break;
             case 'graphicsCard':
-                Estimates.graphicsCard=name;
+                data.graphicsCard=name;
                 break;
             case 'cpuCooler':
-                Estimates.cpuCooler=name;
+                data.cpuCooler=name;
                 break;
             case 'powerSupply':
-                Estimates.powerSupply=name;
+                data.powerSupply=name;
                 break;
             case 'desktopCase':
-                Estimates.desktopCase=name;
+                data.desktopCase=name;
                 break;
             default:
                 console.log("분류되지 않은 데이터");
@@ -288,10 +287,17 @@
         button.addEventListener('click',function(){addParts(button);});
     });
 
-    function submitForm(event) {
+    function submitEstimate(event) {
         event.preventDefault();
-        document.getElementById('Estimates').value=JSON.stringify(Estimates);
-        event.target.submit();
+        $.ajax({
+            url: "/estimate",
+            type: "post",
+            data: { "estimate": JSON.stringify(data) }
+        }).done(function() {
+            window.location.href = '/main';
+        }).fail(function(error) {
+            console.log("Error:", error);
+        });
     }
 </script>
 </body>

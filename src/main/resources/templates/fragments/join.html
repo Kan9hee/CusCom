@@ -13,23 +13,28 @@
         <label for="userPassword" class="sr-only">비밀번호</label>
         <input type="text" name="userPassword" id="userPassword" placeholder="비밀번호"/>
     </p>
-    <form method="post" onsubmit="submitForm(event)">
-        <input type="hidden" id="user" name="user">
+    <form method="post" onsubmit="join(event)">
         <button type="submit" id="save" class="btn btn-lg btn-primary btn-block">회원가입</button>
     </form>
     <script type="text/javascript">
-        function submitForm(event) {
+        function join(event) {
             event.preventDefault();
 
-            var user = {
+            var data = {
                 userName: document.getElementById('userName').value,
                 userPassword: document.getElementById('userPassword').value,
                 userRole: "USER"
             };
-            var jsonData = JSON.stringify(user);
 
-            document.getElementById('user').value = jsonData;
-            event.target.submit();
+            $.ajax({
+                url: "/CusCom/join",
+                type: "post",
+                data: { "user": JSON.stringify(data) }
+            }).done(function() {
+                window.location.href = '/CusCom/loginPage';
+            }).fail(function(error) {
+                console.log("Error:", error);
+            });
         }
     </script>
 </body>

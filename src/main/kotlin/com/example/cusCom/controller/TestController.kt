@@ -5,6 +5,7 @@ import com.example.cusCom.userEstimate.exception.EstimateException
 import com.example.cusCom.provideContent.service.DesktopPartsService
 import com.example.cusCom.provideContent.service.UserService
 import com.google.gson.Gson
+import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -20,20 +21,20 @@ class TestController(private val userService: UserService,
         return "loginPage"
     }
 
-    @GetMapping("/CusCom/join")
+    @GetMapping("/CusCom/joinPage")
     fun getUserJoin():String{
         return "joinPage"
     }
 
     @PostMapping("/CusCom/join")
-    fun postUserJoin(@RequestParam("user") userJSON:String):String{
+    fun postUserJoin(@RequestParam("user") userJSON:String): ResponseEntity<String> {
         userService.joinUser(Gson().fromJson(userJSON, User::class.java))
-        return "redirect:/CusCom/login"
+        return ResponseEntity.ok("Success")
     }
 
     @PostMapping("/main")
     fun logout():String{
-        return "/CusCom/login"
+        return "/CusCom/loginPage"
     }
 
     @GetMapping("/main")
@@ -41,7 +42,7 @@ class TestController(private val userService: UserService,
         return "mainPage"
     }
 
-    @GetMapping("/estimate")
+    @GetMapping("/customPage")
     fun getDataTest(model:Model):String{
         model.addAttribute("userName",SecurityContextHolder.getContext().authentication.name)
         model.addAttribute("caseList",desktopPartsService.getCaseList())

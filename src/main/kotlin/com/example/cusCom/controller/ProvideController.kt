@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*
 
 
 @Controller
-class TestController(private val userService: UserService,
-                     private val desktopPartsService: DesktopPartsService) {
+class ProvideController(private val userService: UserService,
+                        private val desktopPartsService: DesktopPartsService) {
 
     @GetMapping("/CusCom/login")
     fun loginPage():String{

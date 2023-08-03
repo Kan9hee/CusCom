@@ -297,6 +297,37 @@
       <footer class="my-5 pt-5 text-body-secondary text-center text-small">
         <p class="mb-1">&copy; 2023 CusCom</p>
       </footer>
+
+      <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function(){
+          document.querySelectorAll(".delete-btn")
+            .forEach(button => {
+              const deleteData = {
+                name: button.getAttribute("data-item-id"),
+                type: findParentTableId(button)
+              };
+
+              button.addEventListener('click', function(){
+                const id = button.getAttribute("data-id");
+                fetch("/adminPage/deleteParts",{
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => console.log(response))
+                .then(
+                  document.querySelector('tr[data-id="${id}"]').remove();
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+              });
+
+            });
+        });
+      </script>
     </main>
 </body>
 </html>

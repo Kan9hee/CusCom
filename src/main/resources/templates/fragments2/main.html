@@ -4,19 +4,42 @@
     <div th:replace="~{fragments2/setup :: setup}"/>
 </head>
 <body class="d-flex h-100 text-center text-bg-dark">
+
     <div class="cover-container d-flex w-100 h-100 mx-auto flex-column">
         <div th:insert="~{fragments2/header :: header}"></div>
         <main class="px-3">
             <h1>CUS-COM</h1>
             <div class="d-grid gap-2 col-6 w-50 mx-auto">
-                <button class="btn btn-lg btn-primary btn-light fw-bold" type="submit">일반 유저 페이지</button>
-                <button class="btn btn-lg btn-primary btn-warning fw-bold" type="submit">관리자 페이지</button>
-                <button class="btn btn-lg btn-primary btn-danger fw-bold" type="submit">로그아웃</button>
+                <button class="btn btn-lg btn-primary btn-light fw-bold" type="submit" id="userPage">일반 유저 페이지</button>
+                <button class="btn btn-lg btn-primary btn-warning fw-bold" type="submit" id="adminPage">관리자 페이지</button>
+                <button class="btn btn-lg btn-primary btn-danger fw-bold" type="submit" id="logout">로그아웃</button>
             </div>
         </main>
         <footer class="mt-auto text-white-50">
             <p>Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a href="https://twitter.com/mdo" class="text-white">@mdo</a>.</p>
         </footer>
     </div>
+
+    <script type="text/javascript">
+        document.getElementById('userPage')
+            .addEventListener('click',function(event){
+                window.location.href='/CusCom/test/user';
+            });
+
+        document.getElementById('adminPage')
+            .addEventListener('click',function(event){
+                window.location.href='/CusCom/test/admin';
+            });
+
+        document.getElementById('logout')
+            .addEventListener('click',function(event){
+                fetch("/logout")
+                    .then(response => console.log(response))
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+                location.reload()
+            });
+    </script>
 </body>
 </html>

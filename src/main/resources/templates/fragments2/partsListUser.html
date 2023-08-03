@@ -1,0 +1,395 @@
+<!doctype html>
+<html class="h-100" xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF8">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+  <style>
+    tr{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+    <main>
+      <div class="container-fluid">
+
+        <header data-bs-theme="dark" th:fragment="header">
+          <div class="navbar navbar-dark bg-dark shadow-sm">
+            <div class="container">
+              <a href="#" class="navbar-brand d-flex align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-gpu-card me-1" viewBox="0 0 16 16">
+                  <path d="M4 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm7.5-1.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"/>
+                  <path d="M0 1.5A.5.5 0 0 1 .5 1h1a.5.5 0 0 1 .5.5V4h13.5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5H2v2.5a.5.5 0 0 1-1 0V2H.5a.5.5 0 0 1-.5-.5Zm5.5 4a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5ZM9 8a2.5 2.5 0 1 0 5 0 2.5 2.5 0 0 0-5 0Z"/>
+                  <path d="M3 12.5h3.5v1a.5.5 0 0 1-.5.5H3.5a.5.5 0 0 1-.5-.5v-1Zm4 1v-1h4v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5Z"/>
+                </svg>
+                <strong>Cus-Com</strong>
+              </a>
+              <ul class="nav nav-underline">
+                <li class="nav-item">
+                  <a class="nav-link disabled" aria-disabled="true">부품 정보</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">컴퓨터 견적</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">견적 게시판</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">로그인</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="row g-5 ">
+          <div class="col-md-5 col-lg-4 py-5 order-md-last">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+              <span class="text-primary">현재 견적</span>
+            </h4>
+            <ul class="list-group mb-3">
+              <li class="list-group-item d-flex justify-content-between lh-sm">
+                <div>
+                  <h6 class="my-0">케이스</h6>
+                  <small class="text-body-secondary">부품명</small>
+                </div>
+              </li>
+              <li class="list-group-item d-flex justify-content-between lh-sm">
+                <div>
+                  <h6 class="my-0">CPU 쿨러</h6>
+                  <small class="text-body-secondary">부품명</small>
+                </div>
+              </li>
+              <li class="list-group-item d-flex justify-content-between lh-sm">
+                <div>
+                  <h6 class="my-0">CPU</h6>
+                  <small class="text-body-secondary">부품명</small>
+                </div>
+              </li>
+              <li class="list-group-item d-flex justify-content-between lh-sm">
+                <div>
+                  <h6 class="my-0">저장장치</h6>
+                  <small class="text-body-secondary">부품명</small>
+                </div>
+              </li>
+              <li class="list-group-item d-flex justify-content-between lh-sm">
+                <div>
+                  <h6 class="my-0">그래픽카드</h6>
+                  <small class="text-body-secondary">부품명</small>
+                </div>
+              </li>
+              <li class="list-group-item d-flex justify-content-between lh-sm">
+                <div>
+                  <h6 class="my-0">메모리</h6>
+                  <small class="text-body-secondary">부품명</small>
+                </div>
+              </li>
+              <li class="list-group-item d-flex justify-content-between lh-sm">
+                <div>
+                  <h6 class="my-0">메인보드</h6>
+                  <small class="text-body-secondary">부품명</small>
+                </div>
+              </li>
+              <li class="list-group-item d-flex justify-content-between lh-sm">
+                <div>
+                  <h6 class="my-0">파워서플라이</h6>
+                  <small class="text-body-secondary">부품명</small>
+                </div>
+              </li>
+            </ul>
+            <form class="card p-2">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Promo code">
+                <button type="submit" class="btn btn-secondary">Redeem</button>
+              </div>
+            </form>
+          </div>
+
+        <div class="accordion py-5" id="partsList" style="width:60%; overflow:auto;">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCase" aria-expanded="true" aria-controls="collapseOne">
+                Case
+              </button>
+            </h2>
+            <div id="collapseCase" class="accordion-collapse collapse" data-bs-parent="#partsList">
+              <div class="accordion-body">
+                <table class="table">
+                  <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>Case</td>
+                    <td>
+                      <div class="button-container" style="display: flex; gap: 10px;">
+                        <form method="get" action="/adminPage/editCase">
+                          <input type="hidden" id="Case" name="Case">
+                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                        </form>
+                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCPUCooler" aria-expanded="true" aria-controls="collapseOne">
+                CPUCooler
+              </button>
+            </h2>
+            <div id="collapseCPUCooler" class="accordion-collapse collapse" data-bs-parent="#partsList">
+              <div class="accordion-body">
+                <table class="table">
+                  <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>CPUCooler</td>
+                    <td>
+                      <div class="button-container" style="display: flex; gap: 10px;">
+                        <form method="get" action="/adminPage/editCase">
+                          <input type="hidden" id="CPUCooler" name="CPUCooler">
+                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                        </form>
+                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCPU" aria-expanded="true" aria-controls="collapseOne">
+                CPU
+              </button>
+            </h2>
+            <div id="collapseCPU" class="accordion-collapse collapse" data-bs-parent="#partsList">
+              <div class="accordion-body">
+                <table class="table">
+                  <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>CPU</td>
+                    <td>
+                      <div class="button-container" style="display: flex; gap: 10px;">
+                        <form method="get" action="/adminPage/editCase">
+                          <input type="hidden" id="CPU" name="CPU">
+                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                        </form>
+                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDataStorage" aria-expanded="true" aria-controls="collapseOne">
+                DataStorage
+              </button>
+            </h2>
+            <div id="collapseDataStorage" class="accordion-collapse collapse" data-bs-parent="#partsList">
+              <div class="accordion-body">
+                <table class="table">
+                  <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>DataStorage</td>
+                    <td>
+                      <div class="button-container" style="display: flex; gap: 10px;">
+                        <form method="get" action="/adminPage/editCase">
+                          <input type="hidden" id="DataStorage" name="DataStorage">
+                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                        </form>
+                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGraphicsCard" aria-expanded="true" aria-controls="collapseOne">
+                GraphicsCard
+              </button>
+            </h2>
+            <div id="collapseGraphicsCard" class="accordion-collapse collapse" data-bs-parent="#partsList">
+              <div class="accordion-body">
+                <table class="table">
+                  <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>GraphicsCard</td>
+                    <td>
+                      <div class="button-container" style="display: flex; gap: 10px;">
+                        <form method="get" action="/adminPage/editCase">
+                          <input type="hidden" id="GraphicsCard" name="GraphicsCard">
+                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                        </form>
+                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMemory" aria-expanded="true" aria-controls="collapseOne">
+                Memory
+              </button>
+            </h2>
+            <div id="collapseMemory" class="accordion-collapse collapse" data-bs-parent="#partsList">
+              <div class="accordion-body">
+                <table class="table">
+                  <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>Memory</td>
+                    <td>
+                      <div class="button-container" style="display: flex; gap: 10px;">
+                        <form method="get" action="/adminPage/editCase">
+                          <input type="hidden" id="Memory" name="Memory">
+                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                        </form>
+                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMotherBoard" aria-expanded="true" aria-controls="collapseOne">
+                MotherBoard
+              </button>
+            </h2>
+            <div id="collapseMotherBoard" class="accordion-collapse collapse" data-bs-parent="#partsList">
+              <div class="accordion-body">
+                <table class="table">
+                  <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>MotherBoard</td>
+                    <td>
+                      <div class="button-container" style="display: flex; gap: 10px;">
+                        <form method="get" action="/adminPage/editCase">
+                          <input type="hidden" id="MotherBoard" name="MotherBoard">
+                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                        </form>
+                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePowerSupply" aria-expanded="true" aria-controls="collapseOne">
+                PowerSupply
+              </button>
+            </h2>
+            <div id="collapsePowerSupply" class="accordion-collapse collapse" data-bs-parent="#partsList">
+              <div class="accordion-body">
+                <table class="table">
+                  <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>PowerSupply</td>
+                    <td>
+                      <div class="button-container" style="display: flex; gap: 10px;">
+                        <form method="get" action="/adminPage/editCase">
+                          <input type="hidden" id="PowerSupply" name="PowerSupply">
+                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                        </form>
+                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <footer class="my-5 pt-5 text-body-secondary text-center text-small">
+        <p class="mb-1">&copy; 2023 CusCom</p>
+      </footer>
+    </main>
+</body>
+</html>

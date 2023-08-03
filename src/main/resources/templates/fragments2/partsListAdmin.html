@@ -1,0 +1,302 @@
+<!doctype html>
+<html class="h-100" xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
+<head>
+  <div th:replace="~{fragments2/setup :: setup}"/>
+  <style>
+    tr{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+    <main>
+      <div class="container-fluid">
+        <div th:insert="~{fragments2/header :: header}"></div>
+
+        <div class="accordion py-5" id="partsList" style="width:60%; overflow:auto;">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCase" aria-expanded="true" aria-controls="collapseOne">
+                Case
+              </button>
+            </h2>
+            <div id="collapseCase" class="accordion-collapse collapse" data-bs-parent="#partsList">
+              <div class="accordion-body">
+                <table class="table">
+                  <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>Case</td>
+                    <td>
+                      <div class="button-container" style="display: flex; gap: 10px;">
+                        <form method="get" action="/adminPage/editCase">
+                          <input type="hidden" id="Case" name="Case">
+                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                        </form>
+                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCPUCooler" aria-expanded="true" aria-controls="collapseOne">
+                CPUCooler
+              </button>
+            </h2>
+            <div id="collapseCPUCooler" class="accordion-collapse collapse" data-bs-parent="#partsList">
+              <div class="accordion-body">
+                <table class="table">
+                  <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>CPUCooler</td>
+                    <td>
+                      <div class="button-container" style="display: flex; gap: 10px;">
+                        <form method="get" action="/adminPage/editCase">
+                          <input type="hidden" id="CPUCooler" name="CPUCooler">
+                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                        </form>
+                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCPU" aria-expanded="true" aria-controls="collapseOne">
+                CPU
+              </button>
+            </h2>
+            <div id="collapseCPU" class="accordion-collapse collapse" data-bs-parent="#partsList">
+              <div class="accordion-body">
+                <table class="table">
+                  <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>CPU</td>
+                    <td>
+                      <div class="button-container" style="display: flex; gap: 10px;">
+                        <form method="get" action="/adminPage/editCase">
+                          <input type="hidden" id="CPU" name="CPU">
+                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                        </form>
+                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDataStorage" aria-expanded="true" aria-controls="collapseOne">
+                DataStorage
+              </button>
+            </h2>
+            <div id="collapseDataStorage" class="accordion-collapse collapse" data-bs-parent="#partsList">
+              <div class="accordion-body">
+                <table class="table">
+                  <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>DataStorage</td>
+                    <td>
+                      <div class="button-container" style="display: flex; gap: 10px;">
+                        <form method="get" action="/adminPage/editCase">
+                          <input type="hidden" id="DataStorage" name="DataStorage">
+                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                        </form>
+                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGraphicsCard" aria-expanded="true" aria-controls="collapseOne">
+                GraphicsCard
+              </button>
+            </h2>
+            <div id="collapseGraphicsCard" class="accordion-collapse collapse" data-bs-parent="#partsList">
+              <div class="accordion-body">
+                <table class="table">
+                  <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>GraphicsCard</td>
+                    <td>
+                      <div class="button-container" style="display: flex; gap: 10px;">
+                        <form method="get" action="/adminPage/editCase">
+                          <input type="hidden" id="GraphicsCard" name="GraphicsCard">
+                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                        </form>
+                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMemory" aria-expanded="true" aria-controls="collapseOne">
+                Memory
+              </button>
+            </h2>
+            <div id="collapseMemory" class="accordion-collapse collapse" data-bs-parent="#partsList">
+              <div class="accordion-body">
+                <table class="table">
+                  <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>Memory</td>
+                    <td>
+                      <div class="button-container" style="display: flex; gap: 10px;">
+                        <form method="get" action="/adminPage/editCase">
+                          <input type="hidden" id="Memory" name="Memory">
+                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                        </form>
+                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMotherBoard" aria-expanded="true" aria-controls="collapseOne">
+                MotherBoard
+              </button>
+            </h2>
+            <div id="collapseMotherBoard" class="accordion-collapse collapse" data-bs-parent="#partsList">
+              <div class="accordion-body">
+                <table class="table">
+                  <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>MotherBoard</td>
+                    <td>
+                      <div class="button-container" style="display: flex; gap: 10px;">
+                        <form method="get" action="/adminPage/editCase">
+                          <input type="hidden" id="MotherBoard" name="MotherBoard">
+                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                        </form>
+                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePowerSupply" aria-expanded="true" aria-controls="collapseOne">
+                PowerSupply
+              </button>
+            </h2>
+            <div id="collapsePowerSupply" class="accordion-collapse collapse" data-bs-parent="#partsList">
+              <div class="accordion-body">
+                <table class="table">
+                  <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>PowerSupply</td>
+                    <td>
+                      <div class="button-container" style="display: flex; gap: 10px;">
+                        <form method="get" action="/adminPage/editCase">
+                          <input type="hidden" id="PowerSupply" name="PowerSupply">
+                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                        </form>
+                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <footer class="my-5 pt-5 text-body-secondary text-center text-small">
+        <p class="mb-1">&copy; 2023 CusCom</p>
+      </footer>
+    </main>
+</body>
+</html>

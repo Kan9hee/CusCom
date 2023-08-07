@@ -1,6 +1,8 @@
 package com.example.cusCom.controller
 
+import com.example.cusCom.provideContent.dto.User
 import com.example.cusCom.provideContent.service.DesktopPartsService
+import com.example.cusCom.provideContent.service.UserService
 import com.example.cusCom.userEstimate.dto.Comment
 import com.example.cusCom.userEstimate.service.EstimateDeserializer
 import com.example.cusCom.userEstimate.dto.Estimate
@@ -10,20 +12,23 @@ import com.example.cusCom.userEstimate.service.SharePlaceService
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
-import org.bson.types.ObjectId
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.stereotype.Controller
-import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 import java.io.UnsupportedEncodingException
 
-@Controller
-class SharePlaceController(private val desktopPartsService: DesktopPartsService,
-                           private val estimateService: EstimateService,
-                           private val sharePlaceService: SharePlaceService) {
+@RestController
+@RequestMapping("/CusCom")
+class UserRestController(private val desktopPartsService: DesktopPartsService,
+                         private val estimateService: EstimateService,
+                         private val sharePlaceService: SharePlaceService,
+                         private val userService: UserService) {
+
+    @PostMapping("/join")
+    fun postUserJoin(@RequestBody user: User): ResponseEntity<String> {
+        userService.joinUser(user)
+        return ResponseEntity.ok("Success")
+    }
 
     @PostMapping("/estimate")
     fun postDataTest(@RequestParam("estimate") estimateJSON:String): ResponseEntity<String> {
@@ -39,26 +44,13 @@ class SharePlaceController(private val desktopPartsService: DesktopPartsService,
         return ResponseEntity.ok("Success")
     }
 
-    @GetMapping("/CusCom/postUploadPage")
-    fun getUploadPage(@RequestParam("id") estimateID:ObjectId,model: Model):String{
-        model.addAttribute("id",estimateID.toHexString())
-        return "createPostPage"
-    }
-
-    @PostMapping("/CusCom/uploadPost")
+    @PostMapping("/uploadPost")
     fun uploadPost(@RequestParam("postData") postJSON:String): ResponseEntity<String> {
         sharePlaceService.uploadPost(Gson().fromJson(postJSON,SharePlacePost::class.java))
         return ResponseEntity.ok("Success")
     }
 
-    @GetMapping("/CusCom/SharePlace")
-    fun getPostPage(@RequestParam("id") postID:ObjectId,model: Model):String{
-        model.addAttribute("post",sharePlaceService.getPost("_id",postID.toHexString()))
-        model.addAttribute("commentList",sharePlaceService.getCommentList("postID",postID.toHexString()))
-        return "viewPostPage"
-    }
-
-    @PostMapping("/CusCom/uploadComment")
+    @PostMapping("/uploadComment")
     fun uploadComment(@RequestParam("commentData") commentJSON:String): ResponseEntity<String> {
         val jsonObject=Gson().fromJson(commentJSON, JsonObject::class.java)
         jsonObject.addProperty("userName", SecurityContextHolder.getContext().authentication.name)
@@ -66,12 +58,12 @@ class SharePlaceController(private val desktopPartsService: DesktopPartsService,
         return ResponseEntity.ok("Success")
     }
 
-    @PostMapping("/CusCom/increaseLike")
+    @PostMapping("/increaseLike")
     fun increaseLike(@RequestParam("likeAction") action:String): ResponseEntity<String> {
         return ResponseEntity.ok("Success")
     }
 
-    @PostMapping("/CusCom/decreaseLike")
+    @PostMapping("/decreaseLike")
     fun decreaseLike(@RequestParam("dislikeAction") action:String): ResponseEntity<String> {
         return ResponseEntity.ok("Success")
     }

@@ -1,0 +1,129 @@
+<!doctype html>
+<html class="h-100" xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
+<head>
+  <div th:replace="~{fragments2/setup :: setup}"/>
+</head>
+<body class="d-flex align-items-center py-4 bg-body-tertiary">
+  <div class="container">
+    <main class="m-auto">
+      <div class="py-5 text-center">
+        <h2>저장장치 데이터 등록 페이지</h2>
+      </div>
+
+      <div class="row g-5">
+        <div>
+          <form>
+            <div class="row g-4">
+              <div class="col-6">
+                <label for="name" class="form-label">이름</label>
+                <input type="text" class="form-control" id="name" placeholder="" value="">
+              </div>
+
+              <div class="col-6">
+                <label for="manufacturer" class="form-label">제조사</label>
+                <input type="text" class="form-control" id="manufacturer" placeholder="">
+              </div>
+
+              <div class="col-9">
+                <label for="storageInterface" class="form-label">인터페이스</label>
+                <select class="form-select" aria-label="Default select example" id="storageInterface">
+                  <option value="PCIe 4.0(x4)">PCIe 4.0(x4)</option>
+                  <option value="PCIe 3.0(x4)">PCIe 3.0(x4)</option>
+                  <option value="Thunderbolt 3">Thunderbolt 3</option>
+                  <option value="SATA(6 Gbps)">SATA(6 Gbps)</option>
+                  <option value="USB 3.2 Gen2x2">USB 3.2 Gen2x2</option>
+                  <option value="USB 3.2 Gen2">USB 3.2 Gen2</option>
+                  <option value="USB 3.2 Gen1">USB 3.2 Gen1</option>
+                </select>
+              </div>
+
+              <div class="col-9">
+                <label for="formFactor" class="form-label">폼팩터</label>
+                <select class="form-select" aria-label="Default select example" id="formFactor">
+                  <option value="M.2 2280">M.2 2280</option>
+                  <option value="외장형">외장형</option>
+                  <option value="3.5형">3.5형</option>
+                  <option value="2.5형">2.5형</option>
+                </select>
+              </div>
+
+              <div class="col-9">
+                <label for="capacity" class="form-label">용량</label>
+                <select class="form-select" aria-label="Default select example" id="capacity">
+                  <option value="256GB">256GB</option>
+                  <option value="512GB">512GB</option>
+                  <option value="1TB">1TB</option>
+                  <option value="2TB">2TB</option>
+                  <option value="4TB">4TB</option>
+                </select>
+              </div>
+
+              <div class="col-4">
+                <label for="readSpeed" class="form-label">읽기 성능</label>
+                <input type="number" class="form-control" id="readSpeed" placeholder="">
+              </div>
+
+              <div class="col-4">
+                <label for="writeSpeed" class="form-label">쓰기 성능</label>
+                <input type="number" class="form-control" id="writeSpeed" placeholder="">
+              </div>
+
+              <label for="imageFile">부품 이미지</label>
+              <input type="file" class="form-control" id="imageFile">
+            </div>
+
+            <hr class="my-4">
+
+            <div class="d-grid gap-2 d-md-block">
+              <button class="btn btn-primary btn-lg" type="submit" id="confirm">데이터 등록</button>
+              <button class="btn btn-secondary btn-lg" type="submit" id="cancel">취소</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <footer class="py-5 text-body-secondary text-center text-small">
+      <p class="mb-1">&copy; 2023 CusCom</p>
+    </footer>
+  </div>
+  <script type="text/javascript">
+
+    document.getElementById('confirm')
+            .addEventListener('click',function(event){
+              const DataStorage = {
+                name: document.getElementById('name').value,
+                manufacturer: document.getElementById('manufacturer').value,
+                storageInterface: document.getElementById('storageInterface').value,
+                formFactor: document.getElementById('formFactor').value,
+                capacity: document.getElementById('capacity').value,
+                readSpeed: document.getElementById('readSpeed').value,
+                writeSpeed: document.getElementById('writeSpeed').value
+              };
+
+              var formData = new FormData();
+              formData.append('Type', 'DataStorage');
+              formData.append('Data', JSON.stringify(DataStorage));
+              formData.append('Image', $('#imageFile')[0].files[0]);
+
+              fetch("/CusCom/join", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json"
+                    },
+                    body: formData
+                })
+                .then(response => console.log(response))
+                .catch(error => {
+                    console.error("Error:", error);
+              });
+              window.location.href='/CusCom/adminPage';
+            }
+
+    document.getElementById('cancel')
+            .addEventListener('click',function(event){
+                history.go(-1);
+            });
+  </script>
+</body>
+</html>

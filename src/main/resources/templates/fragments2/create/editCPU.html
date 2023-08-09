@@ -16,39 +16,39 @@
             <div class="row g-4">
               <div class="col-6">
                 <label for="name" class="form-label">이름</label>
-                <input type="text" class="form-control" id="name" placeholder="" value="">
+                <input type="text" class="form-control" id="name" placeholder="" value="${item.name}">
               </div>
 
               <div class="col-6">
                 <label for="manufacturer" class="form-label">제조사</label>
-                <input type="text" class="form-control" id="manufacturer" placeholder="">
+                <input type="text" class="form-control" id="manufacturer" placeholder="" value="${item.manufacturer}">
               </div>
 
               <div class="col-4">
                 <label for="core" class="form-label">코어</label>
-                <input type="number" class="form-control" id="core" placeholder="">
+                <input type="number" class="form-control" id="core" placeholder="" value="${item.core}">
               </div>
 
               <div class="col-4">
                 <label for="thread" class="form-label">스레드</label>
-                <input type="number" class="form-control" id="thread" placeholder="">
+                <input type="number" class="form-control" id="thread" placeholder="" value="${item.thread}">
               </div>
 
               <div class="col-4">
                 <label for="graphicsCardLength" class="form-label">TDP</label>
-                <input type="number" class="form-control" id="graphicsCardLength" placeholder="">
+                <input type="number" class="form-control" id="graphicsCardLength" placeholder="" value="${item.graphicsCardLength}">
               </div>
 
             <hr class="my-4">
 
               <div class="form-check">
                 <label for="isBuiltInGraphics" class="form-check-label">내장그래픽 여부</label>
-                <input type="checkbox" class="form-check-input" id="isBuiltInGraphics" placeholder="">
+                <input type="checkbox" class="form-check-input" id="isBuiltInGraphics" placeholder="" value="${item.isBuiltInGraphics}">
               </div>
               <br>
               <div class="col-6">
                 <label for="builtInGraphicName" class="form-label">내장그래픽 이름</label>
-                <input type="text" class="form-control" id="builtInGraphicName" placeholder="">
+                <input type="text" class="form-control" id="builtInGraphicName" placeholder="" value="${item.builtInGraphicName}">
               </div>
 
             <hr class="my-4">
@@ -56,15 +56,15 @@
             <div class="row g-4">
               <div class="col-4">
                 <label for="socket" class="form-label">소켓</label>
-                <input type="text" class="form-control" id="socket" placeholder="">
+                <input type="text" class="form-control" id="socket" placeholder="" value="${item.socket}">
               </div>
 
               <div class="col-8">
                 <label for="memoryType" class="form-label">메모리 타입</label>
                 <select class="form-select" aria-label="Default select example" id="memoryType">
-                  <option value="DDR5">DDR5</option>
-                  <option value="DDR4">DDR4</option>
-                  <option value="DDR3">DDR3</option>
+                  <option value="DDR5" th:selected="${item.memoryType == 'DDR5'}">DDR5</option>
+                  <option value="DDR4" th:selected="${item.memoryType == 'DDR4'}">DDR4</option>
+                  <option value="DDR3" th:selected="${item.memoryType == 'DDR3'}">DDR3</option>
                 </select>
               </div>
             </div>

@@ -10,11 +10,6 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/adminPage")
 class AdminViewController(private val desktopPartsService: DesktopPartsService) {
 
-    @GetMapping("/admin")
-    fun testAdminPage():String{
-        return "fragments2/partsListAdmin"
-    }
-
     @GetMapping("/main")
     fun mainPage(model: Model):String{
         model.addAttribute("caseList",desktopPartsService.getCaseList())
@@ -32,7 +27,10 @@ class AdminViewController(private val desktopPartsService: DesktopPartsService) 
     fun editCaseData(@RequestParam("Case") data:String?, model:Model):String{
         if(data!=null) {
             model.addAttribute("item", desktopPartsService.findCase(data))
-            return "editPages/caseEditPage"
+            model.addAttribute("firstCreate",false)
+        }else{
+            model.addAttribute("item", desktopPartsService.loadSampleCase())
+            model.addAttribute("firstCreate",true)
         }
         return "createPages/caseCreatePage"
     }
@@ -41,7 +39,10 @@ class AdminViewController(private val desktopPartsService: DesktopPartsService) 
     fun editCPUData(@RequestParam("CPU") data:String?, model:Model):String{
         if(data!=null) {
             model.addAttribute("item", desktopPartsService.findCpu(data))
-            return "editPages/cpuEditPage"
+            model.addAttribute("firstCreate",false)
+        }else{
+            model.addAttribute("item", desktopPartsService.loadSampleCpu())
+            model.addAttribute("firstCreate",true)
         }
         return "createPages/cpuCreatePage"
     }
@@ -50,7 +51,10 @@ class AdminViewController(private val desktopPartsService: DesktopPartsService) 
     fun editCPUCoolerData(@RequestParam("CPUCooler") data:String?, model:Model):String{
         if(data!=null) {
             model.addAttribute("item", desktopPartsService.findCpuCooler(data))
-            return "editPages/cpuCoolerEditPage"
+            model.addAttribute("firstCreate",false)
+        }else{
+            model.addAttribute("item", desktopPartsService.loadSampleCpuCooler())
+            model.addAttribute("firstCreate",true)
         }
         return "createPages/cpuCoolerCreatePage"
     }
@@ -59,7 +63,10 @@ class AdminViewController(private val desktopPartsService: DesktopPartsService) 
     fun editDataStorageData(@RequestParam("DataStorage") data:String?, model:Model):String{
         if(data!=null) {
             model.addAttribute("item", desktopPartsService.findDataStorage(data))
-            return "editPages/dataStorageEditPage"
+            model.addAttribute("firstCreate",false)
+        }else{
+            model.addAttribute("item", desktopPartsService.loadSampleDataStorage())
+            model.addAttribute("firstCreate",true)
         }
         return "createPages/dataStorageCreatePage"
     }
@@ -68,7 +75,10 @@ class AdminViewController(private val desktopPartsService: DesktopPartsService) 
     fun editGraphicsCardData(@RequestParam("GraphicsCard") data:String?, model:Model):String{
         if(data!=null) {
             model.addAttribute("item", desktopPartsService.findGraphicsCard(data))
-            return "editPages/graphicsCardEditPage"
+            model.addAttribute("firstCreate",false)
+        }else{
+            model.addAttribute("item", desktopPartsService.loadSampleGraphicsCard())
+            model.addAttribute("firstCreate",true)
         }
         return "createPages/graphicsCardCreatePage"
     }
@@ -77,7 +87,10 @@ class AdminViewController(private val desktopPartsService: DesktopPartsService) 
     fun editMemoryData(@RequestParam("Memory") data:String?, model:Model):String{
         if(data!=null) {
             model.addAttribute("item", desktopPartsService.findMemory(data))
-            return "editPages/memoryEditPage"
+            model.addAttribute("firstCreate",false)
+        }else{
+            model.addAttribute("item", desktopPartsService.loadSampleMemory())
+            model.addAttribute("firstCreate",true)
         }
         return "createPages/memoryCreatePage"
     }
@@ -86,7 +99,10 @@ class AdminViewController(private val desktopPartsService: DesktopPartsService) 
     fun editMotherBoardData(@RequestParam("MotherBoard") data:String?, model:Model):String{
         if(data!=null) {
             model.addAttribute("item", desktopPartsService.findMotherBoard(data))
-            return "editPages/motherBoardEditPage"
+            model.addAttribute("firstCreate",false)
+        }else{
+            model.addAttribute("item", desktopPartsService.loadSampleMotherBoard())
+            model.addAttribute("firstCreate",true)
         }
         return "createPages/motherBoardCreatePage"
     }
@@ -95,7 +111,10 @@ class AdminViewController(private val desktopPartsService: DesktopPartsService) 
     fun editPowerSupplyData(@RequestParam("PowerSupply") data:String?, model:Model):String{
         if(data!=null) {
             model.addAttribute("item", desktopPartsService.findPowerSupply(data))
-            return "editPages/powerSupplyEditPage"
+            model.addAttribute("firstCreate",false)
+        }else{
+            model.addAttribute("item", desktopPartsService.loadSamplePowerSupply())
+            model.addAttribute("firstCreate",true)
         }
         return "createPages/powerSupplyCreatePage"
     }

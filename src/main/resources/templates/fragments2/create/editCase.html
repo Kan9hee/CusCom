@@ -16,45 +16,45 @@
             <div class="row g-4">
               <div class="col-6">
                 <label for="name" class="form-label">이름</label>
-                <input type="text" class="form-control" id="name" placeholder="" value="">
+                <input type="text" class="form-control" id="name" placeholder="" value="${item.name}">
               </div>
 
               <div class="col-6">
                 <label for="manufacturer" class="form-label">제조사</label>
-                <input type="text" class="form-control" id="manufacturer" placeholder="">
+                <input type="text" class="form-control" id="manufacturer" placeholder="" value="${item.manufacturer}">
               </div>
 
               <div class="col-9">
                 <label for="caseType" class="form-label">구분</label>
                 <select class="form-select" aria-label="Default select example" id="caseType">
-                  <option value="빅타워">빅타워</option>
-                  <option value="미들타워">미들타워</option>
-                  <option value="스몰타워">스몰타워</option>
+                  <option value="빅타워" th:selected="${item.caseType == '빅타워'}">빅타워</option>
+                  <option value="미들타워" th:selected="${item.caseType == '미들타워'}">미들타워</option>
+                  <option value="스몰타워" th:selected="${item.caseType == '스몰타워'}">스몰타워</option>
                 </select>
               </div>
 
               <div class="col-9">
                 <label for="maxMotherBoard" class="form-label">최대 마더보드 호환성</label>
                 <select class="form-select" aria-label="Default select example" id="maxMotherBoard">
-                  <option value="ATX">ATX</option>
-                  <option value="M-ATX">M-ATX</option>
-                  <option value="E-ATX">E-ATX</option>
+                  <option value="ATX" th:selected="${item.maxMotherBoard == 'ATX'}">ATX</option>
+                  <option value="M-ATX" th:selected="${item.maxMotherBoard == 'M-ATX'}">M-ATX</option>
+                  <option value="E-ATX" th:selected="${item.maxMotherBoard == 'E-ATX'}">E-ATX</option>
                 </select>
               </div>
 
               <div class="col-4">
                 <label for="height" class="form-label">높이</label>
-                <input type="number" class="form-control" id="height" placeholder="">
+                <input type="number" class="form-control" id="height" placeholder="" value="${item.height}">
               </div>
 
               <div class="col-4">
                 <label for="length" class="form-label">길이</label>
-                <input type="number" class="form-control" id="length" placeholder="">
+                <input type="number" class="form-control" id="length" placeholder="" value="${item.length}">
               </div>
 
               <div class="col-4">
                 <label for="width" class="form-label">너비</label>
-                <input type="number" class="form-control" id="width" placeholder="">
+                <input type="number" class="form-control" id="width" placeholder="" value="${item.width}">
               </div>
             </div>
 
@@ -63,27 +63,27 @@
             <div class="row g-4">
               <div class="col-6">
                 <label for="maxCoolingFan" class="form-label">최대 쿨링팬 개수</label>
-                <input type="number" class="form-control" id="maxCoolingFan" placeholder="">
+                <input type="number" class="form-control" id="maxCoolingFan" placeholder="" value="${item.maxCoolingFan}">
               </div>
 
               <div class="col-6">
                 <label for="builtInCoolingFan" class="form-label">기본 쿨링팬 개수</label>
-                <input type="number" class="form-control" id="builtInCoolingFan" placeholder="">
+                <input type="number" class="form-control" id="builtInCoolingFan" placeholder="" value="${item.builtInCoolingFan}">
               </div>
 
               <div class="col-9">
                 <label for="powerLength" class="form-label">최대 파워서플라이 크기</label>
-                <input type="number" class="form-control" id="powerLength" placeholder="">
+                <input type="number" class="form-control" id="powerLength" placeholder="" value="${item.powerLength}">
               </div>
 
               <div class="col-9">
                 <label for="cpuCoolerHeight" class="form-label">최대 CPU 쿨러 높이</label>
-                <input type="number" class="form-control" id="cpuCoolerHeight" placeholder="">
+                <input type="number" class="form-control" id="cpuCoolerHeight" placeholder="" value="${item.cpuCoolerHeight}">
               </div>
 
               <div class="col-9">
                 <label for="graphicsCardLength" class="form-label">최대 그래픽카드 길이</label>
-                <input type="number" class="form-control" id="graphicsCardLength" placeholder="">
+                <input type="number" class="form-control" id="graphicsCardLength" placeholder="" value="${item.graphicsCardLength}">
               </div>
 
               <div class="col-9">

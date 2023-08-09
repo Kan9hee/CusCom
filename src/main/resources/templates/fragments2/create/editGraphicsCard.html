@@ -7,7 +7,7 @@
   <div class="container">
     <main class="m-auto">
       <div class="py-5 text-center">
-        <h2>메모리 데이터 등록 페이지</h2>
+        <h2>그래픽카드 데이터 등록 페이지</h2>
       </div>
 
       <div class="row g-5">
@@ -16,37 +16,50 @@
             <div class="row g-4">
               <div class="col-6">
                 <label for="name" class="form-label">이름</label>
-                <input type="text" class="form-control" id="name" placeholder="" value="">
+                <input type="text" class="form-control" id="name" placeholder="" value="${item.name}">
               </div>
 
               <div class="col-6">
                 <label for="manufacturer" class="form-label">제조사</label>
-                <input type="text" class="form-control" id="manufacturer" placeholder="">
+                <input type="text" class="form-control" id="manufacturer" placeholder="" value="${item.manufacturer}">
               </div>
 
               <div class="col-9">
-                <label for="type" class="form-label">타입</label>
-                <select class="form-select" aria-label="Default select example" id="type">
-                  <option value="DDR3">DDR3</option>
-                  <option value="DDR4">DDR4</option>
-                  <option value="DDR5">DDR5</option>
+                <label for="gpuType" class="form-label">GPU</label>
+                <input type="text" class="form-control" id="gpuType" placeholder="" value="${item.gpuType}">
+              </div>
+
+              <div class="col-9">
+                <label for="chipsetManufacturer" class="form-label">구분</label>
+                <select class="form-select" aria-label="Default select example" id="chipsetManufacturer">
+                  <option value="NVIDIA" th:selected="${item.chipsetManufacturer == 'NVIDIA'}">NVIDIA</option>
+                  <option value="AMD" th:selected="${item.chipsetManufacturer == 'AMD'}">AMD</option>
                 </select>
               </div>
 
               <div class="col-4">
-                <label for="capacity" class="form-label">용량</label>
-                <input type="number" class="form-control" id="capacity" placeholder="">
-              </div>
-
-              <div class="col-4">
-                <label for="height" class="form-label">높이</label>
-                <input type="number" class="form-control" id="height" placeholder="">
+                <label for="length" class="form-label">길이</label>
+                <input type="number" class="form-control" id="length" placeholder="" value="${item.length}">
               </div>
             </div>
 
             <hr class="my-4">
 
             <div class="row g-4">
+              <div class="col-6">
+                <label for="maxCoolingFan" class="form-label">기본 전력</label>
+                <input type="number" class="form-control" id="maxCoolingFan" placeholder="" value="${item.maxCoolingFan}">
+              </div>
+
+              <div class="col-6">
+                <label for="builtInCoolingFan" class="form-label">최대 전력</label>
+                <input type="number" class="form-control" id="builtInCoolingFan" placeholder="" value="${item.builtInCoolingFan}">
+              </div>
+
+              <div class="col-9">
+                <label for="powerLength" class="form-label">페이즈 수</label>
+                <input type="number" class="form-control" id="powerLength" placeholder="" value="${item.powerLength}">
+              </div>
 
               <div class="col-9">
                 <label for="imageFile">부품 이미지</label>
@@ -73,17 +86,20 @@
 
     document.getElementById('confirm')
             .addEventListener('click',function(event){
-              const Memory = {
+              const GraphicsCard = {
                 name: document.getElementById('name').value,
                 manufacturer: document.getElementById('manufacturer').value,
-                type: document.getElementById('type').value,
-                capacity: document.getElementById('capacity').value,
-                height: document.getElementById('height').value
+                chipsetManufacturer: document.getElementById('chipsetManufacturer').value,
+                gpuType: document.getElementById('gpuType').value,
+                length: document.getElementById('length').value,
+                basicPower: document.getElementById('basicPower').value,
+                maxPower: document.getElementById('maxPower').value,
+                phase: document.getElementById('phase').value
               };
 
               var formData = new FormData();
-              formData.append('Type', 'Memory');
-              formData.append('Data', JSON.stringify(Memory));
+              formData.append('Type', 'GraphicsCard');
+              formData.append('Data', JSON.stringify(GraphicsCard));
               formData.append('Image', $('#imageFile')[0].files[0]);
 
               fetch("/CusCom/join", {

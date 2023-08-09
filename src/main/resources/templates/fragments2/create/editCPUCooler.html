@@ -16,32 +16,32 @@
             <div class="row g-4">
               <div class="col-6">
                 <label for="name" class="form-label">이름</label>
-                <input type="text" class="form-control" id="name" placeholder="" value="">
+                <input type="text" class="form-control" id="name" placeholder="" value="${item.name}">
               </div>
 
               <div class="col-6">
                 <label for="manufacturer" class="form-label">제조사</label>
-                <input type="text" class="form-control" id="manufacturer" placeholder="">
+                <input type="text" class="form-control" id="manufacturer" placeholder="" value="${item.manufacturer}">
               </div>
 
               <div class="col-4">
                 <label for="height" class="form-label">높이</label>
-                <input type="number" class="form-control" id="height" placeholder="">
+                <input type="number" class="form-control" id="height" placeholder="" value="${item.height}">
               </div>
 
               <div class="col-4">
                 <label for="length" class="form-label">길이</label>
-                <input type="number" class="form-control" id="length" placeholder="">
+                <input type="number" class="form-control" id="length" placeholder="" value="${item.length}">
               </div>
 
               <div class="col-4">
                 <label for="width" class="form-label">너비</label>
-                <input type="number" class="form-control" id="width" placeholder="">
+                <input type="number" class="form-control" id="width" placeholder="" value="${item.width}">
               </div>
 
               <div class="col-6">
                 <label for="TDP" class="form-label">TDP</label>
-                <input type="number" class="form-control" id="TDP" placeholder="">
+                <input type="number" class="form-control" id="TDP" placeholder="" value="${item.TDP}">
               </div>
 
               <hr class="my-4">
@@ -50,21 +50,21 @@
                 <div class="col-8">
                   <label for="coolingType" class="form-label">쿨링 타입</label>
                   <select class="form-select" aria-label="Default select example" id="coolingType">
-                    <option value="공랭">공랭</option>
-                    <option value="수랭">수랭</option>
+                    <option value="공랭" th:selected="${item.coolingType == '공랭'}">공랭</option>
+                    <option value="수랭" th:selected="${item.coolingType == '수랭'}">수랭</option>
                   </select>
                 </div>
 
                 <div class="col-8">
                   <label for="coolerForm" class="form-label">쿨러 형태</label>
                   <select class="form-select" aria-label="Default select example" id="coolerForm">
-                    <option value="타워">타워</option>
-                    <option value="탑플로우">탑플로우</option>
-                    <option value="240(수랭)">240(수랭)</option>
-                    <option value="280(수랭)">280(수랭)</option>
-                    <option value="360(수랭)">360(수랭)</option>
-                    <option value="420(수랭)">420(수랭)</option>
-                    <option value="480(수랭)">480(수랭)</option>
+                    <option value="타워" th:selected="${item.coolerForm == '타워'}">타워</option>
+                    <option value="탑플로우" th:selected="${item.coolerForm == '탑플로우'}">탑플로우</option>
+                    <option value="240" th:selected="${item.coolerForm == '240'}">240(수랭)</option>
+                    <option value="280" th:selected="${item.coolerForm == '280'}">280(수랭)</option>
+                    <option value="360" th:selected="${item.coolerForm == '360'}">360(수랭)</option>
+                    <option value="420" th:selected="${item.coolerForm == '420'}">420(수랭)</option>
+                    <option value="480" th:selected="${item.coolerForm == '480'}">480(수랭)</option>
                   </select>
                 </div>
               </div>

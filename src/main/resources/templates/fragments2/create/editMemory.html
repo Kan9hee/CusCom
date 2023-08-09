@@ -7,7 +7,7 @@
   <div class="container">
     <main class="m-auto">
       <div class="py-5 text-center">
-        <h2>파워서플라이 데이터 등록 페이지</h2>
+        <h2>메모리 데이터 등록 페이지</h2>
       </div>
 
       <div class="row g-5">
@@ -16,43 +16,38 @@
             <div class="row g-4">
               <div class="col-6">
                 <label for="name" class="form-label">이름</label>
-                <input type="text" class="form-control" id="name" placeholder="" value="">
+                <input type="text" class="form-control" id="name" placeholder="" value="${item.name}">
               </div>
 
               <div class="col-6">
                 <label for="manufacturer" class="form-label">제조사</label>
-                <input type="text" class="form-control" id="manufacturer" placeholder="">
+                <input type="text" class="form-control" id="manufacturer" placeholder="" value="${item.manufacturer}">
               </div>
 
               <div class="col-9">
-                <label for="caseType" class="form-label">80PLUS 효율</label>
-                <select class="form-select" aria-label="Default select example" id="caseType">
-                  <option value="TITANIUM">TITANIUM</option>
-                  <option value="PLATINUM">PLATINUM</option>
-                  <option value="GOLD">GOLD</option>
-                  <option value="SILVER">SILVER</option>
-                  <option value="BRONZE">BRONZE</option>
-                </select>
-              </div>
-
-              <div class="col-9">
-                <label for="maxMotherBoard" class="form-label">모듈러</label>
-                <select class="form-select" aria-label="Default select example" id="maxMotherBoard">
-                  <option value="풀모듈러">풀모듈러</option>
-                  <option value="세미모듈러">세미모듈러</option>
-                  <option value="논모듈러">논모듈러</option>
+                <label for="type" class="form-label">타입</label>
+                <select class="form-select" aria-label="Default select example" id="type">
+                  <option value="DDR3" th:selected="${item.type == 'DDR5'}">DDR3</option>
+                  <option value="DDR4" th:selected="${item.type == 'DDR5'}">DDR4</option>
+                  <option value="DDR5" th:selected="${item.type == 'DDR5'}">DDR5</option>
                 </select>
               </div>
 
               <div class="col-4">
+                <label for="capacity" class="form-label">용량</label>
+                <input type="number" class="form-control" id="capacity" placeholder="" value="${item.capacity}">
+              </div>
+
+              <div class="col-4">
                 <label for="height" class="form-label">높이</label>
-                <input type="number" class="form-control" id="height" placeholder="">
+                <input type="number" class="form-control" id="height" placeholder="" value="${item.height}">
               </div>
             </div>
 
             <hr class="my-4">
 
             <div class="row g-4">
+
               <div class="col-9">
                 <label for="imageFile">부품 이미지</label>
                 <input type="file" class="form-control" id="imageFile">
@@ -78,18 +73,17 @@
 
     document.getElementById('confirm')
             .addEventListener('click',function(event){
-              const PowerSupply = {
+              const Memory = {
                 name: document.getElementById('name').value,
                 manufacturer: document.getElementById('manufacturer').value,
-                power: document.getElementById('power').value,
-                efficiency: document.getElementById('efficiency').value,
-                modular: document.getElementById('modular').value,
-                length: document.getElementById('length').value
+                type: document.getElementById('type').value,
+                capacity: document.getElementById('capacity').value,
+                height: document.getElementById('height').value
               };
 
               var formData = new FormData();
-              formData.append('Type', 'PowerSupply');
-              formData.append('Data', JSON.stringify(PowerSupply));
+              formData.append('Type', 'Memory');
+              formData.append('Data', JSON.stringify(Memory));
               formData.append('Image', $('#imageFile')[0].files[0]);
 
               fetch("/CusCom/join", {

@@ -16,65 +16,65 @@
             <div class="row g-4">
               <div class="col-6">
                 <label for="name" class="form-label">이름</label>
-                <input type="text" class="form-control" id="name" placeholder="" value="">
+                <input type="text" class="form-control" id="name" placeholder="" value="${item.name}">
               </div>
 
               <div class="col-6">
                 <label for="manufacturer" class="form-label">제조사</label>
-                <input type="text" class="form-control" id="manufacturer" placeholder="">
+                <input type="text" class="form-control" id="manufacturer" placeholder="" value="${item.manufacturer}">
               </div>
 
               <div class="col-9">
                 <label for="cpuType" class="form-label">구분</label>
                 <select class="form-select" aria-label="Default select example" id="cpuType">
-                  <option value="Intel">Intel</option>
-                  <option value="AMD">AMD</option>
+                  <option value="Intel" th:selected="${item.cpuType == 'Intel'}">Intel</option>
+                  <option value="AMD" th:selected="${item.cpuType == 'AMD'}">AMD</option>
                 </select>
               </div>
 
               <div class="col-9">
                 <label for="chipset" class="form-label">소켓</label>
                 <select class="form-select" aria-label="Default select example" id="chipset">
-                  <option value="AM5">AM5</option>
-                  <option value="AM4">AM4</option>
-                  <option value="LGA1700">LGA1700</option>
-                  <option value="LGA1200">LGA1200</option>
+                  <option value="AM5" th:selected="${item.chipset == 'AM5'}">AM5</option>
+                  <option value="AM4" th:selected="${item.chipset == 'AM4'}">AM4</option>
+                  <option value="LGA1700" th:selected="${item.chipset == 'LGA1700'}">LGA1700</option>
+                  <option value="LGA1200" th:selected="${item.chipset == 'LGA1200'}">LGA1200</option>
                 </select>
               </div>
 
               <div class="col-9">
                 <label for="formFactor" class="form-label">폼팩터</label>
                 <select class="form-select" aria-label="Default select example" id="formFactor">
-                  <option value="ATX">ATX</option>
-                  <option value="M-ATX">M-ATX</option>
-                  <option value="E-ATX">E-ATX</option>
+                  <option value="ATX" th:selected="${item.formFactor == 'ATX'}">ATX</option>
+                  <option value="M-ATX" th:selected="${item.formFactor == 'M-ATX'}">M-ATX</option>
+                  <option value="E-ATX" th:selected="${item.formFactor == 'E-ATX'}">E-ATX</option>
                 </select>
               </div>
 
               <div class="col-9">
                 <label for="memoryType" class="form-label">메모리 타입</label>
                 <select class="form-select" aria-label="Default select example" id="memoryType">
-                  <option value="DDR5">DDR5</option>
-                  <option value="DDR4">DDR4</option>
+                  <option value="DDR5" th:selected="${item.memoryType == 'DDR5'}">DDR5</option>
+                  <option value="DDR4" th:selected="${item.memoryType == 'DDR4'}">DDR4</option>
                 </select>
               </div>
 
               <div class="col-9">
                 <label for="memorySlot" class="form-label">메모리 슬롯 개수</label>
                 <select class="form-select" aria-label="Default select example" id="memorySlot">
-                  <option value="4">4</option>
-                  <option value="2">2</option>
+                  <option value="4" th:selected="${item.memorySlot == '4'}">4</option>
+                  <option value="2" th:selected="${item.memorySlot == '2'}">2</option>
                 </select>
               </div>
 
               <div class="col-4">
                 <label for="ssdM2Slot" class="form-label">SSD 슬롯 개수(M.2)</label>
-                <input type="number" class="form-control" id="ssdM2Slot" placeholder="">
+                <input type="number" class="form-control" id="ssdM2Slot" placeholder="" value="${item.ssdM2Slot}">
               </div>
 
               <div class="col-4">
                 <label for="ssdSATASlot" class="form-label">SSD 슬롯 개수(SATA)</label>
-                <input type="number" class="form-control" id="ssdSATASlot" placeholder="">
+                <input type="number" class="form-control" id="ssdSATASlot" placeholder="" value="${item.ssdSATASlot}">
               </div>
             </div>
 

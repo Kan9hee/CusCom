@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile
 
 
 @RestController
-@RequestMapping("/adminPage")
+@RequestMapping("/CusCom/adminPage")
 class AdminRestController(private val desktopPartsService: DesktopPartsService,
                           private val blobService: BlobService) {
 

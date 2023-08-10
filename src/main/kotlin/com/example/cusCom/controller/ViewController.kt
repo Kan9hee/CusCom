@@ -17,32 +17,22 @@ import org.springframework.web.bind.annotation.RequestParam
 class ViewController(private val desktopPartsService: DesktopPartsService,
                      private val sharePlaceService: SharePlaceService) {
 
-    @GetMapping("/login")
+    @GetMapping("/loginPage")
     fun loginPage():String{
-        return "loginPage"
+        return "login"
     }
 
-    @GetMapping("/main")
-    fun testMainPage():String{
-        return "fragments2/main"
-    }
-
-    @GetMapping("/sharePlace")
-    fun testSharePlacePage():String{
-        return "fragments2/sharePlace"
-    }
-
-    @GetMapping("/login")
-    fun testLogInPage():String{
-        return "fragments2/login"
-    }
-
-    @GetMapping("/join")
+    @GetMapping("/joinPage")
     fun testDataInputPage():String{
-        return "fragments2/join"
+        return "join"
     }
 
-    @GetMapping("/user")
+    @GetMapping("/mainPage")
+    fun testMainPage():String{
+        return "main"
+    }
+
+    @GetMapping("/estimatePage")
     fun testUserPage(model: Model):String{
         model.addAttribute("userName", SecurityContextHolder.getContext().authentication.name)
         model.addAttribute("caseList",desktopPartsService.getCaseList())
@@ -53,20 +43,25 @@ class ViewController(private val desktopPartsService: DesktopPartsService,
         model.addAttribute("memoryList",desktopPartsService.getMemoryList())
         model.addAttribute("motherBoardList",desktopPartsService.getMotherBoardList())
         model.addAttribute("powerSupplyList",desktopPartsService.getPowerSupplyList())
-        return "fragments2/partsListUser"
+        return "partsListUser"
     }
 
-    @GetMapping("/postUploadPage")
+    @GetMapping("/uploadPostPage")
     fun getUploadPage(@RequestParam("id") estimateID: ObjectId, model: Model):String{
         model.addAttribute("id",estimateID.toHexString())
-        return "createPostPage"
+        return "createPost"
     }
 
-    @GetMapping("/SharePlace")
+    @GetMapping("/sharePlace")
+    fun testSharePlacePage():String{
+        return "sharePlace"
+    }
+
+    @GetMapping("/SharePlace/post")
     fun getPostPage(@RequestParam("id") postID:ObjectId,model: Model):String{
         model.addAttribute("post",sharePlaceService.getPost("_id",postID.toHexString()))
         model.addAttribute("commentList",sharePlaceService.getCommentList("postID",postID.toHexString()))
-        return "viewPostPage"
+        return "viewPost"
     }
 
     @ExceptionHandler(EstimateException::class)

@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html class="h-100" xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
 <head>
-    <div th:replace="~{fragments2/setup :: setup}"/>
+    <div th:replace="~{fragments/setup :: setup}"/>
 </head>
 <body class="d-flex h-100 text-center text-bg-dark">
-
     <div class="cover-container d-flex w-100 h-100 mx-auto flex-column">
-        <div th:insert="~{fragments2/header :: header}"></div>
+
+        <div th:insert="~{fragments/header :: header}"></div>
+
         <main class="px-3">
             <h1>CUS-COM</h1>
             <div class="d-grid gap-2 col-6 w-50 mx-auto">
@@ -23,17 +24,17 @@
     <script type="text/javascript">
         document.getElementById('userPage')
             .addEventListener('click',function(event){
-                window.location.href='/CusCom/test/user';
+                window.location.href='/CusCom/estimatePage';
             });
 
         document.getElementById('adminPage')
             .addEventListener('click',function(event){
-                window.location.href='/CusCom/test/admin';
+                window.location.href='/CusCom/adminPage';
             });
 
         document.getElementById('logout')
             .addEventListener('click',function(event){
-                fetch("/logout")
+                fetch("/CusCom/logout")
                     .then(response => console.log(response))
                     .catch(error => {
                         console.error("Error:", error);

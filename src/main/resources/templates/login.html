@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="h-100" xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
 <head>
-  <div th:replace="~{fragments2/setup :: setup}"/>
+  <div th:replace="~{fragments/setup :: setup}"/>
   <style>
       body{
         min-height: 100vh;
@@ -35,7 +35,7 @@
   <script type="text/javascript">
     document.getElementById('join')
             .addEventListener('click',function(event){
-                window.location.href='/CusCom/test/join';
+                window.location.href='/CusCom/joinPage';
             });
   </script>
 </body>

@@ -1,10 +1,11 @@
 <!doctype html>
 <html class="h-100" xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
 <head>
-  <div th:replace="~{fragments2/setup :: setup}"/>
+  <div th:replace="~{fragments/setup :: setup}"/>
 </head>
 <body class="d-flex align-items-center py-4 bg-body-tertiary">
   <div class="container" style="width: 400px">
+
     <main class="form-signin m-auto">
       <div class="py-5 text-center">
         <h2>회원가입</h2>
@@ -47,7 +48,7 @@
                     userRole: "USER"
                 };
 
-                fetch("/CusCom/test/join", {
+                fetch("/CusCom/join", {
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json"

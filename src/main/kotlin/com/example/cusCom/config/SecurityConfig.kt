@@ -14,21 +14,21 @@ class SecurityConfig {
     fun filterChain(http:HttpSecurity):SecurityFilterChain{
         http.csrf{
             it.disable().authorizeHttpRequests{ authorize -> authorize
-                .requestMatchers("/customPage","/CusCom/joinPage","/test").permitAll()
-                .requestMatchers("/adminPage/**","/CusCom/test/**").hasRole("ADMIN")
+                .requestMatchers("/CusCom/estimatePage","/CusCom/joinPage","/CusCom/join").permitAll()
+                .requestMatchers("/CusCom/adminPage/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             }
         }
         .formLogin { login->login
-            .loginPage("/CusCom/login")
-            .loginProcessingUrl("/CusCom/login")
+            .loginPage("/CusCom/loginPage")
+            .loginProcessingUrl("/CusCom/loginPage")
             .usernameParameter("userid")
             .passwordParameter("pw")
-            .defaultSuccessUrl("/main",true)
+            .defaultSuccessUrl("/CusCom/main",true)
             .permitAll()
         }
         .logout{ logout->logout
-            .logoutUrl("/logout")
+            .logoutUrl("/CusCom/logout")
             .logoutSuccessUrl("/CusCom/login")
             .deleteCookies("JSESSIONID")
         }

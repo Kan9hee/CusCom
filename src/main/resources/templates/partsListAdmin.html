@@ -1,7 +1,7 @@
 <!doctype html>
 <html class="h-100" xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
 <head>
-  <div th:replace="~{fragments2/setup :: setup}"/>
+  <div th:replace="~{fragments/setup :: setup}"/>
   <style>
     tr{
       display: flex;
@@ -17,7 +17,7 @@
 <body>
     <main>
       <div class="container-fluid">
-        <div th:insert="~{fragments2/header :: header}"></div>
+        <div th:insert="~{fragments/header :: header}"></div>
 
         <div class="accordion py-5" id="partsList" style="width:60%; overflow:auto;">
           <div class="accordion-item">
@@ -309,7 +309,7 @@
 
               button.addEventListener('click', function(){
                 const id = button.getAttribute("data-id");
-                fetch("/adminPage/deleteParts",{
+                fetch("/CusCom/adminPage/deleteParts",{
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json"

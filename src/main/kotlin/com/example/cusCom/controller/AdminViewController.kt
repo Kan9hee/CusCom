@@ -7,7 +7,7 @@ import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 
 @Controller
-@RequestMapping("/adminPage")
+@RequestMapping("/CusCom/adminPage")
 class AdminViewController(private val desktopPartsService: DesktopPartsService) {
 
     @GetMapping("/main")
@@ -20,7 +20,7 @@ class AdminViewController(private val desktopPartsService: DesktopPartsService) 
         model.addAttribute("memoryList",desktopPartsService.getMemoryList())
         model.addAttribute("motherBoardList",desktopPartsService.getMotherBoardList())
         model.addAttribute("powerSupplyList",desktopPartsService.getPowerSupplyList())
-        return "adminMainPage"
+        return "partsListAdmin"
     }
 
     @GetMapping("/editCase")
@@ -32,7 +32,7 @@ class AdminViewController(private val desktopPartsService: DesktopPartsService) 
             model.addAttribute("item", desktopPartsService.loadSampleCase())
             model.addAttribute("firstCreate",true)
         }
-        return "createPages/caseCreatePage"
+        return "editPages/editCase"
     }
 
     @GetMapping("/editCPU")
@@ -44,7 +44,7 @@ class AdminViewController(private val desktopPartsService: DesktopPartsService) 
             model.addAttribute("item", desktopPartsService.loadSampleCpu())
             model.addAttribute("firstCreate",true)
         }
-        return "createPages/cpuCreatePage"
+        return "editPages/editCPU"
     }
 
     @GetMapping("/editCPUCooler")
@@ -56,7 +56,7 @@ class AdminViewController(private val desktopPartsService: DesktopPartsService) 
             model.addAttribute("item", desktopPartsService.loadSampleCpuCooler())
             model.addAttribute("firstCreate",true)
         }
-        return "createPages/cpuCoolerCreatePage"
+        return "editPages/editCPUCooler"
     }
 
     @GetMapping("/editDataStorage")
@@ -68,7 +68,7 @@ class AdminViewController(private val desktopPartsService: DesktopPartsService) 
             model.addAttribute("item", desktopPartsService.loadSampleDataStorage())
             model.addAttribute("firstCreate",true)
         }
-        return "createPages/dataStorageCreatePage"
+        return "editPages/editDataStorage"
     }
 
     @GetMapping("/editGraphicsCard")
@@ -80,7 +80,7 @@ class AdminViewController(private val desktopPartsService: DesktopPartsService) 
             model.addAttribute("item", desktopPartsService.loadSampleGraphicsCard())
             model.addAttribute("firstCreate",true)
         }
-        return "createPages/graphicsCardCreatePage"
+        return "editPages/editGraphicsCard"
     }
 
     @GetMapping("/editMemory")
@@ -92,7 +92,7 @@ class AdminViewController(private val desktopPartsService: DesktopPartsService) 
             model.addAttribute("item", desktopPartsService.loadSampleMemory())
             model.addAttribute("firstCreate",true)
         }
-        return "createPages/memoryCreatePage"
+        return "editPages/editMemory"
     }
 
     @GetMapping("/editMotherBoard")
@@ -104,7 +104,7 @@ class AdminViewController(private val desktopPartsService: DesktopPartsService) 
             model.addAttribute("item", desktopPartsService.loadSampleMotherBoard())
             model.addAttribute("firstCreate",true)
         }
-        return "createPages/motherBoardCreatePage"
+        return "editPages/editMotherBoard"
     }
 
     @GetMapping("/editPowerSupply")
@@ -116,6 +116,6 @@ class AdminViewController(private val desktopPartsService: DesktopPartsService) 
             model.addAttribute("item", desktopPartsService.loadSamplePowerSupply())
             model.addAttribute("firstCreate",true)
         }
-        return "createPages/powerSupplyCreatePage"
+        return "editPages/editPowerSupply"
     }
 }

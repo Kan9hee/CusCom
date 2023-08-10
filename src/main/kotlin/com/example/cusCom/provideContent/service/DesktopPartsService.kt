@@ -19,7 +19,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional(readOnly = true)
     fun getCaseList(): List<Case> {
-        val caseList:List<Case> = caseRepo.findAll().map{
+        val caseList:List<Case> = caseRepo.findAll()
+            .filter{ entity -> entity.name != "sample" }
+            .map{
                 entity:CaseEntity -> Case(entity.name,
                     entity.manufacturer,
                     entity.caseType,
@@ -32,8 +34,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                     entity.powerLength,
                     entity.cpuCoolerHeight,
                     entity.graphicsCardLength,
-                    entity.imageUrl)
-        }
+                    entity.imageUrl) }
         return caseList
     }
 
@@ -92,7 +93,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional(readOnly = true)
     fun getCpuCoolerList(): List<CPUCooler> {
-        val cpuCoolerList:List<CPUCooler> = cpuCoolerRepo.findAll().map{
+        val cpuCoolerList:List<CPUCooler> = cpuCoolerRepo.findAll()
+            .filter{ entity -> entity.name != "sample" }
+            .map{
                 entity:CPUCoolerEntity-> CPUCooler(entity.name,
                     entity.imageUrl,
                     entity.manufacturer,
@@ -101,8 +104,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                     entity.height,
                     entity.length,
                     entity.width,
-                    entity.tdp)
-        }
+                    entity.tdp) }
         return cpuCoolerList
     }
 
@@ -155,7 +157,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional(readOnly = true)
     fun getCPUList(): List<CPU> {
-        val cpuList:List<CPU> = cpuRepo.findAll().map{
+        val cpuList:List<CPU> = cpuRepo.findAll()
+            .filter{ entity -> entity.name != "sample" }
+            .map{
                 entity:CPUEntity -> CPU(entity.name,
                     entity.imageUrl,
                     entity.manufacturer,
@@ -165,8 +169,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                     entity.thread,
                     entity.isBuiltInGraphics,
                     entity.builtInGraphicName,
-                    entity.TDP)
-        }
+                    entity.TDP) }
         return cpuList
     }
 
@@ -223,7 +226,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional(readOnly = true)
     fun getDataStorageList(): List<DataStorage> {
-        val dataStorageList:List<DataStorage> = dataStorageRepo.findAll().map{
+        val dataStorageList:List<DataStorage> = dataStorageRepo.findAll()
+            .filter{ entity -> entity.name != "sample" }
+            .map{
                 entity:DataStorageEntity -> DataStorage(entity.name,
                     entity.imageUrl,
                     entity.manufacturer,
@@ -231,8 +236,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                     entity.formFactor,
                     entity.capacity,
                     entity.readSpeed,
-                    entity.writeSpeed)
-        }
+                    entity.writeSpeed) }
         return dataStorageList
     }
 
@@ -281,7 +285,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional(readOnly = true)
     fun getGraphicsCardList(): List<GraphicsCard> {
-        val graphicsCardList:List<GraphicsCard> = graphicsCardRepo.findAll().map{
+        val graphicsCardList:List<GraphicsCard> = graphicsCardRepo.findAll()
+            .filter{ entity -> entity.name != "sample" }
+            .map{
                 entity:GraphicsCardEntity -> GraphicsCard(entity.name,
                     entity.imageUrl,
                     entity.manufacturer,
@@ -290,8 +296,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                     entity.length,
                     entity.basicPower,
                     entity.maxPower,
-                    entity.phase)
-        }
+                    entity.phase) }
         return graphicsCardList
     }
 
@@ -342,14 +347,15 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional(readOnly = true)
     fun getMemoryList(): List<Memory> {
-        val memoryList:List<Memory> = memoryRepo.findAll().map{
+        val memoryList:List<Memory> = memoryRepo.findAll()
+            .filter{ entity -> entity.name != "sample" }
+            .map{
                 entity:MemoryEntity -> Memory(entity.name,
                     entity.imageUrl,
                     entity.manufacturer,
                     entity.type,
                     entity.capacity,
-                    entity.height)
-        }
+                    entity.height) }
         return memoryList
     }
 
@@ -394,7 +400,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional(readOnly = true)
     fun getMotherBoardList(): List<MotherBoard> {
-        val motherBoardList:List<MotherBoard> = motherBoardRepo.findAll().map{
+        val motherBoardList:List<MotherBoard> = motherBoardRepo.findAll()
+            .filter{ entity -> entity.name != "sample" }
+            .map{
                 entity:MotherBoardEntity -> MotherBoard(entity.name,
                     entity.imageUrl,
                     entity.manufacturer,
@@ -405,8 +413,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                     entity.memoryType,
                     entity.memorySlot,
                     entity.ssdM2Slot,
-                    entity.ssdSATASlot)
-        }
+                    entity.ssdSATASlot) }
         return motherBoardList
     }
 
@@ -461,15 +468,16 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional(readOnly = true)
     fun getPowerSupplyList(): List<PowerSupply> {
-        val powerSupplyList:List<PowerSupply> = powerSupplyRepo.findAll().map{
+        val powerSupplyList:List<PowerSupply> = powerSupplyRepo.findAll()
+            .filter{ entity -> entity.name != "sample" }
+            .map{
                 entity:PowerSupplyEntity -> PowerSupply(entity.name,
                     entity.imageUrl,
                     entity.manufacturer,
                     entity.power,
                     entity.efficiency,
                     entity.modular,
-                    entity.length)
-        }
+                    entity.length) }
         return powerSupplyList
     }
 

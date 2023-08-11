@@ -36,8 +36,8 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>Case</td>
+                  <tr th:each="case : ${caseList}">
+                    <td th:text="${case.name}">케이스 이름</td>
                     <td>
                       <div class="button-container" style="display: flex; gap: 10px;">
                         <form method="get" action="/adminPage/editCase">
@@ -70,8 +70,8 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>CPUCooler</td>
+                  <tr th:each="cpuCooler : ${cpuCoolerList}">
+                    <td th:text="${cpuCooler.name}">쿨러 이름</td>
                     <td>
                       <div class="button-container" style="display: flex; gap: 10px;">
                         <form method="get" action="/adminPage/editCase">
@@ -104,8 +104,8 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>CPU</td>
+                  <tr th:each="cpu : ${cpuList}">
+                    <td th:text="${cpu.name}">CPU 이름</td>
                     <td>
                       <div class="button-container" style="display: flex; gap: 10px;">
                         <form method="get" action="/adminPage/editCase">
@@ -138,8 +138,8 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>DataStorage</td>
+                  <tr th:each="dataStorage : ${dataStorageList}">
+                    <td th:text="${dataStorage.name}">저장장치 이름</td>
                     <td>
                       <div class="button-container" style="display: flex; gap: 10px;">
                         <form method="get" action="/adminPage/editCase">
@@ -172,8 +172,8 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>GraphicsCard</td>
+                  <tr th:each="graphicsCard : ${graphicsCardList}">
+                    <td th:text="${graphicsCard.name}">그래픽카드 이름</td>
                     <td>
                       <div class="button-container" style="display: flex; gap: 10px;">
                         <form method="get" action="/adminPage/editCase">
@@ -206,8 +206,8 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>Memory</td>
+                  <tr th:each="memory : ${memoryList}">
+                    <td th:text="${memory.name}">메모리 이름</td>
                     <td>
                       <div class="button-container" style="display: flex; gap: 10px;">
                         <form method="get" action="/adminPage/editCase">
@@ -240,8 +240,8 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>MotherBoard</td>
+                  <tr th:each="motherBoard : ${motherBoardList}">
+                    <td th:text="${motherBoard.name}">마더보드 이름</td>
                     <td>
                       <div class="button-container" style="display: flex; gap: 10px;">
                         <form method="get" action="/adminPage/editCase">
@@ -274,8 +274,8 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>PowerSupply</td>
+                  <tr th:each="powerSupply : ${powerSupplyList}">
+                    <td th:text="${powerSupply.name}">파워서플라이 이름</td>
                     <td>
                       <div class="button-container" style="display: flex; gap: 10px;">
                         <form method="get" action="/adminPage/editCase">

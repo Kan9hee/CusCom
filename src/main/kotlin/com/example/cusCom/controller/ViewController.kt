@@ -2,6 +2,7 @@ package com.example.cusCom.controller
 
 import com.example.cusCom.provideContent.service.DesktopPartsService
 import com.example.cusCom.userEstimate.exception.EstimateException
+import com.example.cusCom.userEstimate.service.EstimateService
 import com.example.cusCom.userEstimate.service.SharePlaceService
 import org.bson.types.ObjectId
 import org.springframework.security.core.context.SecurityContextHolder
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam
 @Controller
 @RequestMapping("/CusCom")
 class ViewController(private val desktopPartsService: DesktopPartsService,
+                     private val estimateService: EstimateService,
                      private val sharePlaceService: SharePlaceService) {
 
     @GetMapping("/loginPage")
@@ -48,12 +50,13 @@ class ViewController(private val desktopPartsService: DesktopPartsService,
 
     @GetMapping("/uploadPostPage")
     fun getUploadPage(@RequestParam("id") estimateID: ObjectId, model: Model):String{
-        model.addAttribute("id",estimateID.toHexString())
+        model.addAttribute("Estimate",estimateService.getUserEstimateById(estimateID))
         return "createPost"
     }
 
     @GetMapping("/sharePlace")
-    fun testSharePlacePage():String{
+    fun testSharePlacePage(model: Model):String{
+        model.addAttribute("postList",sharePlaceService.getPostList())
         return "sharePlace"
     }
 

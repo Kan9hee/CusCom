@@ -45,49 +45,49 @@
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">케이스</h6>
-                      <small class="text-body-secondary">부품명</small>
+                      <small class="text-body-secondary" value="${Estimate.case}">부품명</small>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">CPU 쿨러</h6>
-                      <small class="text-body-secondary">부품명</small>
+                      <small class="text-body-secondary" value="${Estimate.cpuCooler}">부품명</small>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">CPU</h6>
-                      <small class="text-body-secondary">부품명</small>
+                      <small class="text-body-secondary" value="${Estimate.cpu}">부품명</small>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">저장장치</h6>
-                      <small class="text-body-secondary">부품명</small>
+                      <small class="text-body-secondary" value="${Estimate.dataStorage}">부품명</small>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">그래픽카드</h6>
-                      <small class="text-body-secondary">부품명</small>
+                      <small class="text-body-secondary" value="${Estimate.graphicsCard}">부품명</small>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">메모리</h6>
-                      <small class="text-body-secondary">부품명</small>
+                      <small class="text-body-secondary" value="${Estimate.memory}">부품명</small>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">메인보드</h6>
-                      <small class="text-body-secondary">부품명</small>
+                      <small class="text-body-secondary" value="${Estimate.motherBoard}">부품명</small>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">파워서플라이</h6>
-                      <small class="text-body-secondary">부품명</small>
+                      <small class="text-body-secondary" value="${Estimate.powerSupply}">부품명</small>
                     </div>
                   </li>
                 </ul>
@@ -121,7 +121,7 @@
             .addEventListener('click',function(event){
 
                 const data={
-                    estimateID: "[[${id}]]",
+                    estimateID: "[[${Estimate._id}]]",
                     title: document.getElementById('title').value,
                     content: document.getElementById('content').value,
                     tags: [document.getElementById('tags').value],

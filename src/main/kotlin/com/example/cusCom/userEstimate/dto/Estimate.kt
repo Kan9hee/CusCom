@@ -1,7 +1,5 @@
 package com.example.cusCom.userEstimate.dto
 
-import com.example.cusCom.provideContent.dto.parts.*
-
 data class Estimate(var _id:String,
                     var userName: String,
                     var cpu: String,

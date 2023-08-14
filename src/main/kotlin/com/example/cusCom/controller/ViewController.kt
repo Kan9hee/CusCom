@@ -1,14 +1,14 @@
 package com.example.cusCom.controller
 
+import com.example.cusCom.exception.EstimateException
 import com.example.cusCom.provideContent.service.DesktopPartsService
-import com.example.cusCom.userEstimate.exception.EstimateException
+import com.example.cusCom.userEstimate.dto.Estimate
 import com.example.cusCom.userEstimate.service.EstimateService
 import com.example.cusCom.userEstimate.service.SharePlaceService
 import org.bson.types.ObjectId
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -62,14 +62,15 @@ class ViewController(private val desktopPartsService: DesktopPartsService,
 
     @GetMapping("/SharePlace/post")
     fun getPostPage(@RequestParam("id") postID:ObjectId,model: Model):String{
-        model.addAttribute("post",sharePlaceService.getPost("_id",postID.toHexString()))
+        val post=sharePlaceService.getPost("_id",postID.toHexString())
+        model.addAttribute("post",post)
+        model.addAttribute("postEstimate",estimateService.getUserEstimateById(ObjectId(post!!.estimateID)))
         model.addAttribute("commentList",sharePlaceService.getCommentList("postID",postID.toHexString()))
         return "viewPost"
     }
 
-    @ExceptionHandler(EstimateException::class)
-    fun estimateException(ex: EstimateException, model: Model):String{
-        model.addAttribute("errorMsg",ex.message)
-        return "failView"
+    private fun validateEstimate(estimate: Estimate) {
+        if (estimateService.checkEstimateEmptyElement(estimate))
+            throw EstimateException("견적사항에 결정되지 않은 요소가 있습니다.")
     }
 }

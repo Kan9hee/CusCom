@@ -15,101 +15,22 @@
               <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
               <button class="btn btn-primary" type="submit">작성</button>
             </div>
-            <div class="list-group list-group-flush border-bottom scrollarea">
+            <div class="list-group list-group-flush border-bottom scrollarea" th:each="comment : ${commentList}">
               <a href="#" class="list-group-item list-group-item-action active py-3 lh-sm" aria-current="true">
                 <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small>Wed</small>
+                  <strong class="mb-1" th:text="${comment.userName}">List group item heading</strong>
                 </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small class="text-body-secondary">Tues</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small class="text-body-secondary">Mon</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-
-              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small class="text-body-secondary">Wed</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small class="text-body-secondary">Tues</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small class="text-body-secondary">Mon</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small class="text-body-secondary">Wed</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small class="text-body-secondary">Tues</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small class="text-body-secondary">Mon</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small class="text-body-secondary">Wed</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small class="text-body-secondary">Tues</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small class="text-body-secondary">Mon</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+                <div class="col-10 mb-1 small" th:text="${comment.content}">Some placeholder content in a paragraph below the heading and date.</div>
               </a>
             </div>
           </div>
 
           <div class="col-md-7 col-lg-8">
             <form>
-              <h4>제목</h4>
-              <p>작성자</p>
-              <small class="text-body-secondary">태그</small>
-              <small class="text-body-secondary">조회수</small>
+              <h4 th:text="${post.title}">제목</h4>
+              <p th:text="${post.userName}">작성자</p>
+              <small class="text-body-secondary" th:text="${post.tags}">태그</small>
+              <small class="text-body-secondary" th:text="${post.viewCount}">조회수</small>
 
               <hr class="my-4">
 
@@ -121,49 +42,49 @@
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">케이스</h6>
-                      <small class="text-body-secondary">부품명</small>
+                      <small class="text-body-secondary" value="${post.case}">부품명</small>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">CPU 쿨러</h6>
-                      <small class="text-body-secondary">부품명</small>
+                      <small class="text-body-secondary" value="${post.cpuCooler}">부품명</small>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">CPU</h6>
-                      <small class="text-body-secondary">부품명</small>
+                      <small class="text-body-secondary" value="${post.cpu}">부품명</small>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">저장장치</h6>
-                      <small class="text-body-secondary">부품명</small>
+                      <small class="text-body-secondary" value="${post.dataStorage}">부품명</small>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">그래픽카드</h6>
-                      <small class="text-body-secondary">부품명</small>
+                      <small class="text-body-secondary" value="${post.graphicsCard}">부품명</small>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">메모리</h6>
-                      <small class="text-body-secondary">부품명</small>
+                      <small class="text-body-secondary" value="${post.memory}">부품명</small>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">메인보드</h6>
-                      <small class="text-body-secondary">부품명</small>
+                      <small class="text-body-secondary" value="${post.motherBoard}">부품명</small>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">파워서플라이</h6>
-                      <small class="text-body-secondary">부품명</small>
+                      <small class="text-body-secondary" value="${post.powerSupply}">부품명</small>
                     </div>
                   </li>
                 </ul>

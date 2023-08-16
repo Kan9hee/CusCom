@@ -68,9 +68,4 @@ class ViewController(private val desktopPartsService: DesktopPartsService,
         model.addAttribute("commentList",sharePlaceService.getCommentList("postID",postID.toHexString()))
         return "viewPost"
     }
-
-    private fun validateEstimate(estimate: Estimate) {
-        if (estimateService.checkEstimateEmptyElement(estimate))
-            throw EstimateException("견적사항에 결정되지 않은 요소가 있습니다.")
-    }
 }

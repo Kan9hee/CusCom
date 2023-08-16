@@ -1,9 +1,8 @@
 package com.example.cusCom.userEstimate.service
 
-import com.example.cusCom.provideContent.dto.parts.Case
-import com.example.cusCom.provideContent.entity.parts.CaseEntity
+import com.example.cusCom.exception.EstimateErrorCode
+import com.example.cusCom.exception.EstimateException
 import com.example.cusCom.userEstimate.dto.Estimate
-import com.example.cusCom.userEstimate.exception.EstimateException
 import com.example.cusCom.provideContent.repository.MotherBoardFormFactorRepository
 import com.example.cusCom.provideContent.service.DesktopPartsService
 import com.example.cusCom.userEstimate.entity.EstimateEntity
@@ -74,6 +73,17 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
         mongoTemplate.remove(query, EstimateEntity::class.java)
     }
 
+    fun checkEstimateEmptyElement(estimate: Estimate): Boolean {
+        return estimate.cpu.isNotEmpty() &&
+                estimate.case.isNotEmpty() &&
+                estimate.dataStorage.isNotEmpty() &&
+                estimate.memory.isNotEmpty() &&
+                estimate.graphicsCard.isNotEmpty() &&
+                estimate.cpuCooler.isNotEmpty() &&
+                estimate.motherBoard.isNotEmpty() &&
+                estimate.powerSupply.isNotEmpty()
+    }
+
     fun checkDesktopEstimate(estimate: Estimate){
         val cpuCooler=desktopPartsService.findCpuCooler(estimate.cpuCooler)
         val case=desktopPartsService.findCase(estimate.case)
@@ -87,21 +97,21 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
         val motherBoardFormFactor=motherBoardRepo.findById(motherBoard.formFactor).get()
 
         if(cpuCooler.height>case.cpuCoolerHeight)
-            throw EstimateException("쿨러 허용 높이 초과")
+            throw EstimateException(EstimateErrorCode.OversizeCooler)
         if(graphicsCard.length>case.graphicsCardLength)
-            throw EstimateException("그래픽카드 허용 길이 초과")
+            throw EstimateException(EstimateErrorCode.OversizeGraphicsCard)
         if(memory.height>44)
-            throw EstimateException("램 간섭 발생")
+            throw EstimateException(EstimateErrorCode.InterferenceMemory)
         if(motherBoardFormFactor.length>caseMaxFormFactor.length
             ||motherBoardFormFactor.width>caseMaxFormFactor.width)
-            throw EstimateException("마더보드 허용 규격 초과")
+            throw EstimateException(EstimateErrorCode.OversizeMotherBoard)
         if(powerSupply.length>case.powerLength)
-            throw EstimateException("파워서플라이 허용 규격 초과")
+            throw EstimateException(EstimateErrorCode.OversizePowerSupply)
 
         if(memory.type!=motherBoard.memoryType)
-            throw EstimateException("메모리 규격 불일치")
+            throw EstimateException(EstimateErrorCode.MismatchMemory)
 
         if(graphicsCard.maxPower + cpu.TDP + cpuCooler.TDP > powerSupply.power)
-            throw EstimateException("파워서플라이 전력 부족")
+            throw EstimateException(EstimateErrorCode.PowerSupplyShortage)
     }
 }

@@ -1,5 +1,7 @@
 package com.example.cusCom.controller
 
+import com.example.cusCom.exception.EstimateErrorCode
+import com.example.cusCom.exception.EstimateException
 import com.example.cusCom.provideContent.dto.User
 import com.example.cusCom.provideContent.service.DesktopPartsService
 import com.example.cusCom.provideContent.service.UserService
@@ -66,5 +68,11 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     @PostMapping("/decreaseLike")
     fun decreaseLike(@RequestParam("dislikeAction") action:String): ResponseEntity<String> {
         return ResponseEntity.ok("Success")
+    }
+
+    private fun validateEstimate(estimate: Estimate) {
+        if (estimateService.checkEstimateEmptyElement(estimate))
+            throw EstimateException(EstimateErrorCode.UnfinishedEstimate)
+        estimateService.checkDesktopEstimate(estimate)
     }
 }

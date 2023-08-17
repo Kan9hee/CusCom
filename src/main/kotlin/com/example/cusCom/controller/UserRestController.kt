@@ -1,28 +1,21 @@
 package com.example.cusCom.controller
 
-import com.example.cusCom.exception.EstimateErrorCode
-import com.example.cusCom.exception.EstimateException
 import com.example.cusCom.provideContent.dto.User
-import com.example.cusCom.provideContent.service.DesktopPartsService
 import com.example.cusCom.provideContent.service.UserService
 import com.example.cusCom.provideContent.dto.Comment
-import com.example.cusCom.provideContent.service.EstimateDeserializer
 import com.example.cusCom.provideContent.dto.Estimate
 import com.example.cusCom.provideContent.dto.SharePlacePost
 import com.example.cusCom.provideContent.service.EstimateService
 import com.example.cusCom.provideContent.service.SharePlaceService
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
-import java.io.UnsupportedEncodingException
 
 @RestController
 @RequestMapping("/CusCom")
-class UserRestController(private val desktopPartsService: DesktopPartsService,
-                         private val estimateService: EstimateService,
+class UserRestController(private val estimateService: EstimateService,
                          private val sharePlaceService: SharePlaceService,
                          private val userService: UserService) {
 
@@ -34,15 +27,9 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
 
     @PostMapping("/estimate")
     fun postDataTest(@RequestParam("estimate") estimateJSON:String): ResponseEntity<String> {
-        try {
-            val estimate= GsonBuilder()
-                .registerTypeAdapter(Estimate::class.java, EstimateDeserializer(desktopPartsService))
-                .create()
-                .fromJson(estimateJSON, Estimate::class.java)
-            estimateService.saveUserEstimate(estimate)
-        } catch (e: UnsupportedEncodingException) {
-            e.printStackTrace()
-        }
+        val estimateResult=Gson().fromJson(estimateJSON, Estimate::class.java)
+        validateEstimate(estimateResult)
+        estimateService.saveUserEstimate(estimateResult)
         return ResponseEntity.ok("Success")
     }
 
@@ -71,8 +58,11 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     }
 
     private fun validateEstimate(estimate: Estimate) {
-        if (estimateService.checkEstimateEmptyElement(estimate))
-            throw EstimateException(EstimateErrorCode.UnfinishedEstimate)
-        estimateService.checkDesktopEstimate(estimate)
+        val check = runCatching{
+            estimateService.checkEstimateEmptyElement(estimate)
+            estimateService.checkDesktopEstimate(estimate)
+        }
+
+        check.onFailure { ex -> throw ex }
     }
 }

@@ -74,15 +74,16 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
         mongoTemplate.remove(query, EstimateEntity::class.java)
     }
 
-    fun checkEstimateEmptyElement(estimate: Estimate): Boolean {
-        return estimate.cpu.isNotEmpty() &&
-                estimate.case.isNotEmpty() &&
-                estimate.dataStorage.isNotEmpty() &&
-                estimate.memory.isNotEmpty() &&
-                estimate.graphicsCard.isNotEmpty() &&
-                estimate.cpuCooler.isNotEmpty() &&
-                estimate.motherBoard.isNotEmpty() &&
-                estimate.powerSupply.isNotEmpty()
+    fun checkEstimateEmptyElement(estimate: Estimate){
+        if(estimate.cpu.isEmpty() ||
+            estimate.case.isEmpty() ||
+            estimate.dataStorage.isEmpty() ||
+            estimate.memory.isEmpty() ||
+            estimate.graphicsCard.isEmpty() ||
+            estimate.cpuCooler.isEmpty() ||
+            estimate.motherBoard.isEmpty() ||
+            estimate.powerSupply.isEmpty())
+            throw EstimateException(EstimateErrorCode.UnfinishedEstimate)
     }
 
     fun checkDesktopEstimate(estimate: Estimate){
@@ -95,7 +96,6 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
         val motherBoard=desktopPartsService.findMotherBoard(estimate.motherBoard)
 
         val caseMaxFormFactor=motherBoardRepo.findById(case.maxMotherBoard).get()
-        val motherBoardFormFactor=motherBoardRepo.findById(motherBoard.formFactor).get()
 
         if(cpuCooler.height>case.cpuCoolerHeight)
             throw EstimateException(EstimateErrorCode.OversizeCooler)
@@ -103,8 +103,8 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
             throw EstimateException(EstimateErrorCode.OversizeGraphicsCard)
         if(memory.height>44)
             throw EstimateException(EstimateErrorCode.InterferenceMemory)
-        if(motherBoardFormFactor.length>caseMaxFormFactor.length
-            ||motherBoardFormFactor.width>caseMaxFormFactor.width)
+        if(motherBoard.formFactor.length>caseMaxFormFactor.length
+            ||motherBoard.formFactor.width>caseMaxFormFactor.width)
             throw EstimateException(EstimateErrorCode.OversizeMotherBoard)
         if(powerSupply.length>case.powerLength)
             throw EstimateException(EstimateErrorCode.OversizePowerSupply)

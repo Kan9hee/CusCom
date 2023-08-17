@@ -75,14 +75,14 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
     }
 
     fun checkEstimateEmptyElement(estimate: Estimate){
-        if(estimate.cpu.isEmpty() ||
-            estimate.case.isEmpty() ||
-            estimate.dataStorage.isEmpty() ||
-            estimate.memory.isEmpty() ||
-            estimate.graphicsCard.isEmpty() ||
-            estimate.cpuCooler.isEmpty() ||
-            estimate.motherBoard.isEmpty() ||
-            estimate.powerSupply.isEmpty())
+        if(estimate.run { cpu.isEmpty() ||
+                    case.isEmpty() ||
+                    dataStorage.isEmpty() ||
+                    memory.isEmpty() ||
+                    graphicsCard.isEmpty() ||
+                    cpuCooler.isEmpty() ||
+                    motherBoard.isEmpty() ||
+                    powerSupply.isEmpty() })
             throw EstimateException(EstimateErrorCode.UnfinishedEstimate)
     }
 
@@ -108,10 +108,8 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
             throw EstimateException(EstimateErrorCode.OversizeMotherBoard)
         if(powerSupply.length>case.powerLength)
             throw EstimateException(EstimateErrorCode.OversizePowerSupply)
-
         if(memory.type!=motherBoard.memoryType)
             throw EstimateException(EstimateErrorCode.MismatchMemory)
-
         if(graphicsCard.maxPower + cpu.TDP + cpuCooler.TDP > powerSupply.power)
             throw EstimateException(EstimateErrorCode.PowerSupplyShortage)
     }

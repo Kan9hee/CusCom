@@ -5,12 +5,12 @@ import com.example.cusCom.exception.EstimateException
 import com.example.cusCom.provideContent.dto.User
 import com.example.cusCom.provideContent.service.DesktopPartsService
 import com.example.cusCom.provideContent.service.UserService
-import com.example.cusCom.userEstimate.dto.Comment
-import com.example.cusCom.userEstimate.service.EstimateDeserializer
-import com.example.cusCom.userEstimate.dto.Estimate
-import com.example.cusCom.userEstimate.dto.SharePlacePost
-import com.example.cusCom.userEstimate.service.EstimateService
-import com.example.cusCom.userEstimate.service.SharePlaceService
+import com.example.cusCom.provideContent.dto.Comment
+import com.example.cusCom.provideContent.service.EstimateDeserializer
+import com.example.cusCom.provideContent.dto.Estimate
+import com.example.cusCom.provideContent.dto.SharePlacePost
+import com.example.cusCom.provideContent.service.EstimateService
+import com.example.cusCom.provideContent.service.SharePlaceService
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
@@ -48,7 +48,7 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
 
     @PostMapping("/uploadPost")
     fun uploadPost(@RequestParam("postData") postJSON:String): ResponseEntity<String> {
-        sharePlaceService.uploadPost(Gson().fromJson(postJSON,SharePlacePost::class.java))
+        sharePlaceService.uploadPost(Gson().fromJson(postJSON, SharePlacePost::class.java))
         return ResponseEntity.ok("Success")
     }
 

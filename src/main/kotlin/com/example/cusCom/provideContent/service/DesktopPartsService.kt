@@ -1,7 +1,8 @@
 package com.example.cusCom.provideContent.service
 
+import com.example.cusCom.provideContent.dto.MotherBoardFormFactor
 import com.example.cusCom.provideContent.dto.parts.*
-import com.example.cusCom.provideContent.entity.parts.*
+import com.example.cusCom.provideContent.entity.mySQL.parts.*
 import com.example.cusCom.provideContent.repository.parts.*
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Service
@@ -22,7 +23,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
         val caseList:List<Case> = caseRepo.findAll()
             .filter{ entity -> entity.name != "sample" }
             .map{
-                entity:CaseEntity -> Case(entity.name,
+                entity: CaseEntity -> Case(entity.name,
                     entity.manufacturer,
                     entity.caseType,
                     entity.maxMotherBoard,
@@ -96,7 +97,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
         val cpuCoolerList:List<CPUCooler> = cpuCoolerRepo.findAll()
             .filter{ entity -> entity.name != "sample" }
             .map{
-                entity:CPUCoolerEntity-> CPUCooler(entity.name,
+                entity: CPUCoolerEntity -> CPUCooler(entity.name,
                     entity.imageUrl,
                     entity.manufacturer,
                     entity.coolingType,
@@ -160,7 +161,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
         val cpuList:List<CPU> = cpuRepo.findAll()
             .filter{ entity -> entity.name != "sample" }
             .map{
-                entity:CPUEntity -> CPU(entity.name,
+                entity: CPUEntity -> CPU(entity.name,
                     entity.imageUrl,
                     entity.manufacturer,
                     entity.socket,
@@ -229,7 +230,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
         val dataStorageList:List<DataStorage> = dataStorageRepo.findAll()
             .filter{ entity -> entity.name != "sample" }
             .map{
-                entity:DataStorageEntity -> DataStorage(entity.name,
+                entity: DataStorageEntity -> DataStorage(entity.name,
                     entity.imageUrl,
                     entity.manufacturer,
                     entity.storageInterface,
@@ -288,7 +289,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
         val graphicsCardList:List<GraphicsCard> = graphicsCardRepo.findAll()
             .filter{ entity -> entity.name != "sample" }
             .map{
-                entity:GraphicsCardEntity -> GraphicsCard(entity.name,
+                entity: GraphicsCardEntity -> GraphicsCard(entity.name,
                     entity.imageUrl,
                     entity.manufacturer,
                     entity.chipsetManufacturer,
@@ -350,7 +351,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
         val memoryList:List<Memory> = memoryRepo.findAll()
             .filter{ entity -> entity.name != "sample" }
             .map{
-                entity:MemoryEntity -> Memory(entity.name,
+                entity: MemoryEntity -> Memory(entity.name,
                     entity.imageUrl,
                     entity.manufacturer,
                     entity.type,
@@ -403,13 +404,13 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
         val motherBoardList:List<MotherBoard> = motherBoardRepo.findAll()
             .filter{ entity -> entity.name != "sample" }
             .map{
-                entity:MotherBoardEntity -> MotherBoard(entity.name,
+                entity: MotherBoardEntity -> MotherBoard(entity.name,
                     entity.imageUrl,
                     entity.manufacturer,
                     entity.cpuType,
                     entity.socket,
                     entity.chipset,
-                    entity.formFactor,
+                    MotherBoardFormFactor(entity.formFactor.name,entity.formFactor.length,entity.formFactor.width),
                     entity.memoryType,
                     entity.memorySlot,
                     entity.ssdM2Slot,
@@ -426,7 +427,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
             entity.cpuType,
             entity.socket,
             entity.chipset,
-            entity.formFactor,
+            MotherBoardFormFactor(entity.formFactor.name,entity.formFactor.length,entity.formFactor.width),
             entity.memoryType,
             entity.memorySlot,
             entity.ssdM2Slot,
@@ -442,7 +443,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
             entity.cpuType,
             entity.socket,
             entity.chipset,
-            entity.formFactor,
+            MotherBoardFormFactor(entity.formFactor.name,entity.formFactor.length,entity.formFactor.width),
             entity.memoryType,
             entity.memorySlot,
             entity.ssdM2Slot,
@@ -471,7 +472,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
         val powerSupplyList:List<PowerSupply> = powerSupplyRepo.findAll()
             .filter{ entity -> entity.name != "sample" }
             .map{
-                entity:PowerSupplyEntity -> PowerSupply(entity.name,
+                entity: PowerSupplyEntity -> PowerSupply(entity.name,
                     entity.imageUrl,
                     entity.manufacturer,
                     entity.power,

@@ -1,6 +1,7 @@
-package com.example.cusCom.provideContent.entity.parts
+package com.example.cusCom.provideContent.entity.mySQL.parts
 
 import com.example.cusCom.provideContent.dto.parts.MotherBoard
+import com.example.cusCom.provideContent.entity.mySQL.MotherBoardFormFactorEntity
 import jakarta.persistence.*
 
 @Table(name="mother_board")
@@ -32,8 +33,10 @@ class MotherBoardEntity(motherBoard: MotherBoard){
     var chipset:String=motherBoard.chipset
         protected set
 
-    @Column(nullable = false)
-    var formFactor:String=motherBoard.formFactor
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="motherboard_formfactor_name",nullable = false)
+    var formFactor: MotherBoardFormFactorEntity =
+        MotherBoardFormFactorEntity(motherBoard.formFactor.name,motherBoard.formFactor.length,motherBoard.formFactor.width)
         protected set
 
     @Column(nullable = false)
@@ -59,7 +62,8 @@ class MotherBoardEntity(motherBoard: MotherBoard){
         this.cpuType=motherBoard.cpuType
         this.socket=motherBoard.socket
         this.chipset=motherBoard.chipset
-        this.formFactor=motherBoard.formFactor
+        this.formFactor=
+            MotherBoardFormFactorEntity(motherBoard.formFactor.name,motherBoard.formFactor.length,motherBoard.formFactor.width)
         this.memoryType=motherBoard.memoryType
         this.memorySlot=motherBoard.memorySlot
         this.ssdM2Slot=motherBoard.ssdM2Slot

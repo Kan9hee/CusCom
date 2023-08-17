@@ -1,15 +1,15 @@
-package com.example.cusCom.provideContent.entity
+package com.example.cusCom.provideContent.entity.mySQL
 
 import jakarta.persistence.*
 
 @Table(name="motherboard_formfactor")
 @Entity
-class MotherBoardFormFactorEntity(form_factor:String,
+class MotherBoardFormFactorEntity(name:String,
                                   length:Int,
                                   width:Int) {
     @Id
     @Column(nullable = false)
-    val form_factor:String=form_factor
+    val name:String=name
     @Column(nullable = false)
     val length:Int=length
     @Column(nullable = false)

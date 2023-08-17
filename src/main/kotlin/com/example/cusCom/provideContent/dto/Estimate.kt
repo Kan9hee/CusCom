@@ -1,4 +1,4 @@
-package com.example.cusCom.userEstimate.dto
+package com.example.cusCom.provideContent.dto
 
 data class Estimate(var _id:String,
                     var userName: String,

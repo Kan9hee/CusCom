@@ -1,11 +1,10 @@
-package com.example.cusCom.userEstimate.service
+package com.example.cusCom.provideContent.service
 
 import com.example.cusCom.exception.EstimateErrorCode
 import com.example.cusCom.exception.EstimateException
-import com.example.cusCom.userEstimate.dto.Estimate
+import com.example.cusCom.provideContent.dto.Estimate
 import com.example.cusCom.provideContent.repository.MotherBoardFormFactorRepository
-import com.example.cusCom.provideContent.service.DesktopPartsService
-import com.example.cusCom.userEstimate.entity.EstimateEntity
+import com.example.cusCom.provideContent.entity.mongoDB.EstimateEntity
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
@@ -20,7 +19,8 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
 
     @Transactional
     fun saveUserEstimate(estimate: Estimate){
-        mongoTemplate.insert(EstimateEntity(
+        mongoTemplate.insert(
+            EstimateEntity(
             ObjectId(),
             estimate.userName,
             estimate.cpu,
@@ -36,7 +36,7 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
 
     @Transactional
     fun getUserEstimateById(id:ObjectId): Estimate {
-        val entity: EstimateEntity=mongoTemplate.findById(id,EstimateEntity::class.java)!!
+        val entity: EstimateEntity =mongoTemplate.findById(id, EstimateEntity::class.java)!!
         return Estimate(entity._id.toHexString(),
             entity.userName,
             entity.cpu,
@@ -52,7 +52,8 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
     @Transactional
     fun getUserEstimateList(): List<Estimate> {
         val estimateList:List<Estimate> =mongoTemplate.findAll(EstimateEntity::class.java).map {
-            entity:EstimateEntity->Estimate(entity._id.toHexString(),
+            entity: EstimateEntity ->
+            Estimate(entity._id.toHexString(),
             entity.userName,
             entity.cpu,
             entity.motherBoard,

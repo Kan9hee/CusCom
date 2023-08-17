@@ -1,10 +1,8 @@
 package com.example.cusCom.controller
 
-import com.example.cusCom.exception.EstimateException
 import com.example.cusCom.provideContent.service.DesktopPartsService
-import com.example.cusCom.userEstimate.dto.Estimate
-import com.example.cusCom.userEstimate.service.EstimateService
-import com.example.cusCom.userEstimate.service.SharePlaceService
+import com.example.cusCom.provideContent.service.EstimateService
+import com.example.cusCom.provideContent.service.SharePlaceService
 import org.bson.types.ObjectId
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Controller
@@ -17,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam
 @RequestMapping("/CusCom")
 class ViewController(private val desktopPartsService: DesktopPartsService,
                      private val estimateService: EstimateService,
-                     private val sharePlaceService: SharePlaceService) {
+                     private val sharePlaceService: SharePlaceService
+) {
 
     @GetMapping("/loginPage")
     fun loginPage():String{

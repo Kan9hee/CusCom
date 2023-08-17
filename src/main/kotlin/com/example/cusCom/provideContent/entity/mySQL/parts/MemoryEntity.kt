@@ -1,4 +1,4 @@
-package com.example.cusCom.provideContent.entity.parts
+package com.example.cusCom.provideContent.entity.mySQL.parts
 
 import com.example.cusCom.provideContent.dto.parts.Memory
 import jakarta.persistence.*
@@ -32,7 +32,7 @@ class MemoryEntity(memory: Memory){
     var height:Int=memory.height
         protected set
 
-    fun update(memory:Memory){
+    fun update(memory: Memory){
         this.name=memory.name
         this.imageUrl=memory.imageUrl
         this.manufacturer=memory.manufacturer

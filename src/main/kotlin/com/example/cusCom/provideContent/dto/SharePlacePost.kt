@@ -1,4 +1,4 @@
-package com.example.cusCom.userEstimate.dto
+package com.example.cusCom.provideContent.dto
 
 data class SharePlacePost(var _id:String,
                           var estimateID:String,

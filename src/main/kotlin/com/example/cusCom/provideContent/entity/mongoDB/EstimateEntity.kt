@@ -1,4 +1,4 @@
-package com.example.cusCom.userEstimate.entity
+package com.example.cusCom.provideContent.entity.mongoDB
 
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.mapping.Document

@@ -1,4 +1,4 @@
-package com.example.cusCom.provideContent.entity.parts
+package com.example.cusCom.provideContent.entity.mySQL.parts
 
 import com.example.cusCom.provideContent.dto.parts.DataStorage
 import jakarta.persistence.*

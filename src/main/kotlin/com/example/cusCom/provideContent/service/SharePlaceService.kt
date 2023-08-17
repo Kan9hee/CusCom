@@ -1,9 +1,9 @@
-package com.example.cusCom.userEstimate.service
+package com.example.cusCom.provideContent.service
 
-import com.example.cusCom.userEstimate.dto.Comment
-import com.example.cusCom.userEstimate.dto.SharePlacePost
-import com.example.cusCom.userEstimate.entity.CommentEntity
-import com.example.cusCom.userEstimate.entity.SharePlacePostEntity
+import com.example.cusCom.provideContent.dto.Comment
+import com.example.cusCom.provideContent.dto.SharePlacePost
+import com.example.cusCom.provideContent.entity.mongoDB.CommentEntity
+import com.example.cusCom.provideContent.entity.mongoDB.SharePlacePostEntity
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
@@ -16,7 +16,8 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
 
     @Transactional
     fun uploadPost(sharePlacePost: SharePlacePost){
-        mongoTemplate.insert(SharePlacePostEntity(
+        mongoTemplate.insert(
+            SharePlacePostEntity(
             ObjectId(),
             sharePlacePost.estimateID,
             sharePlacePost.title,
@@ -31,13 +32,13 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
     fun deletePost(option:String,value:String){
         val query= Query(Criteria.where(option).`is`(ObjectId(value)))
         deleteComment("postID",value)
-        mongoTemplate.remove(query,SharePlacePostEntity::class.java)
+        mongoTemplate.remove(query, SharePlacePostEntity::class.java)
     }
 
     @Transactional
     fun getPost(option:String,value:String): SharePlacePost? {
         val query= Query(Criteria.where(option).`is`(ObjectId(value)))
-        val entity = mongoTemplate.findOne(query,SharePlacePostEntity::class.java)
+        val entity = mongoTemplate.findOne(query, SharePlacePostEntity::class.java)
         return entity?.let {
             SharePlacePost(
                 it._id.toHexString(),
@@ -53,7 +54,8 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
     @Transactional
     fun getPostList(): List<SharePlacePost> {
         return mongoTemplate.findAll(SharePlacePostEntity::class.java).map {
-            entity:SharePlacePostEntity->SharePlacePost(
+            entity: SharePlacePostEntity ->
+            SharePlacePost(
                 entity._id.toHexString(),
                 entity.estimateID,
                 entity.title,
@@ -67,7 +69,8 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
 
     @Transactional
     fun uploadComment(comment: Comment){
-        mongoTemplate.insert(CommentEntity(
+        mongoTemplate.insert(
+            CommentEntity(
             ObjectId(),
             comment.postID,
             comment.userName,
@@ -78,14 +81,15 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
     @Transactional
     fun deleteComment(option:String,value:String){
         val query= Query(Criteria.where(option).`is`(ObjectId(value)))
-        mongoTemplate.remove(query,CommentEntity::class.java)
+        mongoTemplate.remove(query, CommentEntity::class.java)
     }
 
     @Transactional
     fun getCommentList(option:String,value:String): List<Comment> {
         val query= Query(Criteria.where(option).`is`(value))
-        return mongoTemplate.find(query,CommentEntity::class.java).map {
-            entity:CommentEntity->Comment(
+        return mongoTemplate.find(query, CommentEntity::class.java).map {
+            entity: CommentEntity ->
+            Comment(
                 entity._id.toHexString(),
                 entity.postID,
                 entity.userName,

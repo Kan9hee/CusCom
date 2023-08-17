@@ -1,10 +1,7 @@
-package com.example.cusCom.provideContent.entity
+package com.example.cusCom.provideContent.entity.mySQL
 
 import com.example.cusCom.provideContent.dto.User
 import jakarta.persistence.*
-import lombok.Getter
-import lombok.Setter
-import org.springframework.security.crypto.password.PasswordEncoder
 
 @Table(name="user")
 @Entity

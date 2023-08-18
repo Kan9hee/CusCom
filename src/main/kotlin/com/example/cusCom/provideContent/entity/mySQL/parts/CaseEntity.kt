@@ -1,6 +1,7 @@
 package com.example.cusCom.provideContent.entity.mySQL.parts
 
 import com.example.cusCom.provideContent.dto.parts.Case
+import com.example.cusCom.provideContent.entity.mySQL.MotherBoardFormFactorEntity
 import jakarta.persistence.*
 
 @Table(name="desktop_case")
@@ -20,8 +21,10 @@ class CaseEntity(case: Case){
     var caseType:String=case.caseType
         protected set
 
-    @Column(nullable = false)
-    var maxMotherBoard:String=case.maxMotherBoard
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="motherboard_formfactor_name",nullable = false)
+    var motherBoardFormFactor: MotherBoardFormFactorEntity =
+        MotherBoardFormFactorEntity(case.motherBoardFormFactor.name,case.motherBoardFormFactor.length,case.motherBoardFormFactor.width)
         protected set
 
     @Column(nullable = false)
@@ -64,7 +67,7 @@ class CaseEntity(case: Case){
         this.name=case.name
         this.manufacturer=case.manufacturer
         this.caseType=case.caseType
-        this.maxMotherBoard=case.maxMotherBoard
+        this.motherBoardFormFactor=MotherBoardFormFactorEntity(case.motherBoardFormFactor.name,case.motherBoardFormFactor.length,case.motherBoardFormFactor.width)
         this.maxCoolingFan=case.maxCoolingFan
         this.builtInCoolingFan=case.builtInCoolingFan
         this.height=case.height

@@ -3,6 +3,7 @@ package com.example.cusCom.provideContent.service
 import com.example.cusCom.provideContent.dto.MotherBoardFormFactor
 import com.example.cusCom.provideContent.dto.parts.*
 import com.example.cusCom.provideContent.entity.mySQL.parts.*
+import com.example.cusCom.provideContent.repository.MotherBoardFormFactorRepository
 import com.example.cusCom.provideContent.repository.parts.*
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Service
@@ -16,7 +17,8 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                           private val graphicsCardRepo: GraphicsCardRepository,
                           private val memoryRepo:MemoryRepository,
                           private val motherBoardRepo:MotherBoardRepository,
-                          private val powerSupplyRepo:PowerSupplyRepository) {
+                          private val powerSupplyRepo:PowerSupplyRepository,
+                          private val motherBoardFormFactorRepo: MotherBoardFormFactorRepository) {
 
     @Transactional(readOnly = true)
     fun getCaseList(): List<Case> {
@@ -26,7 +28,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                 entity: CaseEntity -> Case(entity.name,
                     entity.manufacturer,
                     entity.caseType,
-                    entity.maxMotherBoard,
+                    MotherBoardFormFactor(entity.motherBoardFormFactor.name,entity.motherBoardFormFactor.length,entity.motherBoardFormFactor.width),
                     entity.maxCoolingFan,
                     entity.builtInCoolingFan,
                     entity.height,
@@ -45,7 +47,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
         return Case(entity.name,
             entity.manufacturer,
             entity.caseType,
-            entity.maxMotherBoard,
+            MotherBoardFormFactor(entity.motherBoardFormFactor.name,entity.motherBoardFormFactor.length,entity.motherBoardFormFactor.width),
             entity.maxCoolingFan,
             entity.builtInCoolingFan,
             entity.height,
@@ -63,7 +65,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
         return Case(entity.name,
             entity.manufacturer,
             entity.caseType,
-            entity.maxMotherBoard,
+            MotherBoardFormFactor(entity.motherBoardFormFactor.name,entity.motherBoardFormFactor.length,entity.motherBoardFormFactor.width),
             entity.maxCoolingFan,
             entity.builtInCoolingFan,
             entity.height,
@@ -410,7 +412,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                     entity.cpuType,
                     entity.socket,
                     entity.chipset,
-                    MotherBoardFormFactor(entity.formFactor.name,entity.formFactor.length,entity.formFactor.width),
+                    MotherBoardFormFactor(entity.motherBoardFormFactor.name,entity.motherBoardFormFactor.length,entity.motherBoardFormFactor.width),
                     entity.memoryType,
                     entity.memorySlot,
                     entity.ssdM2Slot,
@@ -427,7 +429,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
             entity.cpuType,
             entity.socket,
             entity.chipset,
-            MotherBoardFormFactor(entity.formFactor.name,entity.formFactor.length,entity.formFactor.width),
+            MotherBoardFormFactor(entity.motherBoardFormFactor.name,entity.motherBoardFormFactor.length,entity.motherBoardFormFactor.width),
             entity.memoryType,
             entity.memorySlot,
             entity.ssdM2Slot,
@@ -443,7 +445,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
             entity.cpuType,
             entity.socket,
             entity.chipset,
-            MotherBoardFormFactor(entity.formFactor.name,entity.formFactor.length,entity.formFactor.width),
+            MotherBoardFormFactor(entity.motherBoardFormFactor.name,entity.motherBoardFormFactor.length,entity.motherBoardFormFactor.width),
             entity.memoryType,
             entity.memorySlot,
             entity.ssdM2Slot,
@@ -520,5 +522,10 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun deletePowerSupply(powerSupply: String){
         return powerSupplyRepo.deleteById(powerSupply)
+    }
+
+    fun findMotherBoardFormFactor(name: String): MotherBoardFormFactor {
+        val entity=motherBoardFormFactorRepo.findById(name).orElseThrow { EntityNotFoundException("MotherboardFormFactor ${name}을 찾을 수가 없습니다.") }
+        return MotherBoardFormFactor(entity.name,entity.length,entity.width)
     }
 }

@@ -36,9 +36,9 @@
               <div class="col-9">
                 <label for="maxMotherBoard" class="form-label">최대 마더보드 호환성</label>
                 <select class="form-select" aria-label="Default select example" id="maxMotherBoard">
-                  <option value="ATX" th:selected="${item.maxMotherBoard == 'ATX'}">ATX</option>
-                  <option value="M-ATX" th:selected="${item.maxMotherBoard == 'M-ATX'}">M-ATX</option>
-                  <option value="E-ATX" th:selected="${item.maxMotherBoard == 'E-ATX'}">E-ATX</option>
+                  <option value="ATX" th:selected="${item.motherBoardFormFactor.name == 'ATX'}">ATX</option>
+                  <option value="M-ATX" th:selected="${item.motherBoardFormFactor.name == 'M-ATX'}">M-ATX</option>
+                  <option value="E-ATX" th:selected="${item.motherBoardFormFactor.name == 'E-ATX'}">E-ATX</option>
                 </select>
               </div>
 
@@ -115,7 +115,7 @@
                 name: document.getElementById('name').value,
                 manufacturer: document.getElementById('manufacturer').value,
                 caseType: document.getElementById('caseType').value,
-                maxMotherBoard: document.getElementById('maxMotherBoard').value,
+                motherBoardFormFactor: document.getElementById('maxMotherBoard').value,
                 maxCoolingFan: document.getElementById('maxCoolingFan').value,
                 builtInCoolingFan: document.getElementById('builtInCoolingFan').value,
                 height: document.getElementById('height').value,

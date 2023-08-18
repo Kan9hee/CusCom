@@ -35,8 +35,8 @@ class MotherBoardEntity(motherBoard: MotherBoard){
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="motherboard_formfactor_name",nullable = false)
-    var formFactor: MotherBoardFormFactorEntity =
-        MotherBoardFormFactorEntity(motherBoard.formFactor.name,motherBoard.formFactor.length,motherBoard.formFactor.width)
+    var motherBoardFormFactor: MotherBoardFormFactorEntity =
+        MotherBoardFormFactorEntity(motherBoard.motherBoardFormFactor.name,motherBoard.motherBoardFormFactor.length,motherBoard.motherBoardFormFactor.width)
         protected set
 
     @Column(nullable = false)
@@ -62,8 +62,8 @@ class MotherBoardEntity(motherBoard: MotherBoard){
         this.cpuType=motherBoard.cpuType
         this.socket=motherBoard.socket
         this.chipset=motherBoard.chipset
-        this.formFactor=
-            MotherBoardFormFactorEntity(motherBoard.formFactor.name,motherBoard.formFactor.length,motherBoard.formFactor.width)
+        this.motherBoardFormFactor=
+            MotherBoardFormFactorEntity(motherBoard.motherBoardFormFactor.name,motherBoard.motherBoardFormFactor.length,motherBoard.motherBoardFormFactor.width)
         this.memoryType=motherBoard.memoryType
         this.memorySlot=motherBoard.memorySlot
         this.ssdM2Slot=motherBoard.ssdM2Slot

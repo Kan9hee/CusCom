@@ -26,12 +26,12 @@
               <div class="py-2">
                 <h4>태그</h4>
                 <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="tag1">
-                  <label class="form-check-label" for="tag1">선택지1</label>
+                  <input type="checkbox" class="form-check-input" name="tag" id="tag1">
+                  <label class="form-check-label" for="tag1">게이밍</label>
                 </div>
                 <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="tag2">
-                  <label class="form-check-label" for="tag2">선택지2</label>
+                  <input type="checkbox" class="form-check-input" name="tag" id="tag2">
+                  <label class="form-check-label" for="tag2">작업</label>
                 </div>
               </div>
 
@@ -120,11 +120,14 @@
         document.getElementById('submitPost')
             .addEventListener('click',function(event){
 
+                const selectedTags = Array.from(document.querySelectorAll('input[name="tag"]:checked'))
+                                        .map(checkbox => checkbox.value);
+
                 const data={
                     estimateID: "[[${Estimate._id}]]",
                     title: document.getElementById('title').value,
                     content: document.getElementById('content').value,
-                    tags: [document.getElementById('tags').value],
+                    tags: selectedTags,
                     viewCount: 0,
                     likeCount: 0
                 };

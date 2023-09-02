@@ -36,7 +36,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
     }
 
     @Transactional
-    fun getPost(option:String,value:String): SharePlacePost? {
+    fun loadPost(option:String,value:String): SharePlacePost? {
         val query= Query(Criteria.where(option).`is`(ObjectId(value)))
         val entity = mongoTemplate.findOne(query, SharePlacePostEntity::class.java)
         return entity?.let {
@@ -64,6 +64,23 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
                 entity.viewCount,
                 entity.likeCount
             )
+        }
+    }
+
+    @Transactional
+    fun searchPost(option:String,value:String): List<SharePlacePost> {
+        val query= Query(Criteria.where(option).`is`(ObjectId(value)))
+        return mongoTemplate.find(query,SharePlacePostEntity::class.java).map {
+                entity: SharePlacePostEntity ->
+                SharePlacePost(
+                    entity._id.toHexString(),
+                    entity.estimateID,
+                    entity.title,
+                    entity.content,
+                    entity.tags,
+                    entity.viewCount,
+                    entity.likeCount
+                )
         }
     }
 

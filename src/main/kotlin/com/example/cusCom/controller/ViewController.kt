@@ -1,8 +1,11 @@
 package com.example.cusCom.controller
 
+import com.example.cusCom.provideContent.dto.SharePlacePost
 import com.example.cusCom.provideContent.service.DesktopPartsService
 import com.example.cusCom.provideContent.service.EstimateService
 import com.example.cusCom.provideContent.service.SharePlaceService
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import org.bson.types.ObjectId
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Controller
@@ -54,14 +57,31 @@ class ViewController(private val desktopPartsService: DesktopPartsService,
     }
 
     @GetMapping("/sharePlace")
-    fun testSharePlacePage(model: Model):String{
-        model.addAttribute("postList",sharePlaceService.getPostList())
+    fun testSharePlacePage(@RequestParam(defaultValue = "1") page: Int,
+                           @RequestParam(defaultValue = "9") pageSize: Int,
+                           @RequestParam(required = false) searchJson: String?,
+                           model: Model):String{
+        var postList:List<SharePlacePost> = if(searchJson!=null) {
+            val temp= Gson().fromJson(searchJson,JsonObject::class.java)
+            sharePlaceService.searchPost(temp.get("option").asString,temp.get("value").asString)
+        } else {
+            sharePlaceService.getPostList()
+        }
+
+        val listSize = postList.size
+        val listStartIndex = (page - 1) * pageSize;
+        val listEndIndex = kotlin.math.min(listStartIndex + pageSize, listSize);
+        postList = postList.subList(listStartIndex,listEndIndex)
+
+        model.addAttribute("postList",postList)
+        model.addAttribute("totalPages",kotlin.math.ceil(postList.size.toDouble()/pageSize).toInt())
+        model.addAttribute("currentPage",page)
         return "sharePlace"
     }
 
     @GetMapping("/SharePlace/post")
     fun getPostPage(@RequestParam("id") postID:ObjectId,model: Model):String{
-        val post=sharePlaceService.getPost("_id",postID.toHexString())
+        val post=sharePlaceService.loadPost("_id",postID.toHexString())
         model.addAttribute("post",post)
         model.addAttribute("postEstimate",estimateService.getUserEstimateById(ObjectId(post!!.estimateID)))
         model.addAttribute("commentList",sharePlaceService.getCommentList("postID",postID.toHexString()))

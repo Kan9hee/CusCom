@@ -123,7 +123,7 @@
                 const selectedTags = Array.from(document.querySelectorAll('input[name="tag"]:checked'))
                                         .map(checkbox => checkbox.value);
 
-                const data={
+                const postData={
                     estimateID: "[[${Estimate._id}]]",
                     title: document.getElementById('title').value,
                     content: document.getElementById('content').value,
@@ -137,7 +137,7 @@
                     headers: {
                       "Content-Type": "application/json"
                     },
-                    body: JSON.stringify(joinData)
+                    body: JSON.stringify(postData)
                 })
                 .then(response => console.log(response))
                 .catch(error => {

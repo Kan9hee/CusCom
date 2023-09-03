@@ -8,6 +8,7 @@ import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.Update
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -40,6 +41,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
         val query= Query(Criteria.where(option).`is`(ObjectId(value)))
         val entity = mongoTemplate.findOne(query, SharePlacePostEntity::class.java)
         return entity?.let {
+            increaseViewCount(it)
             SharePlacePost(
                 it._id.toHexString(),
                 it.estimateID,
@@ -82,6 +84,13 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
                     entity.likeCount
                 )
         }
+    }
+
+    @Transactional
+    private fun increaseViewCount(sharePlacePostEntity: SharePlacePostEntity){
+        val query= Query(Criteria.where("_id").`is`(sharePlacePostEntity._id))
+        val update= Update().inc("viewCount",sharePlacePostEntity.viewCount+1)
+        mongoTemplate.updateFirst(query,update,"shareplace-posts")
     }
 
     @Transactional

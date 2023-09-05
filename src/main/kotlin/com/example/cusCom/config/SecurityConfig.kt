@@ -24,7 +24,7 @@ class SecurityConfig {
             .loginProcessingUrl("/CusCom/loginPage")
             .usernameParameter("userid")
             .passwordParameter("pw")
-            .defaultSuccessUrl("/CusCom/main",true)
+            .defaultSuccessUrl("/CusCom/mainPage",true)
             .permitAll()
         }
         .logout{ logout->logout

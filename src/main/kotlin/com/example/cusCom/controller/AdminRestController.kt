@@ -73,14 +73,14 @@ class AdminRestController(private val desktopPartsService: DesktopPartsService,
     }
 
     private fun editJson(json:String,type:String,image:MultipartFile): String {
-        val jsonObject=Gson().fromJson(json, JsonObject::class.java)
+        var jsonObject=Gson().fromJson(json, JsonObject::class.java)
         jsonObject.addProperty("url",blobService.uploadImage(image))
-        if(type.equals("Case")||type.equals("MotherBoard"))
+        if(type == "Case" || type == "MotherBoard")
             deserializeFormFactor(jsonObject)
         return Gson().toJson(jsonObject)
     }
 
-    private fun deserializeFormFactor(jsonObject: JsonObject){
+    private fun deserializeFormFactor(jsonObject: JsonObject) {
         val formFactorName:JsonElement =jsonObject.get("motherBoardFormFactor")
         val formFactorObject=Gson().toJsonTree(desktopPartsService.findMotherBoardFormFactor(formFactorName.toString())).asJsonObject
         jsonObject.add("motherBoardFormFactor",formFactorObject)

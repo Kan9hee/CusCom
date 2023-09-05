@@ -24,98 +24,58 @@ class AdminViewController(private val desktopPartsService: DesktopPartsService) 
     }
 
     @GetMapping("/editCase")
-    fun editCaseData(@RequestParam("Case") data:String?, model:Model):String{
-        if(data!=null) {
-            model.addAttribute("item", desktopPartsService.findCase(data))
-            model.addAttribute("firstCreate",false)
-        }else{
-            model.addAttribute("item", desktopPartsService.loadSampleCase())
-            model.addAttribute("firstCreate",true)
-        }
+    fun editCaseData(@RequestParam("Case") data:String, model:Model):String{
+        model.addAttribute("item", desktopPartsService.findCase(data))
+        model.addAttribute("firstCreate",data=="Sample")
         return "editPages/editCase"
     }
 
     @GetMapping("/editCPU")
-    fun editCPUData(@RequestParam("CPU") data:String?, model:Model):String{
-        if(data!=null) {
-            model.addAttribute("item", desktopPartsService.findCpu(data))
-            model.addAttribute("firstCreate",false)
-        }else{
-            model.addAttribute("item", desktopPartsService.loadSampleCpu())
-            model.addAttribute("firstCreate",true)
-        }
+    fun editCPUData(@RequestParam("CPU") data:String, model:Model):String{
+        model.addAttribute("item", desktopPartsService.findCpu(data))
+        model.addAttribute("firstCreate",data=="Sample")
         return "editPages/editCPU"
     }
 
     @GetMapping("/editCPUCooler")
-    fun editCPUCoolerData(@RequestParam("CPUCooler") data:String?, model:Model):String{
-        if(data!=null) {
-            model.addAttribute("item", desktopPartsService.findCpuCooler(data))
-            model.addAttribute("firstCreate",false)
-        }else{
-            model.addAttribute("item", desktopPartsService.loadSampleCpuCooler())
-            model.addAttribute("firstCreate",true)
-        }
+    fun editCPUCoolerData(@RequestParam("CPUCooler") data:String, model:Model):String{
+        model.addAttribute("item", desktopPartsService.findCpuCooler(data))
+        model.addAttribute("firstCreate",data=="Sample")
         return "editPages/editCPUCooler"
     }
 
     @GetMapping("/editDataStorage")
-    fun editDataStorageData(@RequestParam("DataStorage") data:String?, model:Model):String{
-        if(data!=null) {
-            model.addAttribute("item", desktopPartsService.findDataStorage(data))
-            model.addAttribute("firstCreate",false)
-        }else{
-            model.addAttribute("item", desktopPartsService.loadSampleDataStorage())
-            model.addAttribute("firstCreate",true)
-        }
+    fun editDataStorageData(@RequestParam("DataStorage") data:String, model:Model):String{
+        model.addAttribute("item", desktopPartsService.findDataStorage(data))
+        model.addAttribute("firstCreate",data=="Sample")
         return "editPages/editDataStorage"
     }
 
     @GetMapping("/editGraphicsCard")
-    fun editGraphicsCardData(@RequestParam("GraphicsCard") data:String?, model:Model):String{
-        if(data!=null) {
-            model.addAttribute("item", desktopPartsService.findGraphicsCard(data))
-            model.addAttribute("firstCreate",false)
-        }else{
-            model.addAttribute("item", desktopPartsService.loadSampleGraphicsCard())
-            model.addAttribute("firstCreate",true)
-        }
+    fun editGraphicsCardData(@RequestParam("GraphicsCard") data:String, model:Model):String{
+        model.addAttribute("item", desktopPartsService.findGraphicsCard(data))
+        model.addAttribute("firstCreate",data=="Sample")
         return "editPages/editGraphicsCard"
     }
 
     @GetMapping("/editMemory")
-    fun editMemoryData(@RequestParam("Memory") data:String?, model:Model):String{
-        if(data!=null) {
-            model.addAttribute("item", desktopPartsService.findMemory(data))
-            model.addAttribute("firstCreate",false)
-        }else{
-            model.addAttribute("item", desktopPartsService.loadSampleMemory())
-            model.addAttribute("firstCreate",true)
-        }
+    fun editMemoryData(@RequestParam("Memory") data:String, model:Model):String{
+        model.addAttribute("item", desktopPartsService.findMemory(data))
+        model.addAttribute("firstCreate",data=="Sample")
         return "editPages/editMemory"
     }
 
     @GetMapping("/editMotherBoard")
-    fun editMotherBoardData(@RequestParam("MotherBoard") data:String?, model:Model):String{
-        if(data!=null) {
-            model.addAttribute("item", desktopPartsService.findMotherBoard(data))
-            model.addAttribute("firstCreate",false)
-        }else{
-            model.addAttribute("item", desktopPartsService.loadSampleMotherBoard())
-            model.addAttribute("firstCreate",true)
-        }
+    fun editMotherBoardData(@RequestParam("MotherBoard") data:String, model:Model):String{
+        model.addAttribute("item", desktopPartsService.findMotherBoard(data))
+        model.addAttribute("firstCreate",data=="Sample")
         return "editPages/editMotherBoard"
     }
 
     @GetMapping("/editPowerSupply")
-    fun editPowerSupplyData(@RequestParam("PowerSupply") data:String?, model:Model):String{
-        if(data!=null) {
-            model.addAttribute("item", desktopPartsService.findPowerSupply(data))
-            model.addAttribute("firstCreate",false)
-        }else{
-            model.addAttribute("item", desktopPartsService.loadSamplePowerSupply())
-            model.addAttribute("firstCreate",true)
-        }
+    fun editPowerSupplyData(@RequestParam("PowerSupply") data:String, model:Model):String{
+        model.addAttribute("item", desktopPartsService.findPowerSupply(data))
+        model.addAttribute("firstCreate",data=="Sample")
         return "editPages/editPowerSupply"
     }
 }

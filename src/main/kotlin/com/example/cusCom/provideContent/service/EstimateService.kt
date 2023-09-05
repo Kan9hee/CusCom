@@ -95,7 +95,7 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
         val cpu=desktopPartsService.findCpu(estimate.cpu)
         val motherBoard=desktopPartsService.findMotherBoard(estimate.motherBoard)
 
-        val caseMaxFormFactor=motherBoardRepo.findById(case.maxMotherBoard).get()
+        val caseMaxFormFactor=motherBoardRepo.findById(case.motherBoardFormFactor.name).get()
 
         if(cpuCooler.height>case.cpuCoolerHeight)
             throw EstimateException(EstimateErrorCode.OversizeCooler)
@@ -103,8 +103,8 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
             throw EstimateException(EstimateErrorCode.OversizeGraphicsCard)
         if(memory.height>44)
             throw EstimateException(EstimateErrorCode.InterferenceMemory)
-        if(motherBoard.formFactor.length>caseMaxFormFactor.length
-            ||motherBoard.formFactor.width>caseMaxFormFactor.width)
+        if(motherBoard.motherBoardFormFactor.length>caseMaxFormFactor.length
+            ||motherBoard.motherBoardFormFactor.width>caseMaxFormFactor.width)
             throw EstimateException(EstimateErrorCode.OversizeMotherBoard)
         if(powerSupply.length>case.powerLength)
             throw EstimateException(EstimateErrorCode.OversizePowerSupply)

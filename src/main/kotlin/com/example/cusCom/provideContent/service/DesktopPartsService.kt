@@ -23,7 +23,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getCaseList(): List<Case> {
         val caseList:List<Case> = caseRepo.findAll()
-            .filter{ entity -> entity.name != "sample" }
+            .filter{ entity -> entity.name != "Sample" }
             .map{
                 entity: CaseEntity -> Case(entity.name,
                     entity.manufacturer,
@@ -60,24 +60,6 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun loadSampleCase(): Case {
-        val entity = caseRepo.findById("Sample").orElseThrow { EntityNotFoundException("샘플 데이터를 찾을 수 없습니다.") }
-        return Case(entity.name,
-            entity.manufacturer,
-            entity.caseType,
-            MotherBoardFormFactor(entity.motherBoardFormFactor.name,entity.motherBoardFormFactor.length,entity.motherBoardFormFactor.width),
-            entity.maxCoolingFan,
-            entity.builtInCoolingFan,
-            entity.height,
-            entity.length,
-            entity.width,
-            entity.powerLength,
-            entity.cpuCoolerHeight,
-            entity.graphicsCardLength,
-            entity.imageUrl)
-    }
-
-    @Transactional
     fun createCase(case: Case){
         caseRepo.save(CaseEntity(case))
     }
@@ -97,7 +79,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getCpuCoolerList(): List<CPUCooler> {
         val cpuCoolerList:List<CPUCooler> = cpuCoolerRepo.findAll()
-            .filter{ entity -> entity.name != "sample" }
+            .filter{ entity -> entity.name != "Sample" }
             .map{
                 entity: CPUCoolerEntity -> CPUCooler(entity.name,
                     entity.imageUrl,
@@ -114,21 +96,6 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun findCpuCooler(name:String): CPUCooler {
         val entity = cpuCoolerRepo.findById(name).orElseThrow { EntityNotFoundException("CPUCooler ${name}을 찾을 수가 없습니다.") }
-        return CPUCooler(
-            entity.name,
-            entity.imageUrl,
-            entity.manufacturer,
-            entity.coolingType,
-            entity.coolerForm,
-            entity.height,
-            entity.length,
-            entity.width,
-            entity.tdp)
-    }
-
-    @Transactional
-    fun loadSampleCpuCooler(): CPUCooler {
-        val entity = cpuCoolerRepo.findById("Sample").orElseThrow { EntityNotFoundException("샘플 데이터를 찾을 수 없습니다.") }
         return CPUCooler(
             entity.name,
             entity.imageUrl,
@@ -161,7 +128,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getCPUList(): List<CPU> {
         val cpuList:List<CPU> = cpuRepo.findAll()
-            .filter{ entity -> entity.name != "sample" }
+            .filter{ entity -> entity.name != "Sample" }
             .map{
                 entity: CPUEntity -> CPU(entity.name,
                     entity.imageUrl,
@@ -179,23 +146,6 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun findCpu(name: String): CPU {
         val entity = cpuRepo.findById(name).orElseThrow { EntityNotFoundException("CPU ${name}을 찾을 수가 없습니다.") }
-        return CPU(
-            entity.name,
-            entity.imageUrl,
-            entity.manufacturer,
-            entity.socket,
-            entity.memoryType,
-            entity.core,
-            entity.thread,
-            entity.isBuiltInGraphics,
-            entity.builtInGraphicName,
-            entity.TDP
-        )
-    }
-
-    @Transactional
-    fun loadSampleCpu(): CPU {
-        val entity = cpuRepo.findById("Sample").orElseThrow { EntityNotFoundException("샘플 데이터를 찾을 수 없습니다.") }
         return CPU(
             entity.name,
             entity.imageUrl,
@@ -230,7 +180,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getDataStorageList(): List<DataStorage> {
         val dataStorageList:List<DataStorage> = dataStorageRepo.findAll()
-            .filter{ entity -> entity.name != "sample" }
+            .filter{ entity -> entity.name != "Sample" }
             .map{
                 entity: DataStorageEntity -> DataStorage(entity.name,
                     entity.imageUrl,
@@ -246,19 +196,6 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun findDataStorage(name:String): DataStorage {
         val entity = dataStorageRepo.findById(name).orElseThrow { EntityNotFoundException("DataStorage ${name}을 찾을 수가 없습니다.") }
-        return DataStorage(entity.name,
-            entity.imageUrl,
-            entity.manufacturer,
-            entity.storageInterface,
-            entity.formFactor,
-            entity.capacity,
-            entity.readSpeed,
-            entity.writeSpeed)
-    }
-
-    @Transactional
-    fun loadSampleDataStorage(): DataStorage {
-        val entity = dataStorageRepo.findById("Sample").orElseThrow { EntityNotFoundException("샘플 데이터를 찾을 수 없습니다.") }
         return DataStorage(entity.name,
             entity.imageUrl,
             entity.manufacturer,
@@ -289,7 +226,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getGraphicsCardList(): List<GraphicsCard> {
         val graphicsCardList:List<GraphicsCard> = graphicsCardRepo.findAll()
-            .filter{ entity -> entity.name != "sample" }
+            .filter{ entity -> entity.name != "Sample" }
             .map{
                 entity: GraphicsCardEntity -> GraphicsCard(entity.name,
                     entity.imageUrl,
@@ -306,20 +243,6 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun findGraphicsCard(name:String): GraphicsCard {
         val entity = graphicsCardRepo.findById(name).orElseThrow { EntityNotFoundException("GraphicsCard ${name}을 찾을 수가 없습니다.") }
-        return GraphicsCard(entity.name,
-            entity.imageUrl,
-            entity.manufacturer,
-            entity.chipsetManufacturer,
-            entity.gpuType,
-            entity.length,
-            entity.basicPower,
-            entity.maxPower,
-            entity.phase)
-    }
-
-    @Transactional
-    fun loadSampleGraphicsCard(): GraphicsCard {
-        val entity = graphicsCardRepo.findById("Sample").orElseThrow { EntityNotFoundException("샘플 데이터를 찾을 수 없습니다.") }
         return GraphicsCard(entity.name,
             entity.imageUrl,
             entity.manufacturer,
@@ -351,7 +274,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getMemoryList(): List<Memory> {
         val memoryList:List<Memory> = memoryRepo.findAll()
-            .filter{ entity -> entity.name != "sample" }
+            .filter{ entity -> entity.name != "Sample" }
             .map{
                 entity: MemoryEntity -> Memory(entity.name,
                     entity.imageUrl,
@@ -365,17 +288,6 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun findMemory(name:String): Memory {
         val entity = memoryRepo.findById(name).orElseThrow { EntityNotFoundException("Memory ${name}을 찾을 수가 없습니다.") }
-        return Memory(entity.name,
-            entity.imageUrl,
-            entity.manufacturer,
-            entity.type,
-            entity.capacity,
-            entity.height)
-    }
-
-    @Transactional
-    fun loadSampleMemory(): Memory {
-        val entity = memoryRepo.findById("Sample").orElseThrow { EntityNotFoundException("샘플 데이터를 찾을 수 없습니다.") }
         return Memory(entity.name,
             entity.imageUrl,
             entity.manufacturer,
@@ -404,7 +316,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getMotherBoardList(): List<MotherBoard> {
         val motherBoardList:List<MotherBoard> = motherBoardRepo.findAll()
-            .filter{ entity -> entity.name != "sample" }
+            .filter{ entity -> entity.name != "Sample" }
             .map{
                 entity: MotherBoardEntity -> MotherBoard(entity.name,
                     entity.imageUrl,
@@ -423,22 +335,6 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun findMotherBoard(name:String): MotherBoard {
         val entity = motherBoardRepo.findById(name).orElseThrow { EntityNotFoundException("MotherBoard ${name}을 찾을 수가 없습니다.") }
-        return MotherBoard(entity.name,
-            entity.imageUrl,
-            entity.manufacturer,
-            entity.cpuType,
-            entity.socket,
-            entity.chipset,
-            MotherBoardFormFactor(entity.motherBoardFormFactor.name,entity.motherBoardFormFactor.length,entity.motherBoardFormFactor.width),
-            entity.memoryType,
-            entity.memorySlot,
-            entity.ssdM2Slot,
-            entity.ssdSATASlot)
-    }
-
-    @Transactional
-    fun loadSampleMotherBoard(): MotherBoard {
-        val entity = motherBoardRepo.findById("Sample").orElseThrow { EntityNotFoundException("샘플 데이터를 찾을 수 없습니다.") }
         return MotherBoard(entity.name,
             entity.imageUrl,
             entity.manufacturer,
@@ -472,7 +368,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getPowerSupplyList(): List<PowerSupply> {
         val powerSupplyList:List<PowerSupply> = powerSupplyRepo.findAll()
-            .filter{ entity -> entity.name != "sample" }
+            .filter{ entity -> entity.name != "Sample" }
             .map{
                 entity: PowerSupplyEntity -> PowerSupply(entity.name,
                     entity.imageUrl,
@@ -487,18 +383,6 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun findPowerSupply(name:String): PowerSupply {
         val entity = powerSupplyRepo.findById(name).orElseThrow { EntityNotFoundException("PowerSupply ${name}을 찾을 수가 없습니다.") }
-        return PowerSupply(entity.name,
-            entity.imageUrl,
-            entity.manufacturer,
-            entity.power,
-            entity.efficiency,
-            entity.modular,
-            entity.length)
-    }
-
-    @Transactional
-    fun loadSamplePowerSupply(): PowerSupply {
-        val entity = powerSupplyRepo.findById("Sample").orElseThrow { EntityNotFoundException("샘플 데이터를 찾을 수 없습니다.") }
         return PowerSupply(entity.name,
             entity.imageUrl,
             entity.manufacturer,

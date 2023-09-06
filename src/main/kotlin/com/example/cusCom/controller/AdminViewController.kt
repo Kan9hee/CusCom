@@ -1,6 +1,5 @@
 package com.example.cusCom.controller
 
-import com.example.cusCom.provideContent.dto.parts.*
 import com.example.cusCom.provideContent.service.DesktopPartsService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model

@@ -30,24 +30,28 @@
               <div class="accordion-body">
                 <table class="table">
                   <thead>
-                  <tr>
-                    <th></th>
-                    <th></th>
-                  </tr>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                    </tr>
                   </thead>
                   <tbody>
-                  <tr th:each="case : ${caseList}">
-                    <td th:text="${case.name}">케이스 이름</td>
-                    <td>
-                      <div class="button-container" style="display: flex; gap: 10px;">
-                        <form method="get" action="/adminPage/editCase">
-                          <input type="hidden" id="Case" name="Case">
-                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
-                        </form>
-                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
-                      </div>
-                    </td>
-                  </tr>
+                    <form method="get" action="/CusCom/adminPage/editCase">
+                      <input type="hidden" name="Case" value="Sample">
+                      <button class="btn btn-lg btn-primary" type="submit">케이스 데이터 추가</button>
+                    </form>
+                    <tr th:each="case : ${caseList}">
+                      <td th:text="${case.name}">케이스 이름</td>
+                      <td>
+                        <div class="button-container" style="display: flex; gap: 10px;">
+                          <form method="get" action="/CusCom/adminPage/editCase">
+                            <input type="hidden" id="Case" name="Case">
+                            <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                          </form>
+                          <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                        </div>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -64,24 +68,28 @@
               <div class="accordion-body">
                 <table class="table">
                   <thead>
-                  <tr>
-                    <th></th>
-                    <th></th>
-                  </tr>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                    </tr>
                   </thead>
                   <tbody>
-                  <tr th:each="cpuCooler : ${cpuCoolerList}">
-                    <td th:text="${cpuCooler.name}">쿨러 이름</td>
-                    <td>
-                      <div class="button-container" style="display: flex; gap: 10px;">
-                        <form method="get" action="/adminPage/editCase">
-                          <input type="hidden" id="CPUCooler" name="CPUCooler">
-                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
-                        </form>
-                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
-                      </div>
-                    </td>
-                  </tr>
+                    <form method="get" action="/CusCom/adminPage/editCPUCooler">
+                      <input type="hidden" name="CPUCooler" value="Sample">
+                      <button class="btn btn-lg btn-primary" type="submit">CPU 쿨러 데이터 추가</button>
+                    </form>
+                    <tr th:each="cpuCooler : ${cpuCoolerList}">
+                      <td th:text="${cpuCooler.name}">쿨러 이름</td>
+                      <td>
+                        <div class="button-container" style="display: flex; gap: 10px;">
+                          <form method="get" action="/CusCom/adminPage/editCPUCooler">
+                            <input type="hidden" id="CPUCooler" name="CPUCooler">
+                            <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                          </form>
+                          <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                        </div>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -98,24 +106,28 @@
               <div class="accordion-body">
                 <table class="table">
                   <thead>
-                  <tr>
-                    <th></th>
-                    <th></th>
-                  </tr>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                    </tr>
                   </thead>
                   <tbody>
-                  <tr th:each="cpu : ${cpuList}">
-                    <td th:text="${cpu.name}">CPU 이름</td>
-                    <td>
-                      <div class="button-container" style="display: flex; gap: 10px;">
-                        <form method="get" action="/adminPage/editCase">
-                          <input type="hidden" id="CPU" name="CPU">
-                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
-                        </form>
-                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
-                      </div>
-                    </td>
-                  </tr>
+                    <form method="get" action="/CusCom/adminPage/editCPU">
+                      <input type="hidden" name="CPU" value="Sample">
+                      <button class="btn btn-lg btn-primary" type="submit">CPU 데이터 추가</button>
+                    </form>
+                    <tr th:each="cpu : ${cpuList}">
+                      <td th:text="${cpu.name}">CPU 이름</td>
+                      <td>
+                        <div class="button-container" style="display: flex; gap: 10px;">
+                          <form method="get" action="/CusCom/adminPage/editCPU">
+                            <input type="hidden" id="CPU" name="CPU">
+                            <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                          </form>
+                          <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                        </div>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -132,24 +144,28 @@
               <div class="accordion-body">
                 <table class="table">
                   <thead>
-                  <tr>
-                    <th></th>
-                    <th></th>
-                  </tr>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                    </tr>
                   </thead>
                   <tbody>
-                  <tr th:each="dataStorage : ${dataStorageList}">
-                    <td th:text="${dataStorage.name}">저장장치 이름</td>
-                    <td>
-                      <div class="button-container" style="display: flex; gap: 10px;">
-                        <form method="get" action="/adminPage/editCase">
-                          <input type="hidden" id="DataStorage" name="DataStorage">
-                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
-                        </form>
-                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
-                      </div>
-                    </td>
-                  </tr>
+                    <form method="get" action="/CusCom/adminPage/editDataStorage">
+                      <input type="hidden" name="DataStorage" value="Sample">
+                      <button class="btn btn-lg btn-primary" type="submit">저장장치 데이터 추가</button>
+                    </form>
+                    <tr th:each="dataStorage : ${dataStorageList}">
+                      <td th:text="${dataStorage.name}">저장장치 이름</td>
+                      <td>
+                        <div class="button-container" style="display: flex; gap: 10px;">
+                          <form method="get" action="/CusCom/adminPage/editDataStorage">
+                            <input type="hidden" id="DataStorage" name="DataStorage">
+                            <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                          </form>
+                          <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                        </div>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -166,24 +182,28 @@
               <div class="accordion-body">
                 <table class="table">
                   <thead>
-                  <tr>
-                    <th></th>
-                    <th></th>
-                  </tr>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                    </tr>
                   </thead>
                   <tbody>
-                  <tr th:each="graphicsCard : ${graphicsCardList}">
-                    <td th:text="${graphicsCard.name}">그래픽카드 이름</td>
-                    <td>
-                      <div class="button-container" style="display: flex; gap: 10px;">
-                        <form method="get" action="/adminPage/editCase">
-                          <input type="hidden" id="GraphicsCard" name="GraphicsCard">
-                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
-                        </form>
-                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
-                      </div>
-                    </td>
-                  </tr>
+                    <form method="get" action="/CusCom/adminPage/editGraphicsCard">
+                      <input type="hidden" name="GraphicsCard" value="Sample">
+                      <button class="btn btn-lg btn-primary" type="submit">그래픽카드 데이터 추가</button>
+                    </form>
+                    <tr th:each="graphicsCard : ${graphicsCardList}">
+                      <td th:text="${graphicsCard.name}">그래픽카드 이름</td>
+                      <td>
+                        <div class="button-container" style="display: flex; gap: 10px;">
+                          <form method="get" action="/CusCom/adminPage/editGraphicsCard">
+                            <input type="hidden" id="GraphicsCard" name="GraphicsCard">
+                            <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                          </form>
+                          <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                        </div>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -200,24 +220,28 @@
               <div class="accordion-body">
                 <table class="table">
                   <thead>
-                  <tr>
-                    <th></th>
-                    <th></th>
-                  </tr>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                    </tr>
                   </thead>
                   <tbody>
-                  <tr th:each="memory : ${memoryList}">
-                    <td th:text="${memory.name}">메모리 이름</td>
-                    <td>
-                      <div class="button-container" style="display: flex; gap: 10px;">
-                        <form method="get" action="/adminPage/editCase">
-                          <input type="hidden" id="Memory" name="Memory">
-                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
-                        </form>
-                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
-                      </div>
-                    </td>
-                  </tr>
+                    <form method="get" action="/CusCom/adminPage/editMemory">
+                      <input type="hidden" name="Memory" value="Sample">
+                      <button class="btn btn-lg btn-primary" type="submit">메모리 데이터 추가</button>
+                    </form>
+                    <tr th:each="memory : ${memoryList}">
+                      <td th:text="${memory.name}">메모리 이름</td>
+                      <td>
+                        <div class="button-container" style="display: flex; gap: 10px;">
+                          <form method="get" action="/CusCom/adminPage/editMemory">
+                            <input type="hidden" id="Memory" name="Memory">
+                            <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                          </form>
+                          <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                        </div>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -234,24 +258,28 @@
               <div class="accordion-body">
                 <table class="table">
                   <thead>
-                  <tr>
-                    <th></th>
-                    <th></th>
-                  </tr>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                    </tr>
                   </thead>
                   <tbody>
-                  <tr th:each="motherBoard : ${motherBoardList}">
-                    <td th:text="${motherBoard.name}">마더보드 이름</td>
-                    <td>
-                      <div class="button-container" style="display: flex; gap: 10px;">
-                        <form method="get" action="/adminPage/editCase">
-                          <input type="hidden" id="MotherBoard" name="MotherBoard">
-                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
-                        </form>
-                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
-                      </div>
-                    </td>
-                  </tr>
+                    <form method="get" action="/CusCom/adminPage/editMotherBoard">
+                      <input type="hidden" name="MotherBoard" value="Sample">
+                      <button class="btn btn-lg btn-primary" type="submit">마더보드 데이터 추가</button>
+                    </form>
+                    <tr th:each="motherBoard : ${motherBoardList}">
+                      <td th:text="${motherBoard.name}">마더보드 이름</td>
+                      <td>
+                        <div class="button-container" style="display: flex; gap: 10px;">
+                          <form method="get" action="/CusCom/adminPage/editMotherBoard">
+                            <input type="hidden" id="MotherBoard" name="MotherBoard">
+                            <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                          </form>
+                          <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                        </div>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -268,24 +296,28 @@
               <div class="accordion-body">
                 <table class="table">
                   <thead>
-                  <tr>
-                    <th></th>
-                    <th></th>
-                  </tr>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                    </tr>
                   </thead>
                   <tbody>
-                  <tr th:each="powerSupply : ${powerSupplyList}">
-                    <td th:text="${powerSupply.name}">파워서플라이 이름</td>
-                    <td>
-                      <div class="button-container" style="display: flex; gap: 10px;">
-                        <form method="get" action="/adminPage/editCase">
-                          <input type="hidden" id="PowerSupply" name="PowerSupply">
-                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
-                        </form>
-                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
-                      </div>
-                    </td>
-                  </tr>
+                    <form method="get" action="/CusCom/adminPage/editPowerSupply">
+                      <input type="hidden" name="PowerSupply" value="Sample">
+                      <button class="btn btn-lg btn-primary" type="submit">파워서플라이 데이터 추가</button>
+                    </form>
+                    <tr th:each="powerSupply : ${powerSupplyList}">
+                      <td th:text="${powerSupply.name}">파워서플라이 이름</td>
+                      <td>
+                        <div class="button-container" style="display: flex; gap: 10px;">
+                          <form method="get" action="/CusCom/adminPage/editPowerSupply">
+                            <input type="hidden" id="PowerSupply" name="PowerSupply">
+                            <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                          </form>
+                          <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                        </div>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -317,9 +349,7 @@
                     body: JSON.stringify(data)
                 })
                 .then(response => console.log(response))
-                .then(
-                  document.querySelector('tr[data-id="${id}"]').remove();
-                })
+                .then(document.querySelector('tr[data-id="${id}"]').remove())
                 .catch(error => {
                     console.error("Error:", error);
                 });

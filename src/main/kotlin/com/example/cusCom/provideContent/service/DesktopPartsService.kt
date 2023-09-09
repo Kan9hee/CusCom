@@ -2,10 +2,12 @@ package com.example.cusCom.provideContent.service
 
 import com.example.cusCom.provideContent.dto.MotherBoardFormFactor
 import com.example.cusCom.provideContent.dto.parts.*
+import com.example.cusCom.provideContent.entity.mySQL.MotherBoardFormFactorEntity
 import com.example.cusCom.provideContent.entity.mySQL.parts.*
 import com.example.cusCom.provideContent.repository.MotherBoardFormFactorRepository
 import com.example.cusCom.provideContent.repository.parts.*
 import jakarta.persistence.EntityNotFoundException
+import org.hibernate.SessionFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

@@ -5,7 +5,6 @@ import com.example.cusCom.provideContent.service.BlobService
 import com.example.cusCom.provideContent.service.DesktopPartsService
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.Gson
-import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -74,15 +73,15 @@ class AdminRestController(private val desktopPartsService: DesktopPartsService,
 
     private fun editJson(json:String,type:String,image:MultipartFile): String {
         var jsonObject = Gson().fromJson(json, JsonObject::class.java)
-        jsonObject.addProperty("url",blobService.uploadImage(image))
+        jsonObject.addProperty("imageUrl",blobService.uploadImage(image))
         if(type == "Case" || type == "MotherBoard")
             deserializeFormFactor(jsonObject)
         return Gson().toJson(jsonObject)
     }
 
     private fun deserializeFormFactor(jsonObject: JsonObject) {
-        val formFactorName:JsonElement = jsonObject.get("motherBoardFormFactor")
-        val formFactorObject=Gson().toJsonTree(desktopPartsService.findMotherBoardFormFactor(formFactorName.toString())).asJsonObject
+        val formFactorName:String = jsonObject.get("motherBoardFormFactor").toString().removeSurrounding("\"")
+        val formFactorObject=Gson().toJsonTree(desktopPartsService.findMotherBoardFormFactor(formFactorName)).asJsonObject
         jsonObject.add("motherBoardFormFactor",formFactorObject)
     }
 }

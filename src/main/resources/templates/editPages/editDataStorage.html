@@ -16,12 +16,12 @@
             <div class="row g-4">
               <div class="col-6">
                 <label for="name" class="form-label">이름</label>
-                <input type="text" class="form-control" id="name" placeholder="" value="${item.name}">
+                <input type="text" class="form-control" id="name" placeholder="" th:value="${item.name}">
               </div>
 
               <div class="col-6">
                 <label for="manufacturer" class="form-label">제조사</label>
-                <input type="text" class="form-control" id="manufacturer" placeholder="" value="${item.manufacturer}">
+                <input type="text" class="form-control" id="manufacturer" placeholder="" th:value="${item.manufacturer}">
               </div>
 
               <div class="col-9">
@@ -60,12 +60,12 @@
 
               <div class="col-4">
                 <label for="readSpeed" class="form-label">읽기 성능</label>
-                <input type="number" class="form-control" id="readSpeed" placeholder="" value="${item.readSpeed}">
+                <input type="number" class="form-control" id="readSpeed" placeholder="" th:value="${item.readSpeed}">
               </div>
 
               <div class="col-4">
                 <label for="writeSpeed" class="form-label">쓰기 성능</label>
-                <input type="number" class="form-control" id="writeSpeed" placeholder="" value="${item.writeSpeed}">
+                <input type="number" class="form-control" id="writeSpeed" placeholder="" th:value="${item.writeSpeed}">
               </div>
 
               <label for="imageFile">부품 이미지</label>

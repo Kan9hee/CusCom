@@ -16,17 +16,17 @@
             <div class="row g-4">
               <div class="col-6">
                 <label for="name" class="form-label">이름</label>
-                <input type="text" class="form-control" id="name" placeholder="" value="${item.name}">
+                <input type="text" class="form-control" id="name" placeholder="" th:value="${item.name}">
               </div>
 
               <div class="col-6">
                 <label for="manufacturer" class="form-label">제조사</label>
-                <input type="text" class="form-control" id="manufacturer" placeholder="" value="${item.manufacturer}">
+                <input type="text" class="form-control" id="manufacturer" placeholder="" th:value="${item.manufacturer}">
               </div>
 
               <div class="col-9">
                 <label for="gpuType" class="form-label">GPU</label>
-                <input type="text" class="form-control" id="gpuType" placeholder="" value="${item.gpuType}">
+                <input type="text" class="form-control" id="gpuType" placeholder="" th:value="${item.gpuType}">
               </div>
 
               <div class="col-9">
@@ -39,7 +39,7 @@
 
               <div class="col-4">
                 <label for="length" class="form-label">길이</label>
-                <input type="number" class="form-control" id="length" placeholder="" value="${item.length}">
+                <input type="number" class="form-control" id="length" placeholder="" th:value="${item.length}">
               </div>
             </div>
 
@@ -48,17 +48,17 @@
             <div class="row g-4">
               <div class="col-6">
                 <label for="maxCoolingFan" class="form-label">기본 전력</label>
-                <input type="number" class="form-control" id="maxCoolingFan" placeholder="" value="${item.maxCoolingFan}">
+                <input type="number" class="form-control" id="maxCoolingFan" placeholder="" th:value="${item.maxCoolingFan}">
               </div>
 
               <div class="col-6">
                 <label for="builtInCoolingFan" class="form-label">최대 전력</label>
-                <input type="number" class="form-control" id="builtInCoolingFan" placeholder="" value="${item.builtInCoolingFan}">
+                <input type="number" class="form-control" id="builtInCoolingFan" placeholder="" th:value="${item.builtInCoolingFan}">
               </div>
 
               <div class="col-9">
                 <label for="powerLength" class="form-label">페이즈 수</label>
-                <input type="number" class="form-control" id="powerLength" placeholder="" value="${item.powerLength}">
+                <input type="number" class="form-control" id="powerLength" placeholder="" th:value="${item.powerLength}">
               </div>
 
               <div class="col-9">

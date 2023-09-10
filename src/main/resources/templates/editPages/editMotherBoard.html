@@ -16,12 +16,12 @@
             <div class="row g-4">
               <div class="col-6">
                 <label for="name" class="form-label">이름</label>
-                <input type="text" class="form-control" id="name" placeholder="" value="${item.name}">
+                <input type="text" class="form-control" id="name" placeholder="" th:value="${item.name}">
               </div>
 
               <div class="col-6">
                 <label for="manufacturer" class="form-label">제조사</label>
-                <input type="text" class="form-control" id="manufacturer" placeholder="" value="${item.manufacturer}">
+                <input type="text" class="form-control" id="manufacturer" placeholder="" th:value="${item.manufacturer}">
               </div>
 
               <div class="col-9">
@@ -69,12 +69,12 @@
 
               <div class="col-4">
                 <label for="ssdM2Slot" class="form-label">SSD 슬롯 개수(M.2)</label>
-                <input type="number" class="form-control" id="ssdM2Slot" placeholder="" value="${item.ssdM2Slot}">
+                <input type="number" class="form-control" id="ssdM2Slot" placeholder="" th:value="${item.ssdM2Slot}">
               </div>
 
               <div class="col-4">
                 <label for="ssdSATASlot" class="form-label">SSD 슬롯 개수(SATA)</label>
-                <input type="number" class="form-control" id="ssdSATASlot" placeholder="" value="${item.ssdSATASlot}">
+                <input type="number" class="form-control" id="ssdSATASlot" placeholder="" th:value="${item.ssdSATASlot}">
               </div>
             </div>
 

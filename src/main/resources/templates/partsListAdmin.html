@@ -45,7 +45,7 @@
                       <td>
                         <div class="button-container" style="display: flex; gap: 10px;">
                           <form method="get" action="/CusCom/adminPage/editCase">
-                            <input type="hidden" id="Case" name="Case">
+                            <input type="hidden" name="Case" th:value="${case.name}">
                             <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
                           </form>
                           <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
@@ -83,7 +83,7 @@
                       <td>
                         <div class="button-container" style="display: flex; gap: 10px;">
                           <form method="get" action="/CusCom/adminPage/editCPUCooler">
-                            <input type="hidden" id="CPUCooler" name="CPUCooler">
+                            <input type="hidden" name="CPUCooler" th:value="${cpuCooler.name}">
                             <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
                           </form>
                           <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
@@ -121,7 +121,7 @@
                       <td>
                         <div class="button-container" style="display: flex; gap: 10px;">
                           <form method="get" action="/CusCom/adminPage/editCPU">
-                            <input type="hidden" id="CPU" name="CPU">
+                            <input type="hidden" name="CPU" th:value="{cpu.name}">
                             <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
                           </form>
                           <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
@@ -159,7 +159,7 @@
                       <td>
                         <div class="button-container" style="display: flex; gap: 10px;">
                           <form method="get" action="/CusCom/adminPage/editDataStorage">
-                            <input type="hidden" id="DataStorage" name="DataStorage">
+                            <input type="hidden" name="DataStorage" th:value="${dataStorage.name}">
                             <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
                           </form>
                           <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
@@ -197,7 +197,7 @@
                       <td>
                         <div class="button-container" style="display: flex; gap: 10px;">
                           <form method="get" action="/CusCom/adminPage/editGraphicsCard">
-                            <input type="hidden" id="GraphicsCard" name="GraphicsCard">
+                            <input type="hidden" name="GraphicsCard" th:value="${graphicsCard.name}">
                             <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
                           </form>
                           <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
@@ -235,7 +235,7 @@
                       <td>
                         <div class="button-container" style="display: flex; gap: 10px;">
                           <form method="get" action="/CusCom/adminPage/editMemory">
-                            <input type="hidden" id="Memory" name="Memory">
+                            <input type="hidden" name="Memory" th:value="${memory.name}">
                             <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
                           </form>
                           <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
@@ -273,7 +273,7 @@
                       <td>
                         <div class="button-container" style="display: flex; gap: 10px;">
                           <form method="get" action="/CusCom/adminPage/editMotherBoard">
-                            <input type="hidden" id="MotherBoard" name="MotherBoard">
+                            <input type="hidden" name="MotherBoard" th:value="${motherBoard.name}">
                             <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
                           </form>
                           <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
@@ -311,7 +311,7 @@
                       <td>
                         <div class="button-container" style="display: flex; gap: 10px;">
                           <form method="get" action="/CusCom/adminPage/editPowerSupply">
-                            <input type="hidden" id="PowerSupply" name="PowerSupply">
+                            <input type="hidden" name="PowerSupply" th:value="${powerSupply.name}">
                             <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
                           </form>
                           <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>

@@ -32,22 +32,27 @@
                 </select>
               </div>
 
-              <div class="col-9">
+              <div class="col-6">
                 <label for="chipset" class="form-label">소켓</label>
-                <select class="form-select" aria-label="Default select example" id="chipset">
-                  <option value="AM5" th:selected="${item.chipset == 'AM5'}">AM5</option>
-                  <option value="AM4" th:selected="${item.chipset == 'AM4'}">AM4</option>
-                  <option value="LGA1700" th:selected="${item.chipset == 'LGA1700'}">LGA1700</option>
-                  <option value="LGA1200" th:selected="${item.chipset == 'LGA1200'}">LGA1200</option>
+                <select class="form-select" aria-label="Default select example" id="socket">
+                  <option value="AM5" th:selected="${item.socket == 'AM5'}">AM5</option>
+                  <option value="AM4" th:selected="${item.socket == 'AM4'}">AM4</option>
+                  <option value="LGA1700" th:selected="${item.socket == 'LGA1700'}">LGA1700</option>
+                  <option value="LGA1200" th:selected="${item.socket == 'LGA1200'}">LGA1200</option>
                 </select>
               </div>
 
+              <div class="col-6">
+                <label for="manufacturer" class="form-label">칩셋</label>
+                <input type="text" class="form-control" id="chipset" placeholder="" th:value="${item.chipset}">
+              </div>
+
               <div class="col-9">
-                <label for="formFactor" class="form-label">폼팩터</label>
-                <select class="form-select" aria-label="Default select example" id="formFactor">
-                  <option value="ATX" th:selected="${item.formFactor == 'ATX'}">ATX</option>
-                  <option value="M-ATX" th:selected="${item.formFactor == 'M-ATX'}">M-ATX</option>
-                  <option value="E-ATX" th:selected="${item.formFactor == 'E-ATX'}">E-ATX</option>
+                <label for="motherBoardFormFactor" class="form-label">최대 마더보드 호환성</label>
+                <select class="form-select" aria-label="Default select example" id="motherBoardFormFactor">
+                  <option value="ATX" th:selected="${item.motherBoardFormFactor.name == 'ATX'}">ATX</option>
+                  <option value="M-ATX" th:selected="${item.motherBoardFormFactor.name == 'M-ATX'}">M-ATX</option>
+                  <option value="E-ATX" th:selected="${item.motherBoardFormFactor.name == 'E-ATX'}">E-ATX</option>
                 </select>
               </div>
 
@@ -111,7 +116,7 @@
                 cpuType: document.getElementById('cpuType').value,
                 socket: document.getElementById('socket').value,
                 chipset: document.getElementById('chipset').value,
-                motherBoardFormFactor: document.getElementById('formFactor').value,
+                motherBoardFormFactor: document.getElementById('motherBoardFormFactor').value,
                 memoryType: document.getElementById('memoryType').value,
                 memorySlot: document.getElementById('memorySlot').value,
                 ssdM2Slot: document.getElementById('ssdM2Slot').value,

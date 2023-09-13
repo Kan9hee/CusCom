@@ -24,29 +24,35 @@
                 <input type="text" class="form-control" id="manufacturer" placeholder="" th:value="${item.manufacturer}">
               </div>
 
-              <div class="col-9">
-                <label for="caseType" class="form-label">80PLUS 효율</label>
-                <select class="form-select" aria-label="Default select example" id="caseType">
-                  <option value="TITANIUM" th:selected="${item.caseType == 'TITANIUM'}">TITANIUM</option>
-                  <option value="PLATINUM" th:selected="${item.caseType == 'PLATINUM'}">PLATINUM</option>
-                  <option value="GOLD" th:selected="${item.caseType == 'GOLD'}">GOLD</option>
-                  <option value="SILVER" th:selected="${item.caseType == 'SILVER'}">SILVER</option>
-                  <option value="BRONZE" th:selected="${item.caseType == 'BRONZE'}">BRONZE</option>
+              <div class="col-4">
+                <label for="power" class="form-label">전력</label>
+                <input type="number" class="form-control" id="power" placeholder="" th:value="${item.power}">
+              </div>
+
+              <div class="col-8">
+                <label for="efficiency" class="form-label">80PLUS 효율</label>
+                <select class="form-select" aria-label="Default select example" id="efficiency">
+                  <option value="TITANIUM" th:selected="${item.efficiency == 'TITANIUM'}">TITANIUM</option>
+                  <option value="PLATINUM" th:selected="${item.efficiency == 'PLATINUM'}">PLATINUM</option>
+                  <option value="GOLD" th:selected="${item.efficiency == 'GOLD'}">GOLD</option>
+                  <option value="SILVER" th:selected="${item.efficiency == 'SILVER'}">SILVER</option>
+                  <option value="BRONZE" th:selected="${item.efficiency == 'BRONZE'}">BRONZE</option>
+                  <option value="NONE" th:selected="${item.efficiency == 'NONE'}">NONE</option>
                 </select>
               </div>
 
               <div class="col-9">
-                <label for="maxMotherBoard" class="form-label">모듈러</label>
-                <select class="form-select" aria-label="Default select example" id="maxMotherBoard">
-                  <option value="풀모듈러" th:selected="${item.type == '풀모듈러'}">풀모듈러</option>
-                  <option value="세미모듈러" th:selected="${item.type == '세미모듈러'}">세미모듈러</option>
-                  <option value="논모듈러" th:selected="${item.type == '논모듈러'}">논모듈러</option>
+                <label for="modular" class="form-label">모듈러</label>
+                <select class="form-select" aria-label="Default select example" id="modular">
+                  <option value="풀모듈러" th:selected="${item.modular == '풀모듈러'}">풀모듈러</option>
+                  <option value="세미모듈러" th:selected="${item.modular == '세미모듈러'}">세미모듈러</option>
+                  <option value="논모듈러" th:selected="${item.modular == '논모듈러'}">논모듈러</option>
                 </select>
               </div>
 
               <div class="col-4">
-                <label for="height" class="form-label">높이</label>
-                <input type="number" class="form-control" id="height" placeholder="" th:value="${item.height}">
+                <label for="length" class="form-label">폼팩터(크기)</label>
+                <input type="number" class="form-control" id="length" placeholder="" th:value="${item.length}">
               </div>
             </div>
 

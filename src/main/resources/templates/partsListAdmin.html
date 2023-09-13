@@ -121,7 +121,7 @@
                       <td>
                         <div class="button-container" style="display: flex; gap: 10px;">
                           <form method="get" action="/CusCom/adminPage/editCPU">
-                            <input type="hidden" name="CPU" th:value="{cpu.name}">
+                            <input type="hidden" name="CPU" th:value="${cpu.name}">
                             <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
                           </form>
                           <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>

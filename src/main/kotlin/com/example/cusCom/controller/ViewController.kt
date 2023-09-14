@@ -56,7 +56,7 @@ class ViewController(private val desktopPartsService: DesktopPartsService,
         return "createPost"
     }
 
-    @GetMapping("/sharePlace")
+    @GetMapping("/SharePlace")
     fun testSharePlacePage(@RequestParam(defaultValue = "1") page: Int,
                            @RequestParam(defaultValue = "9") pageSize: Int,
                            @RequestParam(required = false) searchJson: String?,

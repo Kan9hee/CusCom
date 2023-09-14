@@ -30,7 +30,7 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
             estimate.graphicsCard,
             estimate.cpuCooler,
             estimate.powerSupply,
-            estimate.case)
+            estimate.desktopCase)
         )
     }
 
@@ -74,21 +74,9 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
         mongoTemplate.remove(query, EstimateEntity::class.java)
     }
 
-    fun checkEstimateEmptyElement(estimate: Estimate){
-        if(estimate.run { cpu.isEmpty() ||
-                    case.isEmpty() ||
-                    dataStorage.isEmpty() ||
-                    memory.isEmpty() ||
-                    graphicsCard.isEmpty() ||
-                    cpuCooler.isEmpty() ||
-                    motherBoard.isEmpty() ||
-                    powerSupply.isEmpty() })
-            throw EstimateException(EstimateErrorCode.UnfinishedEstimate)
-    }
-
     fun checkDesktopEstimate(estimate: Estimate){
         val cpuCooler=desktopPartsService.findCpuCooler(estimate.cpuCooler)
-        val case=desktopPartsService.findCase(estimate.case)
+        val case=desktopPartsService.findCase(estimate.desktopCase)
         val graphicsCard=desktopPartsService.findGraphicsCard(estimate.graphicsCard)
         val memory=desktopPartsService.findMemory(estimate.memory)
         val powerSupply=desktopPartsService.findPowerSupply(estimate.powerSupply)

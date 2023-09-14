@@ -15,7 +15,7 @@ class ExceptionHandlers {
     @ExceptionHandler(EstimateException::class)
     fun estimateBadRequest(e: EstimateException): ResponseEntity<String> {
         val estimateInfo=e.getErrorCode()
-        logger.error("estimateBadRequest",estimateInfo.getCode())
+        logger.error(estimateInfo.getMessage(),estimateInfo.getCode())
         return ResponseEntity(estimateInfo.getMessage(),HttpStatus.valueOf(estimateInfo.getStatus()))
     }
 

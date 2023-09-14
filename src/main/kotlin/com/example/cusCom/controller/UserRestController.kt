@@ -1,5 +1,7 @@
 package com.example.cusCom.controller
 
+import com.example.cusCom.exception.EstimateErrorCode
+import com.example.cusCom.exception.EstimateException
 import com.example.cusCom.provideContent.dto.User
 import com.example.cusCom.provideContent.service.UserService
 import com.example.cusCom.provideContent.dto.Comment
@@ -60,7 +62,15 @@ class UserRestController(private val estimateService: EstimateService,
 
     private fun validateEstimate(estimate: Estimate) {
         val check = runCatching{
-            estimateService.checkEstimateEmptyElement(estimate)
+            if(estimate.run { cpu.isEmpty() ||
+                        desktopCase.isEmpty() ||
+                        dataStorage.isEmpty() ||
+                        memory.isEmpty() ||
+                        graphicsCard.isEmpty() ||
+                        cpuCooler.isEmpty() ||
+                        motherBoard.isEmpty() ||
+                        powerSupply.isEmpty() })
+                throw EstimateException(EstimateErrorCode.UnfinishedEstimate)
             estimateService.checkDesktopEstimate(estimate)
         }
         check.onFailure { ex -> throw ex }

@@ -9,5 +9,5 @@ data class Estimate(var _id:String,
                     var graphicsCard:String,
                     var cpuCooler:String,
                     var powerSupply:String,
-                    var case:String){
+                    var desktopCase:String){
 }

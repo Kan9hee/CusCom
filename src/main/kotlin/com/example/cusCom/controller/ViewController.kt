@@ -1,5 +1,6 @@
 package com.example.cusCom.controller
 
+import com.example.cusCom.provideContent.dto.Estimate
 import com.example.cusCom.provideContent.dto.SharePlacePost
 import com.example.cusCom.provideContent.service.DesktopPartsService
 import com.example.cusCom.provideContent.service.EstimateService
@@ -36,8 +37,16 @@ class ViewController(private val desktopPartsService: DesktopPartsService,
         return "main"
     }
 
+    @GetMapping("/myPage")
+    fun myPage(model: Model):String{
+        val userName=SecurityContextHolder.getContext().authentication.name
+        model.addAttribute("estimateList",estimateService.getUserEstimateList("userName",userName))
+        return "userPage"
+    }
+
     @GetMapping("/estimatePage")
-    fun testUserPage(model: Model):String{
+    fun testUserPage(@RequestParam("id",required = false) estimateID: ObjectId?,model: Model):String{
+        val estimate = estimateID?.let { estimateService.getUserEstimateById(it) }?: Estimate()
         model.addAttribute("userName", SecurityContextHolder.getContext().authentication.name)
         model.addAttribute("caseList",desktopPartsService.getCaseList())
         model.addAttribute("cpuCoolerList",desktopPartsService.getCpuCoolerList())
@@ -47,6 +56,7 @@ class ViewController(private val desktopPartsService: DesktopPartsService,
         model.addAttribute("memoryList",desktopPartsService.getMemoryList())
         model.addAttribute("motherBoardList",desktopPartsService.getMotherBoardList())
         model.addAttribute("powerSupplyList",desktopPartsService.getPowerSupplyList())
+        model.addAttribute("estimate",estimate)
         return "partsListUser"
     }
 

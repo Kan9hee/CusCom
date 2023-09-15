@@ -28,6 +28,12 @@ class UserRestController(private val estimateService: EstimateService,
         return ResponseEntity.ok("Success")
     }
 
+    @GetMapping("/checkLogin")
+    fun checkLogin(): ResponseEntity<String> {
+        val authentication=SecurityContextHolder.getContext().authentication
+        return ResponseEntity.ok("{\"loggedIn\": ${authentication != null && authentication.isAuthenticated()}}");
+    }
+
     @PostMapping("/estimate")
     fun postDataTest(@RequestParam("estimate") estimateJSON:String): ResponseEntity<String> {
         val estimateResult=Gson().fromJson(estimateJSON, Estimate::class.java)

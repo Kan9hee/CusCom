@@ -332,14 +332,14 @@
 
     var data = {
         userName:"[[${userName}]]",
-        cpu:"",
-        motherBoard:"",
-        memory:"",
-        dataStorage:"",
-        graphicsCard:"",
-        cpuCooler:"",
-        powerSupply:"",
-        desktopCase:""
+        cpu:"[[${estimate.cpu}]]",
+        motherBoard:"[[${estimate.motherBoard}]]",
+        memory:"[[${estimate.memory}]]",
+        dataStorage:"[[${estimate.dataStorage}]]",
+        graphicsCard:"[[${estimate.graphicsCard}]]",
+        cpuCooler:"[[${estimate.cpuCooler}]]",
+        powerSupply:"[[${estimate.powerSupply}]]",
+        desktopCase:"[[${estimate.desktopCase}]]"
     }
 
     document.querySelectorAll('.btn-add').forEach(function(button){
@@ -383,18 +383,18 @@
 
     document.getElementById('submitEstimate')
             .addEventListener('click',function(event){
+                const formData = new FormData();
+                formData.append('estimate', JSON.stringify(data));
+
                 fetch("/CusCom/estimate",{
                     method: "POST",
-                    headers: {
-                      "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(data)
+                    body: formData
                 })
                     .then(response => console.log(response))
                     .catch(error => {
                         console.error("Error:", error);
                     });
-                window.location.href='/CusCom/test/main';
+                window.location.href='/CusCom/mainPage';
             });
 
     document.getElementById('cancel')

@@ -50,19 +50,20 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
     }
 
     @Transactional
-    fun getUserEstimateList(): List<Estimate> {
-        val estimateList:List<Estimate> =mongoTemplate.findAll(EstimateEntity::class.java).map {
+    fun getUserEstimateList(option:String,name:String): List<Estimate> {
+        val query= Query(Criteria.where(option).`is`(name))
+        val estimateList:List<Estimate> = mongoTemplate.find(query,EstimateEntity::class.java).map {
             entity: EstimateEntity ->
-            Estimate(entity._id.toHexString(),
-            entity.userName,
-            entity.cpu,
-            entity.motherBoard,
-            entity.memory,
-            entity.dataStorage,
-            entity.graphicsCard,
-            entity.cpuCooler,
-            entity.powerSupply,
-            entity.case
+                Estimate(entity._id.toHexString(),
+                entity.userName,
+                entity.cpu,
+                entity.motherBoard,
+                entity.memory,
+                entity.dataStorage,
+                entity.graphicsCard,
+                entity.cpuCooler,
+                entity.powerSupply,
+                entity.case
             )
         }
         return estimateList

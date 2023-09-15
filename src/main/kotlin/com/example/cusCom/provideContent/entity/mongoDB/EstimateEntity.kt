@@ -6,29 +6,29 @@ import org.springframework.data.mongodb.core.mapping.Document
 @Document(collection = "user-estimates")
 class EstimateEntity(val _id: ObjectId,
                      val userName:String,
-                     cpuName:String,
-                     motherBoardName:String,
-                     memoryName:String,
-                     dataStorageName:String,
-                     graphicsCardName:String,
-                     cpuCoolerName:String,
-                     powerSupplyName:String,
-                     caseName:String) {
+                     cpu:String,
+                     motherBoard:String,
+                     memory:String,
+                     dataStorage:String,
+                     graphicsCard:String,
+                     cpuCooler:String,
+                     powerSupply:String,
+                     case:String) {
 
-    var cpu:String=cpuName
+    var cpu:String=cpu
         protected set
-    var motherBoard:String=motherBoardName
+    var motherBoard:String=motherBoard
         protected set
-    var memory:String=memoryName
+    var memory:String=memory
         protected set
-    var dataStorage:String=dataStorageName
+    var dataStorage:String=dataStorage
         protected set
-    var graphicsCard:String=graphicsCardName
+    var graphicsCard:String=graphicsCard
         protected set
-    var cpuCooler:String=cpuCoolerName
+    var cpuCooler:String=cpuCooler
         protected set
-    var powerSupply:String=powerSupplyName
+    var powerSupply:String=powerSupply
         protected set
-    var case:String=caseName
+    var case:String=case
         protected set
 }

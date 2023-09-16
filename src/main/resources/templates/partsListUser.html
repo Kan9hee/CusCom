@@ -28,49 +28,49 @@
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
                             <small class="text-body-secondary">케이스</small>
-                            <h6 class="my-0">부품명</h6>
+                            <h6 class="my-0" id="caseH6" th:text="${estimate.desktopCase}">부품명</h6>
                         </div>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
                             <small class="text-body-secondary">CPU 쿨러</small>
-                            <h6 class="my-0">부품명</h6>
+                            <h6 class="my-0" id="cpuCoolerH6" th:text="${estimate.cpuCooler}">부품명</h6>
                         </div>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
                             <small class="text-body-secondary">CPU</small>
-                            <h6 class="my-0">부품명</h6>
+                            <h6 class="my-0" id="cpuH6" th:text="${estimate.cpu}">부품명</h6>
                         </div>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
                             <small class="text-body-secondary">저장장치</small>
-                            <h6 class="my-0">부품명</h6>
+                            <h6 class="my-0" id="dataStorageH6" th:text="${estimate.dataStorage}">부품명</h6>
                         </div>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
                             <small class="text-body-secondary">그래픽카드</small>
-                            <h6 class="my-0">부품명</h6>
+                            <h6 class="my-0" id="graphicsCardH6" th:text="${estimate.graphicsCard}">부품명</h6>
                         </div>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
                             <small class="text-body-secondary">메모리</small>
-                            <h6 class="my-0">부품명</h6>
+                            <h6 class="my-0" id="memoryH6" th:text="${estimate.memory}">부품명</h6>
                         </div>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
                             <small class="text-body-secondary">메인보드</small>
-                            <h6 class="my-0">부품명</h6>
+                            <h6 class="my-0" id="motherBoardH6" th:text="${estimate.motherBoard}">부품명</h6>
                         </div>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
                             <small class="text-body-secondary">파워서플라이</small>
-                            <h6 class="my-0">부품명</h6>
+                            <h6 class="my-0" id="powerSupplyH6" th:text="${estimate.powerSupply}">부품명</h6>
                         </div>
                     </li>
                 </ul>
@@ -342,6 +342,13 @@
         desktopCase:"[[${estimate.desktopCase}]]"
     }
 
+    function updateH6Text(id, text) {
+        const h6Element = document.getElementById(id);
+        if (h6Element) {
+            h6Element.textContent = text;
+        }
+    }
+
     document.querySelectorAll('.btn-add').forEach(function(button){
         button.addEventListener('click',function(){addParts(button);});
     });
@@ -353,27 +360,35 @@
         switch(datatype){
             case 'cpu':
                 data.cpu=name;
+                updateH6Text("cpuH6",name);
                 break;
             case 'motherBoard':
                 data.motherBoard=name;
+                updateH6Text("motherBoardH6",name);
                 break;
             case 'memory':
                 data.memory=name;
+                updateH6Text("memoryH6",name);
                 break;
             case 'dataStorage':
                 data.dataStorage=name;
+                updateH6Text("dataStorageH6",name);
                 break;
             case 'graphicsCard':
                 data.graphicsCard=name;
+                updateH6Text("graphicsCardH6",name);
                 break;
             case 'cpuCooler':
                 data.cpuCooler=name;
+                updateH6Text("cpuCoolerH6",name);
                 break;
             case 'powerSupply':
                 data.powerSupply=name;
+                updateH6Text("powerSupplyH6",name);
                 break;
             case 'desktopCase':
                 data.desktopCase=name;
+                updateH6Text("caseH6",name);
                 break;
             default:
                 console.log("분류되지 않은 데이터");

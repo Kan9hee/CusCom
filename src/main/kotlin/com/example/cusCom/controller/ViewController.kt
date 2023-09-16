@@ -45,8 +45,8 @@ class ViewController(private val desktopPartsService: DesktopPartsService,
     }
 
     @GetMapping("/estimatePage")
-    fun testUserPage(@RequestParam("id",required = false) estimateID: ObjectId?,model: Model):String{
-        val estimate = estimateID?.let { estimateService.getUserEstimateById(it) }?: Estimate()
+    fun testUserPage(@RequestParam("id",required = false) estimateID: String?,model: Model):String{
+        val estimate = estimateID?.let { estimateService.getUserEstimateById(ObjectId(it)) }?: Estimate()
         model.addAttribute("userName", SecurityContextHolder.getContext().authentication.name)
         model.addAttribute("caseList",desktopPartsService.getCaseList())
         model.addAttribute("cpuCoolerList",desktopPartsService.getCpuCoolerList())

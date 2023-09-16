@@ -13,7 +13,6 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 
 @RestController

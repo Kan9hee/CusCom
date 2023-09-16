@@ -25,7 +25,6 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getCaseList(): List<Case> {
         val caseList:List<Case> = caseRepo.findAll()
-            .filter{ entity -> entity.name != "Sample" }
             .map{
                 entity: CaseEntity -> Case(entity.name,
                     entity.manufacturer,
@@ -81,7 +80,6 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getCpuCoolerList(): List<CPUCooler> {
         val cpuCoolerList:List<CPUCooler> = cpuCoolerRepo.findAll()
-            .filter{ entity -> entity.name != "Sample" }
             .map{
                 entity: CPUCoolerEntity -> CPUCooler(entity.name,
                     entity.imageUrl,
@@ -130,7 +128,6 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getCPUList(): List<CPU> {
         val cpuList:List<CPU> = cpuRepo.findAll()
-            .filter{ entity -> entity.name != "Sample" }
             .map{
                 entity: CPUEntity -> CPU(entity.name,
                     entity.imageUrl,
@@ -182,7 +179,6 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getDataStorageList(): List<DataStorage> {
         val dataStorageList:List<DataStorage> = dataStorageRepo.findAll()
-            .filter{ entity -> entity.name != "Sample" }
             .map{
                 entity: DataStorageEntity -> DataStorage(entity.name,
                     entity.imageUrl,
@@ -228,7 +224,6 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getGraphicsCardList(): List<GraphicsCard> {
         val graphicsCardList:List<GraphicsCard> = graphicsCardRepo.findAll()
-            .filter{ entity -> entity.name != "Sample" }
             .map{
                 entity: GraphicsCardEntity -> GraphicsCard(entity.name,
                     entity.imageUrl,
@@ -276,7 +271,6 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getMemoryList(): List<Memory> {
         val memoryList:List<Memory> = memoryRepo.findAll()
-            .filter{ entity -> entity.name != "Sample" }
             .map{
                 entity: MemoryEntity -> Memory(entity.name,
                     entity.imageUrl,
@@ -318,7 +312,6 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getMotherBoardList(): List<MotherBoard> {
         val motherBoardList:List<MotherBoard> = motherBoardRepo.findAll()
-            .filter{ entity -> entity.name != "Sample" }
             .map{
                 entity: MotherBoardEntity -> MotherBoard(entity.name,
                     entity.imageUrl,
@@ -370,7 +363,6 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional(readOnly = true)
     fun getPowerSupplyList(): List<PowerSupply> {
         val powerSupplyList:List<PowerSupply> = powerSupplyRepo.findAll()
-            .filter{ entity -> entity.name != "Sample" }
             .map{
                 entity: PowerSupplyEntity -> PowerSupply(entity.name,
                     entity.imageUrl,

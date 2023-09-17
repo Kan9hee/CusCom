@@ -7,17 +7,22 @@ import com.example.cusCom.provideContent.service.UserService
 import com.example.cusCom.provideContent.dto.Comment
 import com.example.cusCom.provideContent.dto.Estimate
 import com.example.cusCom.provideContent.dto.SharePlacePost
+import com.example.cusCom.provideContent.dto.parts.*
+import com.example.cusCom.provideContent.service.DesktopPartsService
 import com.example.cusCom.provideContent.service.EstimateService
 import com.example.cusCom.provideContent.service.SharePlaceService
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import org.bson.types.ObjectId
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/CusCom")
-class UserRestController(private val estimateService: EstimateService,
+class UserRestController(private val desktopPartsService: DesktopPartsService,
+                         private val estimateService: EstimateService,
                          private val sharePlaceService: SharePlaceService,
                          private val userService: UserService) {
 
@@ -33,6 +38,106 @@ class UserRestController(private val estimateService: EstimateService,
         return ResponseEntity.ok("{\"loggedIn\": ${authentication != null && authentication.isAuthenticated()}}");
     }
 
+    @GetMapping("/getUserEstimateList")
+    fun userEstimateList(): List<Estimate> {
+        val userName=SecurityContextHolder.getContext().authentication.name
+        return estimateService.getUserEstimateList("userName",userName)
+    }
+
+    @GetMapping("/getUserEstimate")
+    fun userEstimate(@RequestParam("id",required = false) estimateID: String?): Estimate {
+        return estimateID?.let { estimateService.getUserEstimateById(ObjectId(it)) }?: Estimate()
+    }
+
+    @GetMapping("/caseList")
+    @ResponseBody
+    fun caseListApi(): List<Case> {
+        return desktopPartsService.getCaseList();
+    }
+
+    @GetMapping("/cpuCoolerList")
+    @ResponseBody
+    fun cpuCoolerListApi(): List<CPUCooler> {
+        return desktopPartsService.getCpuCoolerList();
+    }
+
+    @GetMapping("/cpuList")
+    @ResponseBody
+    fun cpuListApi(): List<CPU> {
+        return desktopPartsService.getCPUList();
+    }
+
+    @GetMapping("/dataStorageList")
+    @ResponseBody
+    fun dataStorageListApi(): List<DataStorage> {
+        return desktopPartsService.getDataStorageList();
+    }
+
+    @GetMapping("/graphicsCardList")
+    @ResponseBody
+    fun graphicsCardListApi(): List<GraphicsCard> {
+        return desktopPartsService.getGraphicsCardList();
+    }
+
+    @GetMapping("/memoryList")
+    @ResponseBody
+    fun memoryListApi(): List<Memory> {
+        return desktopPartsService.getMemoryList();
+    }
+
+    @GetMapping("/motherBoardList")
+    @ResponseBody
+    fun motherBoardListApi(): List<MotherBoard> {
+        return desktopPartsService.getMotherBoardList();
+    }
+
+    @GetMapping("/powerSupplyList")
+    @ResponseBody
+    fun powerSupplyListApi(): List<PowerSupply> {
+        return desktopPartsService.getPowerSupplyList();
+    }
+
+    @GetMapping("/searchCase")
+    @ResponseBody
+    fun searchCaseApi(@RequestParam("Case", required = false) data: String?): Case {
+        return data?.let { desktopPartsService.findCase(it) } ?: Case()
+    }
+
+    @GetMapping("/searchCPU")
+    fun editCPUData(@RequestParam("CPU", required = false) data: String?): CPU {
+        return data?.let{desktopPartsService.findCpu(it)}?: CPU()
+    }
+
+    @GetMapping("/searchCPUCooler")
+    fun editCPUCoolerData(@RequestParam("CPUCooler", required = false) data: String?): CPUCooler {
+        return data?.let{desktopPartsService.findCpuCooler(it)}?: CPUCooler()
+    }
+
+    @GetMapping("/searchDataStorage")
+    fun editDataStorageData(@RequestParam("DataStorage", required = false) data: String?): DataStorage {
+        return data?.let{desktopPartsService.findDataStorage(it)}?: DataStorage()
+    }
+
+    @GetMapping("/searchGraphicsCard")
+    fun editGraphicsCardData(@RequestParam("GraphicsCard", required = false) data: String?): GraphicsCard {
+        return data?.let{desktopPartsService.findGraphicsCard(it)}?: GraphicsCard()
+    }
+
+    @GetMapping("/searchMemory")
+    fun editMemoryData(@RequestParam("Memory", required = false) data: String?): Memory {
+        return data?.let{desktopPartsService.findMemory(it)}?: Memory()
+    }
+
+    @GetMapping("/searchMotherBoard")
+    fun editMotherBoardData(@RequestParam("MotherBoard", required = false) data: String?): MotherBoard {
+        return data?.let{desktopPartsService.findMotherBoard(it)}?: MotherBoard()
+    }
+
+    @GetMapping("/searchPowerSupply")
+    fun editPowerSupplyData(@RequestParam("PowerSupply", required = false) data: String?): PowerSupply {
+        return data?.let{desktopPartsService.findPowerSupply(it)}?: PowerSupply()
+    }
+
     @PostMapping("/estimate")
     fun postDataTest(@RequestParam("estimate") estimateJSON:String): ResponseEntity<String> {
         val estimateResult=Gson().fromJson(estimateJSON, Estimate::class.java)
@@ -45,6 +150,16 @@ class UserRestController(private val estimateService: EstimateService,
     fun uploadPost(@RequestParam("postData") postJSON:String): ResponseEntity<String> {
         sharePlaceService.uploadPost(Gson().fromJson(postJSON, SharePlacePost::class.java))
         return ResponseEntity.ok("Success")
+    }
+
+    @GetMapping("/loadPost")
+    fun loadPost(@RequestParam("id") postID:String):HashMap<String,Any>{
+        val map=HashMap<String,Any>()
+        val post: SharePlacePost = sharePlaceService.loadPost("_id",postID)!!
+        map["post"]=post
+        map["postEstimate"]=estimateService.getUserEstimateById(ObjectId(post.estimateID))
+        map["commentList"]=sharePlaceService.getCommentList("postID",postID)
+        return map
     }
 
     @PostMapping("/uploadComment")

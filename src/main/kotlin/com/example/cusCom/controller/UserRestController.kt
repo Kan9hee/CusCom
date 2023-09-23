@@ -138,7 +138,7 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
         return data?.let{desktopPartsService.findPowerSupply(it)}?: PowerSupply()
     }
 
-    @PostMapping("/estimate")
+    @PostMapping("/createEstimate")
     fun postDataTest(@RequestParam("estimate") estimateJSON:String): ResponseEntity<String> {
         val estimateResult=Gson().fromJson(estimateJSON, Estimate::class.java)
         validateEstimate(estimateResult)

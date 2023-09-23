@@ -16,43 +16,43 @@
             <div class="row g-4">
               <div class="col-6">
                 <label for="name" class="form-label">이름</label>
-                <input type="text" class="form-control" id="name" placeholder="" th:value="${item.name}">
+                <input type="text" class="form-control" id="name" placeholder="">
               </div>
 
               <div class="col-6">
                 <label for="manufacturer" class="form-label">제조사</label>
-                <input type="text" class="form-control" id="manufacturer" placeholder="" th:value="${item.manufacturer}">
+                <input type="text" class="form-control" id="manufacturer" placeholder="">
               </div>
 
               <div class="col-4">
                 <label for="power" class="form-label">전력</label>
-                <input type="number" class="form-control" id="power" placeholder="" th:value="${item.power}">
+                <input type="number" class="form-control" id="power" placeholder="">
               </div>
 
               <div class="col-8">
                 <label for="efficiency" class="form-label">80PLUS 효율</label>
                 <select class="form-select" aria-label="Default select example" id="efficiency">
-                  <option value="TITANIUM" th:selected="${item.efficiency == 'TITANIUM'}">TITANIUM</option>
-                  <option value="PLATINUM" th:selected="${item.efficiency == 'PLATINUM'}">PLATINUM</option>
-                  <option value="GOLD" th:selected="${item.efficiency == 'GOLD'}">GOLD</option>
-                  <option value="SILVER" th:selected="${item.efficiency == 'SILVER'}">SILVER</option>
-                  <option value="BRONZE" th:selected="${item.efficiency == 'BRONZE'}">BRONZE</option>
-                  <option value="NONE" th:selected="${item.efficiency == 'NONE'}">NONE</option>
+                  <option value="TITANIUM">TITANIUM</option>
+                  <option value="PLATINUM">PLATINUM</option>
+                  <option value="GOLD">GOLD</option>
+                  <option value="SILVER">SILVER</option>
+                  <option value="BRONZE">BRONZE</option>
+                  <option value="NONE">NONE</option>
                 </select>
               </div>
 
               <div class="col-9">
                 <label for="modular" class="form-label">모듈러</label>
                 <select class="form-select" aria-label="Default select example" id="modular">
-                  <option value="풀모듈러" th:selected="${item.modular == '풀모듈러'}">풀모듈러</option>
-                  <option value="세미모듈러" th:selected="${item.modular == '세미모듈러'}">세미모듈러</option>
-                  <option value="논모듈러" th:selected="${item.modular == '논모듈러'}">논모듈러</option>
+                  <option value="풀모듈러">풀모듈러</option>
+                  <option value="세미모듈러">세미모듈러</option>
+                  <option value="논모듈러">논모듈러</option>
                 </select>
               </div>
 
               <div class="col-4">
                 <label for="length" class="form-label">폼팩터(크기)</label>
-                <input type="number" class="form-control" id="length" placeholder="" th:value="${item.length}">
+                <input type="number" class="form-control" id="length" placeholder="">
               </div>
             </div>
 
@@ -81,6 +81,24 @@
   </div>
   <script type="text/javascript">
 
+    let firstCreate = false;
+
+    function initialSetup(){
+      fetch('/CusCom/API/searchPowerSupply')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('name').value = data.name;
+          document.getElementById('manufacturer').value = data.manufacturer;
+          document.getElementById('power').value = data.caseType;
+          document.getElementById('efficiency').value = data.motherBoardFormFactor;
+          document.getElementById('modular').value = data.maxCoolingFan;
+          document.getElementById('length').value = data.builtInCoolingFan;
+          firstCreate = (data.name === "");
+        })
+    }
+
+    window.onload = initialSetup;
+
     document.getElementById('confirm')
             .addEventListener('click',function(event){
               const PowerSupply = {
@@ -97,8 +115,8 @@
               formData.append('Data', JSON.stringify(PowerSupply));
               formData.append('Image', document.getElementById('imageFile').files[0]);
 
-              if([[${firstCreate}]]){
-                fetch("/CusCom/adminPage/createParts", {
+              if(firstCreate){
+                fetch("/CusCom/adminAPI/createParts", {
                     method: "POST",
                     body: formData
                 })
@@ -108,7 +126,7 @@
                 });
               }
               else{
-                fetch("/CusCom/adminPage/updateParts", {
+                fetch("/CusCom/adminAPI/updateParts", {
                     method: "POST",
                     body: formData
                 })

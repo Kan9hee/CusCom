@@ -16,39 +16,39 @@
             <div class="row g-4">
               <div class="col-6">
                 <label for="name" class="form-label">이름</label>
-                <input type="text" class="form-control" id="name" placeholder="" th:value="${item.name}">
+                <input type="text" class="form-control" id="name" placeholder="">
               </div>
 
               <div class="col-6">
                 <label for="manufacturer" class="form-label">제조사</label>
-                <input type="text" class="form-control" id="manufacturer" placeholder="" th:value="${item.manufacturer}">
+                <input type="text" class="form-control" id="manufacturer" placeholder="">
               </div>
 
               <div class="col-4">
                 <label for="core" class="form-label">코어</label>
-                <input type="number" class="form-control" id="core" placeholder="" th:value="${item.core}">
+                <input type="number" class="form-control" id="core" placeholder="">
               </div>
 
               <div class="col-4">
                 <label for="thread" class="form-label">스레드</label>
-                <input type="number" class="form-control" id="thread" placeholder="" th:value="${item.thread}">
+                <input type="number" class="form-control" id="thread" placeholder="">
               </div>
 
               <div class="col-4">
                 <label for="TDP" class="form-label">TDP</label>
-                <input type="number" class="form-control" id="TDP" placeholder="" th:value="${item.TDP}">
+                <input type="number" class="form-control" id="TDP" placeholder="">
               </div>
 
             <hr class="my-4">
 
               <div class="form-check">
                 <label for="isBuiltInGraphics" class="form-check-label">내장그래픽 여부</label>
-                <input type="checkbox" class="form-check-input" id="isBuiltInGraphics" placeholder="" th:value="${item.isBuiltInGraphics}">
+                <input type="checkbox" class="form-check-input" id="isBuiltInGraphics" placeholder="">
               </div>
               <br>
               <div class="col-6">
                 <label for="builtInGraphicName" class="form-label">내장그래픽 이름</label>
-                <input type="text" class="form-control" id="builtInGraphicName" placeholder="" th:value="${item.builtInGraphicName}">
+                <input type="text" class="form-control" id="builtInGraphicName" placeholder="">
               </div>
 
             <hr class="my-4">
@@ -56,15 +56,15 @@
             <div class="row g-4">
               <div class="col-4">
                 <label for="socket" class="form-label">소켓</label>
-                <input type="text" class="form-control" id="socket" placeholder="" th:value="${item.socket}">
+                <input type="text" class="form-control" id="socket" placeholder="">
               </div>
 
               <div class="col-8">
                 <label for="memoryType" class="form-label">메모리 타입</label>
                 <select class="form-select" aria-label="Default select example" id="memoryType">
-                  <option value="DDR5" th:selected="${item.memoryType == 'DDR5'}">DDR5</option>
-                  <option value="DDR4" th:selected="${item.memoryType == 'DDR4'}">DDR4</option>
-                  <option value="DDR3" th:selected="${item.memoryType == 'DDR3'}">DDR3</option>
+                  <option value="DDR5">DDR5</option>
+                  <option value="DDR4">DDR4</option>
+                  <option value="DDR3">DDR3</option>
                 </select>
               </div>
             </div>
@@ -91,6 +91,27 @@
   </div>
   <script type="text/javascript">
 
+    let firstCreate = false;
+
+    function initialSetup(){
+      fetch('/CusCom/API/searchCPU')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('name').value = data.name;
+          document.getElementById('manufacturer').value = data.manufacturer;
+          document.getElementById('socket').value = data.socket;
+          document.getElementById('memoryType').value = data.memoryType;
+          document.getElementById('core').value = data.core;
+          document.getElementById('thread').value = data.thread;
+          document.getElementById('isBuiltInGraphics').value = data.isBuiltInGraphics;
+          document.getElementById('builtInGraphicName').value = data.builtInGraphicName;
+          document.getElementById('TDP').value = data.TDP;
+          firstCreate = (data.name === "");
+        })
+    }
+
+    window.onload = initialSetup;
+
     document.getElementById('confirm')
             .addEventListener('click',function(event){
               const CPU = {
@@ -110,8 +131,8 @@
               formData.append('Data', JSON.stringify(CPU));
               formData.append('Image', document.getElementById('imageFile').files[0]);
 
-              if([[${firstCreate}]]){
-                fetch("/CusCom/adminPage/createParts", {
+              if(firstCreate){
+                fetch("/CusCom/adminAPI/createParts", {
                     method: "POST",
                     body: formData
                 })
@@ -121,7 +142,7 @@
                 });
               }
               else{
-                fetch("/CusCom/adminPage/updateParts", {
+                fetch("/CusCom/adminAPI/updateParts", {
                     method: "POST",
                     body: formData
                 })

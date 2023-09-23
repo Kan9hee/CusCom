@@ -16,56 +16,56 @@
             <div class="row g-4">
               <div class="col-6">
                 <label for="name" class="form-label">이름</label>
-                <input type="text" class="form-control" id="name" placeholder="" th:value="${item.name}">
+                <input type="text" class="form-control" id="name" placeholder="">
               </div>
 
               <div class="col-6">
                 <label for="manufacturer" class="form-label">제조사</label>
-                <input type="text" class="form-control" id="manufacturer" placeholder="" th:value="${item.manufacturer}">
+                <input type="text" class="form-control" id="manufacturer" placeholder="">
               </div>
 
               <div class="col-9">
                 <label for="storageInterface" class="form-label">인터페이스</label>
                 <select class="form-select" aria-label="Default select example" id="storageInterface">
-                  <option value="PCIe 4.0(x4)" th:selected="${item.storageInterface == 'PCIe 4.0(x4)'}">PCIe 4.0(x4)</option>
-                  <option value="PCIe 3.0(x4)" th:selected="${item.storageInterface == 'PCIe 3.0(x4)'}">PCIe 3.0(x4)</option>
-                  <option value="Thunderbolt 3" th:selected="${item.storageInterface == 'Thunderbolt 3'}">Thunderbolt 3</option>
-                  <option value="SATA(6 Gbps)" th:selected="${item.storageInterface == 'SATA(6 Gbps)'}">SATA(6 Gbps)</option>
-                  <option value="USB 3.2 Gen2x2" th:selected="${item.storageInterface == 'USB 3.2 Gen2x2'}">USB 3.2 Gen2x2</option>
-                  <option value="USB 3.2 Gen2" th:selected="${item.storageInterface == 'USB 3.2 Gen2'}">USB 3.2 Gen2</option>
-                  <option value="USB 3.2 Gen1" th:selected="${item.storageInterface == 'USB 3.2 Gen1'}">USB 3.2 Gen1</option>
+                  <option value="PCIe 4.0(x4)">PCIe 4.0(x4)</option>
+                  <option value="PCIe 3.0(x4)">PCIe 3.0(x4)</option>
+                  <option value="Thunderbolt 3">Thunderbolt 3</option>
+                  <option value="SATA(6 Gbps)">SATA(6 Gbps)</option>
+                  <option value="USB 3.2 Gen2x2">USB 3.2 Gen2x2</option>
+                  <option value="USB 3.2 Gen2">USB 3.2 Gen2</option>
+                  <option value="USB 3.2 Gen1">USB 3.2 Gen1</option>
                 </select>
               </div>
 
               <div class="col-9">
                 <label for="formFactor" class="form-label">폼팩터</label>
                 <select class="form-select" aria-label="Default select example" id="formFactor">
-                  <option value="M.2 2280" th:selected="${item.formFactor == 'M.2 2280'}">M.2 2280</option>
-                  <option value="외장형" th:selected="${item.formFactor == '외장형'}">외장형</option>
-                  <option value="3.5형" th:selected="${item.formFactor == '3.5형'}">3.5형</option>
-                  <option value="2.5형" th:selected="${item.formFactor == '2.5형'}">2.5형</option>
+                  <option value="M.2 2280">M.2 2280</option>
+                  <option value="외장형">외장형</option>
+                  <option value="3.5형">3.5형</option>
+                  <option value="2.5형">2.5형</option>
                 </select>
               </div>
 
               <div class="col-9">
                 <label for="capacity" class="form-label">용량</label>
                 <select class="form-select" aria-label="Default select example" id="capacity">
-                  <option value="256GB" th:selected="${item.capacity == '256GB'}">256GB</option>
-                  <option value="512GB" th:selected="${item.capacity == '512GB'}">512GB</option>
-                  <option value="1TB" th:selected="${item.capacity == '1TB'}">1TB</option>
-                  <option value="2TB" th:selected="${item.capacity == '2TB'}">2TB</option>
-                  <option value="4TB" th:selected="${item.capacity == '4TB'}">4TB</option>
+                  <option value="256GB">256GB</option>
+                  <option value="512GB">512GB</option>
+                  <option value="1TB">1TB</option>
+                  <option value="2TB">2TB</option>
+                  <option value="4TB">4TB</option>
                 </select>
               </div>
 
               <div class="col-4">
                 <label for="readSpeed" class="form-label">읽기 성능</label>
-                <input type="number" class="form-control" id="readSpeed" placeholder="" th:value="${item.readSpeed}">
+                <input type="number" class="form-control" id="readSpeed" placeholder="">
               </div>
 
               <div class="col-4">
                 <label for="writeSpeed" class="form-label">쓰기 성능</label>
-                <input type="number" class="form-control" id="writeSpeed" placeholder="" th:value="${item.writeSpeed}">
+                <input type="number" class="form-control" id="writeSpeed" placeholder="">
               </div>
 
               <label for="imageFile">부품 이미지</label>
@@ -88,6 +88,25 @@
   </div>
   <script type="text/javascript">
 
+    let firstCreate = false;
+
+    function initialSetup(){
+      fetch('/CusCom/API/searchDataStorage')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('name').value = data.name;
+          document.getElementById('manufacturer').value = data.manufacturer;
+          document.getElementById('storageInterface').value = data.socket;
+          document.getElementById('formFactor').value = data.memoryType;
+          document.getElementById('capacity').value = data.core;
+          document.getElementById('readSpeed').value = data.thread;
+          document.getElementById('writeSpeed').value = data.isBuiltInGraphics;
+          firstCreate = (data.name === "");
+        })
+    }
+
+    window.onload = initialSetup;
+
     document.getElementById('confirm')
             .addEventListener('click',function(event){
               const DataStorage = {
@@ -105,8 +124,8 @@
               formData.append('Data', JSON.stringify(DataStorage));
               formData.append('Image', document.getElementById('imageFile').files[0]);
 
-              if([[${firstCreate}]]){
-                fetch("/CusCom/adminPage/createParts", {
+              if(firstCreate){
+                fetch("/CusCom/adminAPI/createParts", {
                     method: "POST",
                     body: formData
                 })
@@ -116,7 +135,7 @@
                 });
               }
               else{
-                fetch("/CusCom/adminPage/updateParts", {
+                fetch("/CusCom/adminAPI/updateParts", {
                     method: "POST",
                     body: formData
                 })

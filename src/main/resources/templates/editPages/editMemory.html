@@ -16,31 +16,31 @@
             <div class="row g-4">
               <div class="col-6">
                 <label for="name" class="form-label">이름</label>
-                <input type="text" class="form-control" id="name" placeholder="" th:value="${item.name}">
+                <input type="text" class="form-control" id="name" placeholder="">
               </div>
 
               <div class="col-6">
                 <label for="manufacturer" class="form-label">제조사</label>
-                <input type="text" class="form-control" id="manufacturer" placeholder="" th:value="${item.manufacturer}">
+                <input type="text" class="form-control" id="manufacturer" placeholder="">
               </div>
 
               <div class="col-9">
                 <label for="type" class="form-label">타입</label>
                 <select class="form-select" aria-label="Default select example" id="type">
-                  <option value="DDR3" th:selected="${item.type == 'DDR3'}">DDR3</option>
-                  <option value="DDR4" th:selected="${item.type == 'DDR4'}">DDR4</option>
-                  <option value="DDR5" th:selected="${item.type == 'DDR5'}">DDR5</option>
+                  <option value="DDR3">DDR3</option>
+                  <option value="DDR4">DDR4</option>
+                  <option value="DDR5">DDR5</option>
                 </select>
               </div>
 
               <div class="col-4">
                 <label for="capacity" class="form-label">용량</label>
-                <input type="number" class="form-control" id="capacity" placeholder="" th:value="${item.capacity}">
+                <input type="number" class="form-control" id="capacity" placeholder="">
               </div>
 
               <div class="col-4">
                 <label for="height" class="form-label">높이</label>
-                <input type="number" class="form-control" id="height" placeholder="" th:value="${item.height}">
+                <input type="number" class="form-control" id="height" placeholder="">
               </div>
             </div>
 
@@ -70,6 +70,23 @@
   </div>
   <script type="text/javascript">
 
+    let firstCreate = false;
+
+    function initialSetup(){
+      fetch('/CusCom/API/searchMemory')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('name').value = data.name;
+          document.getElementById('manufacturer').value = data.manufacturer;
+          document.getElementById('type').value = data.socket;
+          document.getElementById('capacity').value = data.memoryType;
+          document.getElementById('height').value = data.core;
+          firstCreate = (data.name === "");
+        })
+    }
+
+    window.onload = initialSetup;
+
     document.getElementById('confirm')
             .addEventListener('click',function(event){
               const Memory = {
@@ -85,8 +102,8 @@
               formData.append('Data', JSON.stringify(Memory));
               formData.append('Image', document.getElementById('imageFile').files[0]);
 
-              if([[${firstCreate}]]){
-                fetch("/CusCom/adminPage/createParts", {
+              if(firstCreate){
+                fetch("/CusCom/adminAPI/createParts", {
                     method: "POST",
                     body: formData
                 })
@@ -96,7 +113,7 @@
                 });
               }
               else{
-                fetch("/CusCom/adminPage/updateParts", {
+                fetch("/CusCom/adminAPI/updateParts", {
                     method: "POST",
                     body: formData
                 })

@@ -20,7 +20,7 @@ import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/CusCom")
+@RequestMapping("/CusCom/API")
 class UserRestController(private val desktopPartsService: DesktopPartsService,
                          private val estimateService: EstimateService,
                          private val sharePlaceService: SharePlaceService,
@@ -159,6 +159,27 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
         map["post"]=post
         map["postEstimate"]=estimateService.getUserEstimateById(ObjectId(post.estimateID))
         map["commentList"]=sharePlaceService.getCommentList("postID",postID)
+        return map
+    }
+
+    @GetMapping("/loadPostList")
+    fun testSharePlacePage(@RequestParam(defaultValue = "1") page: Int,
+                           @RequestParam(defaultValue = "9") pageSize: Int,
+                           @RequestParam(required = false) searchJson: String?):HashMap<String,Any>{
+        var postList=searchJson?.let{
+            val temp= Gson().fromJson(searchJson,JsonObject::class.java)
+            sharePlaceService.searchPost(temp.get("option").asString,temp.get("value").asString)
+        }?:sharePlaceService.getPostList()
+
+        val listSize = postList.size
+        val listStartIndex = (page - 1) * pageSize
+        val listEndIndex = kotlin.math.min(listStartIndex + pageSize, listSize)
+        postList = postList.subList(listStartIndex,listEndIndex)
+
+        val map=HashMap<String,Any>()
+        map["postList"]=postList
+        map["totalPages"]=kotlin.math.ceil(postList.size.toDouble()/pageSize).toInt()
+        map["currentPage"]=page
         return map
     }
 

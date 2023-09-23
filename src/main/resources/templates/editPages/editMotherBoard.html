@@ -16,70 +16,70 @@
             <div class="row g-4">
               <div class="col-6">
                 <label for="name" class="form-label">이름</label>
-                <input type="text" class="form-control" id="name" placeholder="" th:value="${item.name}">
+                <input type="text" class="form-control" id="name" placeholder="">
               </div>
 
               <div class="col-6">
                 <label for="manufacturer" class="form-label">제조사</label>
-                <input type="text" class="form-control" id="manufacturer" placeholder="" th:value="${item.manufacturer}">
+                <input type="text" class="form-control" id="manufacturer" placeholder="">
               </div>
 
               <div class="col-9">
                 <label for="cpuType" class="form-label">구분</label>
                 <select class="form-select" aria-label="Default select example" id="cpuType">
-                  <option value="Intel" th:selected="${item.cpuType == 'Intel'}">Intel</option>
-                  <option value="AMD" th:selected="${item.cpuType == 'AMD'}">AMD</option>
+                  <option value="Intel">Intel</option>
+                  <option value="AMD">AMD</option>
                 </select>
               </div>
 
               <div class="col-6">
                 <label for="chipset" class="form-label">소켓</label>
                 <select class="form-select" aria-label="Default select example" id="socket">
-                  <option value="AM5" th:selected="${item.socket == 'AM5'}">AM5</option>
-                  <option value="AM4" th:selected="${item.socket == 'AM4'}">AM4</option>
-                  <option value="LGA1700" th:selected="${item.socket == 'LGA1700'}">LGA1700</option>
-                  <option value="LGA1200" th:selected="${item.socket == 'LGA1200'}">LGA1200</option>
+                  <option value="AM5">AM5</option>
+                  <option value="AM4">AM4</option>
+                  <option value="LGA1700">LGA1700</option>
+                  <option value="LGA1200">LGA1200</option>
                 </select>
               </div>
 
               <div class="col-6">
                 <label for="manufacturer" class="form-label">칩셋</label>
-                <input type="text" class="form-control" id="chipset" placeholder="" th:value="${item.chipset}">
+                <input type="text" class="form-control" id="chipset" placeholder="">
               </div>
 
               <div class="col-9">
                 <label for="motherBoardFormFactor" class="form-label">최대 마더보드 호환성</label>
                 <select class="form-select" aria-label="Default select example" id="motherBoardFormFactor">
-                  <option value="ATX" th:selected="${item.motherBoardFormFactor.name == 'ATX'}">ATX</option>
-                  <option value="M-ATX" th:selected="${item.motherBoardFormFactor.name == 'M-ATX'}">M-ATX</option>
-                  <option value="E-ATX" th:selected="${item.motherBoardFormFactor.name == 'E-ATX'}">E-ATX</option>
+                  <option value="ATX">ATX</option>
+                  <option value="M-ATX">M-ATX</option>
+                  <option value="E-ATX">E-ATX</option>
                 </select>
               </div>
 
               <div class="col-9">
                 <label for="memoryType" class="form-label">메모리 타입</label>
                 <select class="form-select" aria-label="Default select example" id="memoryType">
-                  <option value="DDR5" th:selected="${item.memoryType == 'DDR5'}">DDR5</option>
-                  <option value="DDR4" th:selected="${item.memoryType == 'DDR4'}">DDR4</option>
+                  <option value="DDR5">DDR5</option>
+                  <option value="DDR4">DDR4</option>
                 </select>
               </div>
 
               <div class="col-9">
                 <label for="memorySlot" class="form-label">메모리 슬롯 개수</label>
                 <select class="form-select" aria-label="Default select example" id="memorySlot">
-                  <option value="4" th:selected="${item.memorySlot == '4'}">4</option>
-                  <option value="2" th:selected="${item.memorySlot == '2'}">2</option>
+                  <option value="4">4</option>
+                  <option value="2">2</option>
                 </select>
               </div>
 
               <div class="col-4">
                 <label for="ssdM2Slot" class="form-label">SSD 슬롯 개수(M.2)</label>
-                <input type="number" class="form-control" id="ssdM2Slot" placeholder="" th:value="${item.ssdM2Slot}">
+                <input type="number" class="form-control" id="ssdM2Slot" placeholder="">
               </div>
 
               <div class="col-4">
                 <label for="ssdSATASlot" class="form-label">SSD 슬롯 개수(SATA)</label>
-                <input type="number" class="form-control" id="ssdSATASlot" placeholder="" th:value="${item.ssdSATASlot}">
+                <input type="number" class="form-control" id="ssdSATASlot" placeholder="">
               </div>
             </div>
 
@@ -108,6 +108,28 @@
   </div>
   <script type="text/javascript">
 
+    let firstCreate = false;
+
+    function initialSetup(){
+      fetch('/CusCom/API/searchMotherBoard')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('name').value = data.name;
+          document.getElementById('manufacturer').value = data.manufacturer;
+          document.getElementById('cpuType').value = data.caseType;
+          document.getElementById('socket').value = data.motherBoardFormFactor;
+          document.getElementById('chipset').value = data.maxCoolingFan;
+          document.getElementById('motherBoardFormFactor').value = data.builtInCoolingFan;
+          document.getElementById('memoryType').value = data.height;
+          document.getElementById('memorySlot').value = data.length;
+          document.getElementById('ssdM2Slot').value = data.width;
+          document.getElementById('ssdSATASlot').value = data.powerLength;
+          firstCreate = (data.name === "");
+        })
+    }
+
+    window.onload = initialSetup;
+
     document.getElementById('confirm')
             .addEventListener('click',function(event){
               const MotherBoard = {
@@ -128,8 +150,8 @@
               formData.append('Data', JSON.stringify(MotherBoard));
               formData.append('Image', document.getElementById('imageFile').files[0]);
 
-              if([[${firstCreate}]]){
-                fetch("/CusCom/adminPage/createParts", {
+              if(firstCreate){
+                fetch("/CusCom/adminAPI/createParts", {
                     method: "POST",
                     body: formData
                 })
@@ -139,7 +161,7 @@
                 });
               }
               else{
-                fetch("/CusCom/adminPage/updateParts", {
+                fetch("/CusCom/adminAPI/updateParts", {
                     method: "POST",
                     body: formData
                 })

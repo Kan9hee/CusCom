@@ -16,30 +16,30 @@
             <div class="row g-4">
               <div class="col-6">
                 <label for="name" class="form-label">이름</label>
-                <input type="text" class="form-control" id="name" placeholder="" th:value="${item.name}">
+                <input type="text" class="form-control" id="name" placeholder="">
               </div>
 
               <div class="col-6">
                 <label for="manufacturer" class="form-label">제조사</label>
-                <input type="text" class="form-control" id="manufacturer" placeholder="" th:value="${item.manufacturer}">
+                <input type="text" class="form-control" id="manufacturer" placeholder="">
               </div>
 
               <div class="col-9">
                 <label for="gpuType" class="form-label">GPU</label>
-                <input type="text" class="form-control" id="gpuType" placeholder="" th:value="${item.gpuType}">
+                <input type="text" class="form-control" id="gpuType" placeholder="">
               </div>
 
               <div class="col-9">
                 <label for="chipsetManufacturer" class="form-label">구분</label>
                 <select class="form-select" aria-label="Default select example" id="chipsetManufacturer">
-                  <option value="NVIDIA" th:selected="${item.chipsetManufacturer == 'NVIDIA'}">NVIDIA</option>
-                  <option value="AMD" th:selected="${item.chipsetManufacturer == 'AMD'}">AMD</option>
+                  <option value="NVIDIA">NVIDIA</option>
+                  <option value="AMD">AMD</option>
                 </select>
               </div>
 
               <div class="col-4">
                 <label for="length" class="form-label">길이</label>
-                <input type="number" class="form-control" id="length" placeholder="" th:value="${item.length}">
+                <input type="number" class="form-control" id="length" placeholder="">
               </div>
             </div>
 
@@ -48,17 +48,17 @@
             <div class="row g-4">
               <div class="col-6">
                 <label for="basicPower" class="form-label">기본 전력</label>
-                <input type="number" class="form-control" id="basicPower" placeholder="" th:value="${item.basicPower}">
+                <input type="number" class="form-control" id="basicPower" placeholder="">
               </div>
 
               <div class="col-6">
                 <label for="maxPower" class="form-label">최대 전력</label>
-                <input type="number" class="form-control" id="maxPower" placeholder="" th:value="${item.maxPower}">
+                <input type="number" class="form-control" id="maxPower" placeholder="">
               </div>
 
               <div class="col-9">
                 <label for="phase" class="form-label">페이즈 수</label>
-                <input type="number" class="form-control" id="phase" placeholder="" th:value="${item.phase}">
+                <input type="number" class="form-control" id="phase" placeholder="">
               </div>
 
               <div class="col-9">
@@ -83,6 +83,26 @@
   </div>
   <script type="text/javascript">
 
+    let firstCreate = false;
+
+    function initialSetup(){
+      fetch('/CusCom/API/searchGraphicsCard')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('name').value = data.name;
+          document.getElementById('manufacturer').value = data.manufacturer;
+          document.getElementById('chipsetManufacturer').value = data.socket;
+          document.getElementById('gpuType').value = data.memoryType;
+          document.getElementById('length').value = data.core;
+          document.getElementById('basicPower').value = data.thread;
+          document.getElementById('maxPower').value = data.isBuiltInGraphics;
+          document.getElementById('phase').value = data.isBuiltInGraphics;
+          firstCreate = (data.name === "");
+        })
+    }
+
+    window.onload = initialSetup;
+
     document.getElementById('confirm')
             .addEventListener('click',function(event){
               const GraphicsCard = {
@@ -101,8 +121,8 @@
               formData.append('Data', JSON.stringify(GraphicsCard));
               formData.append('Image', document.getElementById('imageFile').files[0]);
 
-              if([[${firstCreate}]]){
-                fetch("/CusCom/adminPage/createParts", {
+              if(firstCreate){
+                fetch("/CusCom/adminAPI/createParts", {
                     method: "POST",
                     body: formData
                 })
@@ -112,7 +132,7 @@
                 });
               }
               else{
-                fetch("/CusCom/adminPage/updateParts", {
+                fetch("/CusCom/adminAPI/updateParts", {
                     method: "POST",
                     body: formData
                 })

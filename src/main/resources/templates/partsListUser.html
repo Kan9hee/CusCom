@@ -2,17 +2,6 @@
 <html class="h-100" xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
 <head>
     <div th:replace="~{fragments/setup :: setup}"/>
-    <style>
-    tr{
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .button-group {
-      display: flex;
-      justify-content: space-between;
-    }
-  </style>
 </head>
 <body>
 <main>
@@ -28,49 +17,49 @@
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
                             <small class="text-body-secondary">케이스</small>
-                            <h6 class="my-0" id="caseH6" th:text="${estimate.desktopCase}">부품명</h6>
+                            <h6 class="my-0" id="caseH6">미선택</h6>
                         </div>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
                             <small class="text-body-secondary">CPU 쿨러</small>
-                            <h6 class="my-0" id="cpuCoolerH6" th:text="${estimate.cpuCooler}">부품명</h6>
+                            <h6 class="my-0" id="cpuCoolerH6">미선택</h6>
                         </div>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
                             <small class="text-body-secondary">CPU</small>
-                            <h6 class="my-0" id="cpuH6" th:text="${estimate.cpu}">부품명</h6>
+                            <h6 class="my-0" id="cpuH6">미선택</h6>
                         </div>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
                             <small class="text-body-secondary">저장장치</small>
-                            <h6 class="my-0" id="dataStorageH6" th:text="${estimate.dataStorage}">부품명</h6>
+                            <h6 class="my-0" id="dataStorageH6">미선택</h6>
                         </div>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
                             <small class="text-body-secondary">그래픽카드</small>
-                            <h6 class="my-0" id="graphicsCardH6" th:text="${estimate.graphicsCard}">부품명</h6>
+                            <h6 class="my-0" id="graphicsCardH6">미선택</h6>
                         </div>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
                             <small class="text-body-secondary">메모리</small>
-                            <h6 class="my-0" id="memoryH6" th:text="${estimate.memory}">부품명</h6>
+                            <h6 class="my-0" id="memoryH6">미선택</h6>
                         </div>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
                             <small class="text-body-secondary">메인보드</small>
-                            <h6 class="my-0" id="motherBoardH6" th:text="${estimate.motherBoard}">부품명</h6>
+                            <h6 class="my-0" id="motherBoardH6">미선택</h6>
                         </div>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
                             <small class="text-body-secondary">파워서플라이</small>
-                            <h6 class="my-0" id="powerSupplyH6" th:text="${estimate.powerSupply}">부품명</h6>
+                            <h6 class="my-0" id="powerSupplyH6">미선택</h6>
                         </div>
                     </li>
                 </ul>
@@ -89,24 +78,9 @@
                     </h2>
                     <div id="collapseCase" class="accordion-collapse collapse show" data-bs-parent="#partsList">
                         <div class="accordion-body">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="case : ${caseList}">
-                                    <td th:text="${case.name}">케이스 이름</td>
-                                    <td>
-                                        <div class="button-container" style="display: flex;">
-                                            <button class="btn btn-primary btn-add" datatype="desktopCase">담기</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <div class="list-group list-group-flush border-bottom scrollarea" id="case-list">
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -119,24 +93,9 @@
                     </h2>
                     <div id="collapseCPUCooler" class="accordion-collapse collapse" data-bs-parent="#partsList">
                         <div class="accordion-body">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="cpuCooler : ${cpuCoolerList}">
-                                    <td th:text="${cpuCooler.name}">쿨러 이름</td>
-                                    <td>
-                                        <div class="button-container" style="display: flex; gap: 10px;">
-                                            <button class="btn btn-primary btn-add" datatype="cpuCooler">담기</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <div class="list-group list-group-flush border-bottom scrollarea" id="cpu-cooler-list">
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -149,24 +108,9 @@
                     </h2>
                     <div id="collapseCPU" class="accordion-collapse collapse" data-bs-parent="#partsList">
                         <div class="accordion-body">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="cpu : ${cpuList}">
-                                    <td th:text="${cpu.name}">CPU 이름</td>
-                                    <td>
-                                        <div class="button-container" style="display: flex; gap: 10px;">
-                                            <button class="btn btn-primary btn-add" datatype="cpu">담기</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <div class="list-group list-group-flush border-bottom scrollarea" id="cpu-list">
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -179,24 +123,9 @@
                     </h2>
                     <div id="collapseDataStorage" class="accordion-collapse collapse" data-bs-parent="#partsList">
                         <div class="accordion-body">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="dataStorage : ${dataStorageList}">
-                                    <td th:text="${dataStorage.name}">저장장치 이름</td>
-                                    <td>
-                                        <div class="button-container" style="display: flex; gap: 10px;">
-                                            <button class="btn btn-primary btn-add" datatype="dataStorage">담기</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <div class="list-group list-group-flush border-bottom scrollarea" id="data-storage-list">
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -209,24 +138,9 @@
                     </h2>
                     <div id="collapseGraphicsCard" class="accordion-collapse collapse" data-bs-parent="#partsList">
                         <div class="accordion-body">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="graphicsCard : ${graphicsCardList}">
-                                    <td th:text="${graphicsCard.name}">그래픽카드 이름</td>
-                                    <td>
-                                        <div class="button-container" style="display: flex; gap: 10px;">
-                                            <button class="btn btn-primary btn-add" datatype="graphicsCard">담기</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <div class="list-group list-group-flush border-bottom scrollarea" id="graphics-card-list">
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -239,24 +153,9 @@
                     </h2>
                     <div id="collapseMemory" class="accordion-collapse collapse" data-bs-parent="#partsList">
                         <div class="accordion-body">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="memory : ${memoryList}">
-                                    <td th:text="${memory.name}">메모리 이름</td>
-                                    <td>
-                                        <div class="button-container" style="display: flex; gap: 10px;">
-                                            <button class="btn btn-primary btn-add" datatype="memory">담기</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <div class="list-group list-group-flush border-bottom scrollarea" id="memory-list">
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -269,24 +168,9 @@
                     </h2>
                     <div id="collapseMotherBoard" class="accordion-collapse collapse" data-bs-parent="#partsList">
                         <div class="accordion-body">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="motherBoard : ${motherBoardList}">
-                                    <td th:text="${motherBoard.name}">마더보드 이름</td>
-                                    <td>
-                                        <div class="button-container" style="display: flex; gap: 10px;">
-                                            <button class="btn btn-primary btn-add" datatype="motherBoard">담기</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <div class="list-group list-group-flush border-bottom scrollarea" id="mother-board-list">
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -299,24 +183,9 @@
                     </h2>
                     <div id="collapsePowerSupply" class="accordion-collapse collapse" data-bs-parent="#partsList">
                         <div class="accordion-body">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="powerSupply : ${powerSupplyList}">
-                                    <td th:text="${powerSupply.name}">파워서플라이 이름</td>
-                                    <td>
-                                        <div class="button-container" style="display: flex; gap: 10px;">
-                                            <button class="btn btn-primary btn-add" datatype="powerSupply">담기</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <div class="list-group list-group-flush border-bottom scrollarea" id="power-supply-list">
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -331,16 +200,227 @@
 <script type="text/javascript">
 
     var data = {
-        userName:"[[${userName}]]",
-        cpu:"[[${estimate.cpu}]]",
-        motherBoard:"[[${estimate.motherBoard}]]",
-        memory:"[[${estimate.memory}]]",
-        dataStorage:"[[${estimate.dataStorage}]]",
-        graphicsCard:"[[${estimate.graphicsCard}]]",
-        cpuCooler:"[[${estimate.cpuCooler}]]",
-        powerSupply:"[[${estimate.powerSupply}]]",
-        desktopCase:"[[${estimate.desktopCase}]]"
+        userName:"",
+        cpu:"",
+        motherBoard:"",
+        memory:"",
+        dataStorage:"",
+        graphicsCard:"",
+        cpuCooler:"",
+        powerSupply:"",
+        desktopCase:""
     }
+
+    function fetchData() {
+          const fetchRequests = [
+            fetch('/CusCom/API/caseList').then(response => response.json()),
+            fetch('/CusCom/API/cpuList').then(response => response.json()),
+            fetch('/CusCom/API/cpuCoolerList').then(response => response.json()),
+            fetch('/CusCom/API/dataStorageList').then(response => response.json()),
+            fetch('/CusCom/API/graphicsCardList').then(response => response.json()),
+            fetch('/CusCom/API/memoryList').then(response => response.json()),
+            fetch('/CusCom/API/motherBoardList').then(response => response.json()),
+            fetch('/CusCom/API/powerSupplyList').then(response => response.json())
+          ];
+
+          Promise.all(fetchRequests)
+            .then(responses => {
+              const caseList = document.getElementById('case-list');
+              responses[0].forEach(caseItem => {
+                const listItem = document.createElement('a');
+                listItem.className = 'list-group-item py-3 lh-sm';
+                const listItemContent = `
+                  <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">${caseItem.name}</strong>
+                    <div class="button-container" style="display: flex; gap: 10px;">
+                      <button class="btn btn-primary btn-add" datatype="case">담기</button>
+                    </div>
+                  </div>
+                  <div>
+                    <small class="text-body-secondary">제조사:${caseItem.manufacturer}</small>
+                    <small class="text-body-secondary">구분:${caseItem.caseType}</small>
+                    <small class="text-body-secondary">높이:${caseItem.height}</small>
+                    <small class="text-body-secondary">길이:${caseItem.length}</small>
+                    <small class="text-body-secondary">너비:${caseItem.width}</small>
+                    <small class="text-body-secondary">최대파워크기:${caseItem.powerLength}</small>
+                    <small class="text-body-secondary">최대cpu쿨러크기:${caseItem.cpuCoolerHeight}</small>
+                    <small class="text-body-secondary">최대그래픽카드크기:${caseItem.graphicsCardLength}</small>
+                  </div>
+                `;
+                listItem.innerHTML = listItemContent;
+                caseList.appendChild(listItem);
+              });
+
+              const cpuList = document.getElementById('cpu-list');
+              responses[1].forEach(cpuItem => {
+                const listItem = document.createElement('a');
+                listItem.className = 'list-group-item py-3 lh-sm';
+                const listItemContent = `
+                  <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">${cpuItem.name}</strong>
+                    <div class="button-container" style="display: flex; gap: 10px;">
+                      <button class="btn btn-primary btn-add" datatype="cpu">담기</button>
+                    </div>
+                  </div>
+                  <div>
+                    <small class="text-body-secondary">제조사:${cpuItem.manufacturer}</small>
+                    <small class="text-body-secondary">소켓:${cpuItem.socket}</small>
+                    <small class="text-body-secondary">내장그래픽:${cpuItem.isBuiltInGraphics}</small>
+                    <small class="text-body-secondary">코어:${cpuItem.core}</small>
+                    <small class="text-body-secondary">스레드:${cpuItem.thread}</small>
+                    <small class="text-body-secondary">TDP:${cpuItem.tdp}</small>
+                  </div>
+                `;
+                listItem.innerHTML = listItemContent;
+                cpuList.appendChild(listItem);
+              });
+
+              const cpuCoolerList = document.getElementById('cpu-cooler-list');
+              responses[2].forEach(cpuCoolerItem => {
+                const listItem = document.createElement('a');
+                listItem.className = 'list-group-item py-3 lh-sm';
+                const listItemContent = `
+                  <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">${cpuCoolerItem.name}</strong>
+                    <div class="button-container" style="display: flex; gap: 10px;">
+                      <button class="btn btn-primary btn-add" datatype="cpuCooler">담기</button>
+                    </div>
+                  </div>
+                  <div>
+                    <small class="text-body-secondary">제조사:${cpuCoolerItem.manufacturer}</small>
+                    <small class="text-body-secondary">냉각방식:${cpuCoolerItem.coolingType}</small>
+                    <small class="text-body-secondary">높이:${cpuCoolerItem.height}</small>
+                    <small class="text-body-secondary">길이:${cpuCoolerItem.length}</small>
+                    <small class="text-body-secondary">너비:${cpuCoolerItem.width}</small>
+                    <small class="text-body-secondary">TDP:${cpuCoolerItem.tdp}</small>
+                  </div>
+                `;
+                listItem.innerHTML = listItemContent;
+                cpuCoolerList.appendChild(listItem);
+              });
+
+              const dataStorageList = document.getElementById('data-storage-list');
+              responses[3].forEach(dataStorageItem => {
+                const listItem = document.createElement('a');
+                listItem.className = 'list-group-item py-3 lh-sm';
+                const listItemContent = `
+                  <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">${dataStorageItem.name}</strong>
+                    <div class="button-container" style="display: flex; gap: 10px;">
+                      <button class="btn btn-primary btn-add" datatype="dataStorage">담기</button>
+                    </div>
+                  </div>
+                  <div>
+                    <small class="text-body-secondary">제조사:${dataStorageItem.manufacturer}</small>
+                    <small class="text-body-secondary">인터페이스:${dataStorageItem.storageInterface}</small>
+                    <small class="text-body-secondary">폼팩터:${dataStorageItem.formFactor}</small>
+                    <small class="text-body-secondary">읽기속도:${dataStorageItem.readSpeed}</small>
+                    <small class="text-body-secondary">쓰기속도:${dataStorageItem.writeSpeed}</small>
+                  </div>
+                `;
+                listItem.innerHTML = listItemContent;
+                dataStorageList.appendChild(listItem);
+              });
+
+              const graphicsCardList = document.getElementById('graphics-card-list');
+              responses[4].forEach(graphicsCardItem => {
+                const listItem = document.createElement('a');
+                listItem.className = 'list-group-item py-3 lh-sm';
+                const listItemContent = `
+                  <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">${graphicsCardItem.name}</strong>
+                    <div class="button-container" style="display: flex; gap: 10px;">
+                      <button class="btn btn-primary btn-add" datatype="graphicsCard">담기</button>
+                    </div>
+                  </div>
+                  <div>
+                    <small class="text-body-secondary">제조사:${graphicsCardItem.manufacturer}</small>
+                    <small class="text-body-secondary">GPU:${graphicsCardItem.gpuType}</small>
+                    <small class="text-body-secondary">길이:${graphicsCardItem.length}</small>
+                    <small class="text-body-secondary">기본전력:${graphicsCardItem.basicPower}</small>
+                    <small class="text-body-secondary">최대전력:${graphicsCardItem.maxPower}</small>
+                  </div>
+                `;
+                listItem.innerHTML = listItemContent;
+                graphicsCardList.appendChild(listItem);
+              });
+
+              const memoryList = document.getElementById('memory-list');
+              responses[5].forEach(memoryItem => {
+                const listItem = document.createElement('a');
+                listItem.className = 'list-group-item py-3 lh-sm';
+                const listItemContent = `
+                  <div class="d-flex w-100 align-items-center justify-content-between">
+                      <strong class="mb-1">${memoryItem.name}</strong>
+                      <div class="button-container" style="display: flex; gap: 10px;">
+                        <button class="btn btn-primary btn-add" datatype="memory">담기</button>
+                      </div>
+                    </div>
+                    <div>
+                      <small class="text-body-secondary">제조사:${memoryItem.manufacturer}</small>
+                      <small class="text-body-secondary">타입:${memoryItem.type}</small>
+                      <small class="text-body-secondary">용량:${memoryItem.capacity}</small>
+                      <small class="text-body-secondary">높이:${memoryItem.height}</small>
+                    </div>
+                `;
+                listItem.innerHTML = listItemContent;
+                memoryList.appendChild(listItem);
+              });
+
+              const motherBoardList = document.getElementById('mother-board-list');
+              responses[6].forEach(motherBoardItem => {
+                const listItem = document.createElement('a');
+                listItem.className = 'list-group-item py-3 lh-sm';
+                const listItemContent = `
+                  <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">${motherBoardItem.name}</strong>
+                    <div class="button-container" style="display: flex; gap: 10px;">
+                      <button class="btn btn-primary btn-add" datatype="motherBoard">담기</button>
+                    </div>
+                  </div>
+                  <div>
+                    <small class="text-body-secondary">제조사:${motherBoardItem.manufacturer}</small>
+                    <small class="text-body-secondary">구분:${motherBoardItem.cpuType}</small>
+                    <small class="text-body-secondary">소켓:${motherBoardItem.socket}</small>
+                    <small class="text-body-secondary">메모리타입:${motherBoardItem.memoryType}</small>
+                    <small class="text-body-secondary">메모리슬롯:${motherBoardItem.memorySlot}</small>
+                  </div>
+                `;
+                listItem.innerHTML = listItemContent;
+                motherBoardList.appendChild(listItem);
+              });
+
+              const powerSupplyList = document.getElementById('power-supply-list');
+              responses[7].forEach(powerSupplyItem => {
+                const listItem = document.createElement('a');
+                listItem.className = 'list-group-item py-3 lh-sm';
+                const listItemContent = `
+                  <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">${powerSupplyItem.name}</strong>
+                    <div class="button-container" style="display: flex; gap: 10px;">
+                      <button class="btn btn-primary btn-add" datatype="powerSupply">담기</button>
+                    </div>
+                  </div>
+                  <div>
+                    <small class="text-body-secondary">제조사:${powerSupplyItem.manufacturer}</small>
+                    <small class="text-body-secondary">모듈러:${powerSupplyItem.modular}</small>
+                    <small class="text-body-secondary">크기:${powerSupplyItem.length}</small>
+                    <small class="text-body-secondary">전력:${powerSupplyItem.power}</small>
+                    <small class="text-body-secondary">효율:${powerSupplyItem.efficiency}</small>
+                  </div>
+                `;
+                listItem.innerHTML = listItemContent;
+                powerSupplyList.appendChild(listItem);
+              });
+
+              document.querySelectorAll('.btn-add').forEach(function(button){
+                button.addEventListener('click',addParts);
+              });
+            })
+            .catch(error => console.error(error));
+        }
+
+    window.onload = fetchData;
 
     function updateH6Text(id, text) {
         const h6Element = document.getElementById(id);
@@ -349,13 +429,10 @@
         }
     }
 
-    document.querySelectorAll('.btn-add').forEach(function(button){
-        button.addEventListener('click',function(){addParts(button);});
-    });
-
-    function addParts(button){
-        var name=button.closest('tr').querySelector('td:first-child').innerText;
-        var datatype=button.getAttribute('datatype');
+    function addParts(event){
+        const listItem = this.closest('.list-group-item');
+        const name = listItem.querySelector('.mb-1').textContent;
+        const datatype = this.getAttribute('datatype');
         console.log("상품명: "+name+"부품유형"+datatype);
         switch(datatype){
             case 'cpu':
@@ -386,7 +463,7 @@
                 data.powerSupply=name;
                 updateH6Text("powerSupplyH6",name);
                 break;
-            case 'desktopCase':
+            case 'case':
                 data.desktopCase=name;
                 updateH6Text("caseH6",name);
                 break;
@@ -401,7 +478,7 @@
                 const formData = new FormData();
                 formData.append('estimate', JSON.stringify(data));
 
-                fetch("/CusCom/estimate",{
+                fetch("/CusCom/API/createEstimate",{
                     method: "POST",
                     body: formData
                 })

@@ -2,23 +2,11 @@
 <html class="h-100" xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
 <head>
   <div th:replace="~{fragments/setup :: setup}"/>
-  <style>
-    tr{
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .button-group {
-      display: flex;
-      justify-content: space-between;
-    }
-  </style>
 </head>
 <body>
     <main>
       <div class="container-fluid">
         <div th:insert="~{fragments/header :: header}"></div>
-
         <div class="accordion py-5" id="partsList" style="width:60%; overflow:auto;">
           <div class="accordion-item">
             <h2 class="accordion-header">
@@ -28,32 +16,12 @@
             </h2>
             <div id="collapseCase" class="accordion-collapse collapse" data-bs-parent="#partsList">
               <div class="accordion-body">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <form method="get" action="/CusCom/adminPage/editCase">
-                      <input type="hidden" name="Case" value="Sample">
-                      <button class="btn btn-lg btn-primary" type="submit">케이스 데이터 추가</button>
-                    </form>
-                    <tr th:each="case : ${caseList}">
-                      <td th:text="${case.name}">케이스 이름</td>
-                      <td>
-                        <div class="button-container" style="display: flex; gap: 10px;">
-                          <form method="get" action="/CusCom/adminPage/editCase">
-                            <input type="hidden" name="Case" th:value="${case.name}">
-                            <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
-                          </form>
-                          <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                <form method="get" action="/CusCom/adminPage/editCase">
+                  <button class="btn btn-lg btn-primary" type="submit">케이스 데이터 추가</button>
+                </form>
+                <div class="list-group list-group-flush border-bottom scrollarea" id="case-list">
+
+                </div>
               </div>
             </div>
           </div>
@@ -66,32 +34,12 @@
             </h2>
             <div id="collapseCPUCooler" class="accordion-collapse collapse" data-bs-parent="#partsList">
               <div class="accordion-body">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <form method="get" action="/CusCom/adminPage/editCPUCooler">
-                      <input type="hidden" name="CPUCooler" value="Sample">
-                      <button class="btn btn-lg btn-primary" type="submit">CPU 쿨러 데이터 추가</button>
-                    </form>
-                    <tr th:each="cpuCooler : ${cpuCoolerList}">
-                      <td th:text="${cpuCooler.name}">쿨러 이름</td>
-                      <td>
-                        <div class="button-container" style="display: flex; gap: 10px;">
-                          <form method="get" action="/CusCom/adminPage/editCPUCooler">
-                            <input type="hidden" name="CPUCooler" th:value="${cpuCooler.name}">
-                            <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
-                          </form>
-                          <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                <form method="get" action="/CusCom/adminPage/editCPUCooler">
+                  <button class="btn btn-lg btn-primary" type="submit">CPU 쿨러 데이터 추가</button>
+                </form>
+                <div class="list-group list-group-flush border-bottom scrollarea" id="cpu-cooler-list">
+
+                </div>
               </div>
             </div>
           </div>
@@ -104,32 +52,12 @@
             </h2>
             <div id="collapseCPU" class="accordion-collapse collapse" data-bs-parent="#partsList">
               <div class="accordion-body">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <form method="get" action="/CusCom/adminPage/editCPU">
-                      <input type="hidden" name="CPU" value="Sample">
-                      <button class="btn btn-lg btn-primary" type="submit">CPU 데이터 추가</button>
-                    </form>
-                    <tr th:each="cpu : ${cpuList}">
-                      <td th:text="${cpu.name}">CPU 이름</td>
-                      <td>
-                        <div class="button-container" style="display: flex; gap: 10px;">
-                          <form method="get" action="/CusCom/adminPage/editCPU">
-                            <input type="hidden" name="CPU" th:value="${cpu.name}">
-                            <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
-                          </form>
-                          <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                <form method="get" action="/CusCom/adminPage/editCPU">
+                  <button class="btn btn-lg btn-primary" type="submit">CPU 데이터 추가</button>
+                </form>
+                <div class="list-group list-group-flush border-bottom scrollarea" id="cpu-list">
+
+                </div>
               </div>
             </div>
           </div>
@@ -142,32 +70,12 @@
             </h2>
             <div id="collapseDataStorage" class="accordion-collapse collapse" data-bs-parent="#partsList">
               <div class="accordion-body">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <form method="get" action="/CusCom/adminPage/editDataStorage">
-                      <input type="hidden" name="DataStorage" value="Sample">
-                      <button class="btn btn-lg btn-primary" type="submit">저장장치 데이터 추가</button>
-                    </form>
-                    <tr th:each="dataStorage : ${dataStorageList}">
-                      <td th:text="${dataStorage.name}">저장장치 이름</td>
-                      <td>
-                        <div class="button-container" style="display: flex; gap: 10px;">
-                          <form method="get" action="/CusCom/adminPage/editDataStorage">
-                            <input type="hidden" name="DataStorage" th:value="${dataStorage.name}">
-                            <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
-                          </form>
-                          <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                <form method="get" action="/CusCom/adminPage/editDataStorage">
+                  <button class="btn btn-lg btn-primary" type="submit">저장장치 데이터 추가</button>
+                </form>
+                <div class="list-group list-group-flush border-bottom scrollarea" id="data-storage-list">
+
+                </div>
               </div>
             </div>
           </div>
@@ -180,32 +88,12 @@
             </h2>
             <div id="collapseGraphicsCard" class="accordion-collapse collapse" data-bs-parent="#partsList">
               <div class="accordion-body">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <form method="get" action="/CusCom/adminPage/editGraphicsCard">
-                      <input type="hidden" name="GraphicsCard" value="Sample">
-                      <button class="btn btn-lg btn-primary" type="submit">그래픽카드 데이터 추가</button>
-                    </form>
-                    <tr th:each="graphicsCard : ${graphicsCardList}">
-                      <td th:text="${graphicsCard.name}">그래픽카드 이름</td>
-                      <td>
-                        <div class="button-container" style="display: flex; gap: 10px;">
-                          <form method="get" action="/CusCom/adminPage/editGraphicsCard">
-                            <input type="hidden" name="GraphicsCard" th:value="${graphicsCard.name}">
-                            <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
-                          </form>
-                          <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                <form method="get" action="/CusCom/adminPage/editGraphicsCard">
+                  <button class="btn btn-lg btn-primary" type="submit">그래픽카드 데이터 추가</button>
+                </form>
+                <div class="list-group list-group-flush border-bottom scrollarea" id="graphics-card-list">
+
+                </div>
               </div>
             </div>
           </div>
@@ -218,32 +106,12 @@
             </h2>
             <div id="collapseMemory" class="accordion-collapse collapse" data-bs-parent="#partsList">
               <div class="accordion-body">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <form method="get" action="/CusCom/adminPage/editMemory">
-                      <input type="hidden" name="Memory" value="Sample">
-                      <button class="btn btn-lg btn-primary" type="submit">메모리 데이터 추가</button>
-                    </form>
-                    <tr th:each="memory : ${memoryList}">
-                      <td th:text="${memory.name}">메모리 이름</td>
-                      <td>
-                        <div class="button-container" style="display: flex; gap: 10px;">
-                          <form method="get" action="/CusCom/adminPage/editMemory">
-                            <input type="hidden" name="Memory" th:value="${memory.name}">
-                            <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
-                          </form>
-                          <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                <form method="get" action="/CusCom/adminPage/editMemory">
+                  <button class="btn btn-lg btn-primary" type="submit">메모리 데이터 추가</button>
+                </form>
+                <div class="list-group list-group-flush border-bottom scrollarea" id="memory-list">
+
+                </div>
               </div>
             </div>
           </div>
@@ -256,32 +124,12 @@
             </h2>
             <div id="collapseMotherBoard" class="accordion-collapse collapse" data-bs-parent="#partsList">
               <div class="accordion-body">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <form method="get" action="/CusCom/adminPage/editMotherBoard">
-                      <input type="hidden" name="MotherBoard" value="Sample">
-                      <button class="btn btn-lg btn-primary" type="submit">마더보드 데이터 추가</button>
-                    </form>
-                    <tr th:each="motherBoard : ${motherBoardList}">
-                      <td th:text="${motherBoard.name}">마더보드 이름</td>
-                      <td>
-                        <div class="button-container" style="display: flex; gap: 10px;">
-                          <form method="get" action="/CusCom/adminPage/editMotherBoard">
-                            <input type="hidden" name="MotherBoard" th:value="${motherBoard.name}">
-                            <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
-                          </form>
-                          <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                <form method="get" action="/CusCom/adminPage/editMotherBoard">
+                  <button class="btn btn-lg btn-primary" type="submit">마더보드 데이터 추가</button>
+                </form>
+                <div class="list-group list-group-flush border-bottom scrollarea" id="mother-board-list">
+
+                </div>
               </div>
             </div>
           </div>
@@ -294,43 +142,262 @@
             </h2>
             <div id="collapsePowerSupply" class="accordion-collapse collapse" data-bs-parent="#partsList">
               <div class="accordion-body">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <form method="get" action="/CusCom/adminPage/editPowerSupply">
-                      <input type="hidden" name="PowerSupply" value="Sample">
-                      <button class="btn btn-lg btn-primary" type="submit">파워서플라이 데이터 추가</button>
-                    </form>
-                    <tr th:each="powerSupply : ${powerSupplyList}">
-                      <td th:text="${powerSupply.name}">파워서플라이 이름</td>
-                      <td>
-                        <div class="button-container" style="display: flex; gap: 10px;">
-                          <form method="get" action="/CusCom/adminPage/editPowerSupply">
-                            <input type="hidden" name="PowerSupply" th:value="${powerSupply.name}">
-                            <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
-                          </form>
-                          <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                <form method="get" action="/CusCom/adminPage/editPowerSupply">
+                  <button class="btn btn-lg btn-primary" type="submit">파워서플라이 데이터 추가</button>
+                </form>
+                <div class="list-group list-group-flush border-bottom scrollarea" id="power-supply-list">
+
+                </div>
               </div>
             </div>
           </div>
         </div>
-
       </div>
       <footer class="my-5 pt-5 text-body-secondary text-center text-small">
         <p class="mb-1">&copy; 2023 CusCom</p>
       </footer>
 
       <script type="text/javascript">
+
+        function fetchData() {
+          const fetchRequests = [
+            fetch('/CusCom/API/caseList').then(response => response.json()),
+            fetch('/CusCom/API/cpuList').then(response => response.json()),
+            fetch('/CusCom/API/cpuCoolerList').then(response => response.json()),
+            fetch('/CusCom/API/dataStorageList').then(response => response.json()),
+            fetch('/CusCom/API/graphicsCardList').then(response => response.json()),
+            fetch('/CusCom/API/memoryList').then(response => response.json()),
+            fetch('/CusCom/API/motherBoardList').then(response => response.json()),
+            fetch('/CusCom/API/powerSupplyList').then(response => response.json())
+          ];
+
+          Promise.all(fetchRequests)
+            .then(responses => {
+              const caseList = document.getElementById('case-list');
+              responses[0].forEach(caseItem => {
+                const listItem = document.createElement('a');
+                listItem.className = 'list-group-item py-3 lh-sm';
+                const listItemContent = `
+                  <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">${caseItem.name}</strong>
+                    <div class="button-container" style="display: flex; gap: 10px;">
+                      <form method="get" action="/CusCom/adminPage/editCase">
+                        <input type="hidden" name="CPUCooler" value="${caseItem.name}">
+                        <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                      </form>
+                      <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                     </div>
+                  </div>
+                  <div>
+                    <small class="text-body-secondary">제조사:${caseItem.manufacturer}</small>
+                    <small class="text-body-secondary">구분:${caseItem.caseType}</small>
+                    <small class="text-body-secondary">높이:${caseItem.height}</small>
+                    <small class="text-body-secondary">길이:${caseItem.length}</small>
+                    <small class="text-body-secondary">너비:${caseItem.width}</small>
+                    <small class="text-body-secondary">최대파워크기:${caseItem.powerLength}</small>
+                    <small class="text-body-secondary">최대cpu쿨러크기:${caseItem.cpuCoolerHeight}</small>
+                    <small class="text-body-secondary">최대그래픽카드크기:${caseItem.graphicsCardLength}</small>
+                  </div>
+                `;
+                listItem.innerHTML = listItemContent;
+                caseList.appendChild(listItem);
+              });
+
+              const cpuList = document.getElementById('cpu-list');
+              responses[1].forEach(cpuItem => {
+                const listItem = document.createElement('a');
+                listItem.className = 'list-group-item py-3 lh-sm';
+                const listItemContent = `
+                  <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">${cpuItem.name}</strong>
+                    <div class="button-container" style="display: flex; gap: 10px;">
+                      <form method="get" action="/CusCom/adminPage/editCPU">
+                        <input type="hidden" name="CPUCooler" value="${cpuItem.name}">
+                        <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                      </form>
+                      <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                    </div>
+                  </div>
+                  <div>
+                    <small class="text-body-secondary">제조사:${cpuItem.manufacturer}</small>
+                    <small class="text-body-secondary">소켓:${cpuItem.socket}</small>
+                    <small class="text-body-secondary">내장그래픽:${cpuItem.isBuiltInGraphics}</small>
+                    <small class="text-body-secondary">코어:${cpuItem.core}</small>
+                    <small class="text-body-secondary">스레드:${cpuItem.thread}</small>
+                    <small class="text-body-secondary">TDP:${cpuItem.TDP}</small>
+                  </div>
+                `;
+                listItem.innerHTML = listItemContent;
+                cpuList.appendChild(listItem);
+              });
+
+              const cpuCoolerList = document.getElementById('cpu-cooler-list');
+              responses[2].forEach(cpuCoolerItem => {
+                const listItem = document.createElement('a');
+                listItem.className = 'list-group-item py-3 lh-sm';
+                const listItemContent = `
+                  <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">${cpuCoolerItem.name}</strong>
+                    <div class="button-container" style="display: flex; gap: 10px;">
+                      <form method="get" action="/CusCom/adminPage/editCPUCooler">
+                        <input type="hidden" name="CPUCooler" value="${cpuCoolerItem.name}">
+                        <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                      </form>
+                      <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                    </div>
+                  </div>
+                  <div>
+                    <small class="text-body-secondary">제조사:${cpuCoolerItem.manufacturer}</small>
+                    <small class="text-body-secondary">냉각방식:${cpuCoolerItem.coolingType}</small>
+                    <small class="text-body-secondary">높이:${cpuCoolerItem.height}</small>
+                    <small class="text-body-secondary">길이:${cpuCoolerItem.length}</small>
+                    <small class="text-body-secondary">너비:${cpuCoolerItem.width}</small>
+                    <small class="text-body-secondary">TDP:${cpuCoolerItem.TDP}</small>
+                  </div>
+                `;
+                listItem.innerHTML = listItemContent;
+                cpuCoolerList.appendChild(listItem);
+              });
+
+              const dataStorageList = document.getElementById('data-storage-list');
+              responses[3].forEach(dataStorageItem => {
+                const listItem = document.createElement('a');
+                listItem.className = 'list-group-item py-3 lh-sm';
+                const listItemContent = `
+                  <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">${dataStorageItem.name}</strong>
+                    <div class="button-container" style="display: flex; gap: 10px;">
+                      <form method="get" action="/CusCom/adminPage/editDataStorage">
+                        <input type="hidden" name="DataStorage" value="${dataStorageItem.name}">
+                        <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                      </form>
+                      <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                    </div>
+                  </div>
+                  <div>
+                    <small class="text-body-secondary">제조사:${dataStorageItem.manufacturer}</small>
+                    <small class="text-body-secondary">인터페이스:${dataStorageItem.storageInterface}</small>
+                    <small class="text-body-secondary">폼팩터:${dataStorageItem.formFactor}</small>
+                    <small class="text-body-secondary">읽기속도:${dataStorageItem.readSpeed}</small>
+                    <small class="text-body-secondary">쓰기속도:${dataStorageItem.writeSpeed}</small>
+                  </div>
+                `;
+                listItem.innerHTML = listItemContent;
+                dataStorageList.appendChild(listItem);
+              });
+
+              const graphicsCardList = document.getElementById('graphics-card-list');
+              responses[4].forEach(graphicsCardItem => {
+                const listItem = document.createElement('a');
+                listItem.className = 'list-group-item py-3 lh-sm';
+                const listItemContent = `
+                  <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">${graphicsCardItem.name}</strong>
+                    <div class="button-container" style="display: flex; gap: 10px;">
+                      <form method="get" action="/CusCom/adminPage/editGraphicsCard">
+                        <input type="hidden" name="GraphicsCard" value="${graphicsCardItem.name}">
+                        <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                      </form>
+                      <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                    </div>
+                  </div>
+                  <div>
+                    <small class="text-body-secondary">제조사:${graphicsCardItem.manufacturer}</small>
+                    <small class="text-body-secondary">GPU:${graphicsCardItem.gpuType}</small>
+                    <small class="text-body-secondary">길이:${graphicsCardItem.length}</small>
+                    <small class="text-body-secondary">기본전력:${graphicsCardItem.basicPower}</small>
+                    <small class="text-body-secondary">최대전력:${graphicsCardItem.writeSpeed}</small>
+                  </div>
+                `;
+                listItem.innerHTML = listItemContent;
+                graphicsCardList.appendChild(listItem);
+              });
+
+              const memoryList = document.getElementById('memory-list');
+              responses[5].forEach(memoryItem => {
+                const listItem = document.createElement('a');
+                listItem.className = 'list-group-item py-3 lh-sm';
+                const listItemContent = `
+                  <div class="d-flex w-100 align-items-center justify-content-between">
+                      <strong class="mb-1">${memoryItem.name}</strong>
+                      <div class="button-container" style="display: flex; gap: 10px;">
+                        <form method="get" action="/CusCom/adminPage/editMemory">
+                          <input type="hidden" name="Memory" value="${memoryItem.name}">
+                          <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                        </form>
+                        <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                      </div>
+                    </div>
+                    <div>
+                      <small class="text-body-secondary">제조사:${memoryItem.manufacturer}</small>
+                      <small class="text-body-secondary">타입:${memoryItem.type}</small>
+                      <small class="text-body-secondary">용량:${memoryItem.capacity}</small>
+                      <small class="text-body-secondary">높이:${memoryItem.height}</small>
+                    </div>
+                `;
+                listItem.innerHTML = listItemContent;
+                memoryList.appendChild(listItem);
+              });
+
+              const motherBoardList = document.getElementById('mother-board-list');
+              responses[6].forEach(motherBoardItem => {
+                const listItem = document.createElement('a');
+                listItem.className = 'list-group-item py-3 lh-sm';
+                const listItemContent = `
+                  <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">${motherBoardItem.name}</strong>
+                    <div class="button-container" style="display: flex; gap: 10px;">
+                      <form method="get" action="/CusCom/adminPage/editMotherBoard">
+                        <input type="hidden" name="MotherBoard" value="${motherBoardItem.name}">
+                        <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                      </form>
+                      <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                    </div>
+                  </div>
+                  <div>
+                    <small class="text-body-secondary">제조사:${motherBoardItem.manufacturer}</small>
+                    <small class="text-body-secondary">구분:${motherBoardItem.cpuType}</small>
+                    <small class="text-body-secondary">소켓:${motherBoardItem.socket}</small>
+                    <small class="text-body-secondary">메모리타입:${motherBoardItem.memoryType}</small>
+                    <small class="text-body-secondary">메모리슬롯:${motherBoardItem.memorySlot}</small>
+                  </div>
+                `;
+                listItem.innerHTML = listItemContent;
+                motherBoardList.appendChild(listItem);
+              });
+
+              const powerSupplyList = document.getElementById('power-supply-list');
+              responses[7].forEach(powerSupplyItem => {
+                const listItem = document.createElement('a');
+                listItem.className = 'list-group-item py-3 lh-sm';
+                const listItemContent = `
+                  <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">${powerSupplyItem.name}</strong>
+                    <div class="button-container" style="display: flex; gap: 10px;">
+                      <form method="get" action="/CusCom/adminPage/editPowerSupply">
+                        <input type="hidden" name="PowerSupply" value="${powerSupplyItem.name}">
+                        <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
+                      </form>
+                      <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
+                    </div>
+                  </div>
+                  <div>
+                    <small class="text-body-secondary">제조사:${powerSupplyItem.manufacturer}</small>
+                    <small class="text-body-secondary">모듈러:${powerSupplyItem.modular}</small>
+                    <small class="text-body-secondary">크기:${powerSupplyItem.length}</small>
+                    <small class="text-body-secondary">전력:${powerSupplyItem.power}</small>
+                    <small class="text-body-secondary">효율:${powerSupplyItem.efficiency}</small>
+                  </div>
+                `;
+                listItem.innerHTML = listItemContent;
+                powerSupplyList.appendChild(listItem);
+              });
+            })
+            .catch(error => console.error(error));
+        }
+
+        window.onload = fetchData;
+
         document.addEventListener("DOMContentLoaded", function(){
           document.querySelectorAll(".delete-btn")
             .forEach(button => {

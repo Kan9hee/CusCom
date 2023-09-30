@@ -45,49 +45,49 @@
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">케이스</h6>
-                      <small class="text-body-secondary" value="${Estimate.case}">부품명</small>
+                      <small class="text-body-secondary" id="case">부품명</small>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">CPU 쿨러</h6>
-                      <small class="text-body-secondary" value="${Estimate.cpuCooler}">부품명</small>
+                      <small class="text-body-secondary" id="cpuCooler">부품명</small>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">CPU</h6>
-                      <small class="text-body-secondary" value="${Estimate.cpu}">부품명</small>
+                      <small class="text-body-secondary" id="cpu">부품명</small>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">저장장치</h6>
-                      <small class="text-body-secondary" value="${Estimate.dataStorage}">부품명</small>
+                      <small class="text-body-secondary" id="dataStorage">부품명</small>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">그래픽카드</h6>
-                      <small class="text-body-secondary" value="${Estimate.graphicsCard}">부품명</small>
+                      <small class="text-body-secondary" id="graphicsCard">부품명</small>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">메모리</h6>
-                      <small class="text-body-secondary" value="${Estimate.memory}">부품명</small>
+                      <small class="text-body-secondary" id="memory">부품명</small>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">메인보드</h6>
-                      <small class="text-body-secondary" value="${Estimate.motherBoard}">부품명</small>
+                      <small class="text-body-secondary" id="motherBoard">부품명</small>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
                       <h6 class="my-0">파워서플라이</h6>
-                      <small class="text-body-secondary" value="${Estimate.powerSupply}">부품명</small>
+                      <small class="text-body-secondary" id="powerSupply">부품명</small>
                     </div>
                   </li>
                 </ul>
@@ -117,6 +117,26 @@
   </footer>
   <script type="text/javascript">
 
+    const eid = urlParams.get('estimateID');
+
+    function initialSetup(){
+      fetch('/CusCom/API/searchCase?id=${eid}')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('cpu').value = data.cpu;
+          document.getElementById('motherBoard').value = data.motherBoard;
+          document.getElementById('memory').value = data.memory;
+          document.getElementById('dataStorage').value = data.dataStorage;
+          document.getElementById('graphicsCard').value = data.graphicsCard;
+          document.getElementById('cpuCooler').value = data.cpuCooler;
+          document.getElementById('powerSupply').value = data.powerSupply;
+          document.getElementById('desktopCase').value = data.desktopCase;
+          firstCreate = (data.name === "");
+        })
+    }
+
+    window.onload = initialSetup;
+
         document.getElementById('submitPost')
             .addEventListener('click',function(event){
 
@@ -125,7 +145,7 @@
 
                 const postData={
                     _id:"",
-                    estimateID: "[[${Estimate._id}]]",
+                    estimateID: eid,
                     title: document.getElementById('title').value,
                     content: document.getElementById('content').value,
                     tags: selectedTags,
@@ -133,7 +153,7 @@
                     likeCount: 0
                 };
 
-                fetch("/CusCom/uploadPost", {
+                fetch("/CusCom/API/uploadPost", {
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json"

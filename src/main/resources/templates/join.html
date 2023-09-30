@@ -48,12 +48,12 @@
                     userRole: "USER"
                 };
 
-                fetch("/CusCom/join", {
+                fetch("/CusCom/API/join", {
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json"
                     },
-                    body: JSON.stringify(joinData)
+                    body: joinData
                 })
                 .then(response => console.log(response))
                 .catch(error => {

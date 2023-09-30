@@ -54,7 +54,7 @@
             .catch(error => console.error(error));
         }
 
-        window.onload = fetchData;
+        window.addEventListener('load', function(){ fetchData(); });
 
         function getEstimateID(button){
           const parentElement = button.closest("a");

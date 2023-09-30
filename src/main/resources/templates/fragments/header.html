@@ -53,7 +53,7 @@
             }
         }
 
-        window.onload = async function() {
+        window.addEventListener('load', async function() {
             var loginStatus = document.getElementById("loginCheck");
             var navbar = document.getElementById("navbar");
 
@@ -62,7 +62,7 @@
             } else {
                 loginStatus.innerHTML = '<a class="nav-link" href="/CusCom/loginPage">로그인</a>';
             }
-        };
+        });
     </script>
 </body>
 </html>

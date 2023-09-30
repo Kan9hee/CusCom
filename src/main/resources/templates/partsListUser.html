@@ -199,7 +199,9 @@
 </footer>
 <script type="text/javascript">
 
-    var data = {
+    const queryParams = new URLSearchParams(window.location.search);
+    const dataId = queryParams.get("id");
+    var estimate = {
         userName:"",
         cpu:"",
         motherBoard:"",
@@ -209,6 +211,31 @@
         cpuCooler:"",
         powerSupply:"",
         desktopCase:""
+    }
+
+    function fetchEstimate(){
+        fetch(`/CusCom/API/getUserEstimate?id=${dataId}`)
+        .then(response => response.json())
+        .then(data => {
+            estimate.userName=data.userName;
+            estimate.cpu=data.cpu;
+            estimate.motherBoard=data.motherBoard;
+            estimate.memory=data.memory;
+            estimate.dataStorage=data.dataStorage;
+            estimate.graphicsCard=data.graphicsCard;
+            estimate.cpuCooler=data.cpuCooler;
+            estimate.powerSupply=data.powerSupply;
+            estimate.desktopCase=data.desktopCase;
+            updateH6Text("cpuH6",estimate.cpu);
+            updateH6Text("motherBoardH6",estimate.motherBoard);
+            updateH6Text("memoryH6",estimate.memory);
+            updateH6Text("dataStorageH6",estimate.dataStorage);
+            updateH6Text("graphicsCardH6",estimate.graphicsCard);
+            updateH6Text("cpuCoolerH6",estimate.cpuCooler);
+            updateH6Text("powerSupplyH6",estimate.powerSupply);
+            updateH6Text("caseH6",estimate.desktopCase);
+        })
+        .catch(error => console.error(error));
     }
 
     function fetchData() {
@@ -420,7 +447,12 @@
             .catch(error => console.error(error));
         }
 
-    window.onload = fetchData;
+    window.addEventListener('load', function(){
+        fetchData();
+        if(dataId !== null){
+            fetchEstimate();
+        }
+    });
 
     function updateH6Text(id, text) {
         const h6Element = document.getElementById(id);
@@ -436,35 +468,35 @@
         console.log("상품명: "+name+"부품유형"+datatype);
         switch(datatype){
             case 'cpu':
-                data.cpu=name;
+                estimate.cpu=name;
                 updateH6Text("cpuH6",name);
                 break;
             case 'motherBoard':
-                data.motherBoard=name;
+                estimate.motherBoard=name;
                 updateH6Text("motherBoardH6",name);
                 break;
             case 'memory':
-                data.memory=name;
+                estimate.memory=name;
                 updateH6Text("memoryH6",name);
                 break;
             case 'dataStorage':
-                data.dataStorage=name;
+                estimate.dataStorage=name;
                 updateH6Text("dataStorageH6",name);
                 break;
             case 'graphicsCard':
-                data.graphicsCard=name;
+                estimate.graphicsCard=name;
                 updateH6Text("graphicsCardH6",name);
                 break;
             case 'cpuCooler':
-                data.cpuCooler=name;
+                estimate.cpuCooler=name;
                 updateH6Text("cpuCoolerH6",name);
                 break;
             case 'powerSupply':
-                data.powerSupply=name;
+                estimate.powerSupply=name;
                 updateH6Text("powerSupplyH6",name);
                 break;
             case 'case':
-                data.desktopCase=name;
+                estimate.desktopCase=name;
                 updateH6Text("caseH6",name);
                 break;
             default:
@@ -476,7 +508,7 @@
     document.getElementById('submitEstimate')
             .addEventListener('click',function(event){
                 const formData = new FormData();
-                formData.append('estimate', JSON.stringify(data));
+                formData.append('estimate', JSON.stringify(estimate));
 
                 fetch("/CusCom/API/createEstimate",{
                     method: "POST",

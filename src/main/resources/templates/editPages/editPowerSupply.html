@@ -81,18 +81,20 @@
   </div>
   <script type="text/javascript">
 
+    const queryParams = new URLSearchParams(window.location.search);
+    const queryData = queryParams.get("PowerSupply");
     let firstCreate = false;
 
     function initialSetup(){
-      fetch('/CusCom/API/searchPowerSupply')
+      fetch(`/CusCom/API/searchPowerSupply${queryData !== null ? `?PowerSupply=${queryData}` : ''}`)
         .then(response => response.json())
         .then(data => {
           document.getElementById('name').value = data.name;
           document.getElementById('manufacturer').value = data.manufacturer;
-          document.getElementById('power').value = data.caseType;
-          document.getElementById('efficiency').value = data.motherBoardFormFactor;
-          document.getElementById('modular').value = data.maxCoolingFan;
-          document.getElementById('length').value = data.builtInCoolingFan;
+          document.getElementById('power').value = data.power;
+          document.getElementById('efficiency').value = data.efficiency;
+          document.getElementById('modular').value = data.modular;
+          document.getElementById('length').value = data.length;
           firstCreate = (data.name === "");
         })
     }

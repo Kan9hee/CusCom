@@ -88,19 +88,21 @@
   </div>
   <script type="text/javascript">
 
+    const queryParams = new URLSearchParams(window.location.search);
+    const queryData = queryParams.get("DataStorage");
     let firstCreate = false;
 
     function initialSetup(){
-      fetch('/CusCom/API/searchDataStorage')
+      fetch(`/CusCom/API/searchDataStorage${queryData !== null ? `?DataStorage=${queryData}` : ''}`)
         .then(response => response.json())
         .then(data => {
           document.getElementById('name').value = data.name;
           document.getElementById('manufacturer').value = data.manufacturer;
-          document.getElementById('storageInterface').value = data.socket;
-          document.getElementById('formFactor').value = data.memoryType;
-          document.getElementById('capacity').value = data.core;
-          document.getElementById('readSpeed').value = data.thread;
-          document.getElementById('writeSpeed').value = data.isBuiltInGraphics;
+          document.getElementById('storageInterface').value = data.storageInterface;
+          document.getElementById('formFactor').value = data.formFactor;
+          document.getElementById('capacity').value = data.capacity;
+          document.getElementById('readSpeed').value = data.readSpeed;
+          document.getElementById('writeSpeed').value = data.writeSpeed;
           firstCreate = (data.name === "");
         })
     }

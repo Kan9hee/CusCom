@@ -70,17 +70,19 @@
   </div>
   <script type="text/javascript">
 
+    const queryParams = new URLSearchParams(window.location.search);
+    const queryData = queryParams.get("Memory");
     let firstCreate = false;
 
     function initialSetup(){
-      fetch('/CusCom/API/searchMemory')
+      fetch(`/CusCom/API/searchMemory${queryData !== null ? `?Memory=${queryData}` : ''}`)
         .then(response => response.json())
         .then(data => {
           document.getElementById('name').value = data.name;
           document.getElementById('manufacturer').value = data.manufacturer;
-          document.getElementById('type').value = data.socket;
-          document.getElementById('capacity').value = data.memoryType;
-          document.getElementById('height').value = data.core;
+          document.getElementById('type').value = data.type;
+          document.getElementById('capacity').value = data.capacity;
+          document.getElementById('height').value = data.height;
           firstCreate = (data.name === "");
         })
     }

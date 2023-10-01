@@ -108,16 +108,19 @@
   </div>
   <script type="text/javascript">
 
+    const queryParams = new URLSearchParams(window.location.search);
+    const queryData = queryParams.get("Case");
     let firstCreate = false;
+    let beforeName = null;
 
     function initialSetup(){
-      fetch('/CusCom/API/searchCase')
+      fetch(`/CusCom/API/searchCase${queryData !== null ? `?Case=${queryData}` : ''}`)
         .then(response => response.json())
         .then(data => {
           document.getElementById('name').value = data.name;
           document.getElementById('manufacturer').value = data.manufacturer;
           document.getElementById('caseType').value = data.caseType;
-          document.getElementById('motherBoardFormFactor').value = data.motherBoardFormFactor;
+          document.getElementById('motherBoardFormFactor').value = data.motherBoardFormFactor.name;
           document.getElementById('maxCoolingFan').value = data.maxCoolingFan;
           document.getElementById('builtInCoolingFan').value = data.builtInCoolingFan;
           document.getElementById('height').value = data.height;
@@ -127,7 +130,8 @@
           document.getElementById('cpuCoolerHeight').value = data.cpuCoolerHeight;
           document.getElementById('graphicsCardLength').value = data.graphicsCardLength;
           firstCreate = (data.name === "");
-        })
+          beforeName = data.name;
+        });
     }
 
     window.onload = initialSetup;
@@ -165,6 +169,7 @@
                 });
               }
               else{
+                formData.append('BeforeName', beforeName);
                 fetch("/CusCom/adminAPI/updateParts", {
                     method: "POST",
                     body: formData

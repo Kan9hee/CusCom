@@ -83,20 +83,22 @@
   </div>
   <script type="text/javascript">
 
+    const queryParams = new URLSearchParams(window.location.search);
+    const queryData = queryParams.get("GraphicsCard");
     let firstCreate = false;
 
     function initialSetup(){
-      fetch('/CusCom/API/searchGraphicsCard')
+      fetch(`/CusCom/API/searchGraphicsCard${queryData !== null ? `?GraphicsCard=${queryData}` : ''}`)
         .then(response => response.json())
         .then(data => {
           document.getElementById('name').value = data.name;
           document.getElementById('manufacturer').value = data.manufacturer;
-          document.getElementById('chipsetManufacturer').value = data.socket;
-          document.getElementById('gpuType').value = data.memoryType;
-          document.getElementById('length').value = data.core;
-          document.getElementById('basicPower').value = data.thread;
-          document.getElementById('maxPower').value = data.isBuiltInGraphics;
-          document.getElementById('phase').value = data.isBuiltInGraphics;
+          document.getElementById('chipsetManufacturer').value = data.chipsetManufacturer;
+          document.getElementById('gpuType').value = data.gpuType;
+          document.getElementById('length').value = data.length;
+          document.getElementById('basicPower').value = data.basicPower;
+          document.getElementById('maxPower').value = data.maxPower;
+          document.getElementById('phase').value = data.phase;
           firstCreate = (data.name === "");
         })
     }

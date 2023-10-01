@@ -108,22 +108,24 @@
   </div>
   <script type="text/javascript">
 
+    const queryParams = new URLSearchParams(window.location.search);
+    const queryData = queryParams.get("MotherBoard");
     let firstCreate = false;
 
     function initialSetup(){
-      fetch('/CusCom/API/searchMotherBoard')
+      fetch(`/CusCom/API/searchMotherBoard${queryData !== null ? `?MotherBoard=${queryData}` : ''}`)
         .then(response => response.json())
         .then(data => {
           document.getElementById('name').value = data.name;
           document.getElementById('manufacturer').value = data.manufacturer;
-          document.getElementById('cpuType').value = data.caseType;
-          document.getElementById('socket').value = data.motherBoardFormFactor;
-          document.getElementById('chipset').value = data.maxCoolingFan;
-          document.getElementById('motherBoardFormFactor').value = data.builtInCoolingFan;
-          document.getElementById('memoryType').value = data.height;
-          document.getElementById('memorySlot').value = data.length;
-          document.getElementById('ssdM2Slot').value = data.width;
-          document.getElementById('ssdSATASlot').value = data.powerLength;
+          document.getElementById('cpuType').value = data.cpuType;
+          document.getElementById('socket').value = data.socket;
+          document.getElementById('chipset').value = data.chipset;
+          document.getElementById('motherBoardFormFactor').value = data.motherBoardFormFactor.name;
+          document.getElementById('memoryType').value = data.memoryType;
+          document.getElementById('memorySlot').value = data.memorySlot;
+          document.getElementById('ssdM2Slot').value = data.ssdM2Slot;
+          document.getElementById('ssdSATASlot').value = data.ssdSATASlot;
           firstCreate = (data.name === "");
         })
     }

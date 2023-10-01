@@ -93,20 +93,22 @@
   </div>
   <script type="text/javascript">
 
+    const queryParams = new URLSearchParams(window.location.search);
+    const queryData = queryParams.get("CPUCooler");
     let firstCreate = false;
 
     function initialSetup(){
-      fetch('/CusCom/API/searchCPUCooler')
+      fetch(`/CusCom/API/searchCPUCooler${queryData !== null ? `?CPUCooler=${queryData}` : ''}`)
         .then(response => response.json())
         .then(data => {
           document.getElementById('name').value = data.name;
           document.getElementById('manufacturer').value = data.manufacturer;
-          document.getElementById('coolingType').value = data.socket;
-          document.getElementById('coolerForm').value = data.memoryType;
-          document.getElementById('height').value = data.core;
-          document.getElementById('length').value = data.thread;
-          document.getElementById('width').value = data.isBuiltInGraphics;
-          document.getElementById('TDP').value = data.TDP;
+          document.getElementById('coolingType').value = data.coolingType;
+          document.getElementById('coolerForm').value = data.coolerForm;
+          document.getElementById('height').value = data.height;
+          document.getElementById('length').value = data.length;
+          document.getElementById('width').value = data.width;
+          document.getElementById('TDP').value = data.tdp;
           firstCreate = (data.name === "");
         })
     }

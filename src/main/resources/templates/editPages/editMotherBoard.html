@@ -111,6 +111,7 @@
     const queryParams = new URLSearchParams(window.location.search);
     const queryData = queryParams.get("MotherBoard");
     let firstCreate = false;
+    let beforeID = null;
 
     function initialSetup(){
       fetch(`/CusCom/API/searchMotherBoard${queryData !== null ? `?MotherBoard=${queryData}` : ''}`)
@@ -127,6 +128,7 @@
           document.getElementById('ssdM2Slot').value = data.ssdM2Slot;
           document.getElementById('ssdSATASlot').value = data.ssdSATASlot;
           firstCreate = (data.name === "");
+          beforeID = data.id;
         })
     }
 
@@ -163,6 +165,7 @@
                 });
               }
               else{
+                formData.append('BeforeID', beforeID);
                 fetch("/CusCom/adminAPI/updateParts", {
                     method: "POST",
                     body: formData

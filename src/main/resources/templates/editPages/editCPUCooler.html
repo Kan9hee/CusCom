@@ -96,6 +96,7 @@
     const queryParams = new URLSearchParams(window.location.search);
     const queryData = queryParams.get("CPUCooler");
     let firstCreate = false;
+    let beforeID = null;
 
     function initialSetup(){
       fetch(`/CusCom/API/searchCPUCooler${queryData !== null ? `?CPUCooler=${queryData}` : ''}`)
@@ -110,6 +111,7 @@
           document.getElementById('width').value = data.width;
           document.getElementById('TDP').value = data.tdp;
           firstCreate = (data.name === "");
+          beforeID = data.id;
         })
     }
 
@@ -144,6 +146,7 @@
                 });
               }
               else{
+                formData.append('BeforeID', beforeID);
                 fetch("/CusCom/adminAPI/updateParts", {
                     method: "POST",
                     body: formData

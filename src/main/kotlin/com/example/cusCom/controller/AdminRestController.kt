@@ -39,18 +39,19 @@ class AdminRestController(private val desktopPartsService: DesktopPartsService,
     @PostMapping("/updateParts")
     fun updateParts(@RequestParam("Type") type:String,
                     @RequestParam("Data") requestJSON:String,
-                    @RequestParam("Image") image: MultipartFile
+                    @RequestParam("Image") image:MultipartFile,
+                    @RequestParam("BeforeID") BeforeID:Long
     ): ResponseEntity<String> {
         val editedJson = editJson(requestJSON,type,image)
         when(type){
-            "Case"->desktopPartsService.updateCase(Gson().fromJson(editedJson, Case::class.java))
-            "CPU"->desktopPartsService.updateCPU(Gson().fromJson(editedJson, CPU::class.java))
-            "CPUCooler"->desktopPartsService.updateCPUCooler(Gson().fromJson(editedJson, CPUCooler::class.java))
-            "DataStorage"->desktopPartsService.updateDataStorage(Gson().fromJson(editedJson, DataStorage::class.java))
-            "GraphicsCard"->desktopPartsService.updateGraphicsCard(Gson().fromJson(editedJson, GraphicsCard::class.java))
-            "Memory"->desktopPartsService.updateMemory(Gson().fromJson(editedJson, Memory::class.java))
-            "MotherBoard"->desktopPartsService.updateMotherBoard(Gson().fromJson(editedJson, MotherBoard::class.java))
-            "PowerSupply"->desktopPartsService.updatePowerSupply(Gson().fromJson(editedJson, PowerSupply::class.java))
+            "Case"->desktopPartsService.updateCase(Gson().fromJson(editedJson, Case::class.java),BeforeID)
+            "CPU"->desktopPartsService.updateCPU(Gson().fromJson(editedJson, CPU::class.java),BeforeID)
+            "CPUCooler"->desktopPartsService.updateCPUCooler(Gson().fromJson(editedJson, CPUCooler::class.java),BeforeID)
+            "DataStorage"->desktopPartsService.updateDataStorage(Gson().fromJson(editedJson, DataStorage::class.java),BeforeID)
+            "GraphicsCard"->desktopPartsService.updateGraphicsCard(Gson().fromJson(editedJson, GraphicsCard::class.java),BeforeID)
+            "Memory"->desktopPartsService.updateMemory(Gson().fromJson(editedJson, Memory::class.java),BeforeID)
+            "MotherBoard"->desktopPartsService.updateMotherBoard(Gson().fromJson(editedJson, MotherBoard::class.java),BeforeID)
+            "PowerSupply"->desktopPartsService.updatePowerSupply(Gson().fromJson(editedJson, PowerSupply::class.java),BeforeID)
         }
         return ResponseEntity.ok("Success")
     }
@@ -60,14 +61,14 @@ class AdminRestController(private val desktopPartsService: DesktopPartsService,
     fun deleteParts(@RequestBody requestJSON:String): ResponseEntity<String> {
         val request= ObjectMapper().readTree(java.net.URLDecoder.decode(requestJSON, "UTF-8"))
         when(request["type"].asText()){
-            "Case"->desktopPartsService.deleteCase(request["name"].asText())
-            "CPU"->desktopPartsService.deleteCPU(request["name"].asText())
-            "CPUCooler"->desktopPartsService.deleteCPUCooler(request["name"].asText())
-            "DataStorage"->desktopPartsService.deleteDataStorage(request["name"].asText())
-            "GraphicsCard"->desktopPartsService.deleteGraphicsCard(request["name"].asText())
-            "Memory"->desktopPartsService.deleteMemory(request["name"].asText())
-            "MotherBoard"->desktopPartsService.deleteMotherBoard(request["name"].asText())
-            "PowerSupply"->desktopPartsService.deletePowerSupply(request["name"].asText())
+            "Case"->desktopPartsService.deleteCase(request["targetID"].asText().toLong())
+            "CPU"->desktopPartsService.deleteCPU(request["targetID"].asText().toLong())
+            "CPUCooler"->desktopPartsService.deleteCPUCooler(request["targetID"].asText().toLong())
+            "DataStorage"->desktopPartsService.deleteDataStorage(request["targetID"].asText().toLong())
+            "GraphicsCard"->desktopPartsService.deleteGraphicsCard(request["targetID"].asText().toLong())
+            "Memory"->desktopPartsService.deleteMemory(request["targetID"].asText().toLong())
+            "MotherBoard"->desktopPartsService.deleteMotherBoard(request["targetID"].asText().toLong())
+            "PowerSupply"->desktopPartsService.deletePowerSupply(request["targetID"].asText().toLong())
         }
         return ResponseEntity.ok("Success")
     }

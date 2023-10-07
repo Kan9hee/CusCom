@@ -76,13 +76,13 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
     }
 
     fun checkDesktopEstimate(estimate: Estimate){
-        val cpuCooler=desktopPartsService.findCpuCooler(estimate.cpuCooler)
-        val case=desktopPartsService.findCase(estimate.desktopCase)
-        val graphicsCard=desktopPartsService.findGraphicsCard(estimate.graphicsCard)
-        val memory=desktopPartsService.findMemory(estimate.memory)
-        val powerSupply=desktopPartsService.findPowerSupply(estimate.powerSupply)
-        val cpu=desktopPartsService.findCpu(estimate.cpu)
-        val motherBoard=desktopPartsService.findMotherBoard(estimate.motherBoard)
+        val cpuCooler=desktopPartsService.findCpuCooler("name",estimate.cpuCooler)
+        val case=desktopPartsService.findCase("name",estimate.desktopCase)
+        val graphicsCard=desktopPartsService.findGraphicsCard("name",estimate.graphicsCard)
+        val memory=desktopPartsService.findMemory("name",estimate.memory)
+        val powerSupply=desktopPartsService.findPowerSupply("name",estimate.powerSupply)
+        val cpu=desktopPartsService.findCpu("name",estimate.cpu)
+        val motherBoard=desktopPartsService.findMotherBoard("name",estimate.motherBoard)
 
         val caseMaxFormFactor=motherBoardRepo.findById(case.motherBoardFormFactor.name).get()
 

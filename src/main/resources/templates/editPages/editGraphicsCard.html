@@ -86,6 +86,7 @@
     const queryParams = new URLSearchParams(window.location.search);
     const queryData = queryParams.get("GraphicsCard");
     let firstCreate = false;
+    let beforeID = null;
 
     function initialSetup(){
       fetch(`/CusCom/API/searchGraphicsCard${queryData !== null ? `?GraphicsCard=${queryData}` : ''}`)
@@ -100,6 +101,7 @@
           document.getElementById('maxPower').value = data.maxPower;
           document.getElementById('phase').value = data.phase;
           firstCreate = (data.name === "");
+          beforeID = data.id;
         })
     }
 
@@ -134,6 +136,7 @@
                 });
               }
               else{
+                formData.append('BeforeID', beforeID);
                 fetch("/CusCom/adminAPI/updateParts", {
                     method: "POST",
                     body: formData

@@ -94,6 +94,7 @@
     const queryParams = new URLSearchParams(window.location.search);
     const queryData = queryParams.get("CPU");
     let firstCreate = false;
+    let beforeID = null;
 
     function initialSetup(){
       fetch(`/CusCom/API/searchCPU${queryData !== null ? `?CPU=${queryData}` : ''}`)
@@ -109,6 +110,7 @@
           document.getElementById('builtInGraphicName').value = data.builtInGraphicName;
           document.getElementById('TDP').value = data.tdp;
           firstCreate = (data.name === "");
+          beforeID = data.id;
         })
     }
 
@@ -144,6 +146,7 @@
                 });
               }
               else{
+                formData.append('BeforeID', beforeID);
                 fetch("/CusCom/adminAPI/updateParts", {
                     method: "POST",
                     body: formData

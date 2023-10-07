@@ -182,7 +182,7 @@
                     <strong class="mb-1">${caseItem.name}</strong>
                     <div class="button-container" style="display: flex; gap: 10px;">
                       <form method="get" action="/CusCom/adminPage/editCase">
-                        <input type="hidden" name="CPUCooler" value="${caseItem.name}">
+                        <input type="hidden" name="Case" value="${caseItem.id}">
                         <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
                       </form>
                       <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
@@ -212,7 +212,7 @@
                     <strong class="mb-1">${cpuItem.name}</strong>
                     <div class="button-container" style="display: flex; gap: 10px;">
                       <form method="get" action="/CusCom/adminPage/editCPU">
-                        <input type="hidden" name="CPUCooler" value="${cpuItem.name}">
+                        <input type="hidden" name="CPU" value="${cpuItem.id}">
                         <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
                       </form>
                       <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
@@ -224,7 +224,7 @@
                     <small class="text-body-secondary">내장그래픽:${cpuItem.isBuiltInGraphics}</small>
                     <small class="text-body-secondary">코어:${cpuItem.core}</small>
                     <small class="text-body-secondary">스레드:${cpuItem.thread}</small>
-                    <small class="text-body-secondary">TDP:${cpuItem.TDP}</small>
+                    <small class="text-body-secondary">TDP:${cpuItem.tdp}</small>
                   </div>
                 `;
                 listItem.innerHTML = listItemContent;
@@ -240,7 +240,7 @@
                     <strong class="mb-1">${cpuCoolerItem.name}</strong>
                     <div class="button-container" style="display: flex; gap: 10px;">
                       <form method="get" action="/CusCom/adminPage/editCPUCooler">
-                        <input type="hidden" name="CPUCooler" value="${cpuCoolerItem.name}">
+                        <input type="hidden" name="CPUCooler" value="${cpuCoolerItem.id}">
                         <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
                       </form>
                       <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
@@ -252,7 +252,7 @@
                     <small class="text-body-secondary">높이:${cpuCoolerItem.height}</small>
                     <small class="text-body-secondary">길이:${cpuCoolerItem.length}</small>
                     <small class="text-body-secondary">너비:${cpuCoolerItem.width}</small>
-                    <small class="text-body-secondary">TDP:${cpuCoolerItem.TDP}</small>
+                    <small class="text-body-secondary">TDP:${cpuCoolerItem.tdp}</small>
                   </div>
                 `;
                 listItem.innerHTML = listItemContent;
@@ -268,7 +268,7 @@
                     <strong class="mb-1">${dataStorageItem.name}</strong>
                     <div class="button-container" style="display: flex; gap: 10px;">
                       <form method="get" action="/CusCom/adminPage/editDataStorage">
-                        <input type="hidden" name="DataStorage" value="${dataStorageItem.name}">
+                        <input type="hidden" name="DataStorage" value="${dataStorageItem.id}">
                         <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
                       </form>
                       <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
@@ -295,7 +295,7 @@
                     <strong class="mb-1">${graphicsCardItem.name}</strong>
                     <div class="button-container" style="display: flex; gap: 10px;">
                       <form method="get" action="/CusCom/adminPage/editGraphicsCard">
-                        <input type="hidden" name="GraphicsCard" value="${graphicsCardItem.name}">
+                        <input type="hidden" name="GraphicsCard" value="${graphicsCardItem.id}">
                         <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
                       </form>
                       <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
@@ -306,7 +306,7 @@
                     <small class="text-body-secondary">GPU:${graphicsCardItem.gpuType}</small>
                     <small class="text-body-secondary">길이:${graphicsCardItem.length}</small>
                     <small class="text-body-secondary">기본전력:${graphicsCardItem.basicPower}</small>
-                    <small class="text-body-secondary">최대전력:${graphicsCardItem.writeSpeed}</small>
+                    <small class="text-body-secondary">최대전력:${graphicsCardItem.maxPower}</small>
                   </div>
                 `;
                 listItem.innerHTML = listItemContent;
@@ -322,7 +322,7 @@
                       <strong class="mb-1">${memoryItem.name}</strong>
                       <div class="button-container" style="display: flex; gap: 10px;">
                         <form method="get" action="/CusCom/adminPage/editMemory">
-                          <input type="hidden" name="Memory" value="${memoryItem.name}">
+                          <input type="hidden" name="Memory" value="${memoryItem.id}">
                           <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
                         </form>
                         <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
@@ -348,7 +348,7 @@
                     <strong class="mb-1">${motherBoardItem.name}</strong>
                     <div class="button-container" style="display: flex; gap: 10px;">
                       <form method="get" action="/CusCom/adminPage/editMotherBoard">
-                        <input type="hidden" name="MotherBoard" value="${motherBoardItem.name}">
+                        <input type="hidden" name="MotherBoard" value="${motherBoardItem.id}">
                         <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
                       </form>
                       <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
@@ -375,7 +375,7 @@
                     <strong class="mb-1">${powerSupplyItem.name}</strong>
                     <div class="button-container" style="display: flex; gap: 10px;">
                       <form method="get" action="/CusCom/adminPage/editPowerSupply">
-                        <input type="hidden" name="PowerSupply" value="${powerSupplyItem.name}">
+                        <input type="hidden" name="PowerSupply" value="${powerSupplyItem.id}">
                         <button class="btn btn-primary" type="submit" style="border: none;">edit</button>
                       </form>
                       <button class="btn btn-primary" style="background-color: red; color: white; border: none;" onclick="deleteItem(this)">delete</button>
@@ -402,7 +402,7 @@
           document.querySelectorAll(".delete-btn")
             .forEach(button => {
               const deleteData = {
-                name: button.getAttribute("data-item-id"),
+                targetID: button.getAttribute("data-item-id"),
                 type: findParentTableId(button)
               };
 
@@ -413,7 +413,7 @@
                     headers: {
                       "Content-Type": "application/json"
                     },
-                    body: JSON.stringify(data)
+                    body: JSON.stringify(deleteData)
                 })
                 .then(response => console.log(response))
                 .then(document.querySelector('tr[data-id="${id}"]').remove())

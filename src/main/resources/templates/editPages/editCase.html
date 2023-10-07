@@ -111,7 +111,7 @@
     const queryParams = new URLSearchParams(window.location.search);
     const queryData = queryParams.get("Case");
     let firstCreate = false;
-    let beforeName = null;
+    let beforeID = null;
 
     function initialSetup(){
       fetch(`/CusCom/API/searchCase${queryData !== null ? `?Case=${queryData}` : ''}`)
@@ -130,7 +130,7 @@
           document.getElementById('cpuCoolerHeight').value = data.cpuCoolerHeight;
           document.getElementById('graphicsCardLength').value = data.graphicsCardLength;
           firstCreate = (data.name === "");
-          beforeName = data.name;
+          beforeID = data.id;
         });
     }
 
@@ -169,7 +169,7 @@
                 });
               }
               else{
-                formData.append('BeforeName', beforeName);
+                formData.append('BeforeID', beforeID);
                 fetch("/CusCom/adminAPI/updateParts", {
                     method: "POST",
                     body: formData

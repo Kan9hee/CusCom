@@ -73,6 +73,7 @@
     const queryParams = new URLSearchParams(window.location.search);
     const queryData = queryParams.get("Memory");
     let firstCreate = false;
+    let beforeID = null;
 
     function initialSetup(){
       fetch(`/CusCom/API/searchMemory${queryData !== null ? `?Memory=${queryData}` : ''}`)
@@ -84,6 +85,7 @@
           document.getElementById('capacity').value = data.capacity;
           document.getElementById('height').value = data.height;
           firstCreate = (data.name === "");
+          beforeID = data.id;
         })
     }
 
@@ -115,6 +117,7 @@
                 });
               }
               else{
+                formData.append('BeforeID', beforeID);
                 fetch("/CusCom/adminAPI/updateParts", {
                     method: "POST",
                     body: formData

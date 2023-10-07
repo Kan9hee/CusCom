@@ -99,43 +99,43 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
 
     @GetMapping("/searchCase")
     @ResponseBody
-    fun searchCaseApi(@RequestParam("Case", required = false) data: String?): Case {
-        return data?.let { desktopPartsService.findCase(it) } ?: Case()
+    fun searchCaseApi(@RequestParam("Case", required = false) data: Long?): Case {
+        return data?.let { desktopPartsService.findCase("id",it.toString()) } ?: Case()
     }
 
     @GetMapping("/searchCPU")
-    fun editCPUData(@RequestParam("CPU", required = false) data: String?): CPU {
-        return data?.let{desktopPartsService.findCpu(it)}?: CPU()
+    fun editCPUData(@RequestParam("CPU", required = false) data: Long?): CPU {
+        return data?.let{desktopPartsService.findCpu("id",it.toString())}?: CPU()
     }
 
     @GetMapping("/searchCPUCooler")
-    fun editCPUCoolerData(@RequestParam("CPUCooler", required = false) data: String?): CPUCooler {
-        return data?.let{desktopPartsService.findCpuCooler(it)}?: CPUCooler()
+    fun editCPUCoolerData(@RequestParam("CPUCooler", required = false) data: Long?): CPUCooler {
+        return data?.let{desktopPartsService.findCpuCooler("id",it.toString())}?: CPUCooler()
     }
 
     @GetMapping("/searchDataStorage")
-    fun editDataStorageData(@RequestParam("DataStorage", required = false) data: String?): DataStorage {
-        return data?.let{desktopPartsService.findDataStorage(it)}?: DataStorage()
+    fun editDataStorageData(@RequestParam("DataStorage", required = false) data: Long?): DataStorage {
+        return data?.let{desktopPartsService.findDataStorage("id",it.toString())}?: DataStorage()
     }
 
     @GetMapping("/searchGraphicsCard")
-    fun editGraphicsCardData(@RequestParam("GraphicsCard", required = false) data: String?): GraphicsCard {
-        return data?.let{desktopPartsService.findGraphicsCard(it)}?: GraphicsCard()
+    fun editGraphicsCardData(@RequestParam("GraphicsCard", required = false) data: Long?): GraphicsCard {
+        return data?.let{desktopPartsService.findGraphicsCard("id",it.toString())}?: GraphicsCard()
     }
 
     @GetMapping("/searchMemory")
-    fun editMemoryData(@RequestParam("Memory", required = false) data: String?): Memory {
-        return data?.let{desktopPartsService.findMemory(it)}?: Memory()
+    fun editMemoryData(@RequestParam("Memory", required = false) data: Long?): Memory {
+        return data?.let{desktopPartsService.findMemory("id",it.toString())}?: Memory()
     }
 
     @GetMapping("/searchMotherBoard")
-    fun editMotherBoardData(@RequestParam("MotherBoard", required = false) data: String?): MotherBoard {
-        return data?.let{desktopPartsService.findMotherBoard(it)}?: MotherBoard()
+    fun editMotherBoardData(@RequestParam("MotherBoard", required = false) data: Long?): MotherBoard {
+        return data?.let{desktopPartsService.findMotherBoard("id",it.toString())}?: MotherBoard()
     }
 
     @GetMapping("/searchPowerSupply")
-    fun editPowerSupplyData(@RequestParam("PowerSupply", required = false) data: String?): PowerSupply {
-        return data?.let{desktopPartsService.findPowerSupply(it)}?: PowerSupply()
+    fun editPowerSupplyData(@RequestParam("PowerSupply", required = false) data: Long?): PowerSupply {
+        return data?.let{desktopPartsService.findPowerSupply("id",it.toString())}?: PowerSupply()
     }
 
     @PostMapping("/createEstimate")

@@ -11,7 +11,7 @@ class CaseEntity(case: Case){
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
-    var id:Long?=null
+    val id:Long=0
 
     @Column(nullable = false)
     var name:String=case.name

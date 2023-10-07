@@ -2,7 +2,8 @@ package com.example.cusCom.provideContent.dto.parts
 
 import com.example.cusCom.provideContent.dto.MotherBoardFormFactor
 
-data class MotherBoard(val name:String="",
+data class MotherBoard(val id:Long?=null,
+                       val name:String="",
                        val imageUrl:String="",
                        val manufacturer:String="",
                        val cpuType:String="",

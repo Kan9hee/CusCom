@@ -1,6 +1,7 @@
 package com.example.cusCom.provideContent.dto.parts
 
-data class CPU(val name:String="",
+data class CPU(val id:Long?=null,
+               val name:String="",
                val imageUrl:String="",
                val manufacturer:String="",
                val socket:String="AM4",

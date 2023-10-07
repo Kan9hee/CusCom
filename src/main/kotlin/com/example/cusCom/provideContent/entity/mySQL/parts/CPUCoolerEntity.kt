@@ -8,6 +8,10 @@ import jakarta.persistence.*
 class CPUCoolerEntity(cpuCooler: CPUCooler){
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, unique = true)
+    var id:Long?=null
+
     @Column(nullable = false)
     var name:String=cpuCooler.name
         protected set

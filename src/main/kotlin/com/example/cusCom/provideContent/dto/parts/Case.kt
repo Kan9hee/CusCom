@@ -2,7 +2,8 @@ package com.example.cusCom.provideContent.dto.parts
 
 import com.example.cusCom.provideContent.dto.MotherBoardFormFactor
 
-data class Case(val name:String="",
+data class Case(val id:Long?=null,
+                val name:String="",
                 val manufacturer:String="",
                 val caseType:String="빅타워",
                 val motherBoardFormFactor: MotherBoardFormFactor=MotherBoardFormFactor("ATX",305,244),

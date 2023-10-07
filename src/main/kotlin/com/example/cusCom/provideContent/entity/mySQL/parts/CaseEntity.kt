@@ -9,6 +9,10 @@ import jakarta.persistence.*
 class CaseEntity(case: Case){
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, unique = true)
+    var id:Long?=null
+
     @Column(nullable = false)
     var name:String=case.name
         protected set

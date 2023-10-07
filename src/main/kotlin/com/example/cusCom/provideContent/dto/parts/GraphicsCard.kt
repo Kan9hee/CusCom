@@ -1,6 +1,7 @@
 package com.example.cusCom.provideContent.dto.parts
 
-data class GraphicsCard(val name:String="",
+data class GraphicsCard(val id:Long?=null,
+                        val name:String="",
                         val imageUrl:String="",
                         val manufacturer:String="",
                         val chipsetManufacturer:String="NVIDIA",

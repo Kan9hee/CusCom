@@ -8,6 +8,10 @@ import jakarta.persistence.*
 class PowerSupplyEntity(powerSupply: PowerSupply){
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, unique = true)
+    var id:Long?=null
+
     @Column(nullable = false)
     var name:String=powerSupply.name
         protected set

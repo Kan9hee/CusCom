@@ -8,6 +8,10 @@ import jakarta.persistence.*
 class DataStorageEntity(dataStorage: DataStorage){
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, unique = true)
+    var id:Long?=null
+
     @Column(nullable = false)
     var name:String=dataStorage.name
         protected set

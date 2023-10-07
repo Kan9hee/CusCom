@@ -9,6 +9,10 @@ import jakarta.persistence.*
 class MotherBoardEntity(motherBoard: MotherBoard){
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, unique = true)
+    var id:Long?=null
+
     @Column(nullable = false)
     var name:String=motherBoard.name
         protected set

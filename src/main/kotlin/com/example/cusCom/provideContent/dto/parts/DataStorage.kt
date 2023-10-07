@@ -1,6 +1,7 @@
 package com.example.cusCom.provideContent.dto.parts
 
-data class DataStorage(val name:String="",
+data class DataStorage(val id:Long?=null,
+                       val name:String="",
                        val imageUrl:String="",
                        val manufacturer:String="",
                        val storageInterface:String="PCIe 4.0(x4)",

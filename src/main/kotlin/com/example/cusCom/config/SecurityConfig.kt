@@ -12,13 +12,12 @@ class SecurityConfig {
 
     @Bean
     fun filterChain(http:HttpSecurity):SecurityFilterChain{
-        http.csrf{
-            it.disable().authorizeHttpRequests{ authorize -> authorize
-                .requestMatchers("/CusCom/joinPage","/CusCom/join","/CusCom/checkLogin").permitAll()
+        http.csrf{ it.disable() }
+            .authorizeHttpRequests{ authorize -> authorize
+                .requestMatchers("/CusCom/joinPage","/CusCom/join","/CusCom/loginPage").anonymous()
                 .requestMatchers("/CusCom/adminPage/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             }
-        }
         .formLogin { login->login
             .loginPage("/CusCom/loginPage")
             .loginProcessingUrl("/CusCom/loginPage")

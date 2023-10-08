@@ -16,7 +16,6 @@ import com.google.gson.JsonObject
 import org.bson.types.ObjectId
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -35,7 +34,7 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     @GetMapping("/checkLogin")
     fun checkLogin(): ResponseEntity<String> {
         val authentication=SecurityContextHolder.getContext().authentication
-        return ResponseEntity.ok("{\"loggedIn\": ${authentication != null && authentication.isAuthenticated()}}");
+        return ResponseEntity.ok("{\"loggedIn\": ${authentication != null && authentication.isAuthenticated}}")
     }
 
     @GetMapping("/getUserEstimateList")
@@ -52,49 +51,49 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     @GetMapping("/caseList")
     @ResponseBody
     fun caseListApi(): List<Case> {
-        return desktopPartsService.getCaseList();
+        return desktopPartsService.getCaseList()
     }
 
     @GetMapping("/cpuCoolerList")
     @ResponseBody
     fun cpuCoolerListApi(): List<CPUCooler> {
-        return desktopPartsService.getCpuCoolerList();
+        return desktopPartsService.getCpuCoolerList()
     }
 
     @GetMapping("/cpuList")
     @ResponseBody
     fun cpuListApi(): List<CPU> {
-        return desktopPartsService.getCPUList();
+        return desktopPartsService.getCPUList()
     }
 
     @GetMapping("/dataStorageList")
     @ResponseBody
     fun dataStorageListApi(): List<DataStorage> {
-        return desktopPartsService.getDataStorageList();
+        return desktopPartsService.getDataStorageList()
     }
 
     @GetMapping("/graphicsCardList")
     @ResponseBody
     fun graphicsCardListApi(): List<GraphicsCard> {
-        return desktopPartsService.getGraphicsCardList();
+        return desktopPartsService.getGraphicsCardList()
     }
 
     @GetMapping("/memoryList")
     @ResponseBody
     fun memoryListApi(): List<Memory> {
-        return desktopPartsService.getMemoryList();
+        return desktopPartsService.getMemoryList()
     }
 
     @GetMapping("/motherBoardList")
     @ResponseBody
     fun motherBoardListApi(): List<MotherBoard> {
-        return desktopPartsService.getMotherBoardList();
+        return desktopPartsService.getMotherBoardList()
     }
 
     @GetMapping("/powerSupplyList")
     @ResponseBody
     fun powerSupplyListApi(): List<PowerSupply> {
-        return desktopPartsService.getPowerSupplyList();
+        return desktopPartsService.getPowerSupplyList()
     }
 
     @GetMapping("/searchCase")

@@ -1,15 +1,18 @@
 package com.example.cusCom.controller
 
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
 @RequestMapping("/CusCom")
-class ViewController() {
+class ViewController {
 
     @GetMapping("/loginPage")
     fun loginPage():String{
+        if(SecurityContextHolder.getContext().authentication.name!="anonymousUser")
+            return "redirect:mainPage"
         return "login"
     }
 

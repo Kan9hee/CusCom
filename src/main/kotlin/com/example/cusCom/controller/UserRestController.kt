@@ -1,6 +1,5 @@
 package com.example.cusCom.controller
 
-import com.example.cusCom.exception.EstimateErrorCode
 import com.example.cusCom.exception.EstimateException
 import com.example.cusCom.provideContent.dto.User
 import com.example.cusCom.provideContent.service.UserService
@@ -140,7 +139,6 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     @PostMapping("/createEstimate")
     fun postDataTest(@RequestParam("estimate") estimateJSON:String): ResponseEntity<String> {
         val estimateResult=Gson().fromJson(estimateJSON, Estimate::class.java)
-        validateEstimate(estimateResult)
         estimateService.saveUserEstimate(estimateResult)
         return ResponseEntity.ok("Success")
     }
@@ -162,24 +160,12 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     }
 
     @GetMapping("/loadPostList")
-    fun testSharePlacePage(@RequestParam(defaultValue = "1") page: Int,
-                           @RequestParam(defaultValue = "9") pageSize: Int,
-                           @RequestParam(required = false) searchJson: String?):HashMap<String,Any>{
+    fun testSharePlacePage(@RequestParam(required = false) searchJson: String?): List<SharePlacePost> {
         var postList=searchJson?.let{
             val temp= Gson().fromJson(searchJson,JsonObject::class.java)
             sharePlaceService.searchPost(temp.get("option").asString,temp.get("value").asString)
         }?:sharePlaceService.getPostList()
-
-        val listSize = postList.size
-        val listStartIndex = (page - 1) * pageSize
-        val listEndIndex = kotlin.math.min(listStartIndex + pageSize, listSize)
-        postList = postList.subList(listStartIndex,listEndIndex)
-
-        val map=HashMap<String,Any>()
-        map["postList"]=postList
-        map["totalPages"]=kotlin.math.ceil(postList.size.toDouble()/pageSize).toInt()
-        map["currentPage"]=page
-        return map
+        return postList
     }
 
     @PostMapping("/uploadComment")
@@ -198,21 +184,5 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     @PostMapping("/decreaseLike")
     fun decreaseLike(@RequestParam("dislikeAction") action:String): ResponseEntity<String> {
         return ResponseEntity.ok("Success")
-    }
-
-    private fun validateEstimate(estimate: Estimate) {
-        val check = runCatching{
-            if(estimate.run { cpu.isEmpty() ||
-                        desktopCase.isEmpty() ||
-                        dataStorage.isEmpty() ||
-                        memory.isEmpty() ||
-                        graphicsCard.isEmpty() ||
-                        cpuCooler.isEmpty() ||
-                        motherBoard.isEmpty() ||
-                        powerSupply.isEmpty() })
-                throw EstimateException(EstimateErrorCode.UnfinishedEstimate)
-            estimateService.checkDesktopEstimate(estimate)
-        }
-        check.onFailure { ex -> throw ex }
     }
 }

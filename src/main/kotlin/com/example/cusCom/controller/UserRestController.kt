@@ -138,9 +138,13 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
 
     @PostMapping("/createEstimate")
     fun postDataTest(@RequestParam("estimate") estimateJSON:String): ResponseEntity<String> {
-        val estimateResult=Gson().fromJson(estimateJSON, Estimate::class.java)
-        estimateService.saveUserEstimate(estimateResult)
-        return ResponseEntity.ok("Success")
+        try{
+            val estimateResult=Gson().fromJson(estimateJSON, Estimate::class.java)
+            estimateService.checkDesktopEstimate(estimateResult)
+            estimateService.saveUserEstimate(estimateResult)
+            return ResponseEntity.ok("Success")
+        }
+        catch (e: EstimateException) { throw e }
     }
 
     @PostMapping("/uploadPost")

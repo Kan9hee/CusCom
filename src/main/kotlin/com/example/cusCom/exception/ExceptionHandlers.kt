@@ -13,10 +13,16 @@ class ExceptionHandlers {
     private val logger:Logger=LoggerFactory.getLogger(EstimateException::class.java)
 
     @ExceptionHandler(EstimateException::class)
-    fun estimateBadRequest(e: EstimateException): ResponseEntity<String> {
+    fun estimateBadRequest(e: EstimateException): ResponseEntity<Any> {
         val estimateInfo=e.getErrorCode()
-        logger.error(estimateInfo.getMessage(),estimateInfo.getCode())
-        return ResponseEntity(estimateInfo.getMessage(),HttpStatus.valueOf(estimateInfo.getStatus()))
-    }
+        val responseMap = mapOf(
+            "message" to estimateInfo.getMessage(),
+            "status" to estimateInfo.getStatus()
+        )
+        logger.error(estimateInfo.getCode())
 
+        return ResponseEntity
+            .status(estimateInfo.getStatus())
+            .body(responseMap)
+    }
 }

@@ -45,6 +45,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-jdbc")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("com.google.code.gson:gson:2.10.1")
+	implementation("org.imgscalr:imgscalr-lib:4.2")
 }
 
 dependencyManagement {

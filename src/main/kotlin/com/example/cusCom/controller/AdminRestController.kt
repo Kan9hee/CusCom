@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import org.springframework.http.ResponseEntity
-import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
@@ -75,7 +74,7 @@ class AdminRestController(private val desktopPartsService: DesktopPartsService,
 
     private fun editJson(json:String,type:String,image:MultipartFile): String {
         var jsonObject = Gson().fromJson(json, JsonObject::class.java)
-        jsonObject.addProperty("imageUrl",blobService.uploadImage(image))
+        jsonObject.addProperty("imageUrl",blobService.uploadImage(image,500,500))
         if(type == "Case" || type == "MotherBoard")
             deserializeFormFactor(jsonObject)
         return Gson().toJson(jsonObject)

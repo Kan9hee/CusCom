@@ -1,10 +1,13 @@
 package com.example.cusCom.exception
 
-enum class EstimateErrorCode(private val status:Int,
-                             private val code:String,
-                             private val message:String){
+enum class CusComErrorCode(private val status:Int,
+                           private val code:String,
+                           private val message:String){
 
-    UnfinishedEstimate(400,"E000","미완성된 견적사항"),
+    UnfinishedParts(400,"P000","미완성된 부품 데이터"),
+    NotImageData(400,"P001","이미지 데이터가 아님"),
+
+    UnfinishedCusCom(400,"E000","미완성된 견적사항"),
     OversizeMotherBoard(422,"E010","마더보드 허용 규격 초과"),
     OversizeCooler(422,"E020","쿨러 허용 규격 초과"),
     OversizeGraphicsCard(422,"E030","그래픽카드 허용 규격 초과"),

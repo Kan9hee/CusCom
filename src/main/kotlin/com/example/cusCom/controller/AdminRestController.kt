@@ -1,5 +1,7 @@
 package com.example.cusCom.controller
 
+import com.example.cusCom.exception.CusComErrorCode
+import com.example.cusCom.exception.CusComException
 import com.example.cusCom.provideContent.dto.parts.*
 import com.example.cusCom.provideContent.service.BlobService
 import com.example.cusCom.provideContent.service.DesktopPartsService
@@ -74,9 +76,14 @@ class AdminRestController(private val desktopPartsService: DesktopPartsService,
 
     private fun editJson(json:String,type:String,image:MultipartFile): String {
         var jsonObject = Gson().fromJson(json, JsonObject::class.java)
-        jsonObject.addProperty("imageUrl",blobService.uploadImage(image,500,500))
-        if(type == "Case" || type == "MotherBoard")
-            deserializeFormFactor(jsonObject)
+        val contentType=image.contentType
+        if (contentType != null && contentType.startsWith("image/")) {
+            jsonObject.addProperty("imageUrl", blobService.uploadImage(image, 500, 500))
+            if (type == "Case" || type == "MotherBoard")
+                deserializeFormFactor(jsonObject)
+        }
+        else
+            throw CusComException(CusComErrorCode.NotImageData)
         return Gson().toJson(jsonObject)
     }
 

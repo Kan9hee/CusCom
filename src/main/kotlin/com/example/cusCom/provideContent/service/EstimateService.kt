@@ -1,16 +1,16 @@
 package com.example.cusCom.provideContent.service
 
-import com.example.cusCom.exception.EstimateErrorCode
-import com.example.cusCom.exception.EstimateException
+import com.example.cusCom.exception.CusComErrorCode
+import com.example.cusCom.exception.CusComException
 import com.example.cusCom.provideContent.dto.Estimate
-import com.example.cusCom.provideContent.repository.MotherBoardFormFactorRepository
 import com.example.cusCom.provideContent.entity.mongoDB.EstimateEntity
+import com.example.cusCom.provideContent.repository.MotherBoardFormFactorRepository
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
-import org.springframework.transaction.annotation.Transactional
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class EstimateService(private val mongoTemplate: MongoTemplate,
@@ -84,7 +84,7 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
                     cpuCooler.isEmpty() ||
                     motherBoard.isEmpty() ||
                     powerSupply.isEmpty() })
-            throw EstimateException(EstimateErrorCode.UnfinishedEstimate)
+            throw CusComException(CusComErrorCode.UnfinishedCusCom)
 
         val cpuCooler=desktopPartsService.findCpuCooler("name",estimate.cpuCooler)
         val case=desktopPartsService.findCase("name",estimate.desktopCase)
@@ -97,19 +97,19 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
         val caseMaxFormFactor=motherBoardRepo.findById(case.motherBoardFormFactor.name).get()
 
         if(cpuCooler.height>case.cpuCoolerHeight)
-            throw EstimateException(EstimateErrorCode.OversizeCooler)
+            throw CusComException(CusComErrorCode.OversizeCooler)
         if(graphicsCard.length>case.graphicsCardLength)
-            throw EstimateException(EstimateErrorCode.OversizeGraphicsCard)
+            throw CusComException(CusComErrorCode.OversizeGraphicsCard)
         if(memory.height>44)
-            throw EstimateException(EstimateErrorCode.InterferenceMemory)
+            throw CusComException(CusComErrorCode.InterferenceMemory)
         if(motherBoard.motherBoardFormFactor.length>caseMaxFormFactor.length
             ||motherBoard.motherBoardFormFactor.width>caseMaxFormFactor.width)
-            throw EstimateException(EstimateErrorCode.OversizeMotherBoard)
+            throw CusComException(CusComErrorCode.OversizeMotherBoard)
         if(powerSupply.length>case.powerLength)
-            throw EstimateException(EstimateErrorCode.OversizePowerSupply)
+            throw CusComException(CusComErrorCode.OversizePowerSupply)
         if(memory.type!=motherBoard.memoryType)
-            throw EstimateException(EstimateErrorCode.MismatchMemory)
+            throw CusComException(CusComErrorCode.MismatchMemory)
         if(graphicsCard.maxPower + cpu.TDP + cpuCooler.TDP > powerSupply.power)
-            throw EstimateException(EstimateErrorCode.PowerSupplyShortage)
+            throw CusComException(CusComErrorCode.PowerSupplyShortage)
     }
 }

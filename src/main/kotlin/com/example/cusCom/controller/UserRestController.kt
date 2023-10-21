@@ -1,15 +1,15 @@
 package com.example.cusCom.controller
 
-import com.example.cusCom.exception.EstimateException
-import com.example.cusCom.provideContent.dto.User
-import com.example.cusCom.provideContent.service.UserService
+import com.example.cusCom.exception.CusComException
 import com.example.cusCom.provideContent.dto.Comment
 import com.example.cusCom.provideContent.dto.Estimate
 import com.example.cusCom.provideContent.dto.SharePlacePost
+import com.example.cusCom.provideContent.dto.User
 import com.example.cusCom.provideContent.dto.parts.*
 import com.example.cusCom.provideContent.service.DesktopPartsService
 import com.example.cusCom.provideContent.service.EstimateService
 import com.example.cusCom.provideContent.service.SharePlaceService
+import com.example.cusCom.provideContent.service.UserService
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import org.bson.types.ObjectId
@@ -144,7 +144,7 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
             estimateService.saveUserEstimate(estimateResult)
             return ResponseEntity.ok("Success")
         }
-        catch (e: EstimateException) { throw e }
+        catch (e: CusComException) { throw e }
     }
 
     @PostMapping("/uploadPost")

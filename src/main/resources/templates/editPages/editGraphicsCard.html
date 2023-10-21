@@ -130,7 +130,13 @@
                     method: "POST",
                     body: formData
                 })
-                .then(response => console.log(response))
+                .then(response =>
+                    if(response.ok){ window.location.href='/CusCom/adminPage/main'; }
+                    else { return response.json(); }
+                )
+                .then(data => {
+                    alert("Error: " + data.message);
+                })
                 .catch(error => {
                     console.error("Error:", error);
                 });
@@ -141,13 +147,17 @@
                     method: "POST",
                     body: formData
                 })
-                .then(response => console.log(response))
+                .then(response =>
+                    if(response.ok){ window.location.href='/CusCom/adminPage/main'; }
+                    else { return response.json(); }
+                )
+                .then(data => {
+                    alert("Error: " + data.message);
+                })
                 .catch(error => {
                     console.error("Error:", error);
                 });
               }
-
-              window.location.href='/CusCom/adminPage/main';
             });
 
     document.getElementById('cancel')

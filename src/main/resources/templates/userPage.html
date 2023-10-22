@@ -35,6 +35,7 @@
                   <div class="d-flex w-100 align-items-center justify-content-between">
                     <strong class="mb-1">${estimateItem._id}</strong>
                     <div class="button-container">
+                      <button class="btn btn-primary" type="submit" onclick="postEstimate(this)">게시</button>
                       <button class="btn btn-primary" type="submit" onclick="callEstimateEditPage(this)">편집</button>
                       <button class="btn btn-primary" style="background-color: red; border-color: red;" type="submit" id="delete">삭제</button>
                     </div>
@@ -64,6 +65,11 @@
         function callEstimateEditPage(button) {
           const dataId = getEstimateID(button);
           window.location.href = `/CusCom/estimatePage?id=${dataId}`;
+        }
+
+        function postEstimate(button) {
+          const dataId = getEstimateID(button);
+          window.location.href = `/CusCom/uploadPostPage?id=${dataId}`;
         }
 
         document.addEventListener("DOMContentLoaded", function(){

@@ -15,7 +15,7 @@ import javax.imageio.ImageIO
 class BlobService{
 
     private val containerClient:BlobContainerClient=BlobContainerClientBuilder()
-        .connectionString(System.getProperty("connectionString"))
+        .connectionString(System.getenv("connectionString"))
         .containerName("desktop-parts-images")
         .buildClient()
 

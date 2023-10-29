@@ -14,7 +14,7 @@ class SecurityConfig {
     fun filterChain(http:HttpSecurity):SecurityFilterChain{
         http.csrf{ it.disable() }
             .authorizeHttpRequests{ authorize -> authorize
-                .requestMatchers("/CusCom/joinPage","/CusCom/join","/CusCom/loginPage").anonymous()
+                .requestMatchers("/CusCom/joinPage","/CusCom/API/join","/CusCom/loginPage").anonymous()
                 .requestMatchers("/CusCom/adminPage/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             }

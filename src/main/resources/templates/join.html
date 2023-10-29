@@ -53,9 +53,15 @@
                     headers: {
                       "Content-Type": "application/json"
                     },
-                    body: joinData
+                    body: JSON.stringify(joinData)
                 })
-                .then(response => console.log(response))
+                .then(response => {
+                    if(response.ok){ window.location.href='/CusCom/mainPage'; }
+                    else { return response.json(); }
+                })
+                .then(data => {
+                    alert("Error: " + data.message);
+                })
                 .catch(error => {
                     console.error("Error:", error);
                 });

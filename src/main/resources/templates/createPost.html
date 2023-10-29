@@ -42,50 +42,50 @@
                 <ul class="list-group mb-3">
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
-                      <h6 class="my-0">케이스</h6>
-                      <small class="text-body-secondary" id="case">부품명</small>
+                      <small class="text-body-secondary">케이스</small>
+                      <h6 class="my-0" id="caseH6">미선택</h6>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
-                      <h6 class="my-0">CPU 쿨러</h6>
-                      <small class="text-body-secondary" id="cpuCooler">부품명</small>
+                      <small class="text-body-secondary">CPU 쿨러</small>
+                      <h6 class="my-0" id="cpuCoolerH6">미선택</h6>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
-                      <h6 class="my-0">CPU</h6>
-                      <small class="text-body-secondary" id="cpu">부품명</small>
+                      <small class="text-body-secondary">CPU</small>
+                      <h6 class="my-0" id="cpuH6">미선택</h6>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
-                      <h6 class="my-0">저장장치</h6>
-                      <small class="text-body-secondary" id="dataStorage">부품명</small>
+                      <small class="text-body-secondary">저장장치</small>
+                      <h6 class="my-0" id="dataStorageH6">미선택</h6>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
-                      <h6 class="my-0">그래픽카드</h6>
-                      <small class="text-body-secondary" id="graphicsCard">부품명</small>
+                      <small class="text-body-secondary">그래픽카드</small>
+                      <h6 class="my-0" id="graphicsCardH6">미선택</h6>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
-                      <h6 class="my-0">메모리</h6>
-                      <small class="text-body-secondary" id="memory">부품명</small>
+                      <small class="text-body-secondary">메모리</small>
+                      <h6 class="my-0" id="memoryH6">미선택</h6>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
-                      <h6 class="my-0">메인보드</h6>
-                      <small class="text-body-secondary" id="motherBoard">부품명</small>
+                      <small class="text-body-secondary">메인보드</small>
+                      <h6 class="my-0" id="motherBoardH6">미선택</h6>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
-                      <h6 class="my-0">파워서플라이</h6>
-                      <small class="text-body-secondary" id="powerSupply">부품명</small>
+                      <small class="text-body-secondary">파워서플라이</small>
+                      <h6 class="my-0" id="powerSupplyH6">미선택</h6>
                     </div>
                   </li>
                 </ul>
@@ -108,59 +108,93 @@
   </footer>
   <script type="text/javascript">
 
-    const eid = urlParams.get('estimateID');
-
-    function initialSetup(){
-      fetch('/CusCom/API/searchCase?id=${eid}')
-        .then(response => response.json())
-        .then(data => {
-          document.getElementById('cpu').value = data.cpu;
-          document.getElementById('motherBoard').value = data.motherBoard;
-          document.getElementById('memory').value = data.memory;
-          document.getElementById('dataStorage').value = data.dataStorage;
-          document.getElementById('graphicsCard').value = data.graphicsCard;
-          document.getElementById('cpuCooler').value = data.cpuCooler;
-          document.getElementById('powerSupply').value = data.powerSupply;
-          document.getElementById('desktopCase').value = data.desktopCase;
-          firstCreate = (data.name === "");
-        })
+    const queryParams = new URLSearchParams(window.location.search);
+    const dataId = queryParams.get("id");
+    var estimate = {
+        userName:"",
+        cpu:"",
+        motherBoard:"",
+        memory:"",
+        dataStorage:"",
+        graphicsCard:"",
+        cpuCooler:"",
+        powerSupply:"",
+        desktopCase:""
     }
 
-    window.onload = initialSetup;
+    function initialSetup(){
+        fetch(`/CusCom/API/getUserEstimate?id=${dataId}`)
+        .then(response => response.json())
+        .then(data => {
+            estimate.userName=data.userName;
+            estimate.cpu=data.cpu;
+            estimate.motherBoard=data.motherBoard;
+            estimate.memory=data.memory;
+            estimate.dataStorage=data.dataStorage;
+            estimate.graphicsCard=data.graphicsCard;
+            estimate.cpuCooler=data.cpuCooler;
+            estimate.powerSupply=data.powerSupply;
+            estimate.desktopCase=data.desktopCase;
+            updateH6Text("cpuH6",estimate.cpu);
+            updateH6Text("motherBoardH6",estimate.motherBoard);
+            updateH6Text("memoryH6",estimate.memory);
+            updateH6Text("dataStorageH6",estimate.dataStorage);
+            updateH6Text("graphicsCardH6",estimate.graphicsCard);
+            updateH6Text("cpuCoolerH6",estimate.cpuCooler);
+            updateH6Text("powerSupplyH6",estimate.powerSupply);
+            updateH6Text("caseH6",estimate.desktopCase);
+        })
+        .catch(error => console.error(error));
+    }
 
-        document.getElementById('submitPost')
-            .addEventListener('click',function(event){
+    function updateH6Text(id,text) {
+        const h6Element = document.getElementById(id);
+        if (h6Element) {
+            h6Element.textContent = text;
+        }
+    }
 
-                const selectedTags = Array.from(document.querySelectorAll('input[name="tag"]:checked'))
-                                        .map(checkbox => checkbox.value);
+    window.addEventListener('load', function(){ initialSetup(); });
 
-                const postData={
-                    _id:"",
-                    estimateID: eid,
-                    title: document.getElementById('title').value,
-                    tags: selectedTags,
-                    viewCount: 0,
-                    likeCount: 0
-                };
-
-                fetch("/CusCom/API/uploadPost", {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(postData)
-                })
-                .then(response => console.log(response))
-                .catch(error => {
-                    console.error("Error:", error);
-                });
-                window.location.href='/CusCom/SharePlace';
+    document.getElementById('submitPost')
+        .addEventListener('click',function(event){
+            var selectedTags=[];
+            const checkboxes=document.querySelectorAll('input[type="checkbox"][name="tag"]');
+            checkboxes.forEach(function(checkbox){
+              if(checkbox.checked){
+                selectedTags.push(checkbox.nextElementSibling.textContent);
+              }
             });
 
-        document.getElementById('cancel')
-            .addEventListener('click',function(event){
-                history.go(-1);
+            const postData={
+                estimateID: dataId,
+                title: document.getElementById('title').value,
+                tags: selectedTags,
+                viewCount: 0,
+                likeCount: 0
+            };
+
+            const formData = new FormData();
+            formData.append('postData', JSON.stringify(postData));
+
+            fetch("/CusCom/API/uploadPost", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                if(response.ok){ window.location.href='/CusCom/mainPage'; }
+                else { return response.json(); }
+            })
+            .catch(error => {
+                console.error("Error:", error);
             });
+            event.preventDefault();
+        });
+
+    document.getElementById('cancel')
+        .addEventListener('click',function(event){
+            history.go(-1);
+        });
   </script>
 </body>
 </html>

@@ -19,13 +19,13 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
     fun uploadPost(sharePlacePost: SharePlacePost){
         mongoTemplate.insert(
             SharePlacePostEntity(
-            ObjectId(),
-            sharePlacePost.estimateID,
-            sharePlacePost.title,
-            sharePlacePost.content,
-            sharePlacePost.tags,
-            sharePlacePost.viewCount,
-            sharePlacePost.likeCount)
+                ObjectId(),
+                sharePlacePost.estimateID,
+                sharePlacePost.title,
+                sharePlacePost.tags,
+                sharePlacePost.viewCount,
+                sharePlacePost.likeCount
+            )
         )
     }
 
@@ -46,7 +46,6 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
                 it._id.toHexString(),
                 it.estimateID,
                 it.title,
-                it.content,
                 it.tags,
                 it.viewCount,
                 it.likeCount)
@@ -61,7 +60,6 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
                 entity._id.toHexString(),
                 entity.estimateID,
                 entity.title,
-                entity.content,
                 entity.tags,
                 entity.viewCount,
                 entity.likeCount
@@ -78,7 +76,6 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
                     entity._id.toHexString(),
                     entity.estimateID,
                     entity.title,
-                    entity.content,
                     entity.tags,
                     entity.viewCount,
                     entity.likeCount

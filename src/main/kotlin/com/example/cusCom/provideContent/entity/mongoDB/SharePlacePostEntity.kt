@@ -7,7 +7,6 @@ import org.springframework.data.mongodb.core.mapping.Document
 class SharePlacePostEntity(val _id: ObjectId,
                            val estimateID:String,
                            var title:String,
-                           var content:String,
                            var tags:Array<String>,
                            viewCountValue:Long,
                            likeCountValue:Long) {
@@ -19,7 +18,6 @@ class SharePlacePostEntity(val _id: ObjectId,
 
     fun setPostData(title:String,content:String,tags:Array<String>){
         this.title=title
-        this.content=content
         this.tags=tags
     }
 }

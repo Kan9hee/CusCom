@@ -9,103 +9,105 @@
   <main>
     <section class="py-5 text-center container">
       <div class="row py-lg-5">
-        <div class="col-lg-6 col-md-8 mx-auto">
-          <h1>견적 게시판</h1>
-          <form class="d-flex" role="search">
-            <div class="dropdown" id="option">
-              <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                조건
-              </a>
-              <ul class="dropdown-menu">
-                <li><a value="title" class="dropdown-item" href="#">제목</a></li>
-              </ul>
-            </div>
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="value">
-            <button class="btn btn-outline-success" type="submit" id="search">Search</button>
-          </form>
+        <div class="row-gap-5 col-lg-6 col-md-8 mx-auto">
+          <div>
+            <h1>견적 게시판</h1>
+            <form class="d-flex" role="search">
+              <div class="dropdown" id="option">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  조건
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a value="title" class="dropdown-item" href="#">제목</a></li>
+                </ul>
+              </div>
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="value">
+              <button class="btn btn-outline-success" type="submit" id="search">Search</button>
+            </form>
+          </div>
         </div>
       </div>
     </section>
 
     <div class="album py-5 bg-body-tertiary">
       <div class="container">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" th:each="post, postIndex : ${postList}">
-          <div class="col">
-            <div class="card shadow-sm" id="postCard" data-post-id="${postIndex}">
-              <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-              <div class="card-body">
-                <h3 th:text="${post.title}">제목</h3>
-                <p class="card-text" th:text="${post.title}">작성자</p>
-                <p th:text="post.tags">태그</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div>
-                    <small class="text-body-secondary" th:text="${post.viewCount}">조회수</small>
-                    <small class="text-body-secondary" th:text="${post.likeCount}">추천수</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="postList">
+
         </div>
       </div>
 
-      <nav aria-label="Page navigation">
-        <ul class="pagination">
-          <li class="page-item">
-            <a th:if="${currentPage > 1}" th:href="@{/items?page=${currentPage-1}&amp;pageSize=${pageSize}}" class="page-link" href="#">Previous</a>
-          </li>
-          <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
-            <a th:href="@{/items?page=${pageNumber}&amp;pageSize=${pageSize}}" class="page-link" th:text="${pageNumber}"></a>
-          </li>
-          <li class="page-item">
-            <a th:if="${currentPage < totalPages}" th:href="@{/items?page=${currentPage+1}&amp;pageSize=${pageSize}}" class="page-link" href="#">Next</a>
-          </li>
-        </ul>
-      </nav>
+      <div class="row-gap-5">
+        <nav aria-label="Page navigation">
+          <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+              <span class="page-link">Previous</span>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item active" aria-current="page">
+              <span class="page-link">2</span>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#">Next</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
-    <script type="text/javascript">
-        document.getElementById('search')
-            .addEventListener('click',function(event){
-                const searchData={
-                    type: document.getElementById('type').value,
-                    value: document.getElementById('value').value
-                };
-
-                fetch("/CusCom/SharePlace", {
-                    method: "GET",
-                    headers: {
-                      "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(searchData)
-                })
-                .then(response => console.log(response))
-                .catch(error => {
-                    console.error("Error:", error);
-                });
-            });
-
-        document.querySelectorAll('#postCard').forEach(function(card) {
-            card.addEventListener('click',function(event){
-                const post=postList[card.getAttribute('data-post-id')];
-                const postData={ postID: "[[${post._id}]]" };
-
-                fetch("/CusCom/SharePlace/post", {
-                    method: "GET",
-                    headers: {
-                      "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(postData)
-                })
-                .then(response => console.log(response))
-                .catch(error => {
-                    console.error("Error:", error);
-                });
-            });
-        });
-    </script>
   </main>
-  <footer class="text-body-secondary py-5">
-    <p>Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a href="https://twitter.com/mdo" class="text-white">@mdo</a>.</p>
-  </footer>
 </body>
+<footer class="text-body-secondary py-5">
+  <p>Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a href="https://twitter.com/mdo" class="text-white">@mdo</a>.</p>
+</footer>
+<script type="text/javascript">
+    const queryParams = new URLSearchParams(window.location.search);
+    let searchOption = queryParams.get("option");
+    let searchData = queryParams.get("search");
+    let searchJson = null;
+
+    function fetchPage(){
+        searchJSON=JSON.stringify({ option: searchOption, value: searchData });
+        let url = `/CusCom/API/loadPostList`;
+          if (searchJson) {
+            url += `?searchJson=${searchJson}`;
+          }
+
+        fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          const postList = document.getElementById('postList');
+
+          data.forEach((post, postIndex) => {
+            const postCard = document.createElement('div');
+            postCard.classList.add('col');
+            postCard.innerHTML = `
+              <div class="card shadow-sm" id="postCard" data-post-id="${postIndex}">
+                <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                  <title>Placeholder</title>
+                  <rect width="100%" height="100%" fill="#55595c"/>
+                  <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+                </svg>
+                <div class="card-body">
+                  <h3>${post.title}</h3>
+                  <p class="card-text">${post.userName}</p>
+                  <small>${post.tags.map(tag => `#${tag}`).join(' ')}</small>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <small class="text-body-secondary">조회수: ${post.viewCount}</small>
+                      <small class="text-body-secondary">추천수: ${post.likeCount}</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `;
+            postList.appendChild(postCard);
+          });
+        })
+        .catch(error => console.error('Error fetching data:', error));
+    }
+
+    window.addEventListener('load', function(){ fetchPage(); });
+
+
+    </script>
 </html>

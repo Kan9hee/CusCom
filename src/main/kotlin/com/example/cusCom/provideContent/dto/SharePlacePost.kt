@@ -3,6 +3,7 @@ package com.example.cusCom.provideContent.dto
 data class SharePlacePost(var _id:String="",
                           var estimateID:String="",
                           var title:String="",
+                          val userName:String="",
                           var tags:Array<String>,
                           var viewCount:Long=0,
                           var likeCount:Long=0){

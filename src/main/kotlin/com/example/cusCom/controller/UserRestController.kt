@@ -149,7 +149,9 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
 
     @PostMapping("/uploadPost")
     fun uploadPost(@RequestParam("postData") postJSON:String): ResponseEntity<String> {
-        sharePlaceService.uploadPost(Gson().fromJson(postJSON, SharePlacePost::class.java))
+        val jsonObject=Gson().fromJson(postJSON, JsonObject::class.java)
+        jsonObject.addProperty("userName", SecurityContextHolder.getContext().authentication.name)
+        sharePlaceService.uploadPost(Gson().fromJson(Gson().toJson(jsonObject), SharePlacePost::class.java))
         return ResponseEntity.ok("Success")
     }
 
@@ -164,7 +166,7 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     }
 
     @GetMapping("/loadPostList")
-    fun testSharePlacePage(@RequestParam(required = false) searchJson: String?): List<SharePlacePost> {
+    fun loadPostList(@RequestParam(required = false) searchJson: String?): List<SharePlacePost> {
         var postList=searchJson?.let{
             val temp= Gson().fromJson(searchJson,JsonObject::class.java)
             sharePlaceService.searchPost(temp.get("option").asString,temp.get("value").asString)

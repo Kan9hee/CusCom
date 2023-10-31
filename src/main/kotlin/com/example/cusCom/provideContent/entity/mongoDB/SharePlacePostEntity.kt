@@ -7,13 +7,14 @@ import org.springframework.data.mongodb.core.mapping.Document
 class SharePlacePostEntity(val _id: ObjectId,
                            val estimateID:String,
                            var title:String,
+                           val userName:String,
                            var tags:Array<String>,
-                           viewCountValue:Long,
-                           likeCountValue:Long) {
+                           viewCount:Long,
+                           likeCount:Long) {
 
-    var viewCount:Long=viewCountValue
+    var viewCount:Long=viewCount
         protected set
-    var likeCount:Long=likeCountValue
+    var likeCount:Long=likeCount
         protected set
 
     fun setPostData(title:String,content:String,tags:Array<String>){

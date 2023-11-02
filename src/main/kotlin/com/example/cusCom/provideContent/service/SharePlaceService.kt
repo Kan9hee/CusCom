@@ -55,8 +55,8 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
     }
 
     @Transactional
-    fun getPostList(): List<SharePlacePost> {
-        return mongoTemplate.findAll(SharePlacePostEntity::class.java).map {
+    fun getPostList(maxContent:Int,currentPage:Int): HashMap<String,Any> {
+        val posts=mongoTemplate.findAll(SharePlacePostEntity::class.java).map {
             entity: SharePlacePostEntity ->
             SharePlacePost(
                 entity._id.toHexString(),
@@ -68,12 +68,14 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
                 entity.likeCount
             )
         }
+
+        return pagination(posts,maxContent,currentPage)
     }
 
     @Transactional
-    fun searchPost(option:String,value:String): List<SharePlacePost> {
+    fun searchPost(option:String,value:String,maxContent:Int,currentPage:Int): HashMap<String, Any> {
         val query= Query(Criteria.where(option).`is`(ObjectId(value)))
-        return mongoTemplate.find(query,SharePlacePostEntity::class.java).map {
+        val posts=mongoTemplate.find(query,SharePlacePostEntity::class.java).map {
                 entity: SharePlacePostEntity ->
                 SharePlacePost(
                     entity._id.toHexString(),
@@ -85,10 +87,12 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
                     entity.likeCount
                 )
         }
+
+        return pagination(posts,maxContent,currentPage)
     }
 
     @Transactional
-    private fun increaseViewCount(sharePlacePostEntity: SharePlacePostEntity){
+    fun increaseViewCount(sharePlacePostEntity: SharePlacePostEntity){
         val query= Query(Criteria.where("_id").`is`(sharePlacePostEntity._id))
         val update= Update().inc("viewCount",sharePlacePostEntity.viewCount+1)
         mongoTemplate.updateFirst(query,update,"shareplace-posts")
@@ -123,5 +127,19 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
                 entity.content
             )
         }
+    }
+
+    private fun pagination(posts:List<SharePlacePost>, maxContent:Int, currentPage:Int): HashMap<String,Any> {
+        val postCount=posts.size
+        val startContent = if(currentPage == 1) 0 else (currentPage-1)*maxContent
+        val endContent = if(startContent+maxContent>postCount) postCount
+                         else currentPage*maxContent
+
+        val map=HashMap<String,Any>()
+        map["postList"]=posts.subList(startContent,endContent)
+        map["pageCount"]=(postCount/maxContent)+1
+        map["page"]=currentPage
+
+        return map
     }
 }

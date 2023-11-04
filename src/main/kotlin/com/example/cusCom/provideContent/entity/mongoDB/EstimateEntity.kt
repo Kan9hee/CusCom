@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 @Document(collection = "user-estimates")
 class EstimateEntity(val _id: ObjectId,
                      val userName:String,
+                     isPosted:Boolean,
                      cpu:String,
                      motherBoard:String,
                      memory:String,
@@ -15,6 +16,8 @@ class EstimateEntity(val _id: ObjectId,
                      powerSupply:String,
                      case:String) {
 
+    var isPosted:Boolean=isPosted
+        protected set
     var cpu:String=cpu
         protected set
     var motherBoard:String=motherBoard

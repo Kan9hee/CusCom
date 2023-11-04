@@ -23,6 +23,7 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
             EstimateEntity(
             ObjectId(),
             estimate.userName,
+            estimate.isPosted,
             estimate.cpu,
             estimate.motherBoard,
             estimate.memory,
@@ -39,6 +40,7 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
         val entity: EstimateEntity =mongoTemplate.findById(id, EstimateEntity::class.java)!!
         return Estimate(entity._id.toHexString(),
             entity.userName,
+            entity.isPosted,
             entity.cpu,
             entity.motherBoard,
             entity.memory,
@@ -55,16 +57,17 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
         val estimateList:List<Estimate> = mongoTemplate.find(query,EstimateEntity::class.java).map {
             entity: EstimateEntity ->
                 Estimate(entity._id.toHexString(),
-                entity.userName,
-                entity.cpu,
-                entity.motherBoard,
-                entity.memory,
-                entity.dataStorage,
-                entity.graphicsCard,
-                entity.cpuCooler,
-                entity.powerSupply,
-                entity.case
-            )
+                    entity.userName,
+                    entity.isPosted,
+                    entity.cpu,
+                    entity.motherBoard,
+                    entity.memory,
+                    entity.dataStorage,
+                    entity.graphicsCard,
+                    entity.cpuCooler,
+                    entity.powerSupply,
+                    entity.case
+                )
         }
         return estimateList
     }

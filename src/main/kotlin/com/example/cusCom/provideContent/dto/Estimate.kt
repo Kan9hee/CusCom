@@ -2,7 +2,7 @@ package com.example.cusCom.provideContent.dto
 
 data class Estimate(var _id:String="",
                     var userName: String="",
-                    var isPosted:Boolean=false,
+                    var posted:Boolean=false,
                     var cpu: String="",
                     var motherBoard:String="",
                     var memory:String="",

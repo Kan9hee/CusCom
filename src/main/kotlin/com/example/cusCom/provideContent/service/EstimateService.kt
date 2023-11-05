@@ -5,10 +5,13 @@ import com.example.cusCom.exception.CusComException
 import com.example.cusCom.provideContent.dto.Estimate
 import com.example.cusCom.provideContent.entity.mongoDB.EstimateEntity
 import com.example.cusCom.provideContent.repository.MotherBoardFormFactorRepository
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.Update
+import org.springframework.data.mongodb.core.update
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -23,7 +26,7 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
             EstimateEntity(
             ObjectId(),
             estimate.userName,
-            estimate.isPosted,
+            estimate.posted,
             estimate.cpu,
             estimate.motherBoard,
             estimate.memory,
@@ -36,11 +39,24 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
     }
 
     @Transactional
+    fun updateUserEstimate(id:ObjectId,updatedEstimate:Estimate){
+        val query = Query(Criteria.where("_id").`is`(id))
+        val update = Update()
+        var updatedFields = ObjectMapper().convertValue(updatedEstimate, Map::class.java)
+        updatedFields -= "_id"
+
+        for (field in updatedFields.keys)
+            update.set(field.toString(), updatedFields[field])
+
+        mongoTemplate.updateFirst(query, update, EstimateEntity::class.java)
+    }
+
+    @Transactional
     fun getUserEstimateById(id:ObjectId): Estimate {
         val entity: EstimateEntity =mongoTemplate.findById(id, EstimateEntity::class.java)!!
         return Estimate(entity._id.toHexString(),
             entity.userName,
-            entity.isPosted,
+            entity.posted,
             entity.cpu,
             entity.motherBoard,
             entity.memory,
@@ -48,7 +64,7 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
             entity.graphicsCard,
             entity.cpuCooler,
             entity.powerSupply,
-            entity.case)
+            entity.desktopCase)
     }
 
     @Transactional
@@ -58,7 +74,7 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
             entity: EstimateEntity ->
                 Estimate(entity._id.toHexString(),
                     entity.userName,
-                    entity.isPosted,
+                    entity.posted,
                     entity.cpu,
                     entity.motherBoard,
                     entity.memory,
@@ -66,7 +82,7 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
                     entity.graphicsCard,
                     entity.cpuCooler,
                     entity.powerSupply,
-                    entity.case
+                    entity.desktopCase
                 )
         }
         return estimateList

@@ -31,9 +31,9 @@
                 const listItem = document.createElement('a');
                 listItem.className = 'list-group-item py-3 lh-sm';
 
-                const postButtonContent = estimateItem.isPosted ?
-                `<button class="btn btn-primary" type="submit" onclick="viewPost(this)">게시됨</button>`:
-                `<button class="btn btn-primary" style="background-color: red; border-color: red;" type="submit" onclick="postEstimate(this)">게시</button>`;
+                const postButtonContent = estimateItem.posted ?
+                `<button class="btn btn-primary" style="background-color: red; border-color: red;" type="submit" onclick="viewPost(this)">게시됨</button>`:
+                `<button class="btn btn-primary" type="submit" onclick="postEstimate(this)">게시</button>`;
 
                 const listItemContent = `
                   <div class="d-flex w-100 align-items-center justify-content-between">

@@ -15,83 +15,77 @@
               <textarea class="form-control" id="commentInputContent" rows="5"></textarea>
               <button class="btn btn-primary" type="submit" id="confirmComment">작성</button>
             </div>
-            <div class="list-group list-group-flush border-bottom scrollarea" th:each="comment : ${commentList}">
-              <a href="#" class="list-group-item list-group-item-action active py-3 lh-sm" aria-current="true">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1" th:text="${comment.userName}">댓글 작성자</strong>
-                </div>
-                <div class="col-10 mb-1 small" th:text="${comment.content}">댓글 내용</div>
-              </a>
+            <div class="list-group list-group-flush border-bottom scrollarea" id="comments">
+
             </div>
           </div>
 
           <div class="col-md-7 col-lg-8">
             <form>
-              <h4 th:text="${post.title}">제목</h4>
-              <p th:text="${post.userName}">작성자</p>
-              <small class="text-body-secondary" th:each="tag : ${post.tags}" th:text="${tag}">태그</small>
-              <small class="text-body-secondary" th:text="'조회수: ' + ${post.viewCount}">조회수</small>
+              <h4 id="postTitle">제목</h4>
+              <p id="postUserName">작성자</p>
+              <small class="text-body-secondary" id="postTags">태그</small>
+              <div>
+                <small class="text-body-secondary" id="postViewCount">조회수</small>
+                <small class="text-body-secondary" id="postLikeCount">추천수</small>
+              </div>
 
               <hr class="my-4">
 
-              <div class="col-md-5">
+              <div class="col-5">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
                   <span class="text">견적</span>
                 </h4>
                 <ul class="list-group mb-3">
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
-                      <h6 class="my-0">케이스</h6>
-                      <small class="text-body-secondary" value="${post.case}">부품명</small>
+                      <small class="text-body-secondary">케이스</small>
+                      <h6 class="my-0" id="caseH6">미선택</h6>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
-                      <h6 class="my-0">CPU 쿨러</h6>
-                      <small class="text-body-secondary" value="${post.cpuCooler}">부품명</small>
+                      <small class="text-body-secondary">CPU 쿨러</small>
+                      <h6 class="my-0" id="cpuCoolerH6">미선택</h6>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
-                      <h6 class="my-0">CPU</h6>
-                      <small class="text-body-secondary" value="${post.cpu}">부품명</small>
+                      <small class="text-body-secondary">CPU</small>
+                      <h6 class="my-0" id="cpuH6">미선택</h6>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
-                      <h6 class="my-0">저장장치</h6>
-                      <small class="text-body-secondary" value="${post.dataStorage}">부품명</small>
+                      <small class="text-body-secondary">저장장치</small>
+                      <h6 class="my-0" id="dataStorageH6">미선택</h6>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
-                      <h6 class="my-0">그래픽카드</h6>
-                      <small class="text-body-secondary" value="${post.graphicsCard}">부품명</small>
+                      <small class="text-body-secondary">그래픽카드</small>
+                      <h6 class="my-0" id="graphicsCardH6">미선택</h6>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
-                      <h6 class="my-0">메모리</h6>
-                      <small class="text-body-secondary" value="${post.memory}">부품명</small>
+                      <small class="text-body-secondary">메모리</small>
+                      <h6 class="my-0" id="memoryH6">미선택</h6>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
-                      <h6 class="my-0">메인보드</h6>
-                      <small class="text-body-secondary" value="${post.motherBoard}">부품명</small>
+                      <small class="text-body-secondary">메인보드</small>
+                      <h6 class="my-0" id="motherBoardH6">미선택</h6>
                     </div>
                   </li>
                   <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
-                      <h6 class="my-0">파워서플라이</h6>
-                      <small class="text-body-secondary" value="${post.powerSupply}">부품명</small>
+                      <small class="text-body-secondary">파워서플라이</small>
+                      <h6 class="my-0" id="powerSupplyH6">미선택</h6>
                     </div>
                   </li>
                 </ul>
-              </div>
-
-              <div>
-                <p value="${post.content}">내용</p>
               </div>
 
               <hr class="my-4">
@@ -100,11 +94,77 @@
         </div>
     </div>
     <script type="text/javascript">
+        const queryParams = new URLSearchParams(window.location.search);
+        const postId = queryParams.get("id");
+
+        function initialSetup(){
+            fetch(`/CusCom/API/loadPost?id=${postId}`)
+            .then(response => response.json())
+            .then(data => {
+                const postData=data.post;
+                const commentList=data.commentList;
+                const postEstimate=data.postEstimate;
+
+                const postTitle = document.getElementById('postTitle');
+                const postUserName = document.getElementById('postUserName');
+                const postTags = document.getElementById('postTags');
+                const postViewCount = document.getElementById('postViewCount');
+                const postLikeCount = document.getElementById('postLikeCount');
+                postTitle.textContent = postData.title;
+                postUserName.textContent = postData.userName;
+                const tagElements = postData.tags.map(tag => {
+                  const tagElement = document.createElement('small');
+                  tagElement.className = 'text-body-secondary';
+                  tagElement.textContent = tag;
+                  return tagElement;
+                });
+                postTags.innerHTML = '';
+                tagElements.forEach(tagElement => {
+                  postTags.appendChild(tagElement);
+                });
+                postViewCount.textContent = `조회수: ${postData.viewCount}`;
+                postLikeCount.textContent = `추천수: ${postData.likeCount}`;
+
+                updateH6Text("cpuH6",postEstimate.cpu);
+                updateH6Text("motherBoardH6",postEstimate.motherBoard);
+                updateH6Text("memoryH6",postEstimate.memory);
+                updateH6Text("dataStorageH6",postEstimate.dataStorage);
+                updateH6Text("graphicsCardH6",postEstimate.graphicsCard);
+                updateH6Text("cpuCoolerH6",postEstimate.cpuCooler);
+                updateH6Text("powerSupplyH6",postEstimate.powerSupply);
+                updateH6Text("caseH6",postEstimate.desktopCase);
+
+                const commentsContainer = document.getElementById('comments');
+                commentList.forEach(comment => {
+                  const listItem = document.createElement('a');
+                  listItem.className = 'list-group-item list-group-item-action py-3 lh-sm disabled';
+                  const listItemContent = `
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                      <strong class="mb-1" style="color: white;">${comment.userName}</strong>
+                    </div>
+                    <div class="col-10 mb-1 small">${comment.content}</div>
+                  `;
+                  listItem.innerHTML = listItemContent;
+                  commentsContainer.appendChild(listItem);
+                });
+            })
+            .catch(error => console.error(error));
+        }
+
+        window.addEventListener('load', function(){ initialSetup(); });
+
+        function updateH6Text(id,text) {
+            const h6Element = document.getElementById(id);
+            if (h6Element) {
+                h6Element.textContent = text;
+            }
+        }
+
         document.getElementById('confirmComment')
             .addEventListener('click',function(event){
                 const commentData={
                     _id:"",
-                    postID:"[[${post._id}]]",
+                    postID:postId,
                     userName: "",
                     content: document.getElementById('commentInputContent').value
                 };

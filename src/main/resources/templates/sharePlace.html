@@ -97,6 +97,9 @@
                 </div>
               </div>
             `;
+            postCard.addEventListener('click',()=>{
+              window.location.href=`/CusCom/SharePlace/post?id=${post._id}`;
+            });
             postList.appendChild(postCard);
           });
 

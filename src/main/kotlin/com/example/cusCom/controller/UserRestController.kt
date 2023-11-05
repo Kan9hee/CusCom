@@ -137,13 +137,22 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     }
 
     @PostMapping("/createEstimate")
-    fun postDataTest(@RequestParam("estimate") estimateJSON:String): ResponseEntity<String> {
+    fun createEstimate(@RequestParam("estimate") estimateJSON:String): ResponseEntity<String> {
         try{
-            val jsonObject=Gson().fromJson(estimateJSON, JsonObject::class.java)
-            jsonObject.addProperty("userName", SecurityContextHolder.getContext().authentication.name)
-            val estimateResult=Gson().fromJson(Gson().toJson(jsonObject), Estimate::class.java)
+            val estimateResult=Gson().fromJson(inputUserData(estimateJSON), Estimate::class.java)
             estimateService.checkDesktopEstimate(estimateResult)
             estimateService.saveUserEstimate(estimateResult)
+            return ResponseEntity.ok("Success")
+        }
+        catch (e: CusComException) { throw e }
+    }
+
+    @PostMapping("/updateEstimate")
+    fun updateEstimate(@RequestParam("estimate") estimateJSON:String): ResponseEntity<String> {
+        try{
+            val estimateResult=Gson().fromJson(inputUserData(estimateJSON), Estimate::class.java)
+            estimateService.checkDesktopEstimate(estimateResult)
+            estimateService.updateUserEstimate(ObjectId(estimateResult._id),estimateResult)
             return ResponseEntity.ok("Success")
         }
         catch (e: CusComException) { throw e }
@@ -152,11 +161,9 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     @PostMapping("/uploadPost")
     fun uploadPost(@RequestParam("postData") postJSON:String,
                    @RequestParam("updated") estimateJSON:String): ResponseEntity<String> {
-        val jsonObject=Gson().fromJson(postJSON, JsonObject::class.java)
-        jsonObject.addProperty("userName", SecurityContextHolder.getContext().authentication.name)
         val updatedEstimate=Gson().fromJson(estimateJSON,Estimate::class.java)
         estimateService.updateUserEstimate(ObjectId(updatedEstimate._id),updatedEstimate)
-        sharePlaceService.uploadPost(Gson().fromJson(Gson().toJson(jsonObject), SharePlacePost::class.java))
+        sharePlaceService.uploadPost(Gson().fromJson(inputUserData(postJSON), SharePlacePost::class.java))
         return ResponseEntity.ok("Success")
     }
 
@@ -184,9 +191,7 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
 
     @PostMapping("/uploadComment")
     fun uploadComment(@RequestParam("commentData") commentJSON:String): ResponseEntity<String> {
-        val jsonObject=Gson().fromJson(commentJSON, JsonObject::class.java)
-        jsonObject.addProperty("userName", SecurityContextHolder.getContext().authentication.name)
-        sharePlaceService.uploadComment(Gson().fromJson(Gson().toJson(jsonObject), Comment::class.java))
+        sharePlaceService.uploadComment(Gson().fromJson(inputUserData(commentJSON), Comment::class.java))
         return ResponseEntity.ok("Success")
     }
 
@@ -198,5 +203,11 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     @PostMapping("/decreaseLike")
     fun decreaseLike(@RequestParam("dislikeAction") action:String): ResponseEntity<String> {
         return ResponseEntity.ok("Success")
+    }
+
+    private fun inputUserData(jsonString:String):String{
+        val jsonObject=Gson().fromJson(jsonString, JsonObject::class.java)
+        jsonObject.addProperty("userName", SecurityContextHolder.getContext().authentication.name)
+        return Gson().toJson(jsonObject)
     }
 }

@@ -87,14 +87,13 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
                     entity.likeCount
                 )
         }
-
         return pagination(posts,maxContent,currentPage)
     }
 
     @Transactional
     fun increaseViewCount(sharePlacePostEntity: SharePlacePostEntity){
         val query= Query(Criteria.where("_id").`is`(sharePlacePostEntity._id))
-        val update= Update().inc("viewCount",sharePlacePostEntity.viewCount+1)
+        val update= Update().inc("viewCount",1)
         mongoTemplate.updateFirst(query,update,"shareplace-posts")
     }
 

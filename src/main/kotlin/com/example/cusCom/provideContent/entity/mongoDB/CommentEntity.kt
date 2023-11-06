@@ -7,8 +7,8 @@ import org.springframework.data.mongodb.core.mapping.Document
 class CommentEntity(val _id: ObjectId,
                     val postID:String,
                     val userName:String,
-                    comment:String) {
+                    content:String) {
 
-    var content:String=comment
+    var content:String=content
         protected set
 }

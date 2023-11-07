@@ -3,6 +3,7 @@ package com.example.cusCom.provideContent.service
 import com.example.cusCom.provideContent.dto.Comment
 import com.example.cusCom.provideContent.dto.SharePlacePost
 import com.example.cusCom.provideContent.entity.mongoDB.CommentEntity
+import com.example.cusCom.provideContent.entity.mongoDB.EstimateEntity
 import com.example.cusCom.provideContent.entity.mongoDB.SharePlacePostEntity
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.MongoTemplate
@@ -74,7 +75,13 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
 
     @Transactional
     fun searchPost(option:String,value:String,maxContent:Int,currentPage:Int): HashMap<String, Any> {
-        val query= Query(Criteria.where(option).`is`(ObjectId(value)))
+        val condition=when(option){
+            "_id"->Criteria.where(option).`is`(ObjectId(value))
+            "tags"->Criteria.where(option).`in`(value)
+            "parts"->findInEstimates(value)
+            else ->Criteria.where(option).regex(".*$value.*","i")
+        }
+        val query= Query(condition)
         val posts=mongoTemplate.find(query,SharePlacePostEntity::class.java).map {
                 entity: SharePlacePostEntity ->
                 SharePlacePost(
@@ -126,6 +133,26 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
                 entity.content
             )
         }
+    }
+
+    private fun findInEstimates(value:String):Criteria{
+        val estimateCriteria=Criteria()
+        for (field in EstimateEntity::class.java.declaredFields)
+            estimateCriteria.orOperator(
+                Criteria.where(field.name).regex(".*$value.*","i")
+            )
+        val estimateEntities=mongoTemplate.find(Query(estimateCriteria),EstimateEntity::class.java)
+
+        val result=run{
+            if(estimateEntities.isNotEmpty()){
+                val estimateIds=estimateEntities.mapNotNull{it._id}
+                Criteria.where("estimateID").`in`(estimateIds)
+            }
+            else
+                Criteria()
+        }
+
+        return result
     }
 
     private fun pagination(posts:List<SharePlacePost>, maxContent:Int, currentPage:Int): HashMap<String,Any> {

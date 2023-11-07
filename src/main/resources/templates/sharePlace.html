@@ -14,11 +14,14 @@
             <h1>견적 게시판</h1>
             <form class="d-flex" role="search">
               <div class="dropdown" id="option">
-                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  조건
+                <a class="btn btn-secondary dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  제목
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a value="title" class="dropdown-item" href="#">제목</a></li>
+                  <li><a value="title" class="dropdown-item">제목</a></li>
+                  <li><a value="tag" class="dropdown-item">태그</a></li>
+                  <li><a value="user" class="dropdown-item">작성자</a></li>
+                  <li><a value="parts" class="dropdown-item">부품명</a></li>
                 </ul>
               </div>
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="value">
@@ -51,8 +54,8 @@
 </footer>
 <script type="text/javascript">
     const queryParams = new URLSearchParams(window.location.search);
-    let searchOption = queryParams.get("option");
-    let searchData = queryParams.get("search");
+    let searchOption = queryParams.get("option") || "title";
+    let searchData = queryParams.get("value");
     let currentPage = queryParams.get("page") || 1;
     let searchJson = null;
 
@@ -135,6 +138,17 @@
 
     window.addEventListener('load', function(){ fetchPage(); });
 
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+      item.addEventListener('click', function() {
+        searchOption = this.getAttribute('value');
+        document.querySelector('.dropdown-toggle').textContent=this.textContent;
+      });
+    });
 
+    document.getElementById('search')
+            .addEventListener('click',function(event){
+              searchData=document.getElementById('search');
+              window.location.href=`/CusCom/API/loadPostList?option=${searchOption}&value=${searchData}`;
+            });
     </script>
 </html>

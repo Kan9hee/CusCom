@@ -185,7 +185,6 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
             val temp=Gson().fromJson(searchJson,JsonObject::class.java)
             sharePlaceService.searchPost(temp.get("option").asString,temp.get("value").asString,maxContent,currentPage)
         }?:sharePlaceService.getPostList(maxContent,currentPage)
-
         return postList
     }
 

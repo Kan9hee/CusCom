@@ -19,12 +19,12 @@
                 </a>
                 <ul class="dropdown-menu">
                   <li><a value="title" class="dropdown-item">제목</a></li>
-                  <li><a value="tag" class="dropdown-item">태그</a></li>
+                  <li><a value="tags" class="dropdown-item">태그</a></li>
                   <li><a value="user" class="dropdown-item">작성자</a></li>
                   <li><a value="parts" class="dropdown-item">부품명</a></li>
                 </ul>
               </div>
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="value">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="keyword">
               <button class="btn btn-outline-success" type="submit" id="search">Search</button>
             </form>
           </div>
@@ -33,6 +33,7 @@
     </section>
 
     <div class="album py-5 bg-body-tertiary">
+      <h3 class="text-center" id="searchResultText"></h3>
       <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="postList">
 
@@ -55,16 +56,14 @@
 <script type="text/javascript">
     const queryParams = new URLSearchParams(window.location.search);
     let searchOption = queryParams.get("option") || "title";
-    let searchData = queryParams.get("value");
+    let searchData = queryParams.get("keyword");
     let currentPage = queryParams.get("page") || 1;
     let searchJson = null;
 
     function fetchPage(){
         const queryParams = new URLSearchParams();
-        searchJson=JSON.stringify({ option: searchOption, value: searchData });
-        let url = `/CusCom/API/loadPostList`;
-        if (searchJson) {
-            queryParams.append("search",searchJson);
+        if(searchOption!=null&&searchData!=null){
+            queryParams.append("searchJSON",JSON.stringify({ option: searchOption, keyword: searchData }));
         }
         queryParams.append("maxContent",9);
         queryParams.append("currentPage",currentPage);
@@ -76,6 +75,12 @@
           const posts = data["postList"];
           const pageCount = data["pageCount"];
           currentPage = data["page"];
+
+          if(searchData!=null){
+            const searchResultText = document.getElementById('searchResultText')
+            searchResultText.innerText=searchData+" 검색 결과";
+            searchResultText.style.textAlign = "center";
+          }
 
           posts.forEach((post, postIndex) => {
             const postCard = document.createElement('div');
@@ -145,10 +150,14 @@
       });
     });
 
-    document.getElementById('search')
-            .addEventListener('click',function(event){
-              searchData=document.getElementById('search');
-              window.location.href=`/CusCom/API/loadPostList?option=${searchOption}&value=${searchData}`;
-            });
+    document.getElementById('search').addEventListener('click', function(event) {
+      event.preventDefault();
+      searchData = document.getElementById('keyword').value;
+      const queryParams = new URLSearchParams();
+      queryParams.set("option", searchOption);
+      queryParams.set("keyword", searchData);
+      window.location.href = `/CusCom/SharePlace?${queryParams.toString()}`;
+    });
+
     </script>
 </html>

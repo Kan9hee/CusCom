@@ -76,13 +76,13 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
     @Transactional
     fun searchPost(option:String,value:String,maxContent:Int,currentPage:Int): HashMap<String, Any> {
         val condition=when(option){
-            "_id"->Criteria.where(option).`is`(ObjectId(value))
-            "tags"->Criteria.where(option).`in`(value)
+            "title" ->Criteria.where(option).regex(".*$value.*","i")
+            "tags" -> Criteria.where(option).`in`(value)
+            "user"->Criteria.where(option).`is`(value)
             "parts"->findInEstimates(value)
-            else ->Criteria.where(option).regex(".*$value.*","i")
+            else -> Criteria()
         }
-        val query= Query(condition)
-        val posts=mongoTemplate.find(query,SharePlacePostEntity::class.java).map {
+        val posts=mongoTemplate.find(Query(condition),SharePlacePostEntity::class.java).map {
                 entity: SharePlacePostEntity ->
                 SharePlacePost(
                     entity._id.toHexString(),

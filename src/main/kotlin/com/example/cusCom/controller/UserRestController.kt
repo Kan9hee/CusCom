@@ -183,7 +183,7 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
                      @RequestParam("currentPage") currentPage: Int): HashMap<String, Any> {
         var postList=searchJson?.let{
             val temp=Gson().fromJson(searchJson,JsonObject::class.java)
-            sharePlaceService.searchPost(temp.get("option").asString,temp.get("value").asString,maxContent,currentPage)
+            sharePlaceService.searchPost(temp.get("option").asString,temp.get("keyword").asString,maxContent,currentPage)
         }?:sharePlaceService.getPostList(maxContent,currentPage)
         return postList
     }

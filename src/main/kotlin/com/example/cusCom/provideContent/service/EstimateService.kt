@@ -52,8 +52,8 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
     }
 
     @Transactional
-    fun getUserEstimateById(id:ObjectId): Estimate {
-        val entity: EstimateEntity =mongoTemplate.findById(id, EstimateEntity::class.java)!!
+    fun getUserEstimateById(id:String): Estimate {
+        val entity: EstimateEntity =mongoTemplate.findById(ObjectId(id), EstimateEntity::class.java)!!
         return Estimate(entity._id.toHexString(),
             entity.userName,
             entity.posted,
@@ -90,7 +90,7 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
 
     @Transactional
     fun deleteUserEstimate(option:String,value:String){
-        val query= Query(Criteria.where(option).`is`(ObjectId(value)))
+        val query= Query(Criteria.where(option).`is`(if(option=="_id") ObjectId(value) else value))
         mongoTemplate.remove(query, EstimateEntity::class.java)
     }
 

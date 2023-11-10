@@ -33,14 +33,13 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
 
     @Transactional
     fun deletePost(option:String,value:String){
-        val query= Query(Criteria.where(option).`is`(ObjectId(value)))
-        deleteComment("postID",value)
+        val query= Query(Criteria.where(option).`is`(if(option=="_id") ObjectId(value) else value))
         mongoTemplate.remove(query, SharePlacePostEntity::class.java)
     }
 
     @Transactional
     fun loadPost(option:String,value:String): SharePlacePost? {
-        val query= Query(Criteria.where(option).`is`(ObjectId(value)))
+        val query= Query(Criteria.where(option).`is`(if(option=="_id") ObjectId(value) else value))
         val entity = mongoTemplate.findOne(query, SharePlacePostEntity::class.java)
         return entity?.let {
             increaseViewCount(it)
@@ -117,7 +116,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
 
     @Transactional
     fun deleteComment(option:String,value:String){
-        val query= Query(Criteria.where(option).`is`(ObjectId(value)))
+        val query= Query(Criteria.where(option).`is`(if(option=="_id") ObjectId(value) else value))
         mongoTemplate.remove(query, CommentEntity::class.java)
     }
 

@@ -13,6 +13,7 @@ import com.example.cusCom.provideContent.service.UserService
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import org.bson.types.ObjectId
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
@@ -44,7 +45,7 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
 
     @GetMapping("/getUserEstimate")
     fun userEstimate(@RequestParam("id",required = false) estimateID: String?): Estimate {
-        return estimateID?.let { estimateService.getUserEstimateById(ObjectId(it)) }?: Estimate()
+        return estimateID?.let { estimateService.getUserEstimateById(it) }?: Estimate()
     }
 
     @GetMapping("/caseList")
@@ -158,6 +159,18 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
         catch (e: CusComException) { throw e }
     }
 
+    @PostMapping("/deleteEstimate")
+    fun deleteEstimate(@RequestParam("estimateID") estimateID:String): ResponseEntity<String>{
+        val postInfo=sharePlaceService.loadPost("estimateID",estimateID)
+        if(postInfo!=null){
+            sharePlaceService.deleteComment("postID",postInfo._id)
+            sharePlaceService.deletePost("_id",postInfo._id)
+            estimateService.deleteUserEstimate("_id",estimateID)
+            return ResponseEntity.ok("Success")
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post not found")
+    }
+
     @PostMapping("/uploadPost")
     fun uploadPost(@RequestParam("postData") postJSON:String,
                    @RequestParam("updated") estimateJSON:String): ResponseEntity<String> {
@@ -172,7 +185,7 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
         val map=HashMap<String,Any>()
         val post: SharePlacePost = sharePlaceService.loadPost("_id",postID)!!
         map["post"]=post
-        map["postEstimate"]=estimateService.getUserEstimateById(ObjectId(post.estimateID))
+        map["postEstimate"]=estimateService.getUserEstimateById(post.estimateID)
         map["commentList"]=sharePlaceService.getCommentList("postID",postID)
         return map
     }

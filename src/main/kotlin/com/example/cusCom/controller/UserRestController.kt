@@ -161,14 +161,13 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
 
     @PostMapping("/deleteEstimate")
     fun deleteEstimate(@RequestParam("estimateID") estimateID:String): ResponseEntity<String>{
+        estimateService.deleteUserEstimate("_id",estimateID)
         val postInfo=sharePlaceService.loadPost("estimateID",estimateID)
         if(postInfo!=null){
             sharePlaceService.deleteComment("postID",postInfo._id)
             sharePlaceService.deletePost("_id",postInfo._id)
-            estimateService.deleteUserEstimate("_id",estimateID)
-            return ResponseEntity.ok("Success")
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post not found")
+        return ResponseEntity.ok("Success")
     }
 
     @PostMapping("/uploadPost")

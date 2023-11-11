@@ -28,16 +28,19 @@
               const estimateList = document.getElementById('estimate-list');
 
               data.forEach(estimateItem => {
-                const listItem = document.createElement('a');
+                const listItem = document.createElement('div');
                 listItem.className = 'list-group-item py-3 lh-sm';
 
                 const postButtonContent = estimateItem.posted ?
-                `<button class="btn btn-primary" style="background-color: red; border-color: red;" type="submit" disabled>게시됨</button>`:
-                `<button class="btn btn-primary" type="submit" onclick="postEstimate(this)">게시</button>`;
+                  `<button class="btn btn-primary" style="background-color: red; border-color: red;" type="submit" disabled>게시됨</button>` :
+                  `<button class="btn btn-primary" type="submit" onclick="postEstimate(this)">게시</button>`;
 
                 const editButtonContent = estimateItem.posted ?
-                ``:
-                `<button class="btn btn-primary" type="submit" onclick="callEstimateEditPage(this)">편집</button>`;
+                  `` :
+                  `<button class="btn btn-primary" type="submit" onclick="callEstimateEditPage(this)">편집</button>`;
+
+                const deleteButtonContent =
+                  `<button class="btn btn-primary" style="background-color: red; border-color: red;" type="submit" onclick="deleteEstimate(this)">삭제</button>`
 
                 const listItemContent = `
                   <div class="d-flex w-100 align-items-center justify-content-between">
@@ -45,7 +48,7 @@
                     <div class="button-container">
                       ${postButtonContent}
                       ${editButtonContent}
-                      <button class="btn btn-primary" style="background-color: red; border-color: red;" type="submit" id="deleteButton">삭제</button>
+                      ${deleteButtonContent}
                     </div>
                   </div>
                   <div>
@@ -65,9 +68,9 @@
 
         window.addEventListener('load', fetchData);
 
-        function getEstimateID(button){
-          const parentElement = button.closest("a");
-          return parentElement.querySelector(".mb-1").textContent;
+        function getEstimateID(button) {
+          const mbElement = button.closest(".list-group-item").querySelector(".mb-1");
+          return mbElement ? mbElement.textContent : null;
         }
 
         function callEstimateEditPage(button) {
@@ -80,23 +83,26 @@
           window.location.href = `/CusCom/uploadPostPage?id=${dataId}`;
         }
 
-        document.getElementById('deleteButton')
-          .addEventListener('click',function(event){
-            const formData = new FormData();
-            formData.append('estimateID', getEstimateID(button));
-            fetch("/CusCom/API/deleteEstimate", {
-                    method: "POST",
-                    body: formData
-                })
-                .then(response => {
-                    if(response.ok){ location.reload(); }
-                    else{ return response.json(); }
-                })
-                .then(response => console.log(response))
-                .catch(error => {
-                    console.error("Error:", error);
-                });
+        function deleteEstimate(button){
+          const dataId = getEstimateID(button);
+          const formData = new FormData();
+          formData.append('estimateID', dataId);
+          fetch("/CusCom/API/deleteEstimate", {
+            method: "POST",
+            body: formData
+          })
+          .then(response => {
+            if (response.ok) {
+              location.reload();
+            } else {
+              return response.json();
+            }
+          })
+          .then(response => console.log(response))
+          .catch(error => {
+            console.error("Error:", error);
           });
+        }
       </script>
     </main>
 </body>

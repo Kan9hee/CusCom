@@ -133,9 +133,10 @@
                     method: "POST",
                     body: formData
                 })
-                .then(response =>
-                    if(response.ok){ window.location.href='/CusCom/adminPage/main'; }
-                    else { return response.json(); }
+                .then(response =>{
+                      if(response.ok){ window.location.href=`/CusCom/adminPage/main`; }
+                      else { return response.json(); }
+                    }
                 )
                 .then(data => {
                     alert("Error: " + data.message);
@@ -150,9 +151,10 @@
                     method: "POST",
                     body: formData
                 })
-                .then(response =>
-                    if(response.ok){ window.location.href='/CusCom/adminPage/main'; }
-                    else { return response.json(); }
+                .then(response =>{
+                      if(response.ok){ window.location.href=`/CusCom/adminPage/main`; }
+                      else { return response.json(); }
+                    }
                 )
                 .then(data => {
                     alert("Error: " + data.message);

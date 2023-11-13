@@ -124,6 +124,8 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
         if(motherBoard.motherBoardFormFactor.length>caseMaxFormFactor.length
             ||motherBoard.motherBoardFormFactor.width>caseMaxFormFactor.width)
             throw CusComException(CusComErrorCode.OversizeMotherBoard)
+        if(motherBoard.socket!=cpu.socket)
+            throw CusComException(CusComErrorCode.MismatchSocket)
         if(powerSupply.length>case.powerLength)
             throw CusComException(CusComErrorCode.OversizePowerSupply)
         if(memory.type!=motherBoard.memoryType)

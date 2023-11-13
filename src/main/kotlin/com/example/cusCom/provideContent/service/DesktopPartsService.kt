@@ -1,13 +1,17 @@
 package com.example.cusCom.provideContent.service
 
+import com.example.cusCom.provideContent.dto.CPUSocket
 import com.example.cusCom.provideContent.dto.MotherBoardFormFactor
 import com.example.cusCom.provideContent.dto.parts.*
+import com.example.cusCom.provideContent.entity.mySQL.CPUSocketEntity
 import com.example.cusCom.provideContent.entity.mySQL.parts.*
+import com.example.cusCom.provideContent.repository.CPUSocketRepository
 import com.example.cusCom.provideContent.repository.MotherBoardFormFactorRepository
 import com.example.cusCom.provideContent.repository.parts.*
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 @Service
 class DesktopPartsService(private val caseRepo: CaseRepository,
@@ -18,7 +22,8 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                           private val memoryRepo:MemoryRepository,
                           private val motherBoardRepo:MotherBoardRepository,
                           private val powerSupplyRepo:PowerSupplyRepository,
-                          private val motherBoardFormFactorRepo: MotherBoardFormFactorRepository) {
+                          private val motherBoardFormFactorRepo: MotherBoardFormFactorRepository,
+                          private val cpuSocketRepository: CPUSocketRepository) {
 
     @Transactional(readOnly = true)
     fun getCaseList(): List<Case> {
@@ -468,5 +473,10 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun findMotherBoardFormFactor(name: String): MotherBoardFormFactor {
         val entity=motherBoardFormFactorRepo.findById(name).orElseThrow { EntityNotFoundException("MotherboardFormFactor ${name}을 찾을 수가 없습니다.") }
         return MotherBoardFormFactor(entity.name,entity.length,entity.width)
+    }
+
+    fun isContainSocket(chipset:String,socket:String): Boolean {
+        val find=cpuSocketRepository.findById(chipset).get()
+        return find.name==socket
     }
 }

@@ -1,5 +1,7 @@
 package com.example.cusCom.provideContent.service
 
+import com.example.cusCom.exception.CusComErrorCode
+import com.example.cusCom.exception.CusComException
 import com.example.cusCom.provideContent.dto.Comment
 import com.example.cusCom.provideContent.dto.SharePlacePost
 import com.example.cusCom.provideContent.entity.mongoDB.CommentEntity
@@ -18,6 +20,9 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
 
     @Transactional
     fun uploadPost(sharePlacePost: SharePlacePost){
+        if(sharePlacePost.title.isEmpty())
+            throw CusComException(CusComErrorCode.UnfinishedPost)
+
         mongoTemplate.insert(
             SharePlacePostEntity(
                 ObjectId(),
@@ -33,8 +38,11 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
 
     @Transactional
     fun deletePost(option:String,value:String){
-        val query= Query(Criteria.where(option).`is`(if(option=="_id") ObjectId(value) else value))
-        mongoTemplate.remove(query, SharePlacePostEntity::class.java)
+        val query=Query(Criteria.where(option).`is`(if(option=="_id") ObjectId(value) else value))
+        val result=mongoTemplate.remove(query, SharePlacePostEntity::class.java)
+
+        if(result.deletedCount==0L)
+            throw CusComException(CusComErrorCode.FailedDeletePost)
     }
 
     @Transactional
@@ -105,6 +113,9 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
 
     @Transactional
     fun uploadComment(comment: Comment){
+        if(comment.content.isEmpty())
+            throw CusComException(CusComErrorCode.NotWrittenComment)
+
         mongoTemplate.insert(
             CommentEntity(
             ObjectId(),

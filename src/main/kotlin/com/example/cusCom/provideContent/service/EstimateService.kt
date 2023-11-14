@@ -90,8 +90,11 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
 
     @Transactional
     fun deleteUserEstimate(option:String,value:String){
-        val query= Query(Criteria.where(option).`is`(if(option=="_id") ObjectId(value) else value))
-        mongoTemplate.remove(query, EstimateEntity::class.java)
+        val query=Query(Criteria.where(option).`is`(if(option=="_id") ObjectId(value) else value))
+        val result=mongoTemplate.remove(query, EstimateEntity::class.java)
+
+        if(result.deletedCount==0L)
+            throw CusComException(CusComErrorCode.FailedDeleteEstimate)
     }
 
     fun checkDesktopEstimate(estimate: Estimate){
@@ -103,7 +106,7 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
                     cpuCooler.isEmpty() ||
                     motherBoard.isEmpty() ||
                     powerSupply.isEmpty() })
-            throw CusComException(CusComErrorCode.UnfinishedCusCom)
+            throw CusComException(CusComErrorCode.UnfinishedEstimate)
 
         val cpuCooler=desktopPartsService.findCpuCooler("name",estimate.cpuCooler)
         val case=desktopPartsService.findCase("name",estimate.desktopCase)
@@ -115,11 +118,11 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
 
         val caseMaxFormFactor=motherBoardRepo.findById(case.motherBoardFormFactor.name).get()
 
-        if(cpuCooler.height>case.cpuCoolerHeight)
+        if(cpuCooler.height>=case.cpuCoolerHeight)
             throw CusComException(CusComErrorCode.OversizeCooler)
-        if(graphicsCard.length>case.graphicsCardLength)
+        if(graphicsCard.length>=case.graphicsCardLength)
             throw CusComException(CusComErrorCode.OversizeGraphicsCard)
-        if(memory.height>44)
+        if(memory.height>=44)
             throw CusComException(CusComErrorCode.InterferenceMemory)
         if(motherBoard.motherBoardFormFactor.length>caseMaxFormFactor.length
             ||motherBoard.motherBoardFormFactor.width>caseMaxFormFactor.width)
@@ -130,7 +133,7 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
             throw CusComException(CusComErrorCode.OversizePowerSupply)
         if(memory.type!=motherBoard.memoryType)
             throw CusComException(CusComErrorCode.MismatchMemory)
-        if(graphicsCard.maxPower + cpu.TDP + cpuCooler.TDP > powerSupply.power)
+        if(graphicsCard.maxPower + cpu.TDP + cpuCooler.TDP >= powerSupply.power)
             throw CusComException(CusComErrorCode.PowerSupplyShortage)
     }
 }

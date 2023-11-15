@@ -88,7 +88,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
         val condition=when(option){
             "title" ->Criteria.where(option).regex(".*$value.*","i")
             "tags" -> Criteria.where(option).`in`(value)
-            "user"->Criteria.where(option).`is`(value)
+            "userName"->Criteria.where(option).`is`(value)
             "parts"->findInEstimates(value)
             else -> Criteria()
         }
@@ -157,25 +157,36 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
         }
     }
 
-    private fun findInEstimates(value:String):Criteria{
-        val estimateCriteria=Criteria()
-        for (field in EstimateEntity::class.java.declaredFields)
-            estimateCriteria.orOperator(
-                Criteria.where(field.name).regex(".*$value.*","i")
-            )
-        val estimateEntities=mongoTemplate.find(Query(estimateCriteria),EstimateEntity::class.java)
+    fun findInEstimates(value: String): Criteria {
+        val excludedFields = setOf("_id", "userName", "posted", "_class")
+        val orCriteria = mutableListOf<Criteria>()
+        val estimateEntities = mongoTemplate.find(Query(), EstimateEntity::class.java)
+        val fields = EstimateEntity::class.java.declaredFields
 
-        val result=run{
-            if(estimateEntities.isNotEmpty()){
-                val estimateIds=estimateEntities.mapNotNull{it._id}
-                Criteria.where("estimateID").`in`(estimateIds)
+        for (estimateEntity in estimateEntities) {
+            val fieldsToCheck = fields
+                .filter { !excludedFields.contains(it.name) }
+                .map { field ->
+                    field.isAccessible = true
+                    field.get(estimateEntity)?.toString()
+                }
+            val entityString = fieldsToCheck.joinToString(separator = ", ")
+            if (entityString.contains(value, ignoreCase = true)) {
+                orCriteria.add(Criteria.where("_id").`is`(estimateEntity._id))
             }
-            else
-                Criteria()
         }
 
-        return result
+        if (orCriteria.isNotEmpty()) {
+            val estimateCriteria = Criteria().orOperator(*orCriteria.toTypedArray())
+            val estimateEntities = mongoTemplate.find(Query(estimateCriteria), EstimateEntity::class.java)
+            if (estimateEntities.isNotEmpty()) {
+                val estimateIds = estimateEntities.map { it._id.toHexString() }
+                return Criteria.where("estimateID").`in`(estimateIds)
+            }
+        }
+        return Criteria()
     }
+
 
     private fun pagination(posts:List<SharePlacePost>, maxContent:Int, currentPage:Int): HashMap<String,Any> {
         val postCount=posts.size

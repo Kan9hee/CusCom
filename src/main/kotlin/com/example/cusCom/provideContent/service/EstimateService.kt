@@ -122,7 +122,7 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
             throw CusComException(CusComErrorCode.OversizeCooler)
         if(graphicsCard.length>=case.graphicsCardLength)
             throw CusComException(CusComErrorCode.OversizeGraphicsCard)
-        if(memory.height>=44)
+        if(cpuCooler.height+(memory.height-44)>=case.width)
             throw CusComException(CusComErrorCode.InterferenceMemory)
         if(motherBoard.motherBoardFormFactor.length>caseMaxFormFactor.length
             ||motherBoard.motherBoardFormFactor.width>caseMaxFormFactor.width)

@@ -31,7 +31,8 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
                 sharePlacePost.userName,
                 sharePlacePost.tags,
                 sharePlacePost.viewCount,
-                sharePlacePost.likeCount
+                sharePlacePost.likeCount,
+                sharePlacePost.commentCount
             )
         )
     }
@@ -58,7 +59,8 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
                 it.userName,
                 it.tags,
                 it.viewCount,
-                it.likeCount)
+                it.likeCount,
+                it.commentCount)
         }
     }
 
@@ -73,7 +75,8 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
                 entity.userName,
                 entity.tags,
                 entity.viewCount,
-                entity.likeCount
+                entity.likeCount,
+                entity.commentCount
             )
         }
 
@@ -98,7 +101,8 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
                     entity.userName,
                     entity.tags,
                     entity.viewCount,
-                    entity.likeCount
+                    entity.likeCount,
+                    entity.commentCount
                 )
         }
         return pagination(posts,maxContent,currentPage)
@@ -108,6 +112,13 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
     fun increaseViewCount(sharePlacePostEntity: SharePlacePostEntity){
         val query= Query(Criteria.where("_id").`is`(sharePlacePostEntity._id))
         val update= Update().inc("viewCount",1)
+        mongoTemplate.updateFirst(query,update,"shareplace-posts")
+    }
+
+    @Transactional
+    fun increaseCommentCount(sharePlacePostID: String){
+        val query= Query(Criteria.where("_id").`is`(ObjectId(sharePlacePostID)))
+        val update= Update().inc("commentCount",1)
         mongoTemplate.updateFirst(query,update,"shareplace-posts")
     }
 
@@ -123,6 +134,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
             comment.userName,
             comment.content)
         )
+        increaseCommentCount(comment.postID)
     }
 
     @Transactional

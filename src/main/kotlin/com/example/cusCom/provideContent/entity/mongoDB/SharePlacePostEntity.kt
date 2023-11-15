@@ -10,11 +10,14 @@ class SharePlacePostEntity(val _id: ObjectId,
                            val userName:String,
                            var tags:Array<String>,
                            viewCount:Long,
-                           likeCount:Long) {
+                           likeCount:Long,
+                           commentCount:Long) {
 
     var viewCount:Long=viewCount
         protected set
     var likeCount:Long=likeCount
+        protected set
+    var commentCount:Long=commentCount
         protected set
 
     fun setPostData(title:String,content:String,tags:Array<String>){

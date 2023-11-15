@@ -162,12 +162,12 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     @PostMapping("/deleteEstimate")
     fun deleteEstimate(@RequestParam("estimateID") estimateID:String): ResponseEntity<String>{
         try{
-            estimateService.deleteUserEstimate("_id",estimateID)
-            val postInfo=sharePlaceService.loadPost("estimateID",estimateID)
-            if(postInfo!=null){
-                sharePlaceService.deleteComment("postID",postInfo._id)
+            sharePlaceService.loadPost("estimateID",estimateID)?.let{ postInfo ->
+                if(postInfo.commentCount!=0L)
+                    sharePlaceService.deleteComment("postID",postInfo._id)
                 sharePlaceService.deletePost("_id",postInfo._id)
             }
+            estimateService.deleteUserEstimate("_id",estimateID)
             return ResponseEntity.ok("Success")
         }catch(e: CusComException) { throw e }
     }

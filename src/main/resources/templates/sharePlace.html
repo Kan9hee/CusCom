@@ -67,14 +67,20 @@
         }
         queryParams.append("maxContent",9);
         queryParams.append("currentPage",currentPage);
+        const url = new URL(window.location.href);
+        if (url.searchParams.has('page'))
+          url.searchParams.delete('page');
 
         fetch(`/CusCom/API/loadPostList?${queryParams.toString()}`)
         .then(response => response.json())
         .then(data => {
+          const basicPath = url.pathname + (url.search === "" ? "?" : url.search+"&");
           const postList = document.getElementById('postList');
           const posts = data["postList"];
           const pageCount = data["pageCount"];
           currentPage = data["page"];
+          const startAtList = ((pageCount-2) < currentPage) ? 1 : (pageCount-2);
+          const endAtList = ((currentPage+2) > pageCount) ? pageCount : (currentPage+2);
 
           if(searchData!=null){
             const searchResultText = document.getElementById('searchResultText')
@@ -113,29 +119,35 @@
 
           const pagination = document.querySelector('.pagination');
           const previousPageLink = document.createElement('li');
-          previousPageLink.classList.add('page-item', 'disabled');
-          previousPageLink.innerHTML = '<span class="page-link">Previous</span>';
+          if(currentPage == startAtList)
+            previousPageLink.classList.add('page-item', 'disabled');
+          else
+            previousPageLink.classList.add('page-item');
+          previousPageLink.innerHTML = `<a class="page-link" href=${basicPath}page=${startAtList}><<</a>`;
           pagination.appendChild(previousPageLink);
 
-          for (let page = 1; page <= pageCount; page++) {
+          for (let page = startAtList; page <= endAtList; page++) {
             const pageLink = document.createElement('li');
             pageLink.classList.add('page-item');
-            if (page === currentPage) {
+            if (page == currentPage) {
               console.log(page);
               pageLink.innerHTML = `
                 <li class="page-item active" aria-current="page">
-                  <span class="page-link">${page}</span>
+                  <a class="page-link" href=${basicPath}page=${page}>${page}</a>
                 </li>
               `;
             }else{
-              pageLink.innerHTML = `<a class="page-link" href="#">${page}</a>`;
+              pageLink.innerHTML = `<a class="page-link" href=${basicPath}page=${page}>${page}</a>`;
             }
             pagination.appendChild(pageLink);
           }
 
           const nextPageLink = document.createElement('li');
-          nextPageLink.classList.add('page-item');
-          nextPageLink.innerHTML = '<a class="page-link" href="#">Next</a>';
+          if(currentPage == endAtList)
+            nextPageLink.classList.add('page-item', 'disabled');
+          else
+            nextPageLink.classList.add('page-item');
+          nextPageLink.innerHTML = `<a class="page-link" href=${basicPath}page=${endAtList}>>></a>`;
           pagination.appendChild(nextPageLink);
         })
         .catch(error => console.error('Error fetching data:', error));

@@ -196,7 +196,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
 
         val map=HashMap<String,Any>()
         map["postList"]=posts.subList(startContent,endContent)
-        map["pageCount"]=(postCount/maxContent)+1
+        map["pageCount"]=if(postCount%maxContent==0) (postCount/maxContent) else (postCount/maxContent+1)
         map["page"]=currentPage
 
         return map

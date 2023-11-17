@@ -115,7 +115,7 @@
                 const tagElements = postData.tags.map(tag => {
                   const tagElement = document.createElement('small');
                   tagElement.className = 'text-body-secondary';
-                  tagElement.textContent = tag;
+                  tagElement.textContent = `#${tag} ` ;
                   return tagElement;
                 });
                 postTags.innerHTML = '';

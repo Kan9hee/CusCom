@@ -1,9 +1,9 @@
 package com.example.cusCom.provideContent.service
 
-import com.example.cusCom.provideContent.dto.CPUSocket
+import com.example.cusCom.exception.CusComErrorCode
+import com.example.cusCom.exception.CusComException
 import com.example.cusCom.provideContent.dto.MotherBoardFormFactor
 import com.example.cusCom.provideContent.dto.parts.*
-import com.example.cusCom.provideContent.entity.mySQL.CPUSocketEntity
 import com.example.cusCom.provideContent.entity.mySQL.parts.*
 import com.example.cusCom.provideContent.repository.CPUSocketRepository
 import com.example.cusCom.provideContent.repository.MotherBoardFormFactorRepository
@@ -11,7 +11,6 @@ import com.example.cusCom.provideContent.repository.parts.*
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
 
 @Service
 class DesktopPartsService(private val caseRepo: CaseRepository,
@@ -51,9 +50,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun findCase(option:String,value:String): Case {
         var entity = CaseEntity(Case())
         if(option=="name")
-            entity = caseRepo.findByName(value).orElseThrow { EntityNotFoundException("Case ${value}을 찾을 수가 없습니다.") }
+            entity = caseRepo.findByName(value).orElseThrow { CusComException(CusComErrorCode.CaseNotFound) }
         else if(option=="id")
-            entity = caseRepo.findById(value.toLong()).orElseThrow { EntityNotFoundException("Case ${value}을 찾을 수가 없습니다.") }
+            entity = caseRepo.findById(value.toLong()).orElseThrow { CusComException(CusComErrorCode.CaseNotFound) }
 
         return Case(
             entity.id,
@@ -79,7 +78,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional
     fun updateCase(case: Case,beforeId:Long){
-        val temp=caseRepo.findById(beforeId).orElseThrow { EntityNotFoundException("MotherboardFormFactor ${beforeId}을 찾을 수가 없습니다.") }
+        val temp=caseRepo.findById(beforeId).orElseThrow { CusComException(CusComErrorCode.CaseNotFound) }
         temp.update(case)
     }
 
@@ -111,9 +110,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun findCpuCooler(option:String,value:String): CPUCooler {
         var entity = CPUCoolerEntity(CPUCooler())
         if(option=="name")
-            cpuCoolerRepo.findByName(value).orElseThrow { EntityNotFoundException("CPUCooler ${value}을 찾을 수가 없습니다.") }
+            cpuCoolerRepo.findByName(value).orElseThrow { CusComException(CusComErrorCode.CPUCoolerNotFound) }
         else if(option=="id")
-            cpuCoolerRepo.findById(value.toLong()).orElseThrow { EntityNotFoundException("CPUCooler ${value}을 찾을 수가 없습니다.") }
+            cpuCoolerRepo.findById(value.toLong()).orElseThrow { CusComException(CusComErrorCode.CPUCoolerNotFound) }
 
         return CPUCooler(
             entity.id,
@@ -135,7 +134,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional
     fun updateCPUCooler(cpuCooler: CPUCooler,beforeId: Long){
-        var temp=cpuCoolerRepo.findById(beforeId).orElseThrow { EntityNotFoundException("MotherboardFormFactor ${beforeId}을 찾을 수가 없습니다.") }
+        var temp=cpuCoolerRepo.findById(beforeId).orElseThrow { CusComException(CusComErrorCode.CPUCoolerNotFound) }
         temp.update(cpuCooler)
     }
 
@@ -168,9 +167,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun findCpu(option:String,value:String): CPU {
         var entity = CPUEntity(CPU())
         if(option=="name")
-            entity = cpuRepo.findByName(value).orElseThrow { EntityNotFoundException("CPU ${value}을 찾을 수가 없습니다.") }
+            entity = cpuRepo.findByName(value).orElseThrow { CusComException(CusComErrorCode.CPUNotFound) }
         else if(option=="id")
-            entity = cpuRepo.findById(value.toLong()).orElseThrow { EntityNotFoundException("CPU ${value}을 찾을 수가 없습니다.") }
+            entity = cpuRepo.findById(value.toLong()).orElseThrow { CusComException(CusComErrorCode.CPUNotFound) }
         return CPU(
             entity.id,
             entity.name,
@@ -193,7 +192,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional
     fun updateCPU(cpu: CPU,beforeId:Long){
-        var temp=cpuRepo.findById(beforeId).orElseThrow { EntityNotFoundException("MotherboardFormFactor ${beforeId}을 찾을 수가 없습니다.") }
+        var temp=cpuRepo.findById(beforeId).orElseThrow { CusComException(CusComErrorCode.CPUNotFound) }
         temp.update(cpu)
     }
 
@@ -224,9 +223,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun findDataStorage(option:String,value:String): DataStorage {
         var entity = DataStorageEntity(DataStorage())
         if(option=="name")
-            entity = dataStorageRepo.findByName(value).orElseThrow { EntityNotFoundException("DataStorage ${value}을 찾을 수가 없습니다.") }
+            entity = dataStorageRepo.findByName(value).orElseThrow { CusComException(CusComErrorCode.DataStorageNotFound) }
         if(option=="id")
-            entity = dataStorageRepo.findById(value.toLong()).orElseThrow { EntityNotFoundException("DataStorage ${value}을 찾을 수가 없습니다.") }
+            entity = dataStorageRepo.findById(value.toLong()).orElseThrow { CusComException(CusComErrorCode.DataStorageNotFound) }
 
         return DataStorage(
             entity.id,
@@ -247,7 +246,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional
     fun updateDataStorage(dataStorage: DataStorage,beforeId: Long){
-        var temp=dataStorageRepo.findById(beforeId).orElseThrow { EntityNotFoundException("MotherboardFormFactor ${beforeId}을 찾을 수가 없습니다.") }
+        var temp=dataStorageRepo.findById(beforeId).orElseThrow { CusComException(CusComErrorCode.DataStorageNotFound) }
         temp.update(dataStorage)
     }
 
@@ -279,9 +278,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun findGraphicsCard(option:String,value:String): GraphicsCard {
         var entity = GraphicsCardEntity(GraphicsCard())
         if(option=="name")
-            entity = graphicsCardRepo.findByName(value).orElseThrow { EntityNotFoundException("GraphicsCard ${value}을 찾을 수가 없습니다.") }
+            entity = graphicsCardRepo.findByName(value).orElseThrow { CusComException(CusComErrorCode.GraphicsCardNotFound) }
         else if(option=="id")
-            entity = graphicsCardRepo.findById(value.toLong()).orElseThrow { EntityNotFoundException("GraphicsCard ${value}을 찾을 수가 없습니다.") }
+            entity = graphicsCardRepo.findById(value.toLong()).orElseThrow { CusComException(CusComErrorCode.GraphicsCardNotFound) }
         return GraphicsCard(
             entity.id,
             entity.name,
@@ -302,7 +301,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional
     fun updateGraphicsCard(graphicsCard: GraphicsCard,beforeId:Long){
-        var temp=graphicsCardRepo.findById(beforeId).orElseThrow { EntityNotFoundException("MotherboardFormFactor ${beforeId}을 찾을 수가 없습니다.") }
+        var temp=graphicsCardRepo.findById(beforeId).orElseThrow { CusComException(CusComErrorCode.GraphicsCardNotFound) }
         temp.update(graphicsCard)
     }
 
@@ -331,9 +330,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun findMemory(option:String,value:String): Memory {
         var entity = MemoryEntity(Memory())
         if(option=="name")
-            entity = memoryRepo.findByName(value).orElseThrow { EntityNotFoundException("Memory ${value}을 찾을 수가 없습니다.") }
+            entity = memoryRepo.findByName(value).orElseThrow { CusComException(CusComErrorCode.MemoryNotFound) }
         else if(option=="id")
-            entity = memoryRepo.findById(value.toLong()).orElseThrow { EntityNotFoundException("Memory ${value}을 찾을 수가 없습니다.") }
+            entity = memoryRepo.findById(value.toLong()).orElseThrow { CusComException(CusComErrorCode.MemoryNotFound) }
         return Memory(
             entity.id,
             entity.name,
@@ -351,7 +350,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional
     fun updateMemory(memory: Memory,beforeId:Long){
-        var temp=memoryRepo.findById(beforeId).orElseThrow { EntityNotFoundException("MotherboardFormFactor ${beforeId}을 찾을 수가 없습니다.") }
+        var temp=memoryRepo.findById(beforeId).orElseThrow { CusComException(CusComErrorCode.MemoryNotFound) }
         temp.update(memory)
     }
 
@@ -385,9 +384,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun findMotherBoard(option:String,value:String): MotherBoard {
         var entity = MotherBoardEntity(MotherBoard())
         if(option=="name")
-            entity = motherBoardRepo.findByName(value).orElseThrow { EntityNotFoundException("MotherBoard ${value}을 찾을 수가 없습니다.") }
+            entity = motherBoardRepo.findByName(value).orElseThrow { CusComException(CusComErrorCode.MotherBoardNotFound) }
         else if(option=="id")
-            entity = motherBoardRepo.findById(value.toLong()).orElseThrow { EntityNotFoundException("MotherBoard ${value}을 찾을 수가 없습니다.") }
+            entity = motherBoardRepo.findById(value.toLong()).orElseThrow { CusComException(CusComErrorCode.MotherBoardNotFound) }
         return MotherBoard(
             entity.id,
             entity.name,
@@ -410,7 +409,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional
     fun updateMotherBoard(motherBoard: MotherBoard,beforeId:Long){
-        var temp=motherBoardRepo.findById(beforeId).orElseThrow { EntityNotFoundException("MotherboardFormFactor ${beforeId}을 찾을 수가 없습니다.") }
+        var temp=motherBoardRepo.findById(beforeId).orElseThrow { CusComException(CusComErrorCode.MotherBoardNotFound) }
         temp.update(motherBoard)
     }
 
@@ -440,9 +439,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun findPowerSupply(option:String,value:String): PowerSupply {
         var entity = PowerSupplyEntity(PowerSupply())
         if(option=="name")
-            entity = powerSupplyRepo.findByName(value).orElseThrow { EntityNotFoundException("PowerSupply ${value}을 찾을 수가 없습니다.") }
+            entity = powerSupplyRepo.findByName(value).orElseThrow { CusComException(CusComErrorCode.PowerSupplyNotFound) }
         else if(option=="id")
-            entity = powerSupplyRepo.findById(value.toLong()).orElseThrow { EntityNotFoundException("PowerSupply ${value}을 찾을 수가 없습니다.") }
+            entity = powerSupplyRepo.findById(value.toLong()).orElseThrow { CusComException(CusComErrorCode.PowerSupplyNotFound) }
         return PowerSupply(
             entity.id,
             entity.name,
@@ -461,7 +460,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
     @Transactional
     fun updatePowerSupply(powerSupply: PowerSupply,beforeId:Long){
-        var temp=powerSupplyRepo.findById(beforeId).orElseThrow { EntityNotFoundException("MotherboardFormFactor ${beforeId}을 찾을 수가 없습니다.") }
+        var temp=powerSupplyRepo.findById(beforeId).orElseThrow { CusComException(CusComErrorCode.PowerSupplyNotFound) }
         temp.update(powerSupply)
     }
 
@@ -471,7 +470,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     fun findMotherBoardFormFactor(name: String): MotherBoardFormFactor {
-        val entity=motherBoardFormFactorRepo.findById(name).orElseThrow { EntityNotFoundException("MotherboardFormFactor ${name}을 찾을 수가 없습니다.") }
+        val entity=motherBoardFormFactorRepo.findById(name).orElseThrow { CusComException(CusComErrorCode.FormFactorNotFound) }
         return MotherBoardFormFactor(entity.name,entity.length,entity.width)
     }
 

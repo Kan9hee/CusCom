@@ -5,7 +5,7 @@ data class PowerSupply(val id:Long?=null,
                        val imageUrl:String="",
                        val manufacturer:String="",
                        val power:Int=0,
-                       val efficiency:String="NONE",
+                       val efficiency:String="",
                        val modular:String="",
                        val length:Int=0){
 }

@@ -1,10 +1,7 @@
 package com.example.cusCom.controller
 
 import com.example.cusCom.exception.CusComException
-import com.example.cusCom.provideContent.dto.Comment
-import com.example.cusCom.provideContent.dto.Estimate
-import com.example.cusCom.provideContent.dto.SharePlacePost
-import com.example.cusCom.provideContent.dto.User
+import com.example.cusCom.provideContent.dto.*
 import com.example.cusCom.provideContent.dto.parts.*
 import com.example.cusCom.provideContent.service.DesktopPartsService
 import com.example.cusCom.provideContent.service.EstimateService
@@ -13,7 +10,6 @@ import com.example.cusCom.provideContent.service.UserService
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import org.bson.types.ObjectId
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
@@ -33,8 +29,9 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
 
     @GetMapping("/checkLogin")
     fun checkLogin(): ResponseEntity<String> {
-        val authentication=SecurityContextHolder.getContext().authentication
-        return ResponseEntity.ok("{\"loggedIn\": ${authentication != null && authentication.isAuthenticated}}")
+        val authentication = SecurityContextHolder.getContext().authentication
+        val loggedIn = authentication != null && authentication.isAuthenticated
+        return ResponseEntity.ok(LoginStatus(loggedIn).toString())
     }
 
     @GetMapping("/getUserEstimateList")

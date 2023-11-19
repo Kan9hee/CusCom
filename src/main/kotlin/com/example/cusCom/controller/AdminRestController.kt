@@ -1,5 +1,6 @@
 package com.example.cusCom.controller
 
+import com.example.cusCom.config.InnerStringsConfig
 import com.example.cusCom.exception.CusComErrorCode
 import com.example.cusCom.exception.CusComException
 import com.example.cusCom.provideContent.dto.parts.*
@@ -16,7 +17,8 @@ import org.springframework.web.multipart.MultipartFile
 @RestController
 @RequestMapping("/CusCom/adminAPI")
 class AdminRestController(private val desktopPartsService: DesktopPartsService,
-                          private val blobService: BlobService) {
+                          private val blobService: BlobService,
+                          private val innerStringsConfig: InnerStringsConfig) {
 
     @PostMapping("/createParts")
     fun createParts(@RequestParam("Type") type:String,
@@ -25,16 +27,24 @@ class AdminRestController(private val desktopPartsService: DesktopPartsService,
     ): ResponseEntity<String> {
         val editedJson = editJson(requestJSON,type,image)
         when(type){
-            "Case"->desktopPartsService.createCase(Gson().fromJson(editedJson, Case::class.java))
-            "CPU"->desktopPartsService.createCPU(Gson().fromJson(editedJson, CPU::class.java))
-            "CPUCooler"->desktopPartsService.createCPUCooler(Gson().fromJson(editedJson, CPUCooler::class.java))
-            "DataStorage"->desktopPartsService.createDataStorage(Gson().fromJson(editedJson, DataStorage::class.java))
-            "GraphicsCard"->desktopPartsService.createGraphicsCard(Gson().fromJson(editedJson, GraphicsCard::class.java))
-            "Memory"->desktopPartsService.createMemory(Gson().fromJson(editedJson, Memory::class.java))
-            "MotherBoard"->desktopPartsService.createMotherBoard(Gson().fromJson(editedJson, MotherBoard::class.java))
-            "PowerSupply"->desktopPartsService.createPowerSupply(Gson().fromJson(editedJson, PowerSupply::class.java))
+            innerStringsConfig.parts.case->
+                desktopPartsService.createCase(Gson().fromJson(editedJson, Case::class.java))
+            innerStringsConfig.parts.cpu->
+                desktopPartsService.createCPU(Gson().fromJson(editedJson, CPU::class.java))
+            innerStringsConfig.parts.cpuCooler->
+                desktopPartsService.createCPUCooler(Gson().fromJson(editedJson, CPUCooler::class.java))
+            innerStringsConfig.parts.dataStorage->
+                desktopPartsService.createDataStorage(Gson().fromJson(editedJson, DataStorage::class.java))
+            innerStringsConfig.parts.graphicsCard->
+                desktopPartsService.createGraphicsCard(Gson().fromJson(editedJson, GraphicsCard::class.java))
+            innerStringsConfig.parts.memory->
+                desktopPartsService.createMemory(Gson().fromJson(editedJson, Memory::class.java))
+            innerStringsConfig.parts.motherBoard->
+                desktopPartsService.createMotherBoard(Gson().fromJson(editedJson, MotherBoard::class.java))
+            innerStringsConfig.parts.powerSupply->
+                desktopPartsService.createPowerSupply(Gson().fromJson(editedJson, PowerSupply::class.java))
         }
-        return ResponseEntity.ok("Success")
+        return ResponseEntity.ok(innerStringsConfig.property.responseOk)
     }
 
     @PostMapping("/updateParts")
@@ -45,41 +55,59 @@ class AdminRestController(private val desktopPartsService: DesktopPartsService,
     ): ResponseEntity<String> {
         val editedJson = editJson(requestJSON,type,image)
         when(type){
-            "Case"->desktopPartsService.updateCase(Gson().fromJson(editedJson, Case::class.java),BeforeID)
-            "CPU"->desktopPartsService.updateCPU(Gson().fromJson(editedJson, CPU::class.java),BeforeID)
-            "CPUCooler"->desktopPartsService.updateCPUCooler(Gson().fromJson(editedJson, CPUCooler::class.java),BeforeID)
-            "DataStorage"->desktopPartsService.updateDataStorage(Gson().fromJson(editedJson, DataStorage::class.java),BeforeID)
-            "GraphicsCard"->desktopPartsService.updateGraphicsCard(Gson().fromJson(editedJson, GraphicsCard::class.java),BeforeID)
-            "Memory"->desktopPartsService.updateMemory(Gson().fromJson(editedJson, Memory::class.java),BeforeID)
-            "MotherBoard"->desktopPartsService.updateMotherBoard(Gson().fromJson(editedJson, MotherBoard::class.java),BeforeID)
-            "PowerSupply"->desktopPartsService.updatePowerSupply(Gson().fromJson(editedJson, PowerSupply::class.java),BeforeID)
+            innerStringsConfig.parts.case->
+                desktopPartsService.updateCase(Gson().fromJson(editedJson, Case::class.java),BeforeID)
+            innerStringsConfig.parts.cpu->
+                desktopPartsService.updateCPU(Gson().fromJson(editedJson, CPU::class.java),BeforeID)
+            innerStringsConfig.parts.cpuCooler->
+                desktopPartsService.updateCPUCooler(Gson().fromJson(editedJson, CPUCooler::class.java),BeforeID)
+            innerStringsConfig.parts.dataStorage->
+                desktopPartsService.updateDataStorage(Gson().fromJson(editedJson, DataStorage::class.java),BeforeID)
+            innerStringsConfig.parts.graphicsCard->
+                desktopPartsService.updateGraphicsCard(Gson().fromJson(editedJson, GraphicsCard::class.java),BeforeID)
+            innerStringsConfig.parts.memory->
+                desktopPartsService.updateMemory(Gson().fromJson(editedJson, Memory::class.java),BeforeID)
+            innerStringsConfig.parts.motherBoard->
+                desktopPartsService.updateMotherBoard(Gson().fromJson(editedJson, MotherBoard::class.java),BeforeID)
+            innerStringsConfig.parts.powerSupply->
+                desktopPartsService.updatePowerSupply(Gson().fromJson(editedJson, PowerSupply::class.java),BeforeID)
         }
-        return ResponseEntity.ok("Success")
+        return ResponseEntity.ok(innerStringsConfig.property.responseOk)
     }
 
     @PostMapping("/deleteParts")
     @ResponseBody
     fun deleteParts(@RequestBody requestJSON:String): ResponseEntity<String> {
-        val request= ObjectMapper().readTree(java.net.URLDecoder.decode(requestJSON, "UTF-8"))
-        when(request["type"].asText()){
-            "Case"->desktopPartsService.deleteCase(request["targetID"].asText().toLong())
-            "CPU"->desktopPartsService.deleteCPU(request["targetID"].asText().toLong())
-            "CPUCooler"->desktopPartsService.deleteCPUCooler(request["targetID"].asText().toLong())
-            "DataStorage"->desktopPartsService.deleteDataStorage(request["targetID"].asText().toLong())
-            "GraphicsCard"->desktopPartsService.deleteGraphicsCard(request["targetID"].asText().toLong())
-            "Memory"->desktopPartsService.deleteMemory(request["targetID"].asText().toLong())
-            "MotherBoard"->desktopPartsService.deleteMotherBoard(request["targetID"].asText().toLong())
-            "PowerSupply"->desktopPartsService.deletePowerSupply(request["targetID"].asText().toLong())
+        val request= ObjectMapper().readTree(java.net.URLDecoder.decode(requestJSON,innerStringsConfig.request.encoding))
+        when(request[innerStringsConfig.request.partsType].asText()){
+            innerStringsConfig.parts.case->
+                desktopPartsService.deleteCase(request[innerStringsConfig.request.targetID].asText().toLong())
+            innerStringsConfig.parts.cpu->
+                desktopPartsService.deleteCPU(request[innerStringsConfig.request.targetID].asText().toLong())
+            innerStringsConfig.parts.cpuCooler->
+                desktopPartsService.deleteCPUCooler(request[innerStringsConfig.request.targetID].asText().toLong())
+            innerStringsConfig.parts.dataStorage->
+                desktopPartsService.deleteDataStorage(request[innerStringsConfig.request.targetID].asText().toLong())
+            innerStringsConfig.parts.graphicsCard->
+                desktopPartsService.deleteGraphicsCard(request[innerStringsConfig.request.targetID].asText().toLong())
+            innerStringsConfig.parts.memory->
+                desktopPartsService.deleteMemory(request[innerStringsConfig.request.targetID].asText().toLong())
+            innerStringsConfig.parts.motherBoard->
+                desktopPartsService.deleteMotherBoard(request[innerStringsConfig.request.targetID].asText().toLong())
+            innerStringsConfig.parts.powerSupply->
+                desktopPartsService.deletePowerSupply(request[innerStringsConfig.request.targetID].asText().toLong())
         }
-        return ResponseEntity.ok("Success")
+        return ResponseEntity.ok(innerStringsConfig.property.responseOk)
     }
 
     private fun editJson(json:String,type:String,image:MultipartFile): String {
         var jsonObject = Gson().fromJson(json, JsonObject::class.java)
         val contentType=image.contentType
         if (contentType != null && contentType.startsWith("image/")) {
-            jsonObject.addProperty("imageUrl", blobService.uploadImage(image, 500, 500))
-            if (type == "Case" || type == "MotherBoard")
+            jsonObject.addProperty(innerStringsConfig.property.imageUrl, blobService
+                .uploadImage(image, innerStringsConfig.property.imageWidth, innerStringsConfig.property.imageHeight)
+            )
+            if (type == innerStringsConfig.parts.case || type == innerStringsConfig.parts.motherBoard)
                 deserializeFormFactor(jsonObject)
         }
         else
@@ -88,8 +116,8 @@ class AdminRestController(private val desktopPartsService: DesktopPartsService,
     }
 
     private fun deserializeFormFactor(jsonObject: JsonObject) {
-        val formFactorName:String = jsonObject.get("motherBoardFormFactor").toString().removeSurrounding("\"")
+        val formFactorName:String = jsonObject.get(innerStringsConfig.property.formFactor).toString().removeSurrounding("\"")
         val formFactorObject=Gson().toJsonTree(desktopPartsService.findMotherBoardFormFactor(formFactorName)).asJsonObject
-        jsonObject.add("motherBoardFormFactor",formFactorObject)
+        jsonObject.add(innerStringsConfig.property.formFactor,formFactorObject)
     }
 }

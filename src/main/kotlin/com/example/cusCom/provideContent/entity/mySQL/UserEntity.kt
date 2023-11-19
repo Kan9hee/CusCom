@@ -3,7 +3,7 @@ package com.example.cusCom.provideContent.entity.mySQL
 import com.example.cusCom.provideContent.dto.User
 import jakarta.persistence.*
 
-@Table(name="user")
+@Table(name="\${dbString.mysql.table.user}")
 @Entity
 class UserEntity(user: User) {
 

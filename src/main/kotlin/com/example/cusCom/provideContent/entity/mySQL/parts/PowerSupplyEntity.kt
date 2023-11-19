@@ -3,7 +3,7 @@ package com.example.cusCom.provideContent.entity.mySQL.parts
 import com.example.cusCom.provideContent.dto.parts.PowerSupply
 import jakarta.persistence.*
 
-@Table(name="power_supply")
+@Table(name="\${dbString.mysql.table.powerSupply}")
 @Entity
 class PowerSupplyEntity(powerSupply: PowerSupply){
 

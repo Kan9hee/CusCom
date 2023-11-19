@@ -1,5 +1,7 @@
 package com.example.cusCom.provideContent.service
 
+import com.example.cusCom.config.DBStringConfig
+import com.example.cusCom.config.InnerStringsConfig
 import com.example.cusCom.exception.CusComErrorCode
 import com.example.cusCom.exception.CusComException
 import com.example.cusCom.provideContent.dto.Comment
@@ -16,7 +18,9 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class SharePlaceService(private val mongoTemplate: MongoTemplate) {
+class SharePlaceService(private val mongoTemplate: MongoTemplate,
+                        private val innerStringsConfig: InnerStringsConfig,
+                        private val dbStringConfig: DBStringConfig) {
 
     @Transactional
     fun uploadPost(sharePlacePost: SharePlacePost){
@@ -39,7 +43,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
 
     @Transactional
     fun deletePost(option:String,value:String){
-        val query=Query(Criteria.where(option).`is`(if(option=="_id") ObjectId(value) else value))
+        val query=Query(Criteria.where(option).`is`(if(option==dbStringConfig.mongodb.id) ObjectId(value) else value))
         val result=mongoTemplate.remove(query, SharePlacePostEntity::class.java)
 
         if(result.deletedCount==0L)
@@ -48,7 +52,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
 
     @Transactional
     fun loadPost(option:String,value:String): SharePlacePost? {
-        val query= Query(Criteria.where(option).`is`(if(option=="_id") ObjectId(value) else value))
+        val query= Query(Criteria.where(option).`is`(if(option==dbStringConfig.mongodb.id) ObjectId(value) else value))
         val entity = mongoTemplate.findOne(query, SharePlacePostEntity::class.java)
         return entity?.let {
             increaseViewCount(it)
@@ -86,10 +90,10 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
     @Transactional
     fun searchPost(option:String,value:String,maxContent:Int,currentPage:Int): HashMap<String, Any> {
         val condition=when(option){
-            "title" ->Criteria.where(option).regex(".*$value.*","i")
-            "tags" -> Criteria.where(option).`in`(value)
-            "userName"->Criteria.where(option).`is`(value)
-            "parts"->findInEstimates(value)
+            innerStringsConfig.property.postSearchOption.title ->Criteria.where(option).regex(".*$value.*","i")
+            innerStringsConfig.property.postSearchOption.tags -> Criteria.where(option).`in`(value)
+            innerStringsConfig.property.userName->Criteria.where(option).`is`(value)
+            innerStringsConfig.property.postSearchOption.parts->findInEstimates(value)
             else -> Criteria()
         }
         val posts=mongoTemplate.find(Query(condition),SharePlacePostEntity::class.java).map {
@@ -110,16 +114,16 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
 
     @Transactional
     fun increaseViewCount(sharePlacePostEntity: SharePlacePostEntity){
-        val query= Query(Criteria.where("_id").`is`(sharePlacePostEntity._id))
-        val update= Update().inc("viewCount",1)
-        mongoTemplate.updateFirst(query,update,"shareplace-posts")
+        val query= Query(Criteria.where(dbStringConfig.mongodb.id).`is`(sharePlacePostEntity._id))
+        val update= Update().inc(innerStringsConfig.property.viewCount,innerStringsConfig.property.changeValue)
+        mongoTemplate.updateFirst(query,update,dbStringConfig.mongodb.collection.post)
     }
 
     @Transactional
     fun increaseCommentCount(sharePlacePostID: String){
-        val query= Query(Criteria.where("_id").`is`(ObjectId(sharePlacePostID)))
-        val update= Update().inc("commentCount",1)
-        mongoTemplate.updateFirst(query,update,"shareplace-posts")
+        val query= Query(Criteria.where(dbStringConfig.mongodb.id).`is`(ObjectId(sharePlacePostID)))
+        val update= Update().inc(innerStringsConfig.property.commentCount,innerStringsConfig.property.changeValue)
+        mongoTemplate.updateFirst(query,update,dbStringConfig.mongodb.collection.post)
     }
 
     @Transactional
@@ -139,7 +143,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
 
     @Transactional
     fun deleteComment(option:String,value:String){
-        val query= Query(Criteria.where(option).`is`(if(option=="_id") ObjectId(value) else value))
+        val query= Query(Criteria.where(option).`is`(if(option==dbStringConfig.mongodb.id) ObjectId(value) else value))
         mongoTemplate.remove(query, CommentEntity::class.java)
     }
 
@@ -158,7 +162,12 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
     }
 
     fun findInEstimates(value: String): Criteria {
-        val excludedFields = setOf("_id", "userName", "posted", "_class")
+        val excludedFields = setOf(
+            dbStringConfig.mongodb.id,
+            innerStringsConfig.property.userName,
+            innerStringsConfig.property.postCheck,
+            dbStringConfig.mongodb.mongoClass
+        )
         val orCriteria = mutableListOf<Criteria>()
         val estimateEntities = mongoTemplate.find(Query(), EstimateEntity::class.java)
         val fields = EstimateEntity::class.java.declaredFields
@@ -172,7 +181,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
                 }
             val entityString = fieldsToCheck.joinToString(separator = ", ")
             if (entityString.contains(value, ignoreCase = true)) {
-                orCriteria.add(Criteria.where("_id").`is`(estimateEntity._id))
+                orCriteria.add(Criteria.where(dbStringConfig.mongodb.id).`is`(estimateEntity._id))
             }
         }
 
@@ -181,7 +190,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
             val estimateEntities = mongoTemplate.find(Query(estimateCriteria), EstimateEntity::class.java)
             if (estimateEntities.isNotEmpty()) {
                 val estimateIds = estimateEntities.map { it._id.toHexString() }
-                return Criteria.where("estimateID").`in`(estimateIds)
+                return Criteria.where(innerStringsConfig.request.estimate.id).`in`(estimateIds)
             }
         }
         return Criteria()
@@ -195,9 +204,9 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate) {
                          else currentPage*maxContent
 
         val map=HashMap<String,Any>()
-        map["postList"]=posts.subList(startContent,endContent)
-        map["pageCount"]=if(postCount%maxContent==0) (postCount/maxContent) else (postCount/maxContent+1)
-        map["page"]=currentPage
+        map[innerStringsConfig.postListMapper.postList]=posts.subList(startContent,endContent)
+        map[innerStringsConfig.postListMapper.pageCount]=if(postCount%maxContent==0) (postCount/maxContent) else (postCount/maxContent+1)
+        map[innerStringsConfig.postListMapper.currentPage]=currentPage
 
         return map
     }

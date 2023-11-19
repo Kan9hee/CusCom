@@ -1,5 +1,7 @@
 package com.example.cusCom.provideContent.service
 
+import com.example.cusCom.config.DBStringConfig
+import com.example.cusCom.config.InnerStringsConfig
 import com.example.cusCom.exception.CusComErrorCode
 import com.example.cusCom.exception.CusComException
 import com.example.cusCom.provideContent.dto.Estimate
@@ -18,7 +20,9 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class EstimateService(private val mongoTemplate: MongoTemplate,
                       private val motherBoardRepo:MotherBoardFormFactorRepository,
-                      private val desktopPartsService: DesktopPartsService) {
+                      private val desktopPartsService: DesktopPartsService,
+                      private val innerStringsConfig: InnerStringsConfig,
+                      private val dbStringConfig: DBStringConfig) {
 
     @Transactional
     fun saveUserEstimate(estimate: Estimate){
@@ -40,10 +44,10 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
 
     @Transactional
     fun updateUserEstimate(id:ObjectId,updatedEstimate:Estimate){
-        val query = Query(Criteria.where("_id").`is`(id))
+        val query = Query(Criteria.where(dbStringConfig.mongodb.id).`is`(id))
         val update = Update()
         var updatedFields = ObjectMapper().convertValue(updatedEstimate, Map::class.java)
-        updatedFields -= "_id"
+        updatedFields -= dbStringConfig.mongodb.id
 
         for (field in updatedFields.keys)
             update.set(field.toString(), updatedFields[field])
@@ -90,10 +94,10 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
 
     @Transactional
     fun deleteUserEstimate(option:String,value:String){
-        val query=Query(Criteria.where(option).`is`(if(option=="_id") ObjectId(value) else value))
+        val query=Query(Criteria.where(option).`is`(if(option==dbStringConfig.mongodb.id) ObjectId(value) else value))
         val result=mongoTemplate.remove(query, EstimateEntity::class.java)
 
-        if(result.deletedCount==0L)
+        if(result.deletedCount==dbStringConfig.mongodb.deleteFailValue)
             throw CusComException(CusComErrorCode.FailedDeleteEstimate)
     }
 
@@ -108,13 +112,13 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
                     powerSupply.isEmpty() })
             throw CusComException(CusComErrorCode.UnfinishedEstimate)
 
-        val cpuCooler=desktopPartsService.findCpuCooler("name",estimate.cpuCooler)
-        val case=desktopPartsService.findCase("name",estimate.desktopCase)
-        val graphicsCard=desktopPartsService.findGraphicsCard("name",estimate.graphicsCard)
-        val memory=desktopPartsService.findMemory("name",estimate.memory)
-        val powerSupply=desktopPartsService.findPowerSupply("name",estimate.powerSupply)
-        val cpu=desktopPartsService.findCpu("name",estimate.cpu)
-        val motherBoard=desktopPartsService.findMotherBoard("name",estimate.motherBoard)
+        val cpuCooler=desktopPartsService.findCpuCooler(innerStringsConfig.parts.name,estimate.cpuCooler)
+        val case=desktopPartsService.findCase(innerStringsConfig.parts.name,estimate.desktopCase)
+        val graphicsCard=desktopPartsService.findGraphicsCard(innerStringsConfig.parts.name,estimate.graphicsCard)
+        val memory=desktopPartsService.findMemory(innerStringsConfig.parts.name,estimate.memory)
+        val powerSupply=desktopPartsService.findPowerSupply(innerStringsConfig.parts.name,estimate.powerSupply)
+        val cpu=desktopPartsService.findCpu(innerStringsConfig.parts.name,estimate.cpu)
+        val motherBoard=desktopPartsService.findMotherBoard(innerStringsConfig.parts.name,estimate.motherBoard)
 
         val caseMaxFormFactor=motherBoardRepo.findById(case.motherBoardFormFactor.name).get()
 
@@ -122,7 +126,7 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
             throw CusComException(CusComErrorCode.OversizeCooler)
         if(graphicsCard.length>=case.graphicsCardLength)
             throw CusComException(CusComErrorCode.OversizeGraphicsCard)
-        if(cpuCooler.height+(memory.height-44)>=case.width)
+        if(cpuCooler.height+(innerStringsConfig.parts.memoryInterval-memory.height)>=case.width)
             throw CusComException(CusComErrorCode.InterferenceMemory)
         if(motherBoard.motherBoardFormFactor.length>caseMaxFormFactor.length
             ||motherBoard.motherBoardFormFactor.width>caseMaxFormFactor.width)

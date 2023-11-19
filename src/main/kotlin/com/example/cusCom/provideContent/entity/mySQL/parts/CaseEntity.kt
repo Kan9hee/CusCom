@@ -4,7 +4,7 @@ import com.example.cusCom.provideContent.dto.parts.Case
 import com.example.cusCom.provideContent.entity.mySQL.MotherBoardFormFactorEntity
 import jakarta.persistence.*
 
-@Table(name="desktop_case")
+@Table(name="\${dbString.mysql.table.case}")
 @Entity
 class CaseEntity(case: Case){
 

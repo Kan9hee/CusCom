@@ -1,5 +1,6 @@
 package com.example.cusCom.provideContent.service
 
+import com.example.cusCom.config.InnerStringsConfig
 import com.example.cusCom.exception.CusComErrorCode
 import com.example.cusCom.exception.CusComException
 import com.example.cusCom.provideContent.dto.MotherBoardFormFactor
@@ -8,7 +9,6 @@ import com.example.cusCom.provideContent.entity.mySQL.parts.*
 import com.example.cusCom.provideContent.repository.CPUSocketRepository
 import com.example.cusCom.provideContent.repository.MotherBoardFormFactorRepository
 import com.example.cusCom.provideContent.repository.parts.*
-import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -22,7 +22,8 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                           private val motherBoardRepo:MotherBoardRepository,
                           private val powerSupplyRepo:PowerSupplyRepository,
                           private val motherBoardFormFactorRepo: MotherBoardFormFactorRepository,
-                          private val cpuSocketRepository: CPUSocketRepository) {
+                          private val cpuSocketRepository: CPUSocketRepository,
+                          private val innerStringsConfig: InnerStringsConfig) {
 
     @Transactional(readOnly = true)
     fun getCaseList(): List<Case> {
@@ -49,9 +50,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun findCase(option:String,value:String): Case {
         var entity = CaseEntity(Case())
-        if(option=="name")
+        if(option==innerStringsConfig.property.findOption.name)
             entity = caseRepo.findByName(value).orElseThrow { CusComException(CusComErrorCode.CaseNotFound) }
-        else if(option=="id")
+        else if(option==innerStringsConfig.property.findOption.id)
             entity = caseRepo.findById(value.toLong()).orElseThrow { CusComException(CusComErrorCode.CaseNotFound) }
 
         return Case(
@@ -109,9 +110,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun findCpuCooler(option:String,value:String): CPUCooler {
         var entity = CPUCoolerEntity(CPUCooler())
-        if(option=="name")
+        if(option==innerStringsConfig.property.findOption.name)
             cpuCoolerRepo.findByName(value).orElseThrow { CusComException(CusComErrorCode.CPUCoolerNotFound) }
-        else if(option=="id")
+        else if(option==innerStringsConfig.property.findOption.id)
             cpuCoolerRepo.findById(value.toLong()).orElseThrow { CusComException(CusComErrorCode.CPUCoolerNotFound) }
 
         return CPUCooler(
@@ -166,9 +167,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun findCpu(option:String,value:String): CPU {
         var entity = CPUEntity(CPU())
-        if(option=="name")
+        if(option==innerStringsConfig.property.findOption.name)
             entity = cpuRepo.findByName(value).orElseThrow { CusComException(CusComErrorCode.CPUNotFound) }
-        else if(option=="id")
+        else if(option==innerStringsConfig.property.findOption.id)
             entity = cpuRepo.findById(value.toLong()).orElseThrow { CusComException(CusComErrorCode.CPUNotFound) }
         return CPU(
             entity.id,
@@ -222,9 +223,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun findDataStorage(option:String,value:String): DataStorage {
         var entity = DataStorageEntity(DataStorage())
-        if(option=="name")
+        if(option==innerStringsConfig.property.findOption.name)
             entity = dataStorageRepo.findByName(value).orElseThrow { CusComException(CusComErrorCode.DataStorageNotFound) }
-        if(option=="id")
+        if(option==innerStringsConfig.property.findOption.id)
             entity = dataStorageRepo.findById(value.toLong()).orElseThrow { CusComException(CusComErrorCode.DataStorageNotFound) }
 
         return DataStorage(
@@ -277,9 +278,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun findGraphicsCard(option:String,value:String): GraphicsCard {
         var entity = GraphicsCardEntity(GraphicsCard())
-        if(option=="name")
+        if(option==innerStringsConfig.property.findOption.name)
             entity = graphicsCardRepo.findByName(value).orElseThrow { CusComException(CusComErrorCode.GraphicsCardNotFound) }
-        else if(option=="id")
+        else if(option==innerStringsConfig.property.findOption.id)
             entity = graphicsCardRepo.findById(value.toLong()).orElseThrow { CusComException(CusComErrorCode.GraphicsCardNotFound) }
         return GraphicsCard(
             entity.id,
@@ -329,9 +330,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun findMemory(option:String,value:String): Memory {
         var entity = MemoryEntity(Memory())
-        if(option=="name")
+        if(option==innerStringsConfig.property.findOption.name)
             entity = memoryRepo.findByName(value).orElseThrow { CusComException(CusComErrorCode.MemoryNotFound) }
-        else if(option=="id")
+        else if(option==innerStringsConfig.property.findOption.id)
             entity = memoryRepo.findById(value.toLong()).orElseThrow { CusComException(CusComErrorCode.MemoryNotFound) }
         return Memory(
             entity.id,
@@ -383,9 +384,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun findMotherBoard(option:String,value:String): MotherBoard {
         var entity = MotherBoardEntity(MotherBoard())
-        if(option=="name")
+        if(option==innerStringsConfig.property.findOption.name)
             entity = motherBoardRepo.findByName(value).orElseThrow { CusComException(CusComErrorCode.MotherBoardNotFound) }
-        else if(option=="id")
+        else if(option==innerStringsConfig.property.findOption.id)
             entity = motherBoardRepo.findById(value.toLong()).orElseThrow { CusComException(CusComErrorCode.MotherBoardNotFound) }
         return MotherBoard(
             entity.id,
@@ -438,9 +439,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     @Transactional
     fun findPowerSupply(option:String,value:String): PowerSupply {
         var entity = PowerSupplyEntity(PowerSupply())
-        if(option=="name")
+        if(option==innerStringsConfig.property.findOption.name)
             entity = powerSupplyRepo.findByName(value).orElseThrow { CusComException(CusComErrorCode.PowerSupplyNotFound) }
-        else if(option=="id")
+        else if(option==innerStringsConfig.property.findOption.id)
             entity = powerSupplyRepo.findById(value.toLong()).orElseThrow { CusComException(CusComErrorCode.PowerSupplyNotFound) }
         return PowerSupply(
             entity.id,

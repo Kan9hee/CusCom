@@ -2,7 +2,7 @@ package com.example.cusCom.provideContent.entity.mySQL
 
 import jakarta.persistence.*
 
-@Table(name="cpu_socket")
+@Table(name="\${dbString.mysql.table.cpuSocket}")
 @Entity
 class CPUSocketEntity(name:String,
                       availableChipsets:Array<String>) {

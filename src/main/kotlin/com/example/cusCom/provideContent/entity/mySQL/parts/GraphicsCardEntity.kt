@@ -3,7 +3,7 @@ package com.example.cusCom.provideContent.entity.mySQL.parts
 import com.example.cusCom.provideContent.dto.parts.GraphicsCard
 import jakarta.persistence.*
 
-@Table(name="graphics_card")
+@Table(name="\${dbString.mysql.table.graphicsCard}")
 @Entity
 class GraphicsCardEntity(graphicsCard: GraphicsCard){
 

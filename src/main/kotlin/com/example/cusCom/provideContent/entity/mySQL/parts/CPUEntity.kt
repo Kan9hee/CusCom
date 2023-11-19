@@ -3,7 +3,7 @@ package com.example.cusCom.provideContent.entity.mySQL.parts
 import com.example.cusCom.provideContent.dto.parts.CPU
 import jakarta.persistence.*
 
-@Table(name="cpu")
+@Table(name="\${dbString.mysql.table.cpu}")
 @Entity
 class CPUEntity(cpu: CPU){
 

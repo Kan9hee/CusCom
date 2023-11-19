@@ -1,54 +1,63 @@
 package com.example.cusCom.controller
 
+import com.example.cusCom.config.PagePathConfig
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/CusCom/adminPage")
-class AdminViewController() {
+class AdminViewController(private val pagePathConfig: PagePathConfig) {
 
     @GetMapping("/main")
     fun mainPage():String{
-        return "partsListAdmin"
+        return pagePathConfig.admin.main
     }
 
     @GetMapping("/editCase")
     fun editCaseData():String{
-        return "editPages/editCase"
+        val caseEditPath=pagePathConfig.admin.edit[PagePathConfig.PathConfig.AdminPathKey.CASE]
+        return caseEditPath?:pagePathConfig.redirect
     }
 
     @GetMapping("/editCPU")
     fun editCPUData():String{
-        return "editPages/editCPU"
+        val cpuEditPath=pagePathConfig.admin.edit[PagePathConfig.PathConfig.AdminPathKey.CPU]
+        return cpuEditPath?:pagePathConfig.redirect
     }
 
     @GetMapping("/editCPUCooler")
     fun editCPUCoolerData():String{
-        return "editPages/editCPUCooler"
+        val cpuCoolerEditPath=pagePathConfig.admin.edit[PagePathConfig.PathConfig.AdminPathKey.CPUCOOLER]
+        return cpuCoolerEditPath?:pagePathConfig.redirect
     }
 
     @GetMapping("/editDataStorage")
     fun editDataStorageData():String{
-        return "editPages/editDataStorage"
+        val dataStorageEditPath=pagePathConfig.admin.edit[PagePathConfig.PathConfig.AdminPathKey.DATASTORAGE]
+        return dataStorageEditPath?:pagePathConfig.redirect
     }
 
     @GetMapping("/editGraphicsCard")
     fun editGraphicsCardData():String{
-        return "editPages/editGraphicsCard"
+        val graphicsCardEditPath=pagePathConfig.admin.edit[PagePathConfig.PathConfig.AdminPathKey.GRAPHICSCARD]
+        return graphicsCardEditPath?:pagePathConfig.redirect
     }
 
     @GetMapping("/editMemory")
     fun editMemoryData():String{
-        return "editPages/editMemory"
+        val memoryEditPath=pagePathConfig.admin.edit[PagePathConfig.PathConfig.AdminPathKey.MEMORY]
+        return memoryEditPath?:pagePathConfig.redirect
     }
 
     @GetMapping("/editMotherBoard")
     fun editMotherBoardData():String{
-        return "editPages/editMotherBoard"
+        val motherBoardEditPath=pagePathConfig.admin.edit[PagePathConfig.PathConfig.AdminPathKey.MOTHERBOARD]
+        return motherBoardEditPath?:pagePathConfig.redirect
     }
 
     @GetMapping("/editPowerSupply")
     fun editPowerSupplyData():String{
-        return "editPages/editPowerSupply"
+        val powerSupplyEditPath=pagePathConfig.admin.edit[PagePathConfig.PathConfig.AdminPathKey.POWERSUPPLY]
+        return powerSupplyEditPath?:pagePathConfig.redirect
     }
 }

@@ -3,7 +3,7 @@ package com.example.cusCom.provideContent.entity.mySQL.parts
 import com.example.cusCom.provideContent.dto.parts.Memory
 import jakarta.persistence.*
 
-@Table(name="memory")
+@Table(name="\${dbString.mysql.table.memory}")
 @Entity
 class MemoryEntity(memory: Memory){
 

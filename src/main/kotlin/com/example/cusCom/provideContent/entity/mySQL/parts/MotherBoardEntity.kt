@@ -4,7 +4,7 @@ import com.example.cusCom.provideContent.dto.parts.MotherBoard
 import com.example.cusCom.provideContent.entity.mySQL.MotherBoardFormFactorEntity
 import jakarta.persistence.*
 
-@Table(name="mother_board")
+@Table(name="\${dbString.mysql.table.motherBoard}")
 @Entity
 class MotherBoardEntity(motherBoard: MotherBoard){
 

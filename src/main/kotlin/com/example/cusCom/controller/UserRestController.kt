@@ -1,5 +1,7 @@
 package com.example.cusCom.controller
 
+import com.example.cusCom.config.DBStringConfig
+import com.example.cusCom.config.InnerStringsConfig
 import com.example.cusCom.exception.CusComException
 import com.example.cusCom.provideContent.dto.*
 import com.example.cusCom.provideContent.dto.parts.*
@@ -7,6 +9,7 @@ import com.example.cusCom.provideContent.service.DesktopPartsService
 import com.example.cusCom.provideContent.service.EstimateService
 import com.example.cusCom.provideContent.service.SharePlaceService
 import com.example.cusCom.provideContent.service.UserService
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import org.bson.types.ObjectId
@@ -19,29 +22,32 @@ import org.springframework.web.bind.annotation.*
 class UserRestController(private val desktopPartsService: DesktopPartsService,
                          private val estimateService: EstimateService,
                          private val sharePlaceService: SharePlaceService,
-                         private val userService: UserService) {
+                         private val userService: UserService,
+                         private val innerStringsConfig: InnerStringsConfig,
+                         private val dbStringConfig: DBStringConfig) {
 
     @PostMapping("/join")
     fun postUserJoin(@RequestBody user: User): ResponseEntity<String> {
         userService.joinUser(user)
-        return ResponseEntity.ok("Success")
+        return ResponseEntity.ok(innerStringsConfig.property.responseOk)
     }
 
     @GetMapping("/checkLogin")
     fun checkLogin(): ResponseEntity<String> {
         val authentication = SecurityContextHolder.getContext().authentication
         val loggedIn = authentication != null && authentication.isAuthenticated
-        return ResponseEntity.ok(LoginStatus(loggedIn).toString())
+        val responseJson = ObjectMapper().writeValueAsString(LoginStatus(loggedIn))
+        return ResponseEntity.ok(responseJson)
     }
 
     @GetMapping("/getUserEstimateList")
     fun userEstimateList(): List<Estimate> {
         val userName=SecurityContextHolder.getContext().authentication.name
-        return estimateService.getUserEstimateList("userName",userName)
+        return estimateService.getUserEstimateList(innerStringsConfig.property.userName,userName)
     }
 
     @GetMapping("/getUserEstimate")
-    fun userEstimate(@RequestParam("id",required = false) estimateID: String?): Estimate {
+    fun userEstimate(@RequestParam("estimateID",required = false) estimateID: String?): Estimate {
         return estimateID?.let { estimateService.getUserEstimateById(it) }?: Estimate()
     }
 
@@ -96,42 +102,50 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     @GetMapping("/searchCase")
     @ResponseBody
     fun searchCaseApi(@RequestParam("Case", required = false) data: Long?): Case {
-        return data?.let { desktopPartsService.findCase("id",it.toString()) } ?: Case()
+        return data?.let { desktopPartsService.findCase(dbStringConfig.mysql.id,it.toString()) }
+            ?: Case()
     }
 
     @GetMapping("/searchCPU")
     fun editCPUData(@RequestParam("CPU", required = false) data: Long?): CPU {
-        return data?.let{desktopPartsService.findCpu("id",it.toString())}?: CPU()
+        return data?.let{desktopPartsService.findCpu(dbStringConfig.mysql.id,it.toString())}
+            ?: CPU()
     }
 
     @GetMapping("/searchCPUCooler")
     fun editCPUCoolerData(@RequestParam("CPUCooler", required = false) data: Long?): CPUCooler {
-        return data?.let{desktopPartsService.findCpuCooler("id",it.toString())}?: CPUCooler()
+        return data?.let{desktopPartsService.findCpuCooler(dbStringConfig.mysql.id,it.toString())}
+            ?: CPUCooler()
     }
 
     @GetMapping("/searchDataStorage")
     fun editDataStorageData(@RequestParam("DataStorage", required = false) data: Long?): DataStorage {
-        return data?.let{desktopPartsService.findDataStorage("id",it.toString())}?: DataStorage()
+        return data?.let{desktopPartsService.findDataStorage(dbStringConfig.mysql.id,it.toString())}
+            ?: DataStorage()
     }
 
     @GetMapping("/searchGraphicsCard")
     fun editGraphicsCardData(@RequestParam("GraphicsCard", required = false) data: Long?): GraphicsCard {
-        return data?.let{desktopPartsService.findGraphicsCard("id",it.toString())}?: GraphicsCard()
+        return data?.let{desktopPartsService.findGraphicsCard(dbStringConfig.mysql.id,it.toString())}
+            ?: GraphicsCard()
     }
 
     @GetMapping("/searchMemory")
     fun editMemoryData(@RequestParam("Memory", required = false) data: Long?): Memory {
-        return data?.let{desktopPartsService.findMemory("id",it.toString())}?: Memory()
+        return data?.let{desktopPartsService.findMemory(dbStringConfig.mysql.id,it.toString())}
+            ?: Memory()
     }
 
     @GetMapping("/searchMotherBoard")
     fun editMotherBoardData(@RequestParam("MotherBoard", required = false) data: Long?): MotherBoard {
-        return data?.let{desktopPartsService.findMotherBoard("id",it.toString())}?: MotherBoard()
+        return data?.let{desktopPartsService.findMotherBoard(dbStringConfig.mysql.id,it.toString())}
+            ?: MotherBoard()
     }
 
     @GetMapping("/searchPowerSupply")
     fun editPowerSupplyData(@RequestParam("PowerSupply", required = false) data: Long?): PowerSupply {
-        return data?.let{desktopPartsService.findPowerSupply("id",it.toString())}?: PowerSupply()
+        return data?.let{desktopPartsService.findPowerSupply(dbStringConfig.mysql.id,it.toString())}
+            ?: PowerSupply()
     }
 
     @PostMapping("/createEstimate")
@@ -140,7 +154,7 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
             val estimateResult=Gson().fromJson(inputUserData(estimateJSON), Estimate::class.java)
             estimateService.checkDesktopEstimate(estimateResult)
             estimateService.saveUserEstimate(estimateResult)
-            return ResponseEntity.ok("Success")
+            return ResponseEntity.ok(innerStringsConfig.property.responseOk)
         }
         catch (e: CusComException) { throw e }
     }
@@ -151,7 +165,7 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
             val estimateResult=Gson().fromJson(inputUserData(estimateJSON), Estimate::class.java)
             estimateService.checkDesktopEstimate(estimateResult)
             estimateService.updateUserEstimate(ObjectId(estimateResult._id),estimateResult)
-            return ResponseEntity.ok("Success")
+            return ResponseEntity.ok(innerStringsConfig.property.responseOk)
         }
         catch (e: CusComException) { throw e }
     }
@@ -159,13 +173,13 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     @PostMapping("/deleteEstimate")
     fun deleteEstimate(@RequestParam("estimateID") estimateID:String): ResponseEntity<String>{
         try{
-            sharePlaceService.loadPost("estimateID",estimateID)?.let{ postInfo ->
+            sharePlaceService.loadPost(innerStringsConfig.request.estimate.id,estimateID)?.let{ postInfo ->
                 if(postInfo.commentCount!=0L)
-                    sharePlaceService.deleteComment("postID",postInfo._id)
-                sharePlaceService.deletePost("_id",postInfo._id)
+                    sharePlaceService.deleteComment(innerStringsConfig.request.post.id,postInfo._id)
+                sharePlaceService.deletePost(dbStringConfig.mongodb.id,postInfo._id)
             }
-            estimateService.deleteUserEstimate("_id",estimateID)
-            return ResponseEntity.ok("Success")
+            estimateService.deleteUserEstimate(dbStringConfig.mongodb.id,estimateID)
+            return ResponseEntity.ok(innerStringsConfig.property.responseOk)
         }catch(e: CusComException) { throw e }
     }
 
@@ -175,16 +189,16 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
         val updatedEstimate=Gson().fromJson(estimateJSON,Estimate::class.java)
         estimateService.updateUserEstimate(ObjectId(updatedEstimate._id),updatedEstimate)
         sharePlaceService.uploadPost(Gson().fromJson(inputUserData(postJSON), SharePlacePost::class.java))
-        return ResponseEntity.ok("Success")
+        return ResponseEntity.ok(innerStringsConfig.property.responseOk)
     }
 
     @GetMapping("/loadPost")
     fun loadPost(@RequestParam("id") postID:String):HashMap<String,Any>{
         val map=HashMap<String,Any>()
-        val post: SharePlacePost = sharePlaceService.loadPost("_id",postID)!!
-        map["post"]=post
-        map["postEstimate"]=estimateService.getUserEstimateById(post.estimateID)
-        map["commentList"]=sharePlaceService.getCommentList("postID",postID)
+        val post: SharePlacePost = sharePlaceService.loadPost(dbStringConfig.mongodb.id,postID)!!
+        map[innerStringsConfig.postListMapper.post]=post
+        map[innerStringsConfig.postListMapper.postEstimate]=estimateService.getUserEstimateById(post.estimateID)
+        map[innerStringsConfig.postListMapper.commentList]=sharePlaceService.getCommentList(innerStringsConfig.request.post.id,postID)
         return map
     }
 
@@ -194,7 +208,8 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
                      @RequestParam("currentPage") currentPage: Int): HashMap<String, Any> {
         var postList=searchJson?.let{
             val temp=Gson().fromJson(searchJson,JsonObject::class.java)
-            sharePlaceService.searchPost(temp.get("option").asString,temp.get("keyword").asString,maxContent,currentPage)
+            sharePlaceService.searchPost(temp.get(innerStringsConfig.property.searchOption).asString,
+                temp.get(innerStringsConfig.property.searchKeyword).asString,maxContent,currentPage)
         }?:sharePlaceService.getPostList(maxContent,currentPage)
         return postList
     }
@@ -202,22 +217,22 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     @PostMapping("/uploadComment")
     fun uploadComment(@RequestParam("commentData") commentJSON:String): ResponseEntity<String> {
         sharePlaceService.uploadComment(Gson().fromJson(inputUserData(commentJSON), Comment::class.java))
-        return ResponseEntity.ok("Success")
+        return ResponseEntity.ok(innerStringsConfig.property.responseOk)
     }
 
     @PostMapping("/increaseLike")
     fun increaseLike(@RequestParam("likeAction") action:String): ResponseEntity<String> {
-        return ResponseEntity.ok("Success")
+        return ResponseEntity.ok(innerStringsConfig.property.responseOk)
     }
 
     @PostMapping("/decreaseLike")
     fun decreaseLike(@RequestParam("dislikeAction") action:String): ResponseEntity<String> {
-        return ResponseEntity.ok("Success")
+        return ResponseEntity.ok(innerStringsConfig.property.responseOk)
     }
 
     private fun inputUserData(jsonString:String):String{
         val jsonObject=Gson().fromJson(jsonString, JsonObject::class.java)
-        jsonObject.addProperty("userName", SecurityContextHolder.getContext().authentication.name)
+        jsonObject.addProperty(innerStringsConfig.property.userName, SecurityContextHolder.getContext().authentication.name)
         return Gson().toJson(jsonObject)
     }
 }

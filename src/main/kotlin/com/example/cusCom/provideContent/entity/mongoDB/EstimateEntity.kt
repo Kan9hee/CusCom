@@ -3,7 +3,7 @@ package com.example.cusCom.provideContent.entity.mongoDB
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.mapping.Document
 
-@Document(collection = "user-estimates")
+@Document(collection = "\${dbString.mysql.collection.estimate}")
 class EstimateEntity(val _id: ObjectId,
                      val userName:String,
                      posted:Boolean,

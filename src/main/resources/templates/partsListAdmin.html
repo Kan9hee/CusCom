@@ -408,7 +408,7 @@
 
               button.addEventListener('click', function(){
                 const id = button.getAttribute("data-id");
-                fetch("/CusCom/adminPage/deleteParts",{
+                fetch("/CusCom/adminAPI/deleteParts",{
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json"

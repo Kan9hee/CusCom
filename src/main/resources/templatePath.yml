@@ -1,0 +1,22 @@
+path:
+  admin:
+    main: partsListAdmin
+    edit:
+      case: editPages/editCase
+      cpu: editPages/editCPU
+      cpuCooler: editPages/editCPUCooler
+      dataStorage: editPages/editDataStorage
+      graphicsCard: editPages/editGraphicsCard
+      memory: editPages/editMemory
+      motherBoard: editPages/editMotherBoard
+      powerSupply: editPages/editPowerSupply
+  normal:
+    login: login
+    join: join
+    main: main
+    myPage: userPage
+    estimate: partsListUser
+    uploadPost: createPost
+    sharePlace: sharePlace
+    post: viewPost
+  redirect: redirect:mainPage

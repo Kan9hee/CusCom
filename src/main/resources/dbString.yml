@@ -1,0 +1,28 @@
+dbString:
+  mysql:
+    id: id
+    name: name
+    table:
+      case: desktop_case
+      cpu: cpu
+      cpuCooler: cpu_cooler
+      dataStorage: data_storage
+      graphicsCard: graphics_card
+      memory: memory
+      motherBoard: mother_board
+      powerSupply: power_supply
+      cpuSocket: cpu_socket
+      motherboardFormFactor: motherboard_formfactor
+      user: user
+
+  mongodb:
+    id: _id
+    mongoClass: _class
+    deleteFailValue: 0L
+    collection:
+      post: shareplace-posts
+      comment: shareplace-comments
+      estimate: user-estimates
+  blob:
+    fileFormat: jpg
+    containerName: desktop-parts-images

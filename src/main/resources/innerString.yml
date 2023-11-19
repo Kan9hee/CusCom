@@ -1,0 +1,63 @@
+innerStrings:
+  request:
+    estimate:
+      updated: updated
+      data: estimate
+      id: estimateID
+    post:
+      data: postData
+      id: postID
+    search:
+      data: searchJSON
+      maxNumContent: maxContent
+      currentPage: currentPage
+    partsType: type
+    commentData: commentData
+    beforeID: BeforeID
+    targetID: targetID
+    encoding: UTF-8
+
+  parts:
+    case: Case
+    cpu: CPU
+    cpuCooler: CPUCooler
+    dataStorage: DataStorage
+    graphicsCard: GraphicsCard
+    memory: Memory
+    motherBoard: MotherBoard
+    powerSupply: PowerSupply
+    cpuSocket: CPUSocket
+    name: name
+    memoryInterval: 44
+
+  property:
+    responseOk: Success
+    formFactor: motherBoardFormFactor
+    imageUrl: imageUrl
+    imageWidth: 500
+    imageHeight: 500
+    userName: userName
+    searchOption: option
+    searchKeyword: keyword
+    viewCount: viewCount
+    commentCount: commentCount
+    changeValue: 1
+    postCheck: posted
+    postSearchOption:
+      title: title
+      tags: tags
+      parts: parts
+    like:
+      increase: likeAction
+      decrease: dislikeAction
+    findOption:
+      name: name
+      id: id
+
+  postListMapper:
+    post: post
+    postList: postList
+    pageCount: pageCount
+    currentPage: page
+    postEstimate: postEstimate
+    commentList: commentList

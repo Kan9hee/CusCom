@@ -20,19 +20,24 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class SharePlaceService(private val mongoTemplate: MongoTemplate,
                         private val innerStringsConfig: InnerStringsConfig,
-                        private val dbStringConfig: DBStringConfig) {
+                        private val dbStringConfig: DBStringConfig,
+                        private val estimateService: EstimateService,
+                        private val desktopPartsService: DesktopPartsService) {
 
     @Transactional
     fun uploadPost(sharePlacePost: SharePlacePost){
         if(sharePlacePost.title.isEmpty())
             throw CusComException(CusComErrorCode.UnfinishedPost)
 
+        val estimate=estimateService.getUserEstimateById(sharePlacePost.estimateID)
+        val caseImage=desktopPartsService.findCase(innerStringsConfig.property.findOption.name,estimate.desktopCase).imageUrl
         mongoTemplate.insert(
             SharePlacePostEntity(
                 ObjectId(),
                 sharePlacePost.estimateID,
                 sharePlacePost.title,
                 sharePlacePost.userName,
+                caseImage,
                 sharePlacePost.tags,
                 sharePlacePost.viewCount,
                 sharePlacePost.likeCount,
@@ -61,6 +66,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
                 it.estimateID,
                 it.title,
                 it.userName,
+                it.thumbnail,
                 it.tags,
                 it.viewCount,
                 it.likeCount,
@@ -77,6 +83,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
                 entity.estimateID,
                 entity.title,
                 entity.userName,
+                entity.thumbnail,
                 entity.tags,
                 entity.viewCount,
                 entity.likeCount,
@@ -103,6 +110,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
                     entity.estimateID,
                     entity.title,
                     entity.userName,
+                    entity.thumbnail,
                     entity.tags,
                     entity.viewCount,
                     entity.likeCount,

@@ -101,6 +101,31 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
             throw CusComException(CusComErrorCode.FailedDeleteEstimate)
     }
 
+    @Transactional
+    fun analyzeEstimate(estimate: Estimate): HashMap<String, Int> {
+        val analyzeMap=HashMap<String,Int>()
+
+        val cpuCooler=desktopPartsService.findCpuCooler(innerStringsConfig.parts.name,estimate.cpuCooler)
+        val case=desktopPartsService.findCase(innerStringsConfig.parts.name,estimate.desktopCase)
+        val graphicsCard=desktopPartsService.findGraphicsCard(innerStringsConfig.parts.name,estimate.graphicsCard)
+        val memory=desktopPartsService.findMemory(innerStringsConfig.parts.name,estimate.memory)
+        val powerSupply=desktopPartsService.findPowerSupply(innerStringsConfig.parts.name,estimate.powerSupply)
+        val cpu=desktopPartsService.findCpu(innerStringsConfig.parts.name,estimate.cpu)
+        val motherBoard=desktopPartsService.findMotherBoard(innerStringsConfig.parts.name,estimate.motherBoard)
+
+        analyzeMap["powerSupplyOutput"]=powerSupply.power
+        analyzeMap["totalTDP"]=cpu.TDP+cpuCooler.TDP+graphicsCard.maxPower
+        analyzeMap["caseCoolerHeight"]=case.cpuCoolerHeight
+        analyzeMap["coolerHeight"]=cpuCooler.height
+        analyzeMap["memoryInterval"]=innerStringsConfig.parts.memoryInterval-memory.height
+        analyzeMap["caseGraphicLength"]=case.graphicsCardLength
+        analyzeMap["graphicsCardLength"]=graphicsCard.length
+        analyzeMap["caseMaxBoard"]=case.motherBoardFormFactor.length
+        analyzeMap["motherboardLength"]=motherBoard.motherBoardFormFactor.length
+
+        return analyzeMap
+    }
+
     fun checkDesktopEstimate(estimate: Estimate){
         if(estimate.run { cpu.isEmpty() ||
                     desktopCase.isEmpty() ||
@@ -126,8 +151,9 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
             throw CusComException(CusComErrorCode.OversizeCooler)
         if(graphicsCard.length>=case.graphicsCardLength)
             throw CusComException(CusComErrorCode.OversizeGraphicsCard)
-        if(cpuCooler.height+(innerStringsConfig.parts.memoryInterval-memory.height)>=case.width)
-            throw CusComException(CusComErrorCode.InterferenceMemory)
+        if((innerStringsConfig.parts.memoryInterval-memory.height)>0)
+            if(cpuCooler.height+(innerStringsConfig.parts.memoryInterval-memory.height)>=case.width)
+                throw CusComException(CusComErrorCode.InterferenceMemory)
         if(motherBoard.motherBoardFormFactor.length>caseMaxFormFactor.length
             ||motherBoard.motherBoardFormFactor.width>caseMaxFormFactor.width)
             throw CusComException(CusComErrorCode.OversizeMotherBoard)

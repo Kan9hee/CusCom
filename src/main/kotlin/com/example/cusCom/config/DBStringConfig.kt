@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@ConfigurationProperties(prefix = "dbString")
+@ConfigurationProperties(prefix = "db-string")
 class DBStringConfig {
     lateinit var mysql: MysqlProperties
     lateinit var mongodb: MongodbProperties

@@ -98,7 +98,7 @@
         const postId = queryParams.get("id");
 
         function initialSetup(){
-            fetch(`/CusCom/API/loadPost?id=${postId}`)
+            fetch(`/CusCom/API/loadPost?estimateID=${postId}`)
             .then(response => response.json())
             .then(data => {
                 const postData=data.post;

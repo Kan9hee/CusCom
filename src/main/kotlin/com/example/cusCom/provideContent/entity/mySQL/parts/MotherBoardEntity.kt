@@ -4,13 +4,13 @@ import com.example.cusCom.provideContent.dto.parts.MotherBoard
 import com.example.cusCom.provideContent.entity.mySQL.MotherBoardFormFactorEntity
 import jakarta.persistence.*
 
-@Table(name="\${dbString.mysql.table.motherBoard}")
+@Table(name="mother_board")
 @Entity
 class MotherBoardEntity(motherBoard: MotherBoard){
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     val id:Long=0
 
     @Column(nullable = false)

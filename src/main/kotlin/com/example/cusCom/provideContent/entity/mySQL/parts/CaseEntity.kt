@@ -4,13 +4,13 @@ import com.example.cusCom.provideContent.dto.parts.Case
 import com.example.cusCom.provideContent.entity.mySQL.MotherBoardFormFactorEntity
 import jakarta.persistence.*
 
-@Table(name="\${dbString.mysql.table.case}")
+@Table(name="desktop_case")
 @Entity
 class CaseEntity(case: Case){
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     val id:Long=0
 
     @Column(nullable = false)

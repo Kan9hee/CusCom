@@ -115,9 +115,11 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
 
         analyzeMap["powerSupplyOutput"]=powerSupply.power
         analyzeMap["totalTDP"]=cpu.TDP+cpuCooler.TDP+graphicsCard.maxPower
+
         analyzeMap["caseCoolerHeight"]=case.cpuCoolerHeight
         analyzeMap["coolerHeight"]=cpuCooler.height
-        analyzeMap["memoryInterval"]=innerStringsConfig.parts.memoryInterval-memory.height
+        analyzeMap["memoryInterval"]=innerStringsConfig.parts.memoryInterval
+        analyzeMap["memoryHeight"]=memory.height
         analyzeMap["caseGraphicLength"]=case.graphicsCardLength
         analyzeMap["graphicsCardLength"]=graphicsCard.length
         analyzeMap["caseMaxBoard"]=case.motherBoardFormFactor.length

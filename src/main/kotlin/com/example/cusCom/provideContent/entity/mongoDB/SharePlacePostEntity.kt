@@ -3,7 +3,7 @@ package com.example.cusCom.provideContent.entity.mongoDB
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.mapping.Document
 
-@Document(collection = "\${dbString.mysql.collection.post}")
+@Document(collection = "shareplace-posts")
 class SharePlacePostEntity(val _id: ObjectId,
                            val estimateID:String,
                            var title:String,

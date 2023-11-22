@@ -2,7 +2,7 @@ package com.example.cusCom.provideContent.entity.mySQL
 
 import jakarta.persistence.*
 
-@Table(name="\${dbString.mysql.table.motherboardFormFactor}")
+@Table(name="motherboard_formfactor")
 @Entity
 class MotherBoardFormFactorEntity(name:String,
                                   length:Int,

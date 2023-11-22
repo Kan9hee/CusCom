@@ -3,13 +3,13 @@ package com.example.cusCom.provideContent.entity.mySQL.parts
 import com.example.cusCom.provideContent.dto.parts.CPUCooler
 import jakarta.persistence.*
 
-@Table(name="\${dbString.mysql.table.cpuCooler}")
+@Table(name="cpu_cooler")
 @Entity
 class CPUCoolerEntity(cpuCooler: CPUCooler){
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     val id:Long=0
 
     @Column(nullable = false)

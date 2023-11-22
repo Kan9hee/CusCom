@@ -3,13 +3,13 @@ package com.example.cusCom.provideContent.entity.mySQL.parts
 import com.example.cusCom.provideContent.dto.parts.Memory
 import jakarta.persistence.*
 
-@Table(name="\${dbString.mysql.table.memory}")
+@Table(name="memory")
 @Entity
 class MemoryEntity(memory: Memory){
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     val id:Long=0
 
     @Column(nullable = false)

@@ -148,6 +148,12 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
             ?: PowerSupply()
     }
 
+    @GetMapping("/analyzeEstimate")
+    fun analyzeEstimate(@RequestParam("estimateID",required = false) estimateID: String?): HashMap<String, Int> {
+        val estimate=estimateID?.let { estimateService.getUserEstimateById(it) }
+        return estimateService.analyzeEstimate(estimate)
+    }
+
     @PostMapping("/createEstimate")
     fun createEstimate(@RequestParam("estimate") estimateJSON:String): ResponseEntity<String> {
         try{

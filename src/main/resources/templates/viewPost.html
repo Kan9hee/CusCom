@@ -95,10 +95,10 @@
     </div>
     <script type="text/javascript">
         const queryParams = new URLSearchParams(window.location.search);
-        const postId = queryParams.get("id");
+        const postId = queryParams.get("estimateID");
 
         function initialSetup(){
-            fetch(`/CusCom/API/loadPost?estimateID=${postId}`)
+            fetch(`/CusCom/API/loadPost?id=${postId}`)
             .then(response => response.json())
             .then(data => {
                 const postData=data.post;

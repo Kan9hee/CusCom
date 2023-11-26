@@ -15,6 +15,7 @@ enum class CusComErrorCode(private val status:Int,
     PowerSupplyNotFound(404,"D018","파워서플라이 데이터 매칭 실패"),
 
     UnfinishedEstimate(400,"E000","미완성된 견적사항"),
+    NotFoundEstimate(404,"E001","견적사항 찾을 수 없음"),
     OversizeMotherBoard(422,"E010","마더보드 허용 규격 초과"),
     MismatchSocket(422,"E011","마더보드 소켓 불일치"),
     MismatchChipset(422,"E012","마더보드 칩셋 불일치"),

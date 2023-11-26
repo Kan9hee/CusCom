@@ -102,7 +102,10 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
     }
 
     @Transactional
-    fun analyzeEstimate(estimate: Estimate): HashMap<String, Int> {
+    fun analyzeEstimate(estimate: Estimate?): HashMap<String, Int> {
+        if(estimate==null)
+            throw CusComException(CusComErrorCode.NotFoundEstimate)
+
         val analyzeMap=HashMap<String,Int>()
 
         val cpuCooler=desktopPartsService.findCpuCooler(innerStringsConfig.parts.name,estimate.cpuCooler)
@@ -111,19 +114,20 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
         val memory=desktopPartsService.findMemory(innerStringsConfig.parts.name,estimate.memory)
         val powerSupply=desktopPartsService.findPowerSupply(innerStringsConfig.parts.name,estimate.powerSupply)
         val cpu=desktopPartsService.findCpu(innerStringsConfig.parts.name,estimate.cpu)
-        val motherBoard=desktopPartsService.findMotherBoard(innerStringsConfig.parts.name,estimate.motherBoard)
+
+        val needMoreCoolerHeight =
+            if((memory.height-innerStringsConfig.parts.memoryInterval)<0) 0
+            else memory.height-innerStringsConfig.parts.memoryInterval
 
         analyzeMap["powerSupplyOutput"]=powerSupply.power
         analyzeMap["totalTDP"]=cpu.TDP+cpuCooler.TDP+graphicsCard.maxPower
 
         analyzeMap["caseCoolerHeight"]=case.cpuCoolerHeight
-        analyzeMap["coolerHeight"]=cpuCooler.height
-        analyzeMap["memoryInterval"]=innerStringsConfig.parts.memoryInterval
-        analyzeMap["memoryHeight"]=memory.height
+        analyzeMap["coolerHeight"]=cpuCooler.height + needMoreCoolerHeight
         analyzeMap["caseGraphicLength"]=case.graphicsCardLength
         analyzeMap["graphicsCardLength"]=graphicsCard.length
-        analyzeMap["caseMaxBoard"]=case.motherBoardFormFactor.length
-        analyzeMap["motherboardLength"]=motherBoard.motherBoardFormFactor.length
+        analyzeMap["casePowerSupplySize"]=case.powerLength
+        analyzeMap["powerSupplySize"]=powerSupply.length
 
         return analyzeMap
     }

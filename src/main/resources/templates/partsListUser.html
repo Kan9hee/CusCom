@@ -11,6 +11,12 @@
         <div class="row">
             <div class="col-md-5 col-lg-4 py-5 order-md-last">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text">적합도</span>
+                </h4>
+                <div>
+                    <canvas id="estimateChart"></canvas>
+                </div>
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text">현재 견적</span>
                 </h4>
                 <ul class="list-group mb-3">
@@ -213,6 +219,26 @@
         desktopCase:""
     }
 
+    var usageCapacity=[];
+    var spareCapacity=[];
+    var ctxData = {
+      labels: ["전력","쿨러 높이","그래픽카드 길이","파워 사이즈"],
+      datasets: [
+        {
+          label: '사용 용량',
+          data: usageCapacity,
+          borderColor: 'rgba(255, 99, 132, 1)',
+          backgroundColor: 'rgba(255, 99, 132, 1)'
+        },
+        {
+          label: '여유 용량',
+          data: spareCapacity,
+          borderColor: 'rgba(75, 192, 192, 1)',
+          backgroundColor: 'rgba(75, 192, 192, 1)'
+        }
+      ]
+    }
+
     function fetchEstimate(){
         fetch(`/CusCom/API/getUserEstimate?estimateID=${dataId}`)
         .then(response => response.json())
@@ -234,6 +260,22 @@
             updateH6Text("cpuCoolerH6",estimate.cpuCooler);
             updateH6Text("powerSupplyH6",estimate.powerSupply);
             updateH6Text("caseH6",estimate.desktopCase);
+        })
+        .catch(error => console.error(error));
+    }
+
+    function fetchChart(){
+        fetch(`/CusCom/API/analyzeEstimate?estimateID=${dataId}`)
+        .then(response => response.json())
+        .then(data => {
+            usageCapacity[0]=data.coolerHeight;
+            usageCapacity[1]=data.graphicsCardLength;
+            usageCapacity[2]=data.powerSupplySize;
+            usageCapacity[3]=data.totalTDP;
+            spareCapacity[0]=data.caseCoolerHeight;
+            spareCapacity[1]=data.caseGraphicLength;
+            spareCapacity[2]=data.casePowerSupplySize;
+            spareCapacity[3]=data.powerSupplyOutput;
         })
         .catch(error => console.error(error));
     }
@@ -451,6 +493,7 @@
         fetchData();
         if(dataId !== null){
             fetchEstimate();
+            fetchChart();
         }
     });
 
@@ -504,6 +547,22 @@
                 break;
         }
     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const ctx = document.getElementById('estimateChart');
+        const chart = new Chart(ctx,{
+          type: 'bar',
+          data: ctxData,
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              }
+            }
+          }
+        });
+    });
 
     document.getElementById('submitEstimate')
             .addEventListener('click',function(event){

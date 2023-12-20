@@ -240,7 +240,7 @@
     }
 
     function fetchEstimate(){
-        fetch(`/CusCom/API/getUserEstimate?estimateID=${dataId}`)
+        fetch(`/CusCom/API/open/getUserEstimate?estimateID=${dataId}`)
         .then(response => response.json())
         .then(data => {
             estimate.userName=data.userName;
@@ -265,7 +265,7 @@
     }
 
     function fetchChart(){
-        fetch(`/CusCom/API/analyzeEstimate?estimateID=${dataId}`)
+        fetch(`/CusCom/API/open/analyzeEstimate?estimateID=${dataId}`)
         .then(response => response.json())
         .then(data => {
             usageCapacity[0]=data.coolerHeight;
@@ -282,14 +282,14 @@
 
     function fetchData() {
           const fetchRequests = [
-            fetch('/CusCom/API/caseList').then(response => response.json()),
-            fetch('/CusCom/API/cpuList').then(response => response.json()),
-            fetch('/CusCom/API/cpuCoolerList').then(response => response.json()),
-            fetch('/CusCom/API/dataStorageList').then(response => response.json()),
-            fetch('/CusCom/API/graphicsCardList').then(response => response.json()),
-            fetch('/CusCom/API/memoryList').then(response => response.json()),
-            fetch('/CusCom/API/motherBoardList').then(response => response.json()),
-            fetch('/CusCom/API/powerSupplyList').then(response => response.json())
+            fetch('/CusCom/API/open/caseList').then(response => response.json()),
+            fetch('/CusCom/API/open/cpuList').then(response => response.json()),
+            fetch('/CusCom/API/open/cpuCoolerList').then(response => response.json()),
+            fetch('/CusCom/API/open/dataStorageList').then(response => response.json()),
+            fetch('/CusCom/API/open/graphicsCardList').then(response => response.json()),
+            fetch('/CusCom/API/open/memoryList').then(response => response.json()),
+            fetch('/CusCom/API/open/motherBoardList').then(response => response.json()),
+            fetch('/CusCom/API/open/powerSupplyList').then(response => response.json())
           ];
 
           Promise.all(fetchRequests)

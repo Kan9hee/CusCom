@@ -125,7 +125,7 @@
     }
 
     function initialSetup(){
-        fetch(`/CusCom/API/getUserEstimate?estimateID=${dataId}`)
+        fetch(`/CusCom/API/open/getUserEstimate?estimateID=${dataId}`)
         .then(response => response.json())
         .then(data => {
             estimate.userName=data.userName;

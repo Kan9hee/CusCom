@@ -111,9 +111,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun findCpuCooler(option:String,value:String): CPUCooler {
         var entity = CPUCoolerEntity(CPUCooler())
         if(option==innerStringsConfig.property.findOption.name)
-            cpuCoolerRepo.findByName(value).orElseThrow { CusComException(CusComErrorCode.CPUCoolerNotFound) }
+            entity = cpuCoolerRepo.findByName(value).orElseThrow { CusComException(CusComErrorCode.CPUCoolerNotFound) }
         else if(option==innerStringsConfig.property.findOption.id)
-            cpuCoolerRepo.findById(value.toLong()).orElseThrow { CusComException(CusComErrorCode.CPUCoolerNotFound) }
+            entity = cpuCoolerRepo.findById(value.toLong()).orElseThrow { CusComException(CusComErrorCode.CPUCoolerNotFound) }
 
         return CPUCooler(
             entity.id,

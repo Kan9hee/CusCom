@@ -268,14 +268,14 @@
         fetch(`/CusCom/API/open/analyzeEstimate?estimateID=${dataId}`)
         .then(response => response.json())
         .then(data => {
-            usageCapacity[0]=data.coolerHeight;
-            usageCapacity[1]=data.graphicsCardLength;
-            usageCapacity[2]=data.powerSupplySize;
-            usageCapacity[3]=data.totalTDP;
-            spareCapacity[0]=data.caseCoolerHeight;
-            spareCapacity[1]=data.caseGraphicLength;
-            spareCapacity[2]=data.casePowerSupplySize;
-            spareCapacity[3]=data.powerSupplyOutput;
+            usageCapacity[0]=data.totalTDP;
+            usageCapacity[1]=data.coolerHeight;
+            usageCapacity[2]=data.graphicsCardLength;
+            usageCapacity[3]=data.powerSupplySize;
+            spareCapacity[0]=data.powerSupplyOutput;
+            spareCapacity[1]=data.caseCoolerHeight;
+            spareCapacity[2]=data.caseGraphicLength;
+            spareCapacity[3]=data.casePowerSupplySize;
         })
         .catch(error => console.error(error));
     }

@@ -2,6 +2,7 @@ package com.example.cusCom.provideContent.entity.mongoDB
 
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.mapping.Document
+import java.time.LocalDateTime
 
 @Document(collection = "shareplace-posts")
 class SharePlacePostEntity(val _id: ObjectId,
@@ -9,6 +10,7 @@ class SharePlacePostEntity(val _id: ObjectId,
                            var title:String,
                            val userName:String,
                            val thumbnail:String,
+                           val createdAt:LocalDateTime,
                            var tags:Array<String>,
                            viewCount:Long,
                            likeCount:Long,

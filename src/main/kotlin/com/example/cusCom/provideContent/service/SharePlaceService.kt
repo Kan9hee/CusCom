@@ -18,6 +18,7 @@ import org.springframework.data.mongodb.core.query.Query
 import org.springframework.data.mongodb.core.query.Update
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
 
 @Service
 class SharePlaceService(private val mongoTemplate: MongoTemplate,
@@ -40,6 +41,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
                 sharePlacePost.title,
                 sharePlacePost.userName,
                 caseImage,
+                LocalDateTime.now(),
                 sharePlacePost.tags,
                 sharePlacePost.viewCount,
                 sharePlacePost.likeCount,

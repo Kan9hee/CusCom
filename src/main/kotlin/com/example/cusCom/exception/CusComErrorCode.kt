@@ -30,6 +30,7 @@ enum class CusComErrorCode(private val status:Int,
     FailedDeleteEstimate(404,"E101","견적 삭제 실패"),
 
     UnfinishedPost(400,"P000","미완성된 게시물"),
+    PostNotFound(404,"P001","게시물을 찾을 수 없음"),
     FailedDeletePost(404,"P002","게시물 삭제 실패"),
 
     NotWrittenComment(400,"C000","빈 댓글 작성 시도"),

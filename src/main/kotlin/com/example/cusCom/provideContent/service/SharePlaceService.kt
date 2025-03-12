@@ -10,6 +10,8 @@ import com.example.cusCom.provideContent.entity.mongoDB.CommentEntity
 import com.example.cusCom.provideContent.entity.mongoDB.EstimateEntity
 import com.example.cusCom.provideContent.entity.mongoDB.SharePlacePostEntity
 import org.bson.types.ObjectId
+import org.springframework.data.domain.Sort
+import org.springframework.data.mongodb.core.FindAndModifyOptions
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
@@ -56,11 +58,21 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
     }
 
     @Transactional
-    fun loadPost(option:String,value:String): SharePlacePost? {
-        val query= Query(Criteria.where(option).`is`(if(option==dbStringConfig.mongodb.id) ObjectId(value) else value))
-        val entity = mongoTemplate.findOne(query, SharePlacePostEntity::class.java)
-        return entity?.let {
-            increaseViewCount(it)
+    fun loadPost(option: String, value: String): SharePlacePost {
+        val query = Query(Criteria.where(option).`is`(if (option == dbStringConfig.mongodb.id) ObjectId(value) else value))
+
+        val update = Update().inc(
+            innerStringsConfig.property.viewCount,
+            innerStringsConfig.property.changeValue)
+
+        val entity = mongoTemplate.findAndModify(
+            query,
+            update,
+            FindAndModifyOptions.options().returnNew(true),
+            SharePlacePostEntity::class.java)
+            ?: throw CusComException(CusComErrorCode.PostNotFound)
+
+        return entity.let {
             SharePlacePost(
                 it._id.toHexString(),
                 it.estimateID,
@@ -70,14 +82,19 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
                 it.tags,
                 it.viewCount,
                 it.likeCount,
-                it.commentCount)
+                it.commentCount
+            )
         }
     }
 
     @Transactional
     fun getPostList(maxContent:Int,currentPage:Int): HashMap<String,Any> {
-        val posts=mongoTemplate.findAll(SharePlacePostEntity::class.java).map {
-            entity: SharePlacePostEntity ->
+        val query = Query()
+            .with(Sort.by(Sort.Direction.DESC, "createdAt"))
+            .skip((currentPage - 1) * maxContent.toLong())
+            .limit(maxContent)
+
+        val posts=mongoTemplate.find(query, SharePlacePostEntity::class.java).map { entity ->
             SharePlacePost(
                 entity._id.toHexString(),
                 entity.estimateID,
@@ -87,11 +104,14 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
                 entity.tags,
                 entity.viewCount,
                 entity.likeCount,
-                entity.commentCount
-            )
+                entity.commentCount)
         }
 
-        return pagination(posts,maxContent,currentPage)
+        return hashMapOf(
+            innerStringsConfig.postListMapper.postList to posts,
+            innerStringsConfig.postListMapper.pageCount to getTotalPageCount(maxContent),
+            innerStringsConfig.postListMapper.currentPage to currentPage
+        )
     }
 
     @Transactional
@@ -103,7 +123,13 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
             innerStringsConfig.property.postSearchOption.parts->findInEstimates(value)
             else -> Criteria()
         }
-        val posts=mongoTemplate.find(Query(condition),SharePlacePostEntity::class.java).map {
+
+        val query = Query(condition)
+            .with(Sort.by(Sort.Direction.DESC, "createdAt"))
+            .skip((currentPage - 1) * maxContent.toLong())
+            .limit(maxContent)
+
+        val posts=mongoTemplate.find(query,SharePlacePostEntity::class.java).map {
                 entity: SharePlacePostEntity ->
                 SharePlacePost(
                     entity._id.toHexString(),
@@ -114,24 +140,14 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
                     entity.tags,
                     entity.viewCount,
                     entity.likeCount,
-                    entity.commentCount
-                )
+                    entity.commentCount)
         }
-        return pagination(posts,maxContent,currentPage)
-    }
 
-    @Transactional
-    fun increaseViewCount(sharePlacePostEntity: SharePlacePostEntity){
-        val query= Query(Criteria.where(dbStringConfig.mongodb.id).`is`(sharePlacePostEntity._id))
-        val update= Update().inc(innerStringsConfig.property.viewCount,innerStringsConfig.property.changeValue)
-        mongoTemplate.updateFirst(query,update,dbStringConfig.mongodb.collection.post)
-    }
-
-    @Transactional
-    fun increaseCommentCount(sharePlacePostID: String){
-        val query= Query(Criteria.where(dbStringConfig.mongodb.id).`is`(ObjectId(sharePlacePostID)))
-        val update= Update().inc(innerStringsConfig.property.commentCount,innerStringsConfig.property.changeValue)
-        mongoTemplate.updateFirst(query,update,dbStringConfig.mongodb.collection.post)
+        return hashMapOf(
+            innerStringsConfig.postListMapper.postList to posts,
+            innerStringsConfig.postListMapper.pageCount to getTotalPageCount(maxContent),
+            innerStringsConfig.postListMapper.currentPage to currentPage
+        )
     }
 
     @Transactional
@@ -139,14 +155,19 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
         if(comment.content.isEmpty())
             throw CusComException(CusComErrorCode.NotWrittenComment)
 
-        mongoTemplate.insert(
-            CommentEntity(
-            ObjectId(),
-            comment.postID,
-            comment.userName,
-            comment.content)
-        )
-        increaseCommentCount(comment.postID)
+        val commentEntity = CommentEntity(ObjectId(), comment.postID, comment.userName, comment.content)
+
+        val query= Query(Criteria.where(dbStringConfig.mongodb.id).`is`(ObjectId(comment.postID)))
+        val update= Update()
+            .push(dbStringConfig.mongodb.collection.comment, commentEntity)
+            .inc(innerStringsConfig.property.commentCount,innerStringsConfig.property.changeValue)
+
+        val updatedPost = mongoTemplate.findAndModify(
+            query,
+            update,
+            FindAndModifyOptions.options().returnNew(true),
+            SharePlacePostEntity::class.java)
+            ?: throw CusComException(CusComErrorCode.PostNotFound)
     }
 
     @Transactional
@@ -164,8 +185,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
                 entity._id.toHexString(),
                 entity.postID,
                 entity.userName,
-                entity.content
-            )
+                entity.content)
         }
     }
 
@@ -174,48 +194,35 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
             dbStringConfig.mongodb.id,
             innerStringsConfig.property.userName,
             innerStringsConfig.property.postCheck,
-            dbStringConfig.mongodb.mongoClass
-        )
-        val orCriteria = mutableListOf<Criteria>()
-        val estimateEntities = mongoTemplate.find(Query(), EstimateEntity::class.java)
+            dbStringConfig.mongodb.mongoClass)
+
         val fields = EstimateEntity::class.java.declaredFields
+            .filter { !excludedFields.contains(it.name) }
+            .map { it.name }
 
-        for (estimateEntity in estimateEntities) {
-            val fieldsToCheck = fields
-                .filter { !excludedFields.contains(it.name) }
-                .map { field ->
-                    field.isAccessible = true
-                    field.get(estimateEntity)?.toString()
-                }
-            val entityString = fieldsToCheck.joinToString(separator = ", ")
-            if (entityString.contains(value, ignoreCase = true)) {
-                orCriteria.add(Criteria.where(dbStringConfig.mongodb.id).`is`(estimateEntity._id))
-            }
+        val orCriteria = fields.map { field ->
+            Criteria.where(field).regex(".*$value.*", "i")
         }
 
-        if (orCriteria.isNotEmpty()) {
+        return if (orCriteria.isNotEmpty()) {
             val estimateCriteria = Criteria().orOperator(*orCriteria.toTypedArray())
-            val estimateEntities = mongoTemplate.find(Query(estimateCriteria), EstimateEntity::class.java)
-            if (estimateEntities.isNotEmpty()) {
-                val estimateIds = estimateEntities.map { it._id.toHexString() }
-                return Criteria.where(innerStringsConfig.request.estimate.id).`in`(estimateIds)
+            val estimateIds = mongoTemplate.find(Query(estimateCriteria), EstimateEntity::class.java)
+                .map { it._id.toHexString() }
+
+            if (estimateIds.isNotEmpty()) {
+                Criteria.where(innerStringsConfig.request.estimate.id).`in`(estimateIds)
+            } else {
+                Criteria()
             }
+        } else {
+            Criteria()
         }
-        return Criteria()
     }
 
-
-    private fun pagination(posts:List<SharePlacePost>, maxContent:Int, currentPage:Int): HashMap<String,Any> {
-        val postCount=posts.size
-        val startContent = if(currentPage == 1) 0 else (currentPage-1)*maxContent
-        val endContent = if(startContent+maxContent>postCount) postCount
-                         else currentPage*maxContent
-
-        val map=HashMap<String,Any>()
-        map[innerStringsConfig.postListMapper.postList]=posts.subList(startContent,endContent)
-        map[innerStringsConfig.postListMapper.pageCount]=if(postCount%maxContent==0) (postCount/maxContent) else (postCount/maxContent+1)
-        map[innerStringsConfig.postListMapper.currentPage]=currentPage
-
-        return map
+    private fun getTotalPageCount(maxContent:Int): Long {
+        val totalCount = mongoTemplate.count(Query(), SharePlacePostEntity::class.java)
+        if (totalCount % maxContent == 0L)
+            return (totalCount / maxContent)
+        return (totalCount / maxContent + 1)
     }
 }

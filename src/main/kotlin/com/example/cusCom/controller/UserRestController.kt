@@ -201,7 +201,7 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     @GetMapping("/open/loadPost")
     fun loadPost(@RequestParam("id") postID:String):HashMap<String,Any>{
         val map=HashMap<String,Any>()
-        val post: SharePlacePost = sharePlaceService.loadPost(dbStringConfig.mongodb.id,postID)!!
+        val post: SharePlacePost = sharePlaceService.loadPost(dbStringConfig.mongodb.id,postID)
         map[innerStringsConfig.postListMapper.post]=post
         map[innerStringsConfig.postListMapper.postEstimate]=estimateService.getUserEstimateById(post.estimateID)
         map[innerStringsConfig.postListMapper.commentList]=sharePlaceService.getCommentList(innerStringsConfig.request.post.id,postID)
@@ -212,7 +212,7 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     fun loadPostList(@RequestParam("searchJSON",required = false) searchJson: String?,
                      @RequestParam("maxContent") maxContent: Int,
                      @RequestParam("currentPage") currentPage: Int): HashMap<String, Any> {
-        var postList=searchJson?.let{
+        val postList=searchJson?.let{
             val temp=Gson().fromJson(searchJson,JsonObject::class.java)
             sharePlaceService.searchPost(temp.get(innerStringsConfig.property.searchOption).asString,
                 temp.get(innerStringsConfig.property.searchKeyword).asString,maxContent,currentPage)

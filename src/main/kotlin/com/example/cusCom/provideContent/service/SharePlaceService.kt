@@ -92,7 +92,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
     @Transactional
     fun getPostList(maxContent:Int,currentPage:Int): HashMap<String,Any> {
         val query = Query()
-            .with(Sort.by(Sort.Direction.DESC, "createdAt"))
+            .with(Sort.by(Sort.Direction.DESC, innerStringsConfig.request.post.createdAt))
             .skip((currentPage - 1) * maxContent.toLong())
             .limit(maxContent)
 
@@ -127,7 +127,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
         }
 
         val query = Query(condition)
-            .with(Sort.by(Sort.Direction.DESC, "createdAt"))
+            .with(Sort.by(Sort.Direction.DESC, innerStringsConfig.request.post.createdAt))
             .skip((currentPage - 1) * maxContent.toLong())
             .limit(maxContent)
 

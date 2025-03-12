@@ -28,6 +28,7 @@ class InnerStringsConfig {
         }
 
         class PostConfig {
+            lateinit var createdAt: String
             lateinit var data: String
             lateinit var id: String
         }

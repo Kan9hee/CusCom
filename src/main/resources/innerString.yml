@@ -5,6 +5,7 @@ innerStrings:
       data: estimate
       id: estimateID
     post:
+      createdAt: createdAt
       data: postData
       id: postID
     search:

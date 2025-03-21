@@ -14,8 +14,7 @@ innerStrings:
       currentPage: currentPage
     partsType: type
     commentData: commentData
-    beforeID: BeforeID
-    targetID: targetID
+    targetName: targetName
     encoding: UTF-8
 
   parts:

@@ -17,8 +17,7 @@ class InnerStringsConfig {
         lateinit var search: SearchConfig
         lateinit var partsType: String
         lateinit var commentData: String
-        lateinit var beforeID: String
-        lateinit var targetID: String
+        lateinit var targetName: String
         lateinit var encoding: String
 
         class EstimateConfig {

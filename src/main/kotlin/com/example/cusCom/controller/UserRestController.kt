@@ -23,8 +23,25 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
                          private val dbStringConfig: DBStringConfig) {
 
     @PostMapping("/join")
-    fun postUserJoin(@RequestBody user: SignInDTO): ResponseEntity<String> {
+    fun userJoin(@RequestBody user: SignInDTO): ResponseEntity<String> {
         userService.joinUser(user)
+        return ResponseEntity.ok(innerStringsConfig.property.responseOk)
+    }
+
+    @PostMapping("/signOut")
+    fun userSignOut(@RequestBody logOutDTO: LogOutDTO): ResponseEntity<String> {
+        userService.signOutUser(logOutDTO)
+        return ResponseEntity.ok(innerStringsConfig.property.responseOk)
+    }
+
+    @PostMapping("/logIn")
+    fun userLogIn(@RequestBody logInDTO: LogInDTO): JwtDTO {
+        return userService.logIn(logInDTO)
+    }
+
+    @PostMapping("/LogOut")
+    fun userLogOut(@RequestBody logOutDTO: LogOutDTO): ResponseEntity<String> {
+        userService.logOut(logOutDTO)
         return ResponseEntity.ok(innerStringsConfig.property.responseOk)
     }
 
@@ -41,50 +58,50 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
 
     @GetMapping("/open/caseList")
     @ResponseBody
-    fun caseListApi(): List<CaseDTO> {
-        return desktopPartsService.getCaseList()
+    fun caseListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<CaseDTO> {
+        return desktopPartsService.getCaseList(partsListPageDTO)
     }
 
     @GetMapping("/open/cpuCoolerList")
     @ResponseBody
-    fun cpuCoolerListApi(): List<CpuCoolerDTO> {
-        return desktopPartsService.getCpuCoolerList()
+    fun cpuCoolerListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<CpuCoolerDTO> {
+        return desktopPartsService.getCpuCoolerList(partsListPageDTO)
     }
 
     @GetMapping("/open/cpuList")
     @ResponseBody
-    fun cpuListApi(): List<CpuDTO> {
-        return desktopPartsService.getCPUList()
+    fun cpuListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<CpuDTO> {
+        return desktopPartsService.getCPUList(partsListPageDTO)
     }
 
     @GetMapping("/open/dataStorageList")
     @ResponseBody
-    fun dataStorageListApi(): List<DataStorageDTO> {
-        return desktopPartsService.getDataStorageList()
+    fun dataStorageListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<DataStorageDTO> {
+        return desktopPartsService.getDataStorageList(partsListPageDTO)
     }
 
     @GetMapping("/open/graphicsCardList")
     @ResponseBody
-    fun graphicsCardListApi(): List<GraphicsCardDTO> {
-        return desktopPartsService.getGraphicsCardList()
+    fun graphicsCardListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<GraphicsCardDTO> {
+        return desktopPartsService.getGraphicsCardList(partsListPageDTO)
     }
 
     @GetMapping("/open/memoryList")
     @ResponseBody
-    fun memoryListApi(): List<MemoryDTO> {
-        return desktopPartsService.getMemoryList()
+    fun memoryListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<MemoryDTO> {
+        return desktopPartsService.getMemoryList(partsListPageDTO)
     }
 
     @GetMapping("/open/motherBoardList")
     @ResponseBody
-    fun motherBoardListApi(): List<MotherBoardDTO> {
-        return desktopPartsService.getMotherBoardList()
+    fun motherBoardListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<MotherBoardDTO> {
+        return desktopPartsService.getMotherBoardList(partsListPageDTO)
     }
 
     @GetMapping("/open/powerSupplyList")
     @ResponseBody
-    fun powerSupplyListApi(): List<PowerSupplyDTO> {
-        return desktopPartsService.getPowerSupplyList()
+    fun powerSupplyListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<PowerSupplyDTO> {
+        return desktopPartsService.getPowerSupplyList(partsListPageDTO)
     }
 
     @GetMapping("/open/searchCase")
@@ -127,34 +144,28 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
         return desktopPartsService.findPowerSupply(data)
     }
 
-    @GetMapping("/open/analyzeEstimate")
-    fun analyzeEstimate(@RequestParam("estimateID",required = false) estimateID: String?): HashMap<String, Int> {
-        val estimate=estimateID?.let { estimateService.getUserEstimateById(it) }
-        return estimateService.analyzeEstimate(estimate)
-    }
-
     @PostMapping("/createEstimate")
-    fun createEstimate(@RequestParam("estimate") estimateDTO:EstimateDTO): ResponseEntity<String> {
+    fun createEstimate(@RequestBody estimateAnalyzeDTO: EstimateAnalyzeDTO): ResponseEntity<String> {
         try{
-            estimateService.checkDesktopEstimate(estimateDTO)
-            estimateService.saveUserEstimate(estimateDTO)
+            estimateService.checkDesktopEstimate(estimateAnalyzeDTO)
+            estimateService.saveUserEstimate(estimateAnalyzeDTO)
             return ResponseEntity.ok(innerStringsConfig.property.responseOk)
         }
         catch (e: CusComException) { throw e }
     }
 
     @PostMapping("/updateEstimate")
-    fun updateEstimate(@RequestParam("estimate") estimateDTO:EstimateDTO): ResponseEntity<String> {
+    fun updateEstimate(@RequestBody estimateAnalyzeDTO: EstimateAnalyzeDTO): ResponseEntity<String> {
         try{
-            estimateService.checkDesktopEstimate(estimateDTO)
-            estimateService.updateUserEstimate(ObjectId(estimateDTO._id),estimateDTO)
+            estimateService.checkDesktopEstimate(estimateAnalyzeDTO)
+            estimateService.updateUserEstimate(ObjectId(estimateAnalyzeDTO.estimateId),estimateAnalyzeDTO)
             return ResponseEntity.ok(innerStringsConfig.property.responseOk)
         }
         catch (e: CusComException) { throw e }
     }
 
     @PostMapping("/deleteEstimate")
-    fun deleteEstimate(@RequestParam("estimateID") estimateID:String): ResponseEntity<String>{
+    fun deleteEstimate(@RequestBody estimateID:String): ResponseEntity<String>{
         try{
             sharePlaceService.loadPost(innerStringsConfig.request.estimate.id,estimateID).let{ postInfo ->
                 if(postInfo.commentCount!=0L)
@@ -167,9 +178,7 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     }
 
     @PostMapping("/uploadPost")
-    fun uploadPost(@RequestParam("postData") sharePlacePostDTO:SharePlacePostDTO,
-                   @RequestParam("updated") estimateDTO:EstimateDTO): ResponseEntity<String> {
-        estimateService.updateUserEstimate(ObjectId(estimateDTO._id),estimateDTO)
+    fun uploadPost(@RequestBody sharePlacePostDTO:SharePlacePostDTO): ResponseEntity<String> {
         sharePlaceService.uploadPost(sharePlacePostDTO)
         return ResponseEntity.ok(innerStringsConfig.property.responseOk)
     }
@@ -185,12 +194,12 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     }
 
     @GetMapping("/open/searchPost")
-    fun searchPost(@RequestParam("searchJSON",required = false) searchPostDTO: SearchPostDTO): HashMap<String, Any> {
+    fun searchPost(@RequestParam("searchOption",required = false) searchPostDTO: SearchPostDTO): HashMap<String, Any> {
         return sharePlaceService.searchPost(searchPostDTO)
     }
 
     @PostMapping("/uploadComment")
-    fun uploadComment(@RequestParam("commentData") commentDTO:CommentDTO): ResponseEntity<String> {
+    fun uploadComment(@RequestBody commentDTO:CommentDTO): ResponseEntity<String> {
         sharePlaceService.uploadComment(commentDTO)
         return ResponseEntity.ok(innerStringsConfig.property.responseOk)
     }

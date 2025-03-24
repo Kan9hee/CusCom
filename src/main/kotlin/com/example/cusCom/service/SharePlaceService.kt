@@ -34,6 +34,8 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
             throw CusComException(CusComErrorCode.UnfinishedPost)
 
         val estimate=estimateService.getUserEstimateById(sharePlacePostDTO.estimateID)
+        estimate.posted=true
+
         val caseImage=desktopPartsService.findCase(estimate.desktopCase).imageUrl
         mongoTemplate.insert(
             SharePlacePostEntity(
@@ -68,11 +70,12 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
             innerStringsConfig.property.viewCount,
             innerStringsConfig.property.changeValue)
 
-        val entity = mongoTemplate.findAndModify(
-            query,
-            update,
-            FindAndModifyOptions.options().returnNew(true),
-            SharePlacePostEntity::class.java)
+        val entity = mongoTemplate
+            .findAndModify(
+                query,
+                update,
+                FindAndModifyOptions.options().returnNew(true),
+                SharePlacePostEntity::class.java)
             ?: throw CusComException(CusComErrorCode.PostNotFound)
 
         return entity.let {

@@ -1,7 +1,9 @@
 package com.example.cusCom.service
 
+import com.example.cusCom.component.JwtComponent
 import com.example.cusCom.config.DBStringConfig
 import com.example.cusCom.config.InnerStringsConfig
+import com.example.cusCom.dto.EstimateAnalyzeDTO
 import com.example.cusCom.exception.CusComErrorCode
 import com.example.cusCom.exception.CusComException
 import com.example.cusCom.dto.EstimateDTO
@@ -18,37 +20,42 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class EstimateService(private val mongoTemplate: MongoTemplate,
-                      private val desktopPartsService: DesktopPartsService,
                       private val innerStringsConfig: InnerStringsConfig,
-                      private val dbStringConfig: DBStringConfig) {
+                      private val dbStringConfig: DBStringConfig,
+                      private val jwtComponent: JwtComponent) {
 
     @Transactional
-    fun saveUserEstimate(estimateDTO: EstimateDTO){
+    fun saveUserEstimate(saveEstimateDTO: EstimateAnalyzeDTO){
+        val userName = jwtComponent.getUsernameFrom(saveEstimateDTO.accessToken)
         mongoTemplate.insert(
             EstimateEntity(
-            ObjectId(),
-            estimateDTO.userName,
-            estimateDTO.posted,
-            estimateDTO.cpu,
-            estimateDTO.motherBoard,
-            estimateDTO.memory,
-            estimateDTO.dataStorage,
-            estimateDTO.graphicsCard,
-            estimateDTO.cpuCooler,
-            estimateDTO.powerSupply,
-            estimateDTO.desktopCase)
+                ObjectId(),
+                userName,
+            false,
+                saveEstimateDTO.cpu.name,
+                saveEstimateDTO.motherBoard.name,
+                saveEstimateDTO.memory.name,
+                saveEstimateDTO.dataStorage.name,
+                saveEstimateDTO.graphicsCard.name,
+                saveEstimateDTO.cpuCooler.name,
+                saveEstimateDTO.powerSupply.name,
+                saveEstimateDTO.desktopCase.name)
         )
     }
 
     @Transactional
-    fun updateUserEstimate(id:ObjectId, updatedEstimateDTO:EstimateDTO){
-        val query = Query(Criteria.where(dbStringConfig.mongodb.id).`is`(id))
+    fun updateUserEstimate(id:ObjectId, updatedEstimateDTO:EstimateAnalyzeDTO){
         val update = Update()
-        var updatedFields = ObjectMapper().convertValue(updatedEstimateDTO, Map::class.java)
-        updatedFields -= dbStringConfig.mongodb.id
+            .set("cpu", updatedEstimateDTO.cpu.name)
+            .set("motherBoard", updatedEstimateDTO.motherBoard.name)
+            .set("memory", updatedEstimateDTO.memory.name)
+            .set("dataStorage", updatedEstimateDTO.dataStorage.name)
+            .set("graphicsCard", updatedEstimateDTO.graphicsCard.name)
+            .set("cpuCooler", updatedEstimateDTO.cpuCooler.name)
+            .set("powerSupply", updatedEstimateDTO.powerSupply.name)
+            .set("desktopCase", updatedEstimateDTO.desktopCase.name)
 
-        for (field in updatedFields.keys)
-            update.set(field.toString(), updatedFields[field])
+        val query = Query(Criteria.where(dbStringConfig.mongodb.id).`is`(id))
 
         mongoTemplate.updateFirst(query, update, EstimateEntity::class.java)
     }
@@ -101,76 +108,36 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
             throw CusComException(CusComErrorCode.FailedDeleteEstimate)
     }
 
-    @Transactional
-    fun analyzeEstimate(estimateDTO: EstimateDTO?): HashMap<String, Int> {
-        if(estimateDTO==null)
+    fun checkDesktopEstimate(estimateAnalyzeDTO: EstimateAnalyzeDTO?){
+        if(estimateAnalyzeDTO==null)
             throw CusComException(CusComErrorCode.NotFoundEstimate)
 
-        val analyzeMap=HashMap<String,Int>()
+        val caseMaxFormFactor = MotherBoardFormFactor
+            .fromString(estimateAnalyzeDTO.desktopCase.motherBoardFormFactor)
+        val motherBoardsFormFactor = MotherBoardFormFactor
+            .fromString(estimateAnalyzeDTO.motherBoard.motherBoardFormFactor)
 
-        val cpuCooler=desktopPartsService.findCpuCooler(estimateDTO.cpuCooler)
-        val case=desktopPartsService.findCase(estimateDTO.desktopCase)
-        val graphicsCard=desktopPartsService.findGraphicsCard(estimateDTO.graphicsCard)
-        val memory=desktopPartsService.findMemory(estimateDTO.memory)
-        val powerSupply=desktopPartsService.findPowerSupply(estimateDTO.powerSupply)
-        val cpu=desktopPartsService.findCpu(estimateDTO.cpu)
-
-        val needMoreCoolerHeight =
-            if((memory.height-innerStringsConfig.parts.memoryInterval)<0) 0
-            else memory.height-innerStringsConfig.parts.memoryInterval
-
-        analyzeMap["powerSupplyOutput"]=powerSupply.power
-        analyzeMap["totalTDP"]=cpu.tdp+cpuCooler.tdp+graphicsCard.maxPower
-
-        analyzeMap["caseCoolerHeight"]=case.cpuCoolerHeight
-        analyzeMap["coolerHeight"]=cpuCooler.height + needMoreCoolerHeight
-        analyzeMap["caseGraphicLength"]=case.graphicsCardLength
-        analyzeMap["graphicsCardLength"]=graphicsCard.length
-        analyzeMap["casePowerSupplySize"]=case.powerLength
-        analyzeMap["powerSupplySize"]=powerSupply.length
-
-        return analyzeMap
-    }
-
-    fun checkDesktopEstimate(estimateDTO: EstimateDTO){
-        if(estimateDTO.run { cpu.isEmpty() ||
-                    desktopCase.isEmpty() ||
-                    dataStorage.isEmpty() ||
-                    memory.isEmpty() ||
-                    graphicsCard.isEmpty() ||
-                    cpuCooler.isEmpty() ||
-                    motherBoard.isEmpty() ||
-                    powerSupply.isEmpty() })
-            throw CusComException(CusComErrorCode.UnfinishedEstimate)
-
-        val cpuCooler=desktopPartsService.findCpuCooler(estimateDTO.cpuCooler)
-        val case=desktopPartsService.findCase(estimateDTO.desktopCase)
-        val graphicsCard=desktopPartsService.findGraphicsCard(estimateDTO.graphicsCard)
-        val memory=desktopPartsService.findMemory(estimateDTO.memory)
-        val powerSupply=desktopPartsService.findPowerSupply(estimateDTO.powerSupply)
-        val cpu=desktopPartsService.findCpu(estimateDTO.cpu)
-        val motherBoard=desktopPartsService.findMotherBoard(estimateDTO.motherBoard)
-
-        val caseMaxFormFactor= MotherBoardFormFactor.fromString(case.motherBoardFormFactor)
-        val motherBoardsFormFactor= MotherBoardFormFactor.fromString(motherBoard.motherBoardFormFactor)
-
-        if(cpuCooler.height>=case.cpuCoolerHeight)
+        if(estimateAnalyzeDTO.cpuCooler.height >= estimateAnalyzeDTO.desktopCase.cpuCoolerHeight)
             throw CusComException(CusComErrorCode.OversizeCooler)
-        if(graphicsCard.length>=case.graphicsCardLength)
+        if(estimateAnalyzeDTO.graphicsCard.length >= estimateAnalyzeDTO.desktopCase.graphicsCardLength)
             throw CusComException(CusComErrorCode.OversizeGraphicsCard)
-        if((innerStringsConfig.parts.memoryInterval-memory.height)>0)
-            if(cpuCooler.height+(innerStringsConfig.parts.memoryInterval-memory.height)>=case.width)
+        if((innerStringsConfig.parts.memoryInterval-estimateAnalyzeDTO.memory.height) > 0)
+            if(estimateAnalyzeDTO.cpuCooler.height+(innerStringsConfig.parts.memoryInterval-estimateAnalyzeDTO.memory.height)
+                >= estimateAnalyzeDTO.desktopCase.width)
                 throw CusComException(CusComErrorCode.InterferenceMemory)
         if(motherBoardsFormFactor.length>caseMaxFormFactor.length
-            ||motherBoardsFormFactor.width>caseMaxFormFactor.width)
+            || motherBoardsFormFactor.width>caseMaxFormFactor.width)
             throw CusComException(CusComErrorCode.OversizeMotherBoard)
-        if(motherBoard.socket!=cpu.socket)
+        if(estimateAnalyzeDTO.motherBoard.socket != estimateAnalyzeDTO.cpu.socket)
             throw CusComException(CusComErrorCode.MismatchSocket)
-        if(powerSupply.length>case.powerLength)
+        if(estimateAnalyzeDTO.powerSupply.length > estimateAnalyzeDTO.desktopCase.powerLength)
             throw CusComException(CusComErrorCode.OversizePowerSupply)
-        if(memory.type!=motherBoard.memoryType)
+        if(estimateAnalyzeDTO.memory.type != estimateAnalyzeDTO.motherBoard.memoryType)
             throw CusComException(CusComErrorCode.MismatchMemory)
-        if(graphicsCard.maxPower + cpu.tdp + cpuCooler.tdp >= powerSupply.power)
+        if(estimateAnalyzeDTO.graphicsCard.maxPower
+            + estimateAnalyzeDTO.cpu.tdp
+            + estimateAnalyzeDTO.cpuCooler.tdp
+            >= estimateAnalyzeDTO.powerSupply.power)
             throw CusComException(CusComErrorCode.PowerSupplyShortage)
     }
 }

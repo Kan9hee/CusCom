@@ -8,6 +8,8 @@ import com.example.cusCom.dto.response.LogOutDTO
 import com.example.cusCom.dto.request.SignInDTO
 import com.example.cusCom.entity.mySQL.AccountRole
 import com.example.cusCom.entity.mySQL.auth.UserEntity
+import com.example.cusCom.exception.CusComErrorCode
+import com.example.cusCom.exception.CusComException
 import com.example.cusCom.repository.auth.UserRepository
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -41,7 +43,7 @@ class UserService(private val jwtComponent: JwtComponent,
     @Transactional
     fun signOutUser(signOutDTO: LogOutDTO){
         val accountId = tokenService.getAccountIdFromRefreshToken(signOutDTO.refreshToken)
-            ?: throw RuntimeException("계정을 찾을 수 없습니다.")
+            ?: throw CusComException(CusComErrorCode.UserDataNotFound)
         logOut(signOutDTO)
         userRepo.deleteAccountId(accountId)
     }
@@ -49,11 +51,11 @@ class UserService(private val jwtComponent: JwtComponent,
     @Transactional
     fun logIn(logInDTO: LogInDTO): JwtDTO {
         val userInfo = findUser(logInDTO.insertedID)
-            ?: throw IllegalArgumentException("계정을 찾을 수 없습니다.")
+            ?: throw CusComException(CusComErrorCode.UserDataNotFound)
         val trimmedPassword = logInDTO.insertedPassword.trim()
 
         if(!securityConfig.passwordEncoder().matches(trimmedPassword,userInfo.accountPassword))
-            throw IllegalArgumentException("비밀번호가 일치하지 않습니다.")
+            throw CusComException(CusComErrorCode.PasswordNotPatch)
 
         val authenticationToken = UsernamePasswordAuthenticationToken(
             logInDTO.insertedID,

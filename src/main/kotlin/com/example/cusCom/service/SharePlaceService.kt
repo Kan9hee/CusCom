@@ -58,7 +58,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
     @Transactional
     fun deletePost(postId:String,userName:String){
         val query=Query(Criteria.where(dbStringConfig.mongodb.id).`is`(ObjectId(postId))
-            .and("userName").`is`(userName)
+            .and(dbStringConfig.mongodb.userName).`is`(userName)
         )
         val result=mongoTemplate.remove(query, SharePlacePostEntity::class.java)
 
@@ -186,7 +186,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
     @Transactional
     fun deleteComment(value:String,userName:String){
         val query= Query(Criteria.where(dbStringConfig.mongodb.id).`is`(ObjectId(value))
-            .and("userName").`is`(userName)
+            .and(dbStringConfig.mongodb.userName).`is`(userName)
         )
         mongoTemplate.remove(query, CommentEntity::class.java)
     }
@@ -210,7 +210,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
         val query = Query(Criteria.where(dbStringConfig.mongodb.id).`is`(ObjectId(postId)))
 
         val update = Update().inc(
-            "likeCount",
+            dbStringConfig.mongodb.likeCount,
             innerStringsConfig.property.changeValue)
 
         mongoTemplate
@@ -227,7 +227,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
         val query = Query(Criteria.where(dbStringConfig.mongodb.id).`is`(ObjectId(postId)))
 
         val update = Update().inc(
-            "likeCount",
+            dbStringConfig.mongodb.likeCount,
             -innerStringsConfig.property.changeValue)
 
         mongoTemplate

@@ -1,6 +1,8 @@
 package com.example.cusCom.component
 
 import com.example.cusCom.dto.JwtDTO
+import com.example.cusCom.exception.CusComErrorCode
+import com.example.cusCom.exception.CusComException
 import com.example.cusCom.service.CustomUserDetailsService
 import com.example.cusCom.service.TokenService
 import io.jsonwebtoken.Jwts
@@ -37,13 +39,13 @@ class JwtComponent(@Value("\${jwt.secret}") secretKey:String,
                                   response: HttpServletResponse,
                                   filterChain: FilterChain) {
         val bearerToken:String = request.getHeader("Authorization")
-            ?: throw IllegalArgumentException("권한 없는 토큰입니다.")
+            ?: throw CusComException(CusComErrorCode.UnauthorizedToken)
         val token = bearerToken.substring(7)
 
         val isValidate = validateToken(token)
         val isBlacklisted = tokenService.isTokenBlacklisted(token)
         if (!isValidate || isBlacklisted) {
-            throw IllegalArgumentException("권한 없는 토큰입니다.")
+            throw CusComException(CusComErrorCode.UnauthorizedToken)
         }
 
         val authentication = getAuthentication(token)
@@ -81,11 +83,11 @@ class JwtComponent(@Value("\${jwt.secret}") secretKey:String,
         val isValidate = validateToken(refreshToken)
         val isBlacklisted = tokenService.isTokenBlacklisted(refreshToken)
         if (!isValidate || isBlacklisted) {
-            throw IllegalArgumentException("권한 없는 토큰입니다.")
+            throw CusComException(CusComErrorCode.UnauthorizedToken)
         }
 
         val accountIdString = tokenService.getAccountIdFromRefreshToken(refreshToken)
-            ?: throw RuntimeException("리프레시 토큰에 저장된 계정 정보가 없습니다.")
+            ?: throw CusComException(CusComErrorCode.MisinformationToken)
 
         val user = customUserDetailsService.loadUserByUsername(accountIdString)
         val authentication = UsernamePasswordAuthenticationToken(user.username, user.password)

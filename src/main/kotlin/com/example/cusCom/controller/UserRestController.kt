@@ -174,24 +174,31 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
             }
             estimateService.deleteUserEstimate(estimateID,requestUser.username)
             return ResponseEntity.ok(innerStringsConfig.property.responseOk)
-        }catch(e: CusComException) { throw e }
+        }
+        catch (e: CusComException) { throw e }
     }
 
     @PostMapping("/uploadPost")
     fun uploadPost(@RequestBody saveSharePlacePostDTO: SaveSharePlacePostDTO): ResponseEntity<String> {
-        val requestUser = customUserDetailsService.loadUserByAuthentication()
-        sharePlaceService.uploadPost(saveSharePlacePostDTO,requestUser.username)
-        return ResponseEntity.ok(innerStringsConfig.property.responseOk)
+        try{
+            val requestUser = customUserDetailsService.loadUserByAuthentication()
+            sharePlaceService.uploadPost(saveSharePlacePostDTO,requestUser.username)
+            return ResponseEntity.ok(innerStringsConfig.property.responseOk)
+        }
+        catch (e: CusComException) { throw e }
     }
 
     @GetMapping("/open/loadPost")
     fun loadPost(@RequestParam("id") postID:String):HashMap<String,Any>{
-        val map=HashMap<String,Any>()
-        val post: SharePlacePostDTO = sharePlaceService.loadPost(postID)
-        map[innerStringsConfig.postListMapper.post]=post
-        map[innerStringsConfig.postListMapper.postEstimate]=estimateService.getUserEstimateById(post.estimateID)
-        map[innerStringsConfig.postListMapper.commentList]=sharePlaceService.getCommentList(postID)
-        return map
+        try{
+            val map=HashMap<String,Any>()
+            val post: SharePlacePostDTO = sharePlaceService.loadPost(postID)
+            map[innerStringsConfig.postListMapper.post]=post
+            map[innerStringsConfig.postListMapper.postEstimate]=estimateService.getUserEstimateById(post.estimateID)
+            map[innerStringsConfig.postListMapper.commentList]=sharePlaceService.getCommentList(postID)
+            return map
+        }
+        catch (e: CusComException) { throw e }
     }
 
     @GetMapping("/open/searchPost")

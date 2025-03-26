@@ -3,22 +3,21 @@ dbString:
     id: id
     name: name
     table:
-      case: 'desktop_case'
-      cpu: cpu
-      cpuCooler: 'cpu_cooler'
-      dataStorage: 'data_storage'
-      graphicsCard: 'graphics_card'
-      memory: memory
-      motherBoard: 'mother_board'
-      powerSupply: 'power_supply'
-      cpuSocket: 'cpu_socket'
-      motherboardFormFactor: 'motherboard_formfactor'
+      case: 'desktopCase'
+      cpu: 'cpu'
+      cpuCooler: 'cpuCooler'
+      dataStorage: 'dataStorage'
+      graphicsCard: 'graphicsCard'
+      memory: 'memory'
+      motherBoard: 'motherBoard'
+      powerSupply: 'powerSupply'
       user: user
 
   mongodb:
     id: '_id'
+    userName: 'userName'
+    likeCount: 'likeCount'
     mongoClass: '_class'
-    deleteFailValue: 0
     collection:
       post: 'shareplace-posts'
       comment: 'shareplace-comments'
@@ -27,3 +26,7 @@ dbString:
   blob:
     fileFormat: jpg
     containerName: 'desktop-parts-images'
+
+  redis:
+    refreshTokenKey: 'refresh'
+    blacklistTokenKey: 'blacklist'

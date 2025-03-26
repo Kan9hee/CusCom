@@ -29,6 +29,11 @@ enum class CusComErrorCode(private val status:Int,
     PowerSupplyShortage(422,"E061","파워서플라이 전력 부족"),
     FailedDeleteEstimate(404,"E101","견적 삭제 실패"),
 
+    UserDataNotFound(404,"U001","계정을 찾을 수 없습니다."),
+    PasswordNotPatch(400,"U002","비밀번호가 일치하지 않습니다."),
+    UnauthorizedToken(400,"U003","권한 없는 토큰입니다."),
+    MisinformationToken(404,"U004","토큰에 저장된 계정 정보가 없습니다."),
+
     UnfinishedPost(400,"P000","미완성된 게시물"),
     PostNotFound(404,"P001","게시물을 찾을 수 없음"),
     FailedDeletePost(404,"P002","게시물 삭제 실패"),

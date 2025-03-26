@@ -9,13 +9,14 @@ class DBStringConfig {
     lateinit var mysql: MysqlProperties
     lateinit var mongodb: MongodbProperties
     lateinit var blob: BlobProperties
+    lateinit var redis: RedisProperties
 
     class MysqlProperties {
         lateinit var id: String
         lateinit var name: String
-        lateinit var table: TableProperties
+        lateinit var parts: PartsProperties
 
-        class TableProperties {
+        class PartsProperties {
             lateinit var case: String
             lateinit var cpu: String
             lateinit var cpuCooler: String
@@ -24,16 +25,15 @@ class DBStringConfig {
             lateinit var memory: String
             lateinit var motherBoard: String
             lateinit var powerSupply: String
-            lateinit var cpuSocket: String
-            lateinit var motherboardFormFactor: String
             lateinit var user: String
         }
     }
 
     class MongodbProperties {
         lateinit var id: String
+        lateinit var userName: String
+        lateinit var likeCount: String
         lateinit var mongoClass: String
-        var deleteFailValue: Long = 0L
         lateinit var collection: CollectionProperties
 
         class CollectionProperties {
@@ -46,5 +46,10 @@ class DBStringConfig {
     class BlobProperties {
         lateinit var fileFormat: String
         lateinit var containerName: String
+    }
+
+    class RedisProperties {
+        lateinit var refreshTokenKey: String
+        lateinit var blacklistTokenKey: String
     }
 }

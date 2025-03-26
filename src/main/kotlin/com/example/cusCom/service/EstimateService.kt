@@ -42,17 +42,17 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
     @Transactional
     fun updateUserEstimate(id:ObjectId, updatedEstimateDTO: EstimateAnalyzeDTO, userName:String){
         val update = Update()
-            .set("cpu", updatedEstimateDTO.cpu.name)
-            .set("motherBoard", updatedEstimateDTO.motherBoard.name)
-            .set("memory", updatedEstimateDTO.memory.name)
-            .set("dataStorage", updatedEstimateDTO.dataStorage.name)
-            .set("graphicsCard", updatedEstimateDTO.graphicsCard.name)
-            .set("cpuCooler", updatedEstimateDTO.cpuCooler.name)
-            .set("powerSupply", updatedEstimateDTO.powerSupply.name)
-            .set("desktopCase", updatedEstimateDTO.desktopCase.name)
+            .set(dbStringConfig.mysql.parts.cpu, updatedEstimateDTO.cpu.name)
+            .set(dbStringConfig.mysql.parts.motherBoard, updatedEstimateDTO.motherBoard.name)
+            .set(dbStringConfig.mysql.parts.memory, updatedEstimateDTO.memory.name)
+            .set(dbStringConfig.mysql.parts.dataStorage, updatedEstimateDTO.dataStorage.name)
+            .set(dbStringConfig.mysql.parts.graphicsCard, updatedEstimateDTO.graphicsCard.name)
+            .set(dbStringConfig.mysql.parts.cpuCooler, updatedEstimateDTO.cpuCooler.name)
+            .set(dbStringConfig.mysql.parts.powerSupply, updatedEstimateDTO.powerSupply.name)
+            .set(dbStringConfig.mysql.parts.case, updatedEstimateDTO.desktopCase.name)
 
         val query = Query(Criteria.where(dbStringConfig.mongodb.id).`is`(id)
-            .and("userName").`is`(userName)
+            .and(dbStringConfig.mongodb.userName).`is`(userName)
         )
         mongoTemplate.updateFirst(query, update, EstimateEntity::class.java)
     }
@@ -98,11 +98,11 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
     @Transactional
     fun deleteUserEstimate(estimateId:String,userName:String){
         val query=Query(Criteria.where(dbStringConfig.mongodb.id).`is`(ObjectId(estimateId))
-            .and("userName").`is`(userName)
+            .and(dbStringConfig.mongodb.userName).`is`(userName)
         )
         val result=mongoTemplate.remove(query, EstimateEntity::class.java)
 
-        if(result.deletedCount==dbStringConfig.mongodb.deleteFailValue)
+        if(result.deletedCount==0L)
             throw CusComException(CusComErrorCode.FailedDeleteEstimate)
     }
 

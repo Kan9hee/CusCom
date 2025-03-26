@@ -1,10 +1,12 @@
 package com.example.cusCom.controller
 
-import com.example.cusCom.config.DBStringConfig
 import com.example.cusCom.config.InnerStringsConfig
 import com.example.cusCom.exception.CusComException
 import com.example.cusCom.dto.*
 import com.example.cusCom.dto.parts.*
+import com.example.cusCom.dto.request.*
+import com.example.cusCom.dto.response.*
+import com.example.cusCom.service.CustomUserDetailsService
 import com.example.cusCom.service.DesktopPartsService
 import com.example.cusCom.service.SharePlaceService
 import com.example.cusCom.service.UserService
@@ -19,8 +21,8 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
                          private val estimateService: com.example.cusCom.service.EstimateService,
                          private val sharePlaceService: SharePlaceService,
                          private val userService: UserService,
-                         private val innerStringsConfig: InnerStringsConfig,
-                         private val dbStringConfig: DBStringConfig) {
+                         private val customUserDetailsService: CustomUserDetailsService,
+                         private val innerStringsConfig: InnerStringsConfig) {
 
     @PostMapping("/join")
     fun userJoin(@RequestBody user: SignInDTO): ResponseEntity<String> {
@@ -48,7 +50,7 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     @GetMapping("/getUserEstimateList")
     fun userEstimateList(): List<EstimateDTO> {
         val userName=SecurityContextHolder.getContext().authentication.name
-        return estimateService.getUserEstimateList(innerStringsConfig.property.userName,userName)
+        return estimateService.getUserEstimateList(userName)
     }
 
     @GetMapping("/open/getUserEstimate")
@@ -57,49 +59,41 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     }
 
     @GetMapping("/open/caseList")
-    @ResponseBody
     fun caseListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<CaseDTO> {
         return desktopPartsService.getCaseList(partsListPageDTO)
     }
 
     @GetMapping("/open/cpuCoolerList")
-    @ResponseBody
     fun cpuCoolerListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<CpuCoolerDTO> {
         return desktopPartsService.getCpuCoolerList(partsListPageDTO)
     }
 
     @GetMapping("/open/cpuList")
-    @ResponseBody
     fun cpuListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<CpuDTO> {
         return desktopPartsService.getCPUList(partsListPageDTO)
     }
 
     @GetMapping("/open/dataStorageList")
-    @ResponseBody
     fun dataStorageListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<DataStorageDTO> {
         return desktopPartsService.getDataStorageList(partsListPageDTO)
     }
 
     @GetMapping("/open/graphicsCardList")
-    @ResponseBody
     fun graphicsCardListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<GraphicsCardDTO> {
         return desktopPartsService.getGraphicsCardList(partsListPageDTO)
     }
 
     @GetMapping("/open/memoryList")
-    @ResponseBody
     fun memoryListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<MemoryDTO> {
         return desktopPartsService.getMemoryList(partsListPageDTO)
     }
 
     @GetMapping("/open/motherBoardList")
-    @ResponseBody
     fun motherBoardListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<MotherBoardDTO> {
         return desktopPartsService.getMotherBoardList(partsListPageDTO)
     }
 
     @GetMapping("/open/powerSupplyList")
-    @ResponseBody
     fun powerSupplyListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<PowerSupplyDTO> {
         return desktopPartsService.getPowerSupplyList(partsListPageDTO)
     }
@@ -146,9 +140,10 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
 
     @PostMapping("/createEstimate")
     fun createEstimate(@RequestBody estimateAnalyzeDTO: EstimateAnalyzeDTO): ResponseEntity<String> {
+        val requestUser = customUserDetailsService.loadUserByAuthentication()
         try{
             estimateService.checkDesktopEstimate(estimateAnalyzeDTO)
-            estimateService.saveUserEstimate(estimateAnalyzeDTO)
+            estimateService.saveUserEstimate(estimateAnalyzeDTO,requestUser.username)
             return ResponseEntity.ok(innerStringsConfig.property.responseOk)
         }
         catch (e: CusComException) { throw e }
@@ -156,9 +151,13 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
 
     @PostMapping("/updateEstimate")
     fun updateEstimate(@RequestBody estimateAnalyzeDTO: EstimateAnalyzeDTO): ResponseEntity<String> {
+        val requestUser = customUserDetailsService.loadUserByAuthentication()
         try{
             estimateService.checkDesktopEstimate(estimateAnalyzeDTO)
-            estimateService.updateUserEstimate(ObjectId(estimateAnalyzeDTO.estimateId),estimateAnalyzeDTO)
+            estimateService.updateUserEstimate(
+                ObjectId(estimateAnalyzeDTO.estimateId),
+                estimateAnalyzeDTO,
+                requestUser.username)
             return ResponseEntity.ok(innerStringsConfig.property.responseOk)
         }
         catch (e: CusComException) { throw e }
@@ -166,30 +165,32 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
 
     @PostMapping("/deleteEstimate")
     fun deleteEstimate(@RequestBody estimateID:String): ResponseEntity<String>{
+        val requestUser = customUserDetailsService.loadUserByAuthentication()
         try{
-            sharePlaceService.loadPost(innerStringsConfig.request.estimate.id,estimateID).let{ postInfo ->
+            sharePlaceService.loadPost(estimateID).let{ postInfo ->
                 if(postInfo.commentCount!=0L)
-                    sharePlaceService.deleteComment(innerStringsConfig.request.post.id,postInfo._id)
-                sharePlaceService.deletePost(dbStringConfig.mongodb.id,postInfo._id)
+                    sharePlaceService.deleteComment(postInfo._id,requestUser.username)
+                sharePlaceService.deletePost(postInfo._id,requestUser.username)
             }
-            estimateService.deleteUserEstimate(dbStringConfig.mongodb.id,estimateID)
+            estimateService.deleteUserEstimate(estimateID,requestUser.username)
             return ResponseEntity.ok(innerStringsConfig.property.responseOk)
         }catch(e: CusComException) { throw e }
     }
 
     @PostMapping("/uploadPost")
-    fun uploadPost(@RequestBody sharePlacePostDTO:SharePlacePostDTO): ResponseEntity<String> {
-        sharePlaceService.uploadPost(sharePlacePostDTO)
+    fun uploadPost(@RequestBody saveSharePlacePostDTO: SaveSharePlacePostDTO): ResponseEntity<String> {
+        val requestUser = customUserDetailsService.loadUserByAuthentication()
+        sharePlaceService.uploadPost(saveSharePlacePostDTO,requestUser.username)
         return ResponseEntity.ok(innerStringsConfig.property.responseOk)
     }
 
     @GetMapping("/open/loadPost")
     fun loadPost(@RequestParam("id") postID:String):HashMap<String,Any>{
         val map=HashMap<String,Any>()
-        val post: SharePlacePostDTO = sharePlaceService.loadPost(dbStringConfig.mongodb.id,postID)
+        val post: SharePlacePostDTO = sharePlaceService.loadPost(postID)
         map[innerStringsConfig.postListMapper.post]=post
         map[innerStringsConfig.postListMapper.postEstimate]=estimateService.getUserEstimateById(post.estimateID)
-        map[innerStringsConfig.postListMapper.commentList]=sharePlaceService.getCommentList(innerStringsConfig.request.post.id,postID)
+        map[innerStringsConfig.postListMapper.commentList]=sharePlaceService.getCommentList(postID)
         return map
     }
 
@@ -199,8 +200,9 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     }
 
     @PostMapping("/uploadComment")
-    fun uploadComment(@RequestBody commentDTO:CommentDTO): ResponseEntity<String> {
-        sharePlaceService.uploadComment(commentDTO)
+    fun uploadComment(@RequestBody saveCommentDTO: SaveCommentDTO): ResponseEntity<String> {
+        val requestUser = customUserDetailsService.loadUserByAuthentication()
+        sharePlaceService.uploadComment(saveCommentDTO,requestUser.username)
         return ResponseEntity.ok(innerStringsConfig.property.responseOk)
     }
 

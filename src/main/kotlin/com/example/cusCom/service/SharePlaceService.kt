@@ -2,11 +2,13 @@ package com.example.cusCom.service
 
 import com.example.cusCom.config.DBStringConfig
 import com.example.cusCom.config.InnerStringsConfig
-import com.example.cusCom.dto.CommentDTO
-import com.example.cusCom.dto.SearchPostDTO
+import com.example.cusCom.dto.request.SaveCommentDTO
+import com.example.cusCom.dto.request.SaveSharePlacePostDTO
+import com.example.cusCom.dto.response.CommentDTO
+import com.example.cusCom.dto.request.SearchPostDTO
 import com.example.cusCom.exception.CusComErrorCode
 import com.example.cusCom.exception.CusComException
-import com.example.cusCom.dto.SharePlacePostDTO
+import com.example.cusCom.dto.response.SharePlacePostDTO
 import com.example.cusCom.entity.mongoDB.CommentEntity
 import com.example.cusCom.entity.mongoDB.EstimateEntity
 import com.example.cusCom.entity.mongoDB.SharePlacePostEntity
@@ -29,33 +31,35 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
                         private val desktopPartsService: DesktopPartsService) {
 
     @Transactional
-    fun uploadPost(sharePlacePostDTO: SharePlacePostDTO){
-        if(sharePlacePostDTO.title.isEmpty())
+    fun uploadPost(saveSharePlacePostDTO: SaveSharePlacePostDTO, userName:String){
+        if(saveSharePlacePostDTO.title.isEmpty())
             throw CusComException(CusComErrorCode.UnfinishedPost)
 
-        val estimate=estimateService.getUserEstimateById(sharePlacePostDTO.estimateID)
+        val estimate=estimateService.getUserEstimateById(saveSharePlacePostDTO.estimateID)
         estimate.posted=true
 
         val caseImage=desktopPartsService.findCase(estimate.desktopCase).imageUrl
         mongoTemplate.insert(
             SharePlacePostEntity(
                 ObjectId(),
-                sharePlacePostDTO.estimateID,
-                sharePlacePostDTO.title,
-                sharePlacePostDTO.userName,
+                saveSharePlacePostDTO.estimateID,
+                saveSharePlacePostDTO.title,
+                userName,
                 caseImage,
                 LocalDateTime.now(),
-                sharePlacePostDTO.tags,
-                sharePlacePostDTO.viewCount,
-                sharePlacePostDTO.likeCount,
-                sharePlacePostDTO.commentCount
+                saveSharePlacePostDTO.tags.toTypedArray(),
+                0,
+                0,
+                0
             )
         )
     }
 
     @Transactional
-    fun deletePost(option:String,value:String){
-        val query=Query(Criteria.where(option).`is`(if(option==dbStringConfig.mongodb.id) ObjectId(value) else value))
+    fun deletePost(postId:String,userName:String){
+        val query=Query(Criteria.where(dbStringConfig.mongodb.id).`is`(ObjectId(postId))
+            .and("userName").`is`(userName)
+        )
         val result=mongoTemplate.remove(query, SharePlacePostEntity::class.java)
 
         if(result.deletedCount==0L)
@@ -63,8 +67,8 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
     }
 
     @Transactional
-    fun loadPost(option: String, value: String): SharePlacePostDTO {
-        val query = Query(Criteria.where(option).`is`(if (option == dbStringConfig.mongodb.id) ObjectId(value) else value))
+    fun loadPost(postId: String): SharePlacePostDTO {
+        val query = Query(Criteria.where(dbStringConfig.mongodb.id).`is`(ObjectId(postId)))
 
         val update = Update().inc(
             innerStringsConfig.property.viewCount,
@@ -85,7 +89,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
                 it.title,
                 it.userName,
                 it.thumbnail,
-                it.tags,
+                it.tags.toList(),
                 it.viewCount,
                 it.likeCount,
                 it.commentCount
@@ -107,7 +111,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
                 entity.title,
                 entity.userName,
                 entity.thumbnail,
-                entity.tags,
+                entity.tags.toList(),
                 entity.viewCount,
                 entity.likeCount,
                 entity.commentCount)
@@ -146,7 +150,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
                     entity.title,
                     entity.userName,
                     entity.thumbnail,
-                    entity.tags,
+                    entity.tags.toList(),
                     entity.viewCount,
                     entity.likeCount,
                     entity.commentCount)
@@ -160,18 +164,18 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
     }
 
     @Transactional
-    fun uploadComment(commentDTO: CommentDTO){
-        if(commentDTO.content.isEmpty())
+    fun uploadComment(saveCommentDTO: SaveCommentDTO, userName:String){
+        if(saveCommentDTO.content.isEmpty())
             throw CusComException(CusComErrorCode.NotWrittenComment)
 
-        val commentEntity = CommentEntity(ObjectId(), commentDTO.postID, commentDTO.userName, commentDTO.content)
+        val commentEntity = CommentEntity(ObjectId(), saveCommentDTO.postID, userName, saveCommentDTO.content)
 
-        val query= Query(Criteria.where(dbStringConfig.mongodb.id).`is`(ObjectId(commentDTO.postID)))
+        val query= Query(Criteria.where(dbStringConfig.mongodb.id).`is`(ObjectId(saveCommentDTO.postID)))
         val update= Update()
             .push(dbStringConfig.mongodb.collection.comment, commentEntity)
             .inc(innerStringsConfig.property.commentCount,innerStringsConfig.property.changeValue)
 
-        val updatedPost = mongoTemplate.findAndModify(
+        mongoTemplate.findAndModify(
             query,
             update,
             FindAndModifyOptions.options().returnNew(true),
@@ -180,14 +184,16 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
     }
 
     @Transactional
-    fun deleteComment(option:String,value:String){
-        val query= Query(Criteria.where(option).`is`(if(option==dbStringConfig.mongodb.id) ObjectId(value) else value))
+    fun deleteComment(value:String,userName:String){
+        val query= Query(Criteria.where(dbStringConfig.mongodb.id).`is`(ObjectId(value))
+            .and("userName").`is`(userName)
+        )
         mongoTemplate.remove(query, CommentEntity::class.java)
     }
 
     @Transactional
-    fun getCommentList(option:String,value:String): List<CommentDTO> {
-        val query= Query(Criteria.where(option).`is`(value))
+    fun getCommentList(value:String): List<CommentDTO> {
+        val query= Query(Criteria.where(innerStringsConfig.request.post.id).`is`(ObjectId(value)))
         return mongoTemplate.find(query, CommentEntity::class.java).map {
             entity: CommentEntity ->
             CommentDTO(
@@ -197,6 +203,40 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
                 entity.content
             )
         }
+    }
+
+    @Transactional
+    fun increasePostLikeCount(postId: String){
+        val query = Query(Criteria.where(dbStringConfig.mongodb.id).`is`(ObjectId(postId)))
+
+        val update = Update().inc(
+            "likeCount",
+            innerStringsConfig.property.changeValue)
+
+        mongoTemplate
+            .findAndModify(
+                query,
+                update,
+                FindAndModifyOptions.options().returnNew(true),
+                SharePlacePostEntity::class.java)
+            ?: throw CusComException(CusComErrorCode.PostNotFound)
+    }
+
+    @Transactional
+    fun decreasePostLikeCount(postId: String){
+        val query = Query(Criteria.where(dbStringConfig.mongodb.id).`is`(ObjectId(postId)))
+
+        val update = Update().inc(
+            "likeCount",
+            -innerStringsConfig.property.changeValue)
+
+        mongoTemplate
+            .findAndModify(
+                query,
+                update,
+                FindAndModifyOptions.options().returnNew(true),
+                SharePlacePostEntity::class.java)
+            ?: throw CusComException(CusComErrorCode.PostNotFound)
     }
 
     fun findInEstimates(value: String): Criteria {

@@ -1,15 +1,13 @@
 package com.example.cusCom.service
 
-import com.example.cusCom.component.JwtComponent
 import com.example.cusCom.config.DBStringConfig
 import com.example.cusCom.config.InnerStringsConfig
-import com.example.cusCom.dto.EstimateAnalyzeDTO
+import com.example.cusCom.dto.request.EstimateAnalyzeDTO
 import com.example.cusCom.exception.CusComErrorCode
 import com.example.cusCom.exception.CusComException
-import com.example.cusCom.dto.EstimateDTO
+import com.example.cusCom.dto.response.EstimateDTO
 import com.example.cusCom.entity.mongoDB.EstimateEntity
 import com.example.cusCom.entity.mySQL.MotherBoardFormFactor
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
@@ -21,12 +19,10 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class EstimateService(private val mongoTemplate: MongoTemplate,
                       private val innerStringsConfig: InnerStringsConfig,
-                      private val dbStringConfig: DBStringConfig,
-                      private val jwtComponent: JwtComponent) {
+                      private val dbStringConfig: DBStringConfig) {
 
     @Transactional
-    fun saveUserEstimate(saveEstimateDTO: EstimateAnalyzeDTO){
-        val userName = jwtComponent.getUsernameFrom(saveEstimateDTO.accessToken)
+    fun saveUserEstimate(saveEstimateDTO: EstimateAnalyzeDTO,userName:String){
         mongoTemplate.insert(
             EstimateEntity(
                 ObjectId(),
@@ -44,7 +40,7 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
     }
 
     @Transactional
-    fun updateUserEstimate(id:ObjectId, updatedEstimateDTO:EstimateAnalyzeDTO){
+    fun updateUserEstimate(id:ObjectId, updatedEstimateDTO: EstimateAnalyzeDTO, userName:String){
         val update = Update()
             .set("cpu", updatedEstimateDTO.cpu.name)
             .set("motherBoard", updatedEstimateDTO.motherBoard.name)
@@ -55,8 +51,9 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
             .set("powerSupply", updatedEstimateDTO.powerSupply.name)
             .set("desktopCase", updatedEstimateDTO.desktopCase.name)
 
-        val query = Query(Criteria.where(dbStringConfig.mongodb.id).`is`(id))
-
+        val query = Query(Criteria.where(dbStringConfig.mongodb.id).`is`(id)
+            .and("userName").`is`(userName)
+        )
         mongoTemplate.updateFirst(query, update, EstimateEntity::class.java)
     }
 
@@ -79,8 +76,8 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
     }
 
     @Transactional
-    fun getUserEstimateList(option:String,name:String): List<EstimateDTO> {
-        val query= Query(Criteria.where(option).`is`(name))
+    fun getUserEstimateList(name:String): List<EstimateDTO> {
+        val query=Query(Criteria.where(innerStringsConfig.property.userName).`is`(name))
         val estimateDTOLists:List<EstimateDTO> = mongoTemplate.find(query,EstimateEntity::class.java).map {
             entity: EstimateEntity ->
                 EstimateDTO(entity._id.toHexString(),
@@ -94,14 +91,15 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
                     entity.cpuCooler,
                     entity.powerSupply,
                     entity.desktopCase
-                )
-        }
+                ) }
         return estimateDTOLists
     }
 
     @Transactional
-    fun deleteUserEstimate(option:String,value:String){
-        val query=Query(Criteria.where(option).`is`(if(option==dbStringConfig.mongodb.id) ObjectId(value) else value))
+    fun deleteUserEstimate(estimateId:String,userName:String){
+        val query=Query(Criteria.where(dbStringConfig.mongodb.id).`is`(ObjectId(estimateId))
+            .and("userName").`is`(userName)
+        )
         val result=mongoTemplate.remove(query, EstimateEntity::class.java)
 
         if(result.deletedCount==dbStringConfig.mongodb.deleteFailValue)

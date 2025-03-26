@@ -1,7 +1,7 @@
 package com.example.cusCom.service
 
 import com.example.cusCom.config.InnerStringsConfig
-import com.example.cusCom.dto.PartsListPageDTO
+import com.example.cusCom.dto.request.PartsListPageDTO
 import com.example.cusCom.exception.CusComErrorCode
 import com.example.cusCom.exception.CusComException
 import com.example.cusCom.dto.parts.*
@@ -24,7 +24,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                           private val innerStringsConfig: InnerStringsConfig) {
 
     @Transactional(readOnly = true)
-    fun getCaseList(partsListPageDTO:PartsListPageDTO): List<CaseDTO> {
+    fun getCaseList(partsListPageDTO: PartsListPageDTO): List<CaseDTO> {
         val pageable = buildPageRequest(partsListPageDTO.page,partsListPageDTO.maxContent)
         val caseDTOLists = caseRepo.findAll(pageable)
             .map{
@@ -100,7 +100,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
 
     @Transactional(readOnly = true)
-    fun getCpuCoolerList(partsListPageDTO:PartsListPageDTO): List<CpuCoolerDTO> {
+    fun getCpuCoolerList(partsListPageDTO: PartsListPageDTO): List<CpuCoolerDTO> {
         val pageable = buildPageRequest(partsListPageDTO.page,partsListPageDTO.maxContent)
         val cpuCoolerDTOLists = cpuCoolerRepo.findAll(pageable)
             .map{
@@ -164,7 +164,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
 
     @Transactional(readOnly = true)
-    fun getCPUList(partsListPageDTO:PartsListPageDTO): List<CpuDTO> {
+    fun getCPUList(partsListPageDTO: PartsListPageDTO): List<CpuDTO> {
         val pageable = buildPageRequest(partsListPageDTO.page,partsListPageDTO.maxContent)
         val cpuDTOLists = cpuRepo.findAll(pageable)
             .map{
@@ -231,7 +231,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
 
     @Transactional(readOnly = true)
-    fun getDataStorageList(partsListPageDTO:PartsListPageDTO): List<DataStorageDTO> {
+    fun getDataStorageList(partsListPageDTO: PartsListPageDTO): List<DataStorageDTO> {
         val pageable = buildPageRequest(partsListPageDTO.page,partsListPageDTO.maxContent)
         val dataStorageDTOLists = dataStorageRepo.findAll(pageable)
             .map{
@@ -291,7 +291,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
 
     @Transactional(readOnly = true)
-    fun getGraphicsCardList(partsListPageDTO:PartsListPageDTO): List<GraphicsCardDTO> {
+    fun getGraphicsCardList(partsListPageDTO: PartsListPageDTO): List<GraphicsCardDTO> {
         val pageable = buildPageRequest(partsListPageDTO.page,partsListPageDTO.maxContent)
         val graphicsCardDTOLists = graphicsCardRepo.findAll(pageable)
             .map{
@@ -354,7 +354,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
 
     @Transactional(readOnly = true)
-    fun getMemoryList(partsListPageDTO:PartsListPageDTO): List<MemoryDTO> {
+    fun getMemoryList(partsListPageDTO: PartsListPageDTO): List<MemoryDTO> {
         val pageable = buildPageRequest(partsListPageDTO.page,partsListPageDTO.maxContent)
         val memoryDTOLists = memoryRepo.findAll(pageable)
             .map{
@@ -408,7 +408,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
 
     @Transactional(readOnly = true)
-    fun getMotherBoardList(partsListPageDTO:PartsListPageDTO): List<MotherBoardDTO> {
+    fun getMotherBoardList(partsListPageDTO: PartsListPageDTO): List<MotherBoardDTO> {
         val pageable = buildPageRequest(partsListPageDTO.page,partsListPageDTO.maxContent)
         val motherBoardDTOLists = motherBoardRepo.findAll(pageable)
             .map{
@@ -477,7 +477,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
 
     @Transactional(readOnly = true)
-    fun getPowerSupplyList(partsListPageDTO:PartsListPageDTO): List<PowerSupplyDTO> {
+    fun getPowerSupplyList(partsListPageDTO: PartsListPageDTO): List<PowerSupplyDTO> {
         val pageable = buildPageRequest(partsListPageDTO.page,partsListPageDTO.maxContent)
         val powerSupplyDTOLists = powerSupplyRepo.findAll(pageable)
             .map{

@@ -3,9 +3,9 @@ package com.example.cusCom.service
 import com.example.cusCom.component.JwtComponent
 import com.example.cusCom.config.SecurityConfig
 import com.example.cusCom.dto.JwtDTO
-import com.example.cusCom.dto.LogInDTO
-import com.example.cusCom.dto.LogOutDTO
-import com.example.cusCom.dto.SignInDTO
+import com.example.cusCom.dto.request.LogInDTO
+import com.example.cusCom.dto.response.LogOutDTO
+import com.example.cusCom.dto.request.SignInDTO
 import com.example.cusCom.entity.mySQL.AccountRole
 import com.example.cusCom.entity.mySQL.auth.UserEntity
 import com.example.cusCom.repository.auth.UserRepository
@@ -39,7 +39,7 @@ class UserService(private val jwtComponent: JwtComponent,
     }
 
     @Transactional
-    fun signOutUser(signOutDTO:LogOutDTO){
+    fun signOutUser(signOutDTO: LogOutDTO){
         val accountId = tokenService.getAccountIdFromRefreshToken(signOutDTO.refreshToken)
             ?: throw RuntimeException("계정을 찾을 수 없습니다.")
         logOut(signOutDTO)

@@ -75,11 +75,11 @@ class JwtComponent(@Value("\${jwt.secret}") secretKey:String,
             .signWith(this.key)
             .compact()
 
-        return JwtDTO("Bearer ",accessToken,refreshToken)
+        return JwtDTO(accessToken,refreshToken)
     }
 
     @Transactional
-    fun reissueAccessToken(refreshToken: String): JwtDTO {
+    fun reissueAccessToken(deprecatedAccessToken:String, refreshToken:String): JwtDTO {
         val isValidate = validateToken(refreshToken)
         val isBlacklisted = tokenService.isTokenBlacklisted(refreshToken)
         if (!isValidate || isBlacklisted) {
@@ -92,6 +92,7 @@ class JwtComponent(@Value("\${jwt.secret}") secretKey:String,
         val user = customUserDetailsService.loadUserByUsername(accountIdString)
         val authentication = UsernamePasswordAuthenticationToken(user.username, user.password)
 
+        tokenService.saveBlacklistToken(deprecatedAccessToken)
         tokenService.saveBlacklistToken(refreshToken)
         tokenService.removeRefreshToken(refreshToken)
 

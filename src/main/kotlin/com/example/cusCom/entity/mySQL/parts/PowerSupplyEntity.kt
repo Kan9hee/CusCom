@@ -50,7 +50,8 @@ class PowerSupplyEntity(
 
     fun update(powerSupplyDTO: PowerSupplyDTO) {
         this.name = powerSupplyDTO.name
-        this.imageUrl = powerSupplyDTO.imageUrl
+        if(powerSupplyDTO.imageUrl!=null)
+            this.imageUrl = powerSupplyDTO.imageUrl
         this.manufacturer = powerSupplyDTO.manufacturer
         this.power = powerSupplyDTO.power
         this.efficiency = powerSupplyDTO.efficiency

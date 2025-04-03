@@ -70,7 +70,8 @@ class MotherBoardEntity(
 
     fun update(motherBoardDTO: MotherBoardDTO) {
         this.name = motherBoardDTO.name
-        this.imageUrl = motherBoardDTO.imageUrl
+        if(motherBoardDTO.imageUrl!=null)
+            this.imageUrl = motherBoardDTO.imageUrl
         this.manufacturer = motherBoardDTO.manufacturer
         this.cpuType = motherBoardDTO.cpuType
         this.socket = motherBoardDTO.socket

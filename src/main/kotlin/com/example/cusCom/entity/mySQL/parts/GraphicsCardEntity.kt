@@ -60,7 +60,8 @@ class GraphicsCardEntity(
 
     fun update(graphicsCardDTO: GraphicsCardDTO) {
         this.name = graphicsCardDTO.name
-        this.imageUrl = graphicsCardDTO.imageUrl
+        if(graphicsCardDTO.imageUrl!=null)
+            this.imageUrl = graphicsCardDTO.imageUrl
         this.manufacturer = graphicsCardDTO.manufacturer
         this.chipsetManufacturer = graphicsCardDTO.chipsetManufacturer
         this.gpuType = graphicsCardDTO.gpuType

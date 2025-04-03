@@ -3,7 +3,7 @@ package com.example.cusCom.exception
 enum class CusComErrorCode(private val status:Int,
                            private val code:String,
                            private val message:String){
-    NotImageData(400,"D001","이미지 데이터가 아님"),
+    NotImageData(400,"D001","올바른 이미지 데이터를 삽입해야 함"),
     FormFactorNotFound(404,"D002","마더보드 폼팩터 데이터 매칭 실패"),
     CaseNotFound(404,"D011","케이스 데이터 매칭 실패"),
     CPUNotFound(404,"D012","CPU 데이터 매칭 실패"),

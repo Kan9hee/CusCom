@@ -1,7 +1,7 @@
 package com.example.cusCom.dto.parts
 
 data class CpuCoolerDTO(val name:String,
-                        val imageUrl:String,
+                        val imageUrl:String?,
                         val manufacturer:String,
                         val coolingType:String,
                         val coolerForm:String,

@@ -1,30 +1,30 @@
 package com.example.cusCom.controller
 
+import com.example.cusCom.component.JwtComponent
 import com.example.cusCom.config.InnerStringsConfig
 import com.example.cusCom.exception.CusComException
 import com.example.cusCom.dto.*
 import com.example.cusCom.dto.parts.*
 import com.example.cusCom.dto.request.*
 import com.example.cusCom.dto.response.*
-import com.example.cusCom.service.CustomUserDetailsService
-import com.example.cusCom.service.DesktopPartsService
-import com.example.cusCom.service.SharePlaceService
-import com.example.cusCom.service.UserService
+import com.example.cusCom.service.*
 import org.bson.types.ObjectId
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/CusCom/API")
 class UserRestController(private val desktopPartsService: DesktopPartsService,
-                         private val estimateService: com.example.cusCom.service.EstimateService,
+                         private val estimateService: EstimateService,
                          private val sharePlaceService: SharePlaceService,
                          private val userService: UserService,
                          private val customUserDetailsService: CustomUserDetailsService,
-                         private val innerStringsConfig: InnerStringsConfig) {
+                         private val innerStringsConfig: InnerStringsConfig,
+                         private val jwtComponent: JwtComponent) {
 
-    @PostMapping("/join")
+    @PostMapping("/open/join")
     fun userJoin(@RequestBody user: SignInDTO): ResponseEntity<String> {
         userService.joinUser(user)
         return ResponseEntity.ok(innerStringsConfig.property.responseOk)
@@ -36,15 +36,28 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
         return ResponseEntity.ok(innerStringsConfig.property.responseOk)
     }
 
-    @PostMapping("/logIn")
+    @PostMapping("/open/logIn")
     fun userLogIn(@RequestBody logInDTO: LogInDTO): JwtDTO {
         return userService.logIn(logInDTO)
     }
 
-    @PostMapping("/LogOut")
+    @PostMapping("/logOut")
     fun userLogOut(@RequestBody logOutDTO: LogOutDTO): ResponseEntity<String> {
         userService.logOut(logOutDTO)
         return ResponseEntity.ok(innerStringsConfig.property.responseOk)
+    }
+
+    @GetMapping("/checkAccessToken")
+    fun checkAccessToken(): ResponseEntity<String> {
+        return ResponseEntity.ok(innerStringsConfig.property.responseOk)
+    }
+
+    @PostMapping("/open/reissueAccessToken")
+    fun reissueAccessToken(@RequestBody jwtDTO: JwtDTO): JwtDTO{
+        try{
+            return jwtComponent.reissueAccessToken(jwtDTO.accessToken,jwtDTO.refreshToken)
+        }
+        catch (e: CusComException) { throw e }
     }
 
     @GetMapping("/getUserEstimateList")
@@ -59,43 +72,51 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     }
 
     @GetMapping("/open/caseList")
-    fun caseListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<CaseDTO> {
-        return desktopPartsService.getCaseList(partsListPageDTO)
+    fun caseListApi(@RequestParam maxContent: Int,
+                    @RequestParam page: Int): List<CaseDTO> {
+        return desktopPartsService.getCaseList(maxContent,page)
     }
 
     @GetMapping("/open/cpuCoolerList")
-    fun cpuCoolerListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<CpuCoolerDTO> {
-        return desktopPartsService.getCpuCoolerList(partsListPageDTO)
+    fun cpuCoolerListApi(@RequestParam maxContent: Int,
+                         @RequestParam page: Int): List<CpuCoolerDTO> {
+        return desktopPartsService.getCpuCoolerList(maxContent,page)
     }
 
     @GetMapping("/open/cpuList")
-    fun cpuListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<CpuDTO> {
-        return desktopPartsService.getCPUList(partsListPageDTO)
+    fun cpuListApi(@RequestParam maxContent: Int,
+                   @RequestParam page: Int): List<CpuDTO> {
+        return desktopPartsService.getCPUList(maxContent,page)
     }
 
     @GetMapping("/open/dataStorageList")
-    fun dataStorageListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<DataStorageDTO> {
-        return desktopPartsService.getDataStorageList(partsListPageDTO)
+    fun dataStorageListApi(@RequestParam maxContent: Int,
+                           @RequestParam page: Int): List<DataStorageDTO> {
+        return desktopPartsService.getDataStorageList(maxContent,page)
     }
 
     @GetMapping("/open/graphicsCardList")
-    fun graphicsCardListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<GraphicsCardDTO> {
-        return desktopPartsService.getGraphicsCardList(partsListPageDTO)
+    fun graphicsCardListApi(@RequestParam maxContent: Int,
+                            @RequestParam page: Int): List<GraphicsCardDTO> {
+        return desktopPartsService.getGraphicsCardList(maxContent,page)
     }
 
     @GetMapping("/open/memoryList")
-    fun memoryListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<MemoryDTO> {
-        return desktopPartsService.getMemoryList(partsListPageDTO)
+    fun memoryListApi(@RequestParam maxContent: Int,
+                      @RequestParam page: Int): List<MemoryDTO> {
+        return desktopPartsService.getMemoryList(maxContent,page)
     }
 
     @GetMapping("/open/motherBoardList")
-    fun motherBoardListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<MotherBoardDTO> {
-        return desktopPartsService.getMotherBoardList(partsListPageDTO)
+    fun motherBoardListApi(@RequestParam maxContent: Int,
+                           @RequestParam page: Int): List<MotherBoardDTO> {
+        return desktopPartsService.getMotherBoardList(maxContent,page)
     }
 
     @GetMapping("/open/powerSupplyList")
-    fun powerSupplyListApi(@RequestBody partsListPageDTO: PartsListPageDTO): List<PowerSupplyDTO> {
-        return desktopPartsService.getPowerSupplyList(partsListPageDTO)
+    fun powerSupplyListApi(@RequestParam maxContent: Int,
+                           @RequestParam page: Int): List<PowerSupplyDTO> {
+        return desktopPartsService.getPowerSupplyList(maxContent,page)
     }
 
     @GetMapping("/open/searchCase")
@@ -192,7 +213,7 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     fun loadPost(@RequestParam("id") postID:String):HashMap<String,Any>{
         try{
             val map=HashMap<String,Any>()
-            val post: SharePlacePostDTO = sharePlaceService.loadPost(postID)
+            val post = sharePlaceService.loadPost(postID)
             map[innerStringsConfig.postListMapper.post]=post
             map[innerStringsConfig.postListMapper.postEstimate]=estimateService.getUserEstimateById(post.estimateID)
             map[innerStringsConfig.postListMapper.commentList]=sharePlaceService.getCommentList(postID)
@@ -202,7 +223,11 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     }
 
     @GetMapping("/open/searchPost")
-    fun searchPost(@RequestParam("searchOption",required = false) searchPostDTO: SearchPostDTO): HashMap<String, Any> {
+    fun searchPost(@RequestParam("option") option: String,
+                   @RequestParam("keyword") keyword: String?,
+                   @RequestParam("maxContent") maxContent: Int,
+                   @RequestParam("page") page: Int): HashMap<String, Any> {
+        val searchPostDTO = SearchPostDTO(option, keyword, maxContent, page)
         return sharePlaceService.searchPost(searchPostDTO)
     }
 
@@ -214,12 +239,14 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     }
 
     @PostMapping("/increaseLike")
-    fun increaseLike(@RequestParam("likeAction") action:String): ResponseEntity<String> {
+    fun increaseLike(@RequestParam("postId") postId:String): ResponseEntity<String> {
+        sharePlaceService.increasePostLikeCount(postId)
         return ResponseEntity.ok(innerStringsConfig.property.responseOk)
     }
 
     @PostMapping("/decreaseLike")
-    fun decreaseLike(@RequestParam("dislikeAction") action:String): ResponseEntity<String> {
+    fun decreaseLike(@RequestParam("postId") postId:String): ResponseEntity<String> {
+        sharePlaceService.decreasePostLikeCount(postId)
         return ResponseEntity.ok(innerStringsConfig.property.responseOk)
     }
 }

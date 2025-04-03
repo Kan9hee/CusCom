@@ -45,7 +45,8 @@ class MemoryEntity(
 
     fun update(memoryDTO: MemoryDTO) {
         this.name = memoryDTO.name
-        this.imageUrl = memoryDTO.imageUrl
+        if(memoryDTO.imageUrl!=null)
+            this.imageUrl = memoryDTO.imageUrl
         this.manufacturer = memoryDTO.manufacturer
         this.type = memoryDTO.type
         this.capacity = memoryDTO.capacity

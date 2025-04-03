@@ -12,4 +12,4 @@ data class CaseDTO(val name:String,
                    val powerLength:Int,
                    val cpuCoolerHeight:Int,
                    val graphicsCardLength:Int,
-                   val imageUrl:String)
+                   val imageUrl:String?)

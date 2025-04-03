@@ -1,5 +1,6 @@
 package com.example.cusCom.entity.mySQL.parts
 
+import com.example.cusCom.config.InnerStringsConfig
 import com.example.cusCom.dto.parts.CaseDTO
 import jakarta.persistence.*
 
@@ -89,6 +90,7 @@ class CaseEntity(
         this.powerLength = caseDTO.powerLength
         this.cpuCoolerHeight = caseDTO.cpuCoolerHeight
         this.graphicsCardLength = caseDTO.graphicsCardLength
-        this.imageUrl = caseDTO.imageUrl
+        if(caseDTO.imageUrl!=null)
+            this.imageUrl = caseDTO.imageUrl
     }
 }

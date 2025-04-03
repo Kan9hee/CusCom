@@ -1,7 +1,7 @@
 package com.example.cusCom.dto.parts
 
 data class CpuDTO(val name:String,
-                  val imageUrl:String,
+                  val imageUrl:String?,
                   val manufacturer:String,
                   val socket:String,
                   val memoryType:String,

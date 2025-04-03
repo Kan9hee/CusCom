@@ -13,21 +13,22 @@ import org.springframework.web.multipart.MultipartFile
 class JsonEditComponent(private val innerStringsConfig: InnerStringsConfig,
                         private val blobService: BlobService) {
 
-     fun injectImageUrlToJson(json:String,image: MultipartFile): String {
+     fun uploadImageAndInjectUrl(json:String,image: MultipartFile?): String {
+         val contentType= image?.contentType
+
+         if (contentType != null && contentType.startsWith("image/")) {
+             val imageUrlString = blobService.uploadImage(
+                 image,
+                 innerStringsConfig.property.imageWidth,
+                 innerStringsConfig.property.imageHeight)
+             return injectImageUrlToJson(json,imageUrlString)
+         }
+         else throw CusComException(CusComErrorCode.NotImageData)
+     }
+
+    fun injectImageUrlToJson(json:String,imageUrl:String): String {
         val jsonObject = Gson().fromJson(json, JsonObject::class.java)
-        val contentType=image.contentType
-
-        if (contentType != null && contentType.startsWith("image/")) {
-            val imageUrlString = blobService.uploadImage(
-                image,
-                innerStringsConfig.property.imageWidth,
-                innerStringsConfig.property.imageHeight)
-            jsonObject.addProperty(
-                innerStringsConfig.property.imageUrl,
-                imageUrlString)
-        }
-        else throw CusComException(CusComErrorCode.NotImageData)
-
+        jsonObject.addProperty(innerStringsConfig.property.imageUrl, imageUrl)
         return Gson().toJson(jsonObject)
     }
 }

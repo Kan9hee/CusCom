@@ -60,7 +60,8 @@ class CPUCoolerEntity(
 
     fun update(cpuCoolerDTO: CpuCoolerDTO) {
         this.name = cpuCoolerDTO.name
-        this.imageUrl = cpuCoolerDTO.imageUrl
+        if(cpuCoolerDTO.imageUrl!=null)
+            this.imageUrl = cpuCoolerDTO.imageUrl
         this.manufacturer = cpuCoolerDTO.manufacturer
         this.coolingType = cpuCoolerDTO.coolingType
         this.coolerForm = cpuCoolerDTO.coolerForm

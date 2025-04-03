@@ -1,7 +1,6 @@
 package com.example.cusCom.controller
 
 import com.example.cusCom.config.PagePathConfig
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -12,9 +11,6 @@ class ViewController(private val pagePathConfig: PagePathConfig) {
 
     @GetMapping("/loginPage")
     fun loginPage():String{
-        if(SecurityContextHolder.getContext().authentication.name!="anonymousUser")
-            return pagePathConfig.redirect
-
         val loginPath=pagePathConfig.normal[PagePathConfig.PathKey.LOGIN]
         return loginPath?:pagePathConfig.redirect
     }
@@ -49,13 +45,7 @@ class ViewController(private val pagePathConfig: PagePathConfig) {
         return uploadPostPath?:pagePathConfig.redirect
     }
 
-    @GetMapping("/SharePlace")
-    fun testSharePlacePage():String{
-        val sharePlacePath=pagePathConfig.normal[PagePathConfig.PathKey.SHAREPLACE]
-        return sharePlacePath?:pagePathConfig.redirect
-    }
-
-    @GetMapping("/SharePlace/post")
+    @GetMapping("/post")
     fun getPostPage():String{
         val postPath=pagePathConfig.normal[PagePathConfig.PathKey.POST]
         return postPath?:pagePathConfig.redirect

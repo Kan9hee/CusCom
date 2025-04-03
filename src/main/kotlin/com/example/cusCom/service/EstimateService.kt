@@ -90,8 +90,8 @@ class EstimateService(private val mongoTemplate: MongoTemplate,
                     entity.graphicsCard,
                     entity.cpuCooler,
                     entity.powerSupply,
-                    entity.desktopCase
-                ) }
+                    entity.desktopCase)
+        }
         return estimateDTOLists
     }
 

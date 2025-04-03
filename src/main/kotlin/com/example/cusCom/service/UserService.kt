@@ -4,7 +4,7 @@ import com.example.cusCom.component.JwtComponent
 import com.example.cusCom.config.SecurityConfig
 import com.example.cusCom.dto.JwtDTO
 import com.example.cusCom.dto.request.LogInDTO
-import com.example.cusCom.dto.response.LogOutDTO
+import com.example.cusCom.dto.request.LogOutDTO
 import com.example.cusCom.dto.request.SignInDTO
 import com.example.cusCom.entity.mySQL.AccountRole
 import com.example.cusCom.entity.mySQL.auth.UserEntity

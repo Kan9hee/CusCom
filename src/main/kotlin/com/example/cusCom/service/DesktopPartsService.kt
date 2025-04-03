@@ -1,7 +1,6 @@
 package com.example.cusCom.service
 
 import com.example.cusCom.config.InnerStringsConfig
-import com.example.cusCom.dto.request.PartsListPageDTO
 import com.example.cusCom.exception.CusComErrorCode
 import com.example.cusCom.exception.CusComException
 import com.example.cusCom.dto.parts.*
@@ -24,8 +23,8 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                           private val innerStringsConfig: InnerStringsConfig) {
 
     @Transactional(readOnly = true)
-    fun getCaseList(partsListPageDTO: PartsListPageDTO): List<CaseDTO> {
-        val pageable = buildPageRequest(partsListPageDTO.page,partsListPageDTO.maxContent)
+    fun getCaseList(maxContent:Int, page:Int): List<CaseDTO> {
+        val pageable = buildPageRequest(maxContent,page)
         val caseDTOLists = caseRepo.findAll(pageable)
             .map{
                 entity: CaseEntity -> CaseDTO(
@@ -81,13 +80,15 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
             caseDTO.powerLength,
             caseDTO.cpuCoolerHeight,
             caseDTO.graphicsCardLength,
-            caseDTO.imageUrl
+            caseDTO.imageUrl?:innerStringsConfig.property.defaultImageUrl
         )
         caseRepo.save(newCaseData)
     }
 
     @Transactional
-    fun updateCase(caseDTO: CaseDTO,beforePartName:String){
+    fun updateCase(caseDTO: CaseDTO,beforePartName:String?){
+        if(beforePartName==null)
+            throw CusComException(CusComErrorCode.CaseNotFound)
         val temp = caseRepo.findByName(beforePartName)
             ?: throw CusComException(CusComErrorCode.CaseNotFound)
         temp.update(caseDTO)
@@ -100,8 +101,8 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
 
     @Transactional(readOnly = true)
-    fun getCpuCoolerList(partsListPageDTO: PartsListPageDTO): List<CpuCoolerDTO> {
-        val pageable = buildPageRequest(partsListPageDTO.page,partsListPageDTO.maxContent)
+    fun getCpuCoolerList(maxContent:Int, page:Int): List<CpuCoolerDTO> {
+        val pageable = buildPageRequest(maxContent,page)
         val cpuCoolerDTOLists = cpuCoolerRepo.findAll(pageable)
             .map{
                 entity: CPUCoolerEntity -> CpuCoolerDTO(
@@ -138,7 +139,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun createCPUCooler(cpuCoolerDTO: CpuCoolerDTO){
         val newCpuCoolerData = CPUCoolerEntity(
             cpuCoolerDTO.name,
-            cpuCoolerDTO.imageUrl,
+            cpuCoolerDTO.imageUrl?:innerStringsConfig.property.defaultImageUrl,
             cpuCoolerDTO.manufacturer,
             cpuCoolerDTO.coolingType,
             cpuCoolerDTO.coolerForm,
@@ -151,7 +152,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun updateCPUCooler(cpuCoolerDTO: CpuCoolerDTO,beforePartName:String){
+    fun updateCPUCooler(cpuCoolerDTO: CpuCoolerDTO,beforePartName:String?){
+        if(beforePartName==null)
+            throw CusComException(CusComErrorCode.CaseNotFound)
         val temp = cpuCoolerRepo.findByName(beforePartName)
             ?: throw CusComException(CusComErrorCode.CPUCoolerNotFound)
         temp.update(cpuCoolerDTO)
@@ -164,8 +167,8 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
 
     @Transactional(readOnly = true)
-    fun getCPUList(partsListPageDTO: PartsListPageDTO): List<CpuDTO> {
-        val pageable = buildPageRequest(partsListPageDTO.page,partsListPageDTO.maxContent)
+    fun getCPUList(maxContent:Int, page:Int): List<CpuDTO> {
+        val pageable = buildPageRequest(maxContent,page)
         val cpuDTOLists = cpuRepo.findAll(pageable)
             .map{
                 entity: CPUEntity -> CpuDTO(
@@ -204,7 +207,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun createCPU(cpuDTO: CpuDTO){
         val newCpuData = CPUEntity(
             cpuDTO.name,
-            cpuDTO.imageUrl,
+            cpuDTO.imageUrl?:innerStringsConfig.property.defaultImageUrl,
             cpuDTO.manufacturer,
             cpuDTO.socket,
             cpuDTO.memoryType,
@@ -218,7 +221,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun updateCPU(cpuDTO: CpuDTO,beforePartName:String){
+    fun updateCPU(cpuDTO: CpuDTO,beforePartName:String?){
+        if(beforePartName==null)
+            throw CusComException(CusComErrorCode.CaseNotFound)
         val temp = cpuRepo.findByName(beforePartName)
             ?: throw CusComException(CusComErrorCode.CPUNotFound)
         temp.update(cpuDTO)
@@ -231,8 +236,8 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
 
     @Transactional(readOnly = true)
-    fun getDataStorageList(partsListPageDTO: PartsListPageDTO): List<DataStorageDTO> {
-        val pageable = buildPageRequest(partsListPageDTO.page,partsListPageDTO.maxContent)
+    fun getDataStorageList(maxContent:Int, page:Int): List<DataStorageDTO> {
+        val pageable = buildPageRequest(maxContent,page)
         val dataStorageDTOLists = dataStorageRepo.findAll(pageable)
             .map{
                 entity: DataStorageEntity -> DataStorageDTO(
@@ -266,7 +271,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun createDataStorage(dataStorageDTO: DataStorageDTO) {
         val newDataStorageData = DataStorageEntity(
             dataStorageDTO.name,
-            dataStorageDTO.imageUrl,
+            dataStorageDTO.imageUrl?:innerStringsConfig.property.defaultImageUrl,
             dataStorageDTO.manufacturer,
             dataStorageDTO.storageInterface,
             dataStorageDTO.formFactor,
@@ -278,7 +283,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun updateDataStorage(dataStorageDTO: DataStorageDTO,beforePartName:String){
+    fun updateDataStorage(dataStorageDTO: DataStorageDTO,beforePartName:String?){
+        if(beforePartName==null)
+            throw CusComException(CusComErrorCode.CaseNotFound)
         val temp = dataStorageRepo.findByName(beforePartName)
             ?: throw CusComException(CusComErrorCode.DataStorageNotFound)
         temp.update(dataStorageDTO)
@@ -291,8 +298,8 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
 
     @Transactional(readOnly = true)
-    fun getGraphicsCardList(partsListPageDTO: PartsListPageDTO): List<GraphicsCardDTO> {
-        val pageable = buildPageRequest(partsListPageDTO.page,partsListPageDTO.maxContent)
+    fun getGraphicsCardList(maxContent:Int, page:Int): List<GraphicsCardDTO> {
+        val pageable = buildPageRequest(maxContent,page)
         val graphicsCardDTOLists = graphicsCardRepo.findAll(pageable)
             .map{
                 entity: GraphicsCardEntity -> GraphicsCardDTO(
@@ -328,7 +335,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun createGraphicsCard(graphicsCardDTO: GraphicsCardDTO) {
         val newGraphicsCardData = GraphicsCardEntity(
             graphicsCardDTO.name,
-            graphicsCardDTO.imageUrl,
+            graphicsCardDTO.imageUrl?:innerStringsConfig.property.defaultImageUrl,
             graphicsCardDTO.manufacturer,
             graphicsCardDTO.chipsetManufacturer,
             graphicsCardDTO.gpuType,
@@ -341,7 +348,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun updateGraphicsCard(graphicsCardDTO: GraphicsCardDTO,beforePartName:String){
+    fun updateGraphicsCard(graphicsCardDTO: GraphicsCardDTO,beforePartName:String?){
+        if(beforePartName==null)
+            throw CusComException(CusComErrorCode.CaseNotFound)
         val temp = graphicsCardRepo.findByName(beforePartName)
             ?: throw CusComException(CusComErrorCode.GraphicsCardNotFound)
         temp.update(graphicsCardDTO)
@@ -354,8 +363,8 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
 
     @Transactional(readOnly = true)
-    fun getMemoryList(partsListPageDTO: PartsListPageDTO): List<MemoryDTO> {
-        val pageable = buildPageRequest(partsListPageDTO.page,partsListPageDTO.maxContent)
+    fun getMemoryList(maxContent:Int, page:Int): List<MemoryDTO> {
+        val pageable = buildPageRequest(maxContent,page)
         val memoryDTOLists = memoryRepo.findAll(pageable)
             .map{
                 entity: MemoryEntity -> MemoryDTO(
@@ -385,7 +394,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun createMemory(memoryDTO: MemoryDTO){
         val newMemoryData = MemoryEntity(
             memoryDTO.name,
-            memoryDTO.imageUrl,
+            memoryDTO.imageUrl?:innerStringsConfig.property.defaultImageUrl,
             memoryDTO.manufacturer,
             memoryDTO.type,
             memoryDTO.capacity,
@@ -395,7 +404,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun updateMemory(memoryDTO: MemoryDTO,beforePartName:String){
+    fun updateMemory(memoryDTO: MemoryDTO,beforePartName:String?){
+        if(beforePartName==null)
+            throw CusComException(CusComErrorCode.CaseNotFound)
         val temp = memoryRepo.findByName(beforePartName)
             ?: throw CusComException(CusComErrorCode.MemoryNotFound)
         temp.update(memoryDTO)
@@ -408,8 +419,8 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
 
     @Transactional(readOnly = true)
-    fun getMotherBoardList(partsListPageDTO: PartsListPageDTO): List<MotherBoardDTO> {
-        val pageable = buildPageRequest(partsListPageDTO.page,partsListPageDTO.maxContent)
+    fun getMotherBoardList(maxContent:Int, page:Int): List<MotherBoardDTO> {
+        val pageable = buildPageRequest(maxContent,page)
         val motherBoardDTOLists = motherBoardRepo.findAll(pageable)
             .map{
                 entity: MotherBoardEntity -> MotherBoardDTO(
@@ -449,7 +460,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun createMotherBoard(motherBoardDTO: MotherBoardDTO){
         val newMotherBoardData = MotherBoardEntity(
             motherBoardDTO.name,
-            motherBoardDTO.imageUrl,
+            motherBoardDTO.imageUrl?:innerStringsConfig.property.defaultImageUrl,
             motherBoardDTO.manufacturer,
             motherBoardDTO.cpuType,
             motherBoardDTO.socket,
@@ -464,7 +475,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun updateMotherBoard(motherBoardDTO: MotherBoardDTO,beforePartName:String){
+    fun updateMotherBoard(motherBoardDTO: MotherBoardDTO,beforePartName:String?){
+        if(beforePartName==null)
+            throw CusComException(CusComErrorCode.CaseNotFound)
         val temp = motherBoardRepo.findByName(beforePartName)
             ?: throw CusComException(CusComErrorCode.MotherBoardNotFound)
         temp.update(motherBoardDTO)
@@ -477,8 +490,8 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
 
     @Transactional(readOnly = true)
-    fun getPowerSupplyList(partsListPageDTO: PartsListPageDTO): List<PowerSupplyDTO> {
-        val pageable = buildPageRequest(partsListPageDTO.page,partsListPageDTO.maxContent)
+    fun getPowerSupplyList(maxContent:Int, page:Int): List<PowerSupplyDTO> {
+        val pageable = buildPageRequest(maxContent,page)
         val powerSupplyDTOLists = powerSupplyRepo.findAll(pageable)
             .map{
                 entity: PowerSupplyEntity -> PowerSupplyDTO(
@@ -510,7 +523,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun createPowerSupply(powerSupplyDTO: PowerSupplyDTO){
         val newPowerSupplyData = PowerSupplyEntity(
             powerSupplyDTO.name,
-            powerSupplyDTO.imageUrl,
+            powerSupplyDTO.imageUrl?:innerStringsConfig.property.defaultImageUrl,
             powerSupplyDTO.manufacturer,
             powerSupplyDTO.power,
             powerSupplyDTO.efficiency,
@@ -521,7 +534,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     }
 
     @Transactional
-    fun updatePowerSupply(powerSupplyDTO: PowerSupplyDTO,beforePartName:String){
+    fun updatePowerSupply(powerSupplyDTO: PowerSupplyDTO,beforePartName:String?){
+        if(beforePartName==null)
+            throw CusComException(CusComErrorCode.CaseNotFound)
         val temp = powerSupplyRepo.findByName(beforePartName)
             ?: throw CusComException(CusComErrorCode.PowerSupplyNotFound)
         temp.update(powerSupplyDTO)

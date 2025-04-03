@@ -65,7 +65,8 @@ class CPUEntity(
 
     fun update(cpuDTO: CpuDTO) {
         this.name = cpuDTO.name
-        this.imageUrl = cpuDTO.imageUrl
+        if(cpuDTO.imageUrl!=null)
+            this.imageUrl = cpuDTO.imageUrl
         this.manufacturer = cpuDTO.manufacturer
         this.socket = cpuDTO.socket
         this.memoryType = cpuDTO.memoryType

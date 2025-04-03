@@ -55,7 +55,8 @@ class DataStorageEntity(
 
     fun update(dataStorageDTO: DataStorageDTO) {
         this.name = dataStorageDTO.name
-        this.imageUrl = dataStorageDTO.imageUrl
+        if(dataStorageDTO.imageUrl!=null)
+            this.imageUrl = dataStorageDTO.imageUrl
         this.manufacturer = dataStorageDTO.manufacturer
         this.storageInterface = dataStorageDTO.storageInterface
         this.formFactor = dataStorageDTO.formFactor

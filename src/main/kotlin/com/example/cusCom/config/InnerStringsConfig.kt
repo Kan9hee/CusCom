@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@ConfigurationProperties(prefix = "inner-strings")
+@ConfigurationProperties(prefix = "inner-string")
 class InnerStringsConfig {
     lateinit var request: RequestConfig
     lateinit var parts: PartsConfig
@@ -55,7 +55,7 @@ class InnerStringsConfig {
 
     class PropertyConfig {
         lateinit var responseOk: String
-        lateinit var formFactor: String
+        lateinit var defaultImageUrl: String
         lateinit var imageUrl: String
         var imageWidth: Int = 0
         var imageHeight: Int = 0

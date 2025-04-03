@@ -15,7 +15,7 @@ class CustomUserDetailsService(private val userService: UserService): UserDetail
         return User.builder()
             .username(foundUser.accountId)
             .password(foundUser.accountPassword)
-            .roles(foundUser.accountRole.toString())
+            .authorities(foundUser.accountRole.toString())
             .build()
     }
 

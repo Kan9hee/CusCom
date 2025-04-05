@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 
 @Controller
-@RequestMapping("/CusCom/adminPage")
+@RequestMapping("/CusCom/admin")
 class AdminViewController(private val pagePathConfig: PagePathConfig) {
 
     @GetMapping("/main")

@@ -4,29 +4,17 @@ import com.example.cusCom.component.JsonEditComponent
 import com.example.cusCom.config.InnerStringsConfig
 import com.example.cusCom.dto.parts.*
 import com.example.cusCom.dto.request.RequestPartsDTO
-import com.example.cusCom.entity.mySQL.AccountRole
 import com.example.cusCom.service.DesktopPartsService
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.Gson
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.multipart.MultipartFile
 
 @RestController
-@RequestMapping("/CusCom/adminAPI")
+@RequestMapping("/CusCom/admin/API")
 class AdminRestController(private val desktopPartsService: DesktopPartsService,
                           private val jsonEditComponent: JsonEditComponent,
                           private val innerStringsConfig: InnerStringsConfig) {
-
-    @GetMapping("/isAdmin")
-    fun isAdmin(): Boolean {
-        val authentication = SecurityContextHolder.getContext().authentication
-        return authentication
-            ?.authorities
-            ?.any { it.authority == "ROLE_${AccountRole.ADMIN}" }
-            ?: false
-    }
 
     @PostMapping("/createParts")
     fun createParts(@RequestBody requestPartsDTO: RequestPartsDTO): ResponseEntity<String> {

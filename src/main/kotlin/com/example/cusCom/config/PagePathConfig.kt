@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@ConfigurationProperties(prefix = "template-path")
+@ConfigurationProperties(prefix = "path")
 class PagePathConfig {
     lateinit var admin: PathConfig
     lateinit var normal: Map<PathKey, String>

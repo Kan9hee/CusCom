@@ -1,6 +1,6 @@
 package com.example.cusCom.entity.mySQL.auth
 
-import com.example.cusCom.entity.mySQL.AccountRole
+import com.example.cusCom.enums.AccountRole
 import jakarta.persistence.*
 
 @Table(name="user")
@@ -29,11 +29,11 @@ class UserEntity(
     var userName:String = userName
         protected set
 
-    fun setAccountPassword(encodedPasswordString:String){
+    fun changeAccountPassword(encodedPasswordString:String){
         this.accountPassword=encodedPasswordString
     }
 
-    fun setUserName(changedUserName:String){
+    fun changeUserName(changedUserName:String){
         this.userName=changedUserName
     }
 }

@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@ConfigurationProperties(prefix = "inner-string")
+@ConfigurationProperties(prefix = "inner-strings")
 class InnerStringsConfig {
     lateinit var request: RequestConfig
     lateinit var parts: PartsConfig
@@ -55,7 +55,6 @@ class InnerStringsConfig {
 
     class PropertyConfig {
         lateinit var responseOk: String
-        lateinit var defaultImageUrl: String
         lateinit var imageUrl: String
         var imageWidth: Int = 0
         var imageHeight: Int = 0
@@ -64,10 +63,10 @@ class InnerStringsConfig {
         lateinit var searchKeyword: String
         lateinit var viewCount: String
         lateinit var commentCount: String
-        var changeValue: Int = 0
+        var changeValue: Int = 1
         lateinit var postCheck: String
         lateinit var postSearchOption: PostSearchOptionConfig
-        lateinit var like: LikeConfig
+        lateinit var aws: AwsConfig
         lateinit var findOption: OptionConfig
 
         class PostSearchOptionConfig{
@@ -76,10 +75,15 @@ class InnerStringsConfig {
             lateinit var parts: String
         }
 
-        class LikeConfig {
-            lateinit var increase: String
-            lateinit var decrease: String
-            var value: Int = 0
+        class AwsConfig{
+            lateinit var accessKey: String
+            lateinit var secretKey: String
+            lateinit var region: String
+            lateinit var bucket: String
+            lateinit var folder: String
+            lateinit var defaultImageUrl: String
+            var defaultWidth: Int = 500
+            var defaultHeight: Int = 500
         }
 
         class OptionConfig{
@@ -95,11 +99,5 @@ class InnerStringsConfig {
         lateinit var currentPage: String
         lateinit var postEstimate: String
         lateinit var commentList: String
-    }
-
-    class PostSearchOptionConfig{
-        lateinit var title: String
-        lateinit var tags: String
-        lateinit var userName: String
     }
 }

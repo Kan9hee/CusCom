@@ -7,10 +7,11 @@ import com.example.cusCom.dto.*
 import com.example.cusCom.dto.parts.*
 import com.example.cusCom.dto.request.*
 import com.example.cusCom.dto.response.*
+import com.example.cusCom.enums.AccountRole
+import com.example.cusCom.exception.CusComErrorCode
 import com.example.cusCom.service.*
 import org.bson.types.ObjectId
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 
@@ -20,9 +21,19 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
                          private val estimateService: EstimateService,
                          private val sharePlaceService: SharePlaceService,
                          private val userService: UserService,
+                         private val tokenService: TokenService,
                          private val customUserDetailsService: CustomUserDetailsService,
                          private val innerStringsConfig: InnerStringsConfig,
                          private val jwtComponent: JwtComponent) {
+
+    @GetMapping("/isAdmin")
+    fun isAdmin(): Boolean {
+        val authentication = SecurityContextHolder.getContext().authentication
+        return authentication
+            ?.authorities
+            ?.any { it.authority == "ROLE_${AccountRole.ADMIN}" }
+            ?: false
+    }
 
     @PostMapping("/open/join")
     fun userJoin(@RequestBody user: SignInDTO): ResponseEntity<String> {
@@ -38,11 +49,20 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
 
     @PostMapping("/open/logIn")
     fun userLogIn(@RequestBody logInDTO: LogInDTO): JwtDTO {
-        return userService.logIn(logInDTO)
+        val authentication = userService.logIn(logInDTO)
+        if(authentication!=null){
+            val generatedJwt = jwtComponent.generateToken(authentication)
+            tokenService.saveRefreshToken(generatedJwt.refreshToken, logInDTO.insertedID)
+            return generatedJwt
+        }
+        else
+            throw CusComException(CusComErrorCode.UnauthorizedToken)
     }
 
     @PostMapping("/logOut")
     fun userLogOut(@RequestBody logOutDTO: LogOutDTO): ResponseEntity<String> {
+        logOutDTO.accessToken?.takeIf { jwtComponent.validateToken(it) }
+            ?.let { tokenService.saveBlacklistToken(logOutDTO.accessToken) }
         userService.logOut(logOutDTO)
         return ResponseEntity.ok(innerStringsConfig.property.responseOk)
     }
@@ -55,7 +75,10 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     @PostMapping("/open/reissueAccessToken")
     fun reissueAccessToken(@RequestBody jwtDTO: JwtDTO): JwtDTO{
         try{
-            return jwtComponent.reissueAccessToken(jwtDTO.accessToken,jwtDTO.refreshToken)
+            val accountIdString = tokenService.getAccountIdFromRefreshToken(jwtDTO.refreshToken)
+            ?: throw CusComException(CusComErrorCode.MisinformationToken)
+            val user = customUserDetailsService.loadUserByUsername(accountIdString)
+            return jwtComponent.reissueAccessToken(jwtDTO.accessToken,jwtDTO.refreshToken,user)
         }
         catch (e: CusComException) { throw e }
     }

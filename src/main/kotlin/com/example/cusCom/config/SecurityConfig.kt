@@ -1,6 +1,7 @@
 package com.example.cusCom.config
 
 import com.example.cusCom.component.JwtComponent
+import com.example.cusCom.enums.JwtWhitelistPath
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -16,11 +17,8 @@ class SecurityConfig {
     fun filterChain(http:HttpSecurity, jwtComponent:JwtComponent):SecurityFilterChain{
         http.csrf{ it.disable() }
             .authorizeHttpRequests{ authorize -> authorize
-                .requestMatchers(
-                    "/CusCom/estimatePage",
-                    "/CusCom/SharePlace/**",
-                    "/CusCom/API/open/**").permitAll()
-                .requestMatchers("/CusCom/adminPage/**").hasRole("ADMIN")
+                .requestMatchers(*JwtWhitelistPath.allPatterns().toTypedArray()).permitAll()
+                .requestMatchers("/CusCom/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             }
             .addFilterBefore(jwtComponent, UsernamePasswordAuthenticationFilter::class.java)

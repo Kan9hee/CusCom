@@ -1,43 +1,54 @@
 package com.example.cusCom.component
 
+import com.example.cusCom.config.JwtConfig
 import com.example.cusCom.dto.JwtDTO
+import com.example.cusCom.enums.JwtWhitelistPath
 import com.example.cusCom.exception.CusComErrorCode
 import com.example.cusCom.exception.CusComException
 import com.example.cusCom.service.CustomUserDetailsService
 import com.example.cusCom.service.TokenService
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
+import jakarta.annotation.PostConstruct
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.util.AntPathMatcher
 import org.springframework.web.filter.OncePerRequestFilter
 import java.util.*
-import java.util.Base64.Decoder
 import java.util.stream.Collectors
 import javax.crypto.SecretKey
 
 @Component
-class JwtComponent(@Value("\${jwt.secret}") secretKey:String,
-                   private val decoder:Decoder,
+class JwtComponent(private val jwtProperties: JwtConfig,
                    private val customUserDetailsService: CustomUserDetailsService,
                    private val tokenService: TokenService) : OncePerRequestFilter() {
 
-    private val key: SecretKey
-    init {
-        val keyBytes = decoder.decode(secretKey)
+    private lateinit var key: SecretKey
+
+    @PostConstruct
+    fun init() {
+        val keyBytes = Base64.getDecoder().decode(jwtProperties.secret)
         key = Keys.hmacShaKeyFor(keyBytes)
     }
 
     override fun doFilterInternal(request: HttpServletRequest,
                                   response: HttpServletResponse,
                                   filterChain: FilterChain) {
+        val requestURI = request.requestURI
+
+        if (JwtWhitelistPath.allPatterns().any { AntPathMatcher().match(it, requestURI) }) {
+            filterChain.doFilter(request, response)
+            return
+        }
+
         val bearerToken:String = request.getHeader("Authorization")
             ?: throw CusComException(CusComErrorCode.UnauthorizedToken)
         val token = bearerToken.substring(7)
@@ -79,25 +90,21 @@ class JwtComponent(@Value("\${jwt.secret}") secretKey:String,
     }
 
     @Transactional
-    fun reissueAccessToken(deprecatedAccessToken:String, refreshToken:String): JwtDTO {
+    fun reissueAccessToken(deprecatedAccessToken:String, refreshToken:String, userDetail:UserDetails): JwtDTO {
         val isValidate = validateToken(refreshToken)
         val isBlacklisted = tokenService.isTokenBlacklisted(refreshToken)
         if (!isValidate || isBlacklisted) {
             throw CusComException(CusComErrorCode.UnauthorizedToken)
         }
 
-        val accountIdString = tokenService.getAccountIdFromRefreshToken(refreshToken)
-            ?: throw CusComException(CusComErrorCode.MisinformationToken)
-
-        val user = customUserDetailsService.loadUserByUsername(accountIdString)
-        val authentication = UsernamePasswordAuthenticationToken(user.username, user.password)
+        val authentication = UsernamePasswordAuthenticationToken(userDetail.username, userDetail.password)
 
         tokenService.saveBlacklistToken(deprecatedAccessToken)
         tokenService.saveBlacklistToken(refreshToken)
         tokenService.removeRefreshToken(refreshToken)
 
         val newAccessToken = generateToken(authentication)
-        tokenService.saveRefreshToken(newAccessToken.refreshToken, user.username)
+        tokenService.saveRefreshToken(newAccessToken.refreshToken, userDetail.username)
 
         return newAccessToken
     }

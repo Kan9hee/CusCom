@@ -7,7 +7,7 @@ import com.example.cusCom.exception.CusComErrorCode
 import com.example.cusCom.exception.CusComException
 import com.example.cusCom.dto.response.EstimateDTO
 import com.example.cusCom.entity.mongoDB.EstimateEntity
-import com.example.cusCom.entity.mySQL.MotherBoardFormFactor
+import com.example.cusCom.enums.MotherBoardFormFactor
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria

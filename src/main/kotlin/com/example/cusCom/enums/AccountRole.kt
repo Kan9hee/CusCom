@@ -1,4 +1,4 @@
-package com.example.cusCom.entity.mySQL
+package com.example.cusCom.enums
 
 enum class AccountRole {
     USER, ADMIN

@@ -1,4 +1,4 @@
-package com.example.cusCom.entity.mySQL
+package com.example.cusCom.enums
 
 enum class MotherBoardFormFactor(val length: Int, val width: Int) {
     ATX(305, 244),
@@ -6,8 +6,6 @@ enum class MotherBoardFormFactor(val length: Int, val width: Int) {
     M_ATX(244, 244);
 
     companion object {
-        fun fromString(value: String): MotherBoardFormFactor {
-            return valueOf(value)
-        }
+        fun fromString(value: String): MotherBoardFormFactor { return valueOf(value) }
     }
 }

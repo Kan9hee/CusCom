@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration
 class DBStringConfig {
     lateinit var mysql: MysqlProperties
     lateinit var mongodb: MongodbProperties
-    lateinit var blob: BlobProperties
     lateinit var redis: RedisProperties
 
     class MysqlProperties {
@@ -41,11 +40,6 @@ class DBStringConfig {
             lateinit var comment: String
             lateinit var estimate: String
         }
-    }
-
-    class BlobProperties {
-        lateinit var fileFormat: String
-        lateinit var containerName: String
     }
 
     class RedisProperties {

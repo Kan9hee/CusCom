@@ -35,9 +35,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-	implementation("com.azure:azure-storage-blob")
-	implementation("com.azure.spring:spring-cloud-azure-starter")
-	implementation("com.azure.spring:spring-cloud-azure-starter-jdbc-mysql")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -46,6 +43,7 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-jackson:0.12.6")
 	implementation("com.google.code.gson:gson:2.10.1")
 	implementation("org.imgscalr:imgscalr-lib:4.2")
+	implementation("software.amazon.awssdk:s3:2.30.11")
 
 	compileOnly("org.projectlombok:lombok")
 	runtimeOnly("com.mysql:mysql-connector-j")

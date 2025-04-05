@@ -80,7 +80,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
             caseDTO.powerLength,
             caseDTO.cpuCoolerHeight,
             caseDTO.graphicsCardLength,
-            caseDTO.imageUrl?:innerStringsConfig.property.defaultImageUrl
+            caseDTO.imageUrl?:innerStringsConfig.property.aws.defaultImageUrl
         )
         caseRepo.save(newCaseData)
     }
@@ -139,7 +139,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun createCPUCooler(cpuCoolerDTO: CpuCoolerDTO){
         val newCpuCoolerData = CPUCoolerEntity(
             cpuCoolerDTO.name,
-            cpuCoolerDTO.imageUrl?:innerStringsConfig.property.defaultImageUrl,
+            cpuCoolerDTO.imageUrl?:innerStringsConfig.property.aws.defaultImageUrl,
             cpuCoolerDTO.manufacturer,
             cpuCoolerDTO.coolingType,
             cpuCoolerDTO.coolerForm,
@@ -207,7 +207,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun createCPU(cpuDTO: CpuDTO){
         val newCpuData = CPUEntity(
             cpuDTO.name,
-            cpuDTO.imageUrl?:innerStringsConfig.property.defaultImageUrl,
+            cpuDTO.imageUrl?:innerStringsConfig.property.aws.defaultImageUrl,
             cpuDTO.manufacturer,
             cpuDTO.socket,
             cpuDTO.memoryType,
@@ -271,7 +271,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun createDataStorage(dataStorageDTO: DataStorageDTO) {
         val newDataStorageData = DataStorageEntity(
             dataStorageDTO.name,
-            dataStorageDTO.imageUrl?:innerStringsConfig.property.defaultImageUrl,
+            dataStorageDTO.imageUrl?:innerStringsConfig.property.aws.defaultImageUrl,
             dataStorageDTO.manufacturer,
             dataStorageDTO.storageInterface,
             dataStorageDTO.formFactor,
@@ -335,7 +335,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun createGraphicsCard(graphicsCardDTO: GraphicsCardDTO) {
         val newGraphicsCardData = GraphicsCardEntity(
             graphicsCardDTO.name,
-            graphicsCardDTO.imageUrl?:innerStringsConfig.property.defaultImageUrl,
+            graphicsCardDTO.imageUrl?:innerStringsConfig.property.aws.defaultImageUrl,
             graphicsCardDTO.manufacturer,
             graphicsCardDTO.chipsetManufacturer,
             graphicsCardDTO.gpuType,
@@ -394,7 +394,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun createMemory(memoryDTO: MemoryDTO){
         val newMemoryData = MemoryEntity(
             memoryDTO.name,
-            memoryDTO.imageUrl?:innerStringsConfig.property.defaultImageUrl,
+            memoryDTO.imageUrl?:innerStringsConfig.property.aws.defaultImageUrl,
             memoryDTO.manufacturer,
             memoryDTO.type,
             memoryDTO.capacity,
@@ -460,7 +460,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun createMotherBoard(motherBoardDTO: MotherBoardDTO){
         val newMotherBoardData = MotherBoardEntity(
             motherBoardDTO.name,
-            motherBoardDTO.imageUrl?:innerStringsConfig.property.defaultImageUrl,
+            motherBoardDTO.imageUrl?:innerStringsConfig.property.aws.defaultImageUrl,
             motherBoardDTO.manufacturer,
             motherBoardDTO.cpuType,
             motherBoardDTO.socket,
@@ -523,7 +523,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
     fun createPowerSupply(powerSupplyDTO: PowerSupplyDTO){
         val newPowerSupplyData = PowerSupplyEntity(
             powerSupplyDTO.name,
-            powerSupplyDTO.imageUrl?:innerStringsConfig.property.defaultImageUrl,
+            powerSupplyDTO.imageUrl?:innerStringsConfig.property.aws.defaultImageUrl,
             powerSupplyDTO.manufacturer,
             powerSupplyDTO.power,
             powerSupplyDTO.efficiency,

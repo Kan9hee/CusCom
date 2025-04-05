@@ -20,49 +20,15 @@
                         <a class="nav-link" href="/CusCom/estimatePage">컴퓨터 견적</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/CusCom/SharePlace">견적 게시판</a>
+                        <a class="nav-link" href="/CusCom/mainPage">견적 게시판</a>
                     </li>
                     <li class="nav-item" id="loginCheck">
-                        <a class="nav-link" href="/CusCom/loginPage">로그인</a>
+
                     </li>
                 </ul>
             </div>
         </div>
     </header>
-    <script type="text/javascript">
-        async function checkLoginStatus() {
-            try {
-                const response = await fetch('/CusCom/API/checkLogin', {
-                    method: 'GET',
-                    credentials: 'same-origin'
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.loggedIn === true) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
-            } catch (error) {
-                console.error(error);
-                return false;
-            }
-        }
-
-        window.addEventListener('load', async function() {
-            var loginStatus = document.getElementById("loginCheck");
-            var navbar = document.getElementById("navbar");
-
-            if (await checkLoginStatus()) {
-                loginStatus.innerHTML = '<a class="nav-link" href="/CusCom/myPage">마이페이지</a>';
-            } else {
-                loginStatus.innerHTML = '<a class="nav-link" href="/CusCom/loginPage">로그인</a>';
-            }
-        });
-    </script>
+    <script src="/js/header.js"></script>
 </body>
 </html>

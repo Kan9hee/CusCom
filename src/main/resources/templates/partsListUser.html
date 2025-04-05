@@ -84,7 +84,7 @@
                     </h2>
                     <div id="collapseCase" class="accordion-collapse collapse show" data-bs-parent="#partsList">
                         <div class="accordion-body">
-                            <div class="list-group list-group-flush border-bottom scrollarea" id="case-list">
+                            <div class="list-group list-group-flush border-bottom scrollarea" id="caseList">
 
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                     </h2>
                     <div id="collapseCPUCooler" class="accordion-collapse collapse" data-bs-parent="#partsList">
                         <div class="accordion-body">
-                            <div class="list-group list-group-flush border-bottom scrollarea" id="cpu-cooler-list">
+                            <div class="list-group list-group-flush border-bottom scrollarea" id="cpuCoolerList">
 
                             </div>
                         </div>
@@ -114,7 +114,7 @@
                     </h2>
                     <div id="collapseCPU" class="accordion-collapse collapse" data-bs-parent="#partsList">
                         <div class="accordion-body">
-                            <div class="list-group list-group-flush border-bottom scrollarea" id="cpu-list">
+                            <div class="list-group list-group-flush border-bottom scrollarea" id="cpuList">
 
                             </div>
                         </div>
@@ -129,7 +129,7 @@
                     </h2>
                     <div id="collapseDataStorage" class="accordion-collapse collapse" data-bs-parent="#partsList">
                         <div class="accordion-body">
-                            <div class="list-group list-group-flush border-bottom scrollarea" id="data-storage-list">
+                            <div class="list-group list-group-flush border-bottom scrollarea" id="dataStorageList">
 
                             </div>
                         </div>
@@ -144,7 +144,7 @@
                     </h2>
                     <div id="collapseGraphicsCard" class="accordion-collapse collapse" data-bs-parent="#partsList">
                         <div class="accordion-body">
-                            <div class="list-group list-group-flush border-bottom scrollarea" id="graphics-card-list">
+                            <div class="list-group list-group-flush border-bottom scrollarea" id="graphicsCardList">
 
                             </div>
                         </div>
@@ -159,7 +159,7 @@
                     </h2>
                     <div id="collapseMemory" class="accordion-collapse collapse" data-bs-parent="#partsList">
                         <div class="accordion-body">
-                            <div class="list-group list-group-flush border-bottom scrollarea" id="memory-list">
+                            <div class="list-group list-group-flush border-bottom scrollarea" id="memoryList">
 
                             </div>
                         </div>
@@ -174,7 +174,7 @@
                     </h2>
                     <div id="collapseMotherBoard" class="accordion-collapse collapse" data-bs-parent="#partsList">
                         <div class="accordion-body">
-                            <div class="list-group list-group-flush border-bottom scrollarea" id="mother-board-list">
+                            <div class="list-group list-group-flush border-bottom scrollarea" id="motherBoardList">
 
                             </div>
                         </div>
@@ -189,7 +189,7 @@
                     </h2>
                     <div id="collapsePowerSupply" class="accordion-collapse collapse" data-bs-parent="#partsList">
                         <div class="accordion-body">
-                            <div class="list-group list-group-flush border-bottom scrollarea" id="power-supply-list">
+                            <div class="list-group list-group-flush border-bottom scrollarea" id="powerSupplyList">
 
                             </div>
                         </div>
@@ -203,413 +203,6 @@
 <footer class="my-5 pt-5 text-body-secondary text-center text-small">
     <p class="mb-1">&copy; 2023 CusCom</p>
 </footer>
-<script type="text/javascript">
-
-    const queryParams = new URLSearchParams(window.location.search);
-    const dataId = queryParams.get("id");
-    var estimate = {
-        userName:"",
-        cpu:"",
-        motherBoard:"",
-        memory:"",
-        dataStorage:"",
-        graphicsCard:"",
-        cpuCooler:"",
-        powerSupply:"",
-        desktopCase:""
-    }
-
-    var usageCapacity=[];
-    var spareCapacity=[];
-    var ctxData = {
-      labels: ["전력","쿨러 높이","그래픽카드 길이","파워 사이즈"],
-      datasets: [
-        {
-          label: '사용 용량',
-          data: usageCapacity,
-          borderColor: 'rgba(255, 99, 132, 1)',
-          backgroundColor: 'rgba(255, 99, 132, 1)'
-        },
-        {
-          label: '여유 용량',
-          data: spareCapacity,
-          borderColor: 'rgba(75, 192, 192, 1)',
-          backgroundColor: 'rgba(75, 192, 192, 1)'
-        }
-      ]
-    }
-
-    function fetchEstimate(){
-        fetch(`/CusCom/API/open/getUserEstimate?estimateID=${dataId}`)
-        .then(response => response.json())
-        .then(data => {
-            estimate.userName=data.userName;
-            estimate.cpu=data.cpu;
-            estimate.motherBoard=data.motherBoard;
-            estimate.memory=data.memory;
-            estimate.dataStorage=data.dataStorage;
-            estimate.graphicsCard=data.graphicsCard;
-            estimate.cpuCooler=data.cpuCooler;
-            estimate.powerSupply=data.powerSupply;
-            estimate.desktopCase=data.desktopCase;
-            updateH6Text("cpuH6",estimate.cpu);
-            updateH6Text("motherBoardH6",estimate.motherBoard);
-            updateH6Text("memoryH6",estimate.memory);
-            updateH6Text("dataStorageH6",estimate.dataStorage);
-            updateH6Text("graphicsCardH6",estimate.graphicsCard);
-            updateH6Text("cpuCoolerH6",estimate.cpuCooler);
-            updateH6Text("powerSupplyH6",estimate.powerSupply);
-            updateH6Text("caseH6",estimate.desktopCase);
-        })
-        .catch(error => console.error(error));
-    }
-
-    function fetchChart(){
-        fetch(`/CusCom/API/open/analyzeEstimate?estimateID=${dataId}`)
-        .then(response => response.json())
-        .then(data => {
-            usageCapacity[0]=data.totalTDP;
-            usageCapacity[1]=data.coolerHeight;
-            usageCapacity[2]=data.graphicsCardLength;
-            usageCapacity[3]=data.powerSupplySize;
-            spareCapacity[0]=data.powerSupplyOutput;
-            spareCapacity[1]=data.caseCoolerHeight;
-            spareCapacity[2]=data.caseGraphicLength;
-            spareCapacity[3]=data.casePowerSupplySize;
-        })
-        .catch(error => console.error(error));
-    }
-
-    function fetchData() {
-          const fetchRequests = [
-            fetch('/CusCom/API/open/caseList').then(response => response.json()),
-            fetch('/CusCom/API/open/cpuList').then(response => response.json()),
-            fetch('/CusCom/API/open/cpuCoolerList').then(response => response.json()),
-            fetch('/CusCom/API/open/dataStorageList').then(response => response.json()),
-            fetch('/CusCom/API/open/graphicsCardList').then(response => response.json()),
-            fetch('/CusCom/API/open/memoryList').then(response => response.json()),
-            fetch('/CusCom/API/open/motherBoardList').then(response => response.json()),
-            fetch('/CusCom/API/open/powerSupplyList').then(response => response.json())
-          ];
-
-          Promise.all(fetchRequests)
-            .then(responses => {
-              const caseList = document.getElementById('case-list');
-              responses[0].forEach(caseItem => {
-                const listItem = document.createElement('a');
-                listItem.className = 'list-group-item py-3 lh-sm';
-                const listItemContent = `
-                  <div class="d-flex w-100 align-items-center justify-content-between">
-                    <strong class="mb-1">${caseItem.name}</strong>
-                    <div class="button-container" style="display: flex; gap: 10px;">
-                      <button class="btn btn-primary btn-add" datatype="case">담기</button>
-                    </div>
-                  </div>
-                  <div>
-                    <small class="text-body-secondary">제조사:${caseItem.manufacturer}</small>
-                    <small class="text-body-secondary">구분:${caseItem.caseType}</small>
-                    <small class="text-body-secondary">높이:${caseItem.height}</small>
-                    <small class="text-body-secondary">길이:${caseItem.length}</small>
-                    <small class="text-body-secondary">너비:${caseItem.width}</small>
-                    <small class="text-body-secondary">최대파워크기:${caseItem.powerLength}</small>
-                    <small class="text-body-secondary">최대cpu쿨러크기:${caseItem.cpuCoolerHeight}</small>
-                    <small class="text-body-secondary">최대그래픽카드크기:${caseItem.graphicsCardLength}</small>
-                  </div>
-                `;
-                listItem.innerHTML = listItemContent;
-                caseList.appendChild(listItem);
-              });
-
-              const cpuList = document.getElementById('cpu-list');
-              responses[1].forEach(cpuItem => {
-                const listItem = document.createElement('a');
-                listItem.className = 'list-group-item py-3 lh-sm';
-                const listItemContent = `
-                  <div class="d-flex w-100 align-items-center justify-content-between">
-                    <strong class="mb-1">${cpuItem.name}</strong>
-                    <div class="button-container" style="display: flex; gap: 10px;">
-                      <button class="btn btn-primary btn-add" datatype="cpu">담기</button>
-                    </div>
-                  </div>
-                  <div>
-                    <small class="text-body-secondary">제조사:${cpuItem.manufacturer}</small>
-                    <small class="text-body-secondary">소켓:${cpuItem.socket}</small>
-                    <small class="text-body-secondary">내장그래픽:${cpuItem.isBuiltInGraphics}</small>
-                    <small class="text-body-secondary">코어:${cpuItem.core}</small>
-                    <small class="text-body-secondary">스레드:${cpuItem.thread}</small>
-                    <small class="text-body-secondary">TDP:${cpuItem.tdp}</small>
-                  </div>
-                `;
-                listItem.innerHTML = listItemContent;
-                cpuList.appendChild(listItem);
-              });
-
-              const cpuCoolerList = document.getElementById('cpu-cooler-list');
-              responses[2].forEach(cpuCoolerItem => {
-                const listItem = document.createElement('a');
-                listItem.className = 'list-group-item py-3 lh-sm';
-                const listItemContent = `
-                  <div class="d-flex w-100 align-items-center justify-content-between">
-                    <strong class="mb-1">${cpuCoolerItem.name}</strong>
-                    <div class="button-container" style="display: flex; gap: 10px;">
-                      <button class="btn btn-primary btn-add" datatype="cpuCooler">담기</button>
-                    </div>
-                  </div>
-                  <div>
-                    <small class="text-body-secondary">제조사:${cpuCoolerItem.manufacturer}</small>
-                    <small class="text-body-secondary">냉각방식:${cpuCoolerItem.coolingType}</small>
-                    <small class="text-body-secondary">높이:${cpuCoolerItem.height}</small>
-                    <small class="text-body-secondary">길이:${cpuCoolerItem.length}</small>
-                    <small class="text-body-secondary">너비:${cpuCoolerItem.width}</small>
-                    <small class="text-body-secondary">TDP:${cpuCoolerItem.tdp}</small>
-                  </div>
-                `;
-                listItem.innerHTML = listItemContent;
-                cpuCoolerList.appendChild(listItem);
-              });
-
-              const dataStorageList = document.getElementById('data-storage-list');
-              responses[3].forEach(dataStorageItem => {
-                const listItem = document.createElement('a');
-                listItem.className = 'list-group-item py-3 lh-sm';
-                const listItemContent = `
-                  <div class="d-flex w-100 align-items-center justify-content-between">
-                    <strong class="mb-1">${dataStorageItem.name}</strong>
-                    <div class="button-container" style="display: flex; gap: 10px;">
-                      <button class="btn btn-primary btn-add" datatype="dataStorage">담기</button>
-                    </div>
-                  </div>
-                  <div>
-                    <small class="text-body-secondary">제조사:${dataStorageItem.manufacturer}</small>
-                    <small class="text-body-secondary">인터페이스:${dataStorageItem.storageInterface}</small>
-                    <small class="text-body-secondary">폼팩터:${dataStorageItem.formFactor}</small>
-                    <small class="text-body-secondary">읽기속도:${dataStorageItem.readSpeed}</small>
-                    <small class="text-body-secondary">쓰기속도:${dataStorageItem.writeSpeed}</small>
-                  </div>
-                `;
-                listItem.innerHTML = listItemContent;
-                dataStorageList.appendChild(listItem);
-              });
-
-              const graphicsCardList = document.getElementById('graphics-card-list');
-              responses[4].forEach(graphicsCardItem => {
-                const listItem = document.createElement('a');
-                listItem.className = 'list-group-item py-3 lh-sm';
-                const listItemContent = `
-                  <div class="d-flex w-100 align-items-center justify-content-between">
-                    <strong class="mb-1">${graphicsCardItem.name}</strong>
-                    <div class="button-container" style="display: flex; gap: 10px;">
-                      <button class="btn btn-primary btn-add" datatype="graphicsCard">담기</button>
-                    </div>
-                  </div>
-                  <div>
-                    <small class="text-body-secondary">제조사:${graphicsCardItem.manufacturer}</small>
-                    <small class="text-body-secondary">GPU:${graphicsCardItem.gpuType}</small>
-                    <small class="text-body-secondary">길이:${graphicsCardItem.length}</small>
-                    <small class="text-body-secondary">기본전력:${graphicsCardItem.basicPower}</small>
-                    <small class="text-body-secondary">최대전력:${graphicsCardItem.maxPower}</small>
-                  </div>
-                `;
-                listItem.innerHTML = listItemContent;
-                graphicsCardList.appendChild(listItem);
-              });
-
-              const memoryList = document.getElementById('memory-list');
-              responses[5].forEach(memoryItem => {
-                const listItem = document.createElement('a');
-                listItem.className = 'list-group-item py-3 lh-sm';
-                const listItemContent = `
-                  <div class="d-flex w-100 align-items-center justify-content-between">
-                      <strong class="mb-1">${memoryItem.name}</strong>
-                      <div class="button-container" style="display: flex; gap: 10px;">
-                        <button class="btn btn-primary btn-add" datatype="memory">담기</button>
-                      </div>
-                    </div>
-                    <div>
-                      <small class="text-body-secondary">제조사:${memoryItem.manufacturer}</small>
-                      <small class="text-body-secondary">타입:${memoryItem.type}</small>
-                      <small class="text-body-secondary">용량:${memoryItem.capacity}</small>
-                      <small class="text-body-secondary">높이:${memoryItem.height}</small>
-                    </div>
-                `;
-                listItem.innerHTML = listItemContent;
-                memoryList.appendChild(listItem);
-              });
-
-              const motherBoardList = document.getElementById('mother-board-list');
-              responses[6].forEach(motherBoardItem => {
-                const listItem = document.createElement('a');
-                listItem.className = 'list-group-item py-3 lh-sm';
-                const listItemContent = `
-                  <div class="d-flex w-100 align-items-center justify-content-between">
-                    <strong class="mb-1">${motherBoardItem.name}</strong>
-                    <div class="button-container" style="display: flex; gap: 10px;">
-                      <button class="btn btn-primary btn-add" datatype="motherBoard">담기</button>
-                    </div>
-                  </div>
-                  <div>
-                    <small class="text-body-secondary">제조사:${motherBoardItem.manufacturer}</small>
-                    <small class="text-body-secondary">구분:${motherBoardItem.cpuType}</small>
-                    <small class="text-body-secondary">소켓:${motherBoardItem.socket}</small>
-                    <small class="text-body-secondary">메모리타입:${motherBoardItem.memoryType}</small>
-                    <small class="text-body-secondary">메모리슬롯:${motherBoardItem.memorySlot}</small>
-                  </div>
-                `;
-                listItem.innerHTML = listItemContent;
-                motherBoardList.appendChild(listItem);
-              });
-
-              const powerSupplyList = document.getElementById('power-supply-list');
-              responses[7].forEach(powerSupplyItem => {
-                const listItem = document.createElement('a');
-                listItem.className = 'list-group-item py-3 lh-sm';
-                const listItemContent = `
-                  <div class="d-flex w-100 align-items-center justify-content-between">
-                    <strong class="mb-1">${powerSupplyItem.name}</strong>
-                    <div class="button-container" style="display: flex; gap: 10px;">
-                      <button class="btn btn-primary btn-add" datatype="powerSupply">담기</button>
-                    </div>
-                  </div>
-                  <div>
-                    <small class="text-body-secondary">제조사:${powerSupplyItem.manufacturer}</small>
-                    <small class="text-body-secondary">모듈러:${powerSupplyItem.modular}</small>
-                    <small class="text-body-secondary">크기:${powerSupplyItem.length}</small>
-                    <small class="text-body-secondary">전력:${powerSupplyItem.power}</small>
-                    <small class="text-body-secondary">효율:${powerSupplyItem.efficiency}</small>
-                  </div>
-                `;
-                listItem.innerHTML = listItemContent;
-                powerSupplyList.appendChild(listItem);
-              });
-
-              document.querySelectorAll('.btn-add').forEach(function(button){
-                button.addEventListener('click',addParts);
-              });
-            })
-            .catch(error => console.error(error));
-        }
-
-    window.addEventListener('load', function(){
-        fetchData();
-        if(dataId !== null){
-            fetchEstimate();
-            fetchChart();
-        }
-    });
-
-    function updateH6Text(id, text) {
-        const h6Element = document.getElementById(id);
-        if (h6Element) {
-            h6Element.textContent = text;
-        }
-    }
-
-    function addParts(event){
-        const listItem = this.closest('.list-group-item');
-        const name = listItem.querySelector('.mb-1').textContent;
-        const datatype = this.getAttribute('datatype');
-        console.log("상품명: "+name+"부품유형"+datatype);
-        switch(datatype){
-            case 'cpu':
-                estimate.cpu=name;
-                updateH6Text("cpuH6",name);
-                break;
-            case 'motherBoard':
-                estimate.motherBoard=name;
-                updateH6Text("motherBoardH6",name);
-                break;
-            case 'memory':
-                estimate.memory=name;
-                updateH6Text("memoryH6",name);
-                break;
-            case 'dataStorage':
-                estimate.dataStorage=name;
-                updateH6Text("dataStorageH6",name);
-                break;
-            case 'graphicsCard':
-                estimate.graphicsCard=name;
-                updateH6Text("graphicsCardH6",name);
-                break;
-            case 'cpuCooler':
-                estimate.cpuCooler=name;
-                updateH6Text("cpuCoolerH6",name);
-                break;
-            case 'powerSupply':
-                estimate.powerSupply=name;
-                updateH6Text("powerSupplyH6",name);
-                break;
-            case 'case':
-                estimate.desktopCase=name;
-                updateH6Text("caseH6",name);
-                break;
-            default:
-                console.log("분류되지 않은 데이터");
-                break;
-        }
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const ctx = document.getElementById('estimateChart');
-        const chart = new Chart(ctx,{
-          type: 'bar',
-          data: ctxData,
-          options: {
-            responsive: true,
-            plugins: {
-              legend: {
-                position: 'top',
-              }
-            }
-          }
-        });
-    });
-
-    document.getElementById('submitEstimate')
-            .addEventListener('click',function(event){
-                const formData = new FormData();
-                if(dataId!=null){
-                    estimate._id=dataId;
-                }
-                formData.append('estimate', JSON.stringify(estimate));
-
-                if(dataId==null){
-                    fetch("/CusCom/API/createEstimate",{
-                        method: "POST",
-                        body: formData
-                    })
-                    .then(response => {
-                        if(response.ok){ window.location.href='/CusCom/mainPage'; }
-                        else { return response.json(); }
-                    })
-                    .then(data => {
-                        alert("Error: " + data.message);
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-                    });
-                }
-                else{
-                    fetch("/CusCom/API/updateEstimate",{
-                        method: "POST",
-                        body: formData
-                    })
-                    .then(response => {
-                        if(response.ok){ window.location.href='/CusCom/mainPage'; }
-                        else { return response.json(); }
-                    })
-                    .then(data => {
-                        alert("Error: " + data.message);
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-                    });
-                }
-            });
-
-    document.getElementById('cancel')
-            .addEventListener('click',function(event){
-                history.go(-1);
-            });
-  </script>
+<script src="/js/partsListUser.js"></script>
 </body>
 </html>

@@ -1,59 +1,3 @@
-<!doctype html>
-<html class="h-100" xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark" >
-<head>
-  <div th:replace="~{fragments/setup :: setup}"/>
-</head>
-<body>
-  <div th:insert="~{fragments/header :: header}"></div>
-
-  <main>
-    <section class="py-5 text-center container">
-      <div class="row py-lg-5">
-        <div class="row-gap-5 col-lg-6 col-md-8 mx-auto">
-          <div>
-            <h1>견적 게시판</h1>
-            <form class="d-flex" role="search">
-              <div class="dropdown" id="option">
-                <a class="btn btn-secondary dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  제목
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a value="title" class="dropdown-item">제목</a></li>
-                  <li><a value="tags" class="dropdown-item">태그</a></li>
-                  <li><a value="userName" class="dropdown-item">작성자</a></li>
-                  <li><a value="parts" class="dropdown-item">부품명</a></li>
-                </ul>
-              </div>
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="keyword">
-              <button class="btn btn-outline-success" type="submit" id="search">Search</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="album py-5 bg-body-tertiary">
-      <h3 class="text-center" id="searchResultText"></h3>
-      <div class="container">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="postList">
-
-        </div>
-      </div>
-
-      <div class="row-gap-5">
-        <nav aria-label="Page navigation">
-          <ul class="pagination justify-content-center">
-
-          </ul>
-        </nav>
-      </div>
-    </div>
-  </main>
-</body>
-<footer class="text-body-secondary py-5">
-  <p>Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a href="https://twitter.com/mdo" class="text-white">@mdo</a>.</p>
-</footer>
-<script type="text/javascript">
     const queryParams = new URLSearchParams(window.location.search);
     let searchOption = queryParams.get("option") || "title";
     let searchData = queryParams.get("keyword");
@@ -62,16 +6,14 @@
 
     function fetchPage(){
         const queryParams = new URLSearchParams();
-        if(searchOption!=null&&searchData!=null){
-            queryParams.append("searchJSON",JSON.stringify({ option: searchOption, keyword: searchData }));
+        queryParams.append("option", searchOption);
+        if (searchData != null) {
+          queryParams.append("keyword", searchData);
         }
-        queryParams.append("maxContent",9);
-        queryParams.append("currentPage",currentPage);
-        const url = new URL(window.location.href);
-        if (url.searchParams.has('page'))
-          url.searchParams.delete('page');
+        queryParams.append("maxContent", 9);
+        queryParams.append("page", currentPage);
 
-        fetch(`/CusCom/API/open/loadPostList?${queryParams.toString()}`)
+        fetch(`/CusCom/API/open/searchPost?${queryParams.toString()}`)
         .then(response => response.json())
         .then(data => {
           const basicPath = url.pathname + (url.search === "" ? "?" : url.search+"&");
@@ -108,7 +50,7 @@
               </div>
             `;
             postCard.addEventListener('click',()=>{
-              window.location.href=`/CusCom/SharePlace/post?estimateID=${post._id}`;
+              window.location.href=`/CusCom/post?estimateID=${post._id}`;
             });
             postList.appendChild(postCard);
           });
@@ -164,8 +106,5 @@
       const queryParams = new URLSearchParams();
       queryParams.set("option", searchOption);
       queryParams.set("keyword", searchData);
-      window.location.href = `/CusCom/SharePlace?${queryParams.toString()}`;
+      window.location.href = `/CusCom/mainPage?${queryParams.toString()}`;
     });
-
-    </script>
-</html>

@@ -5,104 +5,26 @@
 </head>
 <body>
     <main>
-      <div th:insert="~{fragments/header :: header}"></div>
-      <div class="container-fluid">
-        <div class="py-5 text-center">
-          <h2>마이 페이지</h2>
+        <div th:insert="~{fragments/header :: header}"></div>
+        <div class="container-fluid">
+            <div class="py-5 text-center">
+              <h2>마이 페이지</h2>
+            </div>
+
+            <div id="admin-area">
+
+            </div>
+
+            <div class="list-group list-group-flush border-bottom scrollarea" id="estimate-list">
+
+            </div>
+
         </div>
+        <footer class="my-5 pt-5 text-body-secondary text-center text-small">
+            <p class="mb-1">&copy; 2023 CusCom</p>
+        </footer>
 
-        <div class="list-group list-group-flush border-bottom scrollarea" id="estimate-list">
-
-        </div>
-
-      </div>
-      <footer class="my-5 pt-5 text-body-secondary text-center text-small">
-        <p class="mb-1">&copy; 2023 CusCom</p>
-      </footer>
-
-      <script type="text/javascript">
-        function fetchData() {
-          fetch('/CusCom/API/getUserEstimateList')
-            .then(response => response.json())
-            .then(data => {
-              const estimateList = document.getElementById('estimate-list');
-
-              data.forEach(estimateItem => {
-                const listItem = document.createElement('div');
-                listItem.className = 'list-group-item py-3 lh-sm';
-
-                const postButtonContent = estimateItem.posted ?
-                  `<button class="btn btn-primary" style="background-color: red; border-color: red;" type="submit" disabled>게시됨</button>` :
-                  `<button class="btn btn-primary" type="submit" onclick="postEstimate(this)">게시</button>`;
-
-                const editButtonContent = estimateItem.posted ?
-                  `` :
-                  `<button class="btn btn-primary" type="submit" onclick="callEstimateEditPage(this)">편집</button>`;
-
-                const deleteButtonContent =
-                  `<button class="btn btn-primary" style="background-color: red; border-color: red;" type="submit" onclick="deleteEstimate(this)">삭제</button>`
-
-                const listItemContent = `
-                  <div class="d-flex w-100 align-items-center justify-content-between">
-                    <strong class="mb-1">${estimateItem._id}</strong>
-                    <div class="button-container">
-                      ${postButtonContent}
-                      ${editButtonContent}
-                      ${deleteButtonContent}
-                    </div>
-                  </div>
-                  <div>
-                    <small class="text-body-secondary">${estimateItem.cpu}</small>
-                    <small class="text-body-secondary">${estimateItem.motherBoard}</small>
-                    <small class="text-body-secondary">${estimateItem.graphicsCard}</small>
-                    <small class="text-body-secondary">${estimateItem.powerSupply}</small>
-                  </div>
-                `;
-
-                listItem.innerHTML = listItemContent;
-                estimateList.appendChild(listItem);
-              });
-            })
-            .catch(error => console.error(error));
-        }
-
-        window.addEventListener('load', fetchData);
-
-        function getEstimateID(button) {
-          const mbElement = button.closest(".list-group-item").querySelector(".mb-1");
-          return mbElement ? mbElement.textContent : null;
-        }
-
-        function callEstimateEditPage(button) {
-          const dataId = getEstimateID(button);
-          window.location.href = `/CusCom/estimatePage?id=${dataId}`;
-        }
-
-        function postEstimate(button) {
-          const dataId = getEstimateID(button);
-          window.location.href = `/CusCom/uploadPostPage?id=${dataId}`;
-        }
-
-        function deleteEstimate(button){
-          const dataId = getEstimateID(button);
-          const formData = new FormData();
-          formData.append('estimateID', dataId);
-          fetch("/CusCom/API/deleteEstimate", {
-            method: "POST",
-            body: formData
-          })
-          .then(response => {
-            if (response.ok) { location.reload(); }
-            else { return response.json(); }
-          })
-          .then(data => {
-              alert("Error: " + data.message);
-          })
-          .catch(error => {
-            console.error("Error:", error);
-          });
-        }
-      </script>
+        <script src="/js/userPage.js"></script>
     </main>
 </body>
 </html>

@@ -38,40 +38,6 @@
       <p class="mb-1">&copy; 2023 CusCom</p>
     </footer>
   </div>
-  <script type="text/javascript">
-    document.getElementById('confirmJoin')
-            .addEventListener('click',function(event){
-
-                const joinData={
-                    userName: document.getElementById('userName').value,
-                    userPassword: document.getElementById('userPassword').value,
-                    userRole: "USER"
-                };
-
-                fetch("/CusCom/API/join", {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(joinData)
-                })
-                .then(response => {
-                    if(response.ok){ window.location.href='/CusCom/mainPage'; }
-                    else { return response.json(); }
-                })
-                .then(data => {
-                    alert("Error: " + data.message);
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                });
-                window.location.href='/CusCom/test/login';
-            });
-
-    document.getElementById('cancel')
-            .addEventListener('click',function(event){
-                history.go(-1);
-            });
-  </script>
+  <script src="/js/join.js"></script>
 </body>
 </html>

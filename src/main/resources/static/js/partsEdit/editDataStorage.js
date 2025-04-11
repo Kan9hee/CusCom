@@ -1,10 +1,9 @@
-const accessToken = window.localStorage.getItem('cuscomAccessToken');
-const queryParams = new URLSearchParams(window.location.search);
-const queryData = queryParams.get("DataStorage");
 let firstCreate = false;
 let beforePartsName = null;
 
 function initialSetup() {
+  const queryParams = new URLSearchParams(window.location.search);
+  const queryData = queryParams.get("DataStorage");
   fetch(`/CusCom/API/searchDataStorage${queryData !== null ? `?dataStorageData=${queryData}` : ''}`)
     .then(response => response.json())
     .then(data => {
@@ -20,7 +19,21 @@ function initialSetup() {
     });
 }
 
-window.onload = initialSetup;
+window.addEventListener("load", () => {
+  if (typeof window.adminCheck === "function") {
+    window.adminCheck().then(isAdmin => {
+      if (isAdmin) {
+        initialSetup();
+      }
+      else {
+        window.location.href = '/CusCom/mainPage'
+      }
+    });
+  } else {
+    console.error("adminCheck 함수가 정의되지 않았습니다.");
+    window.location.href = '/CusCom/mainPage'
+  }
+});
 
 document.getElementById('confirm').addEventListener('click', function(event) {
   const dataStorageData = {
@@ -41,14 +54,14 @@ document.getElementById('confirm').addEventListener('click', function(event) {
   };
 
   const url = firstCreate
-    ? "/CusCom/admin/API/createParts"
-    : "/CusCom/admin/API/updateParts";
+    ? "/CusCom/API/admin/createParts"
+    : "/CusCom/API/admin/updateParts";
 
   fetch(url, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${accessToken}`
+      'Authorization': `Bearer ${window.localStorage.getItem('cuscomAccessToken')}`
     },
     body: JSON.stringify(requestFormat)
   })

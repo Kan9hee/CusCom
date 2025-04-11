@@ -51,7 +51,7 @@ window.addEventListener('load', async function() {
     const isValid = await checkAccessTokenStatus();
     if (isValid) {
         loginStatus.innerHTML = `
-            <a class="nav-link" href="/CusCom/myPage">마이페이지</a>
+            <button class="nav-link btn btn-link p-0" id="myPage">마이페이지</button>
             <a class="nav-link" id="logout">로그아웃</a>
         `;
         const logOutData = {
@@ -59,11 +59,15 @@ window.addEventListener('load', async function() {
             refreshToken: window.localStorage.getItem('cuscomRefreshToken')
         };
 
+        document.getElementById('myPage').addEventListener('click', async () => {
+            window.location.href = "/CusCom/myPage"
+        });
+
         document.getElementById('logout').addEventListener('click', () => {
             fetch("/CusCom/API/logOut", {
                 method: "POST",
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${logOutData.accessToken}`
                 },
                 body: JSON.stringify(logOutData)

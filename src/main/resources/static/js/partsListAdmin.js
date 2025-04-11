@@ -1,5 +1,3 @@
-        const accessToken = window.localStorage.getItem('cuscomAccessToken');
-
         function fetchData() {
           const fetchRequests = [
             fetch('/CusCom/API/open/caseList').then(response => response.json()),
@@ -237,8 +235,21 @@
             .catch(error => console.error(error));
         }
 
-        window.onload = fetchData;
-
+        window.addEventListener("load", () => {
+          if (typeof window.adminCheck === "function") {
+            window.adminCheck().then(isAdmin => {
+              if (isAdmin) {
+                fetchData();
+              }
+              else {
+                window.location.href = '/CusCom/mainPage'
+              }
+            });
+          } else {
+            console.error("adminCheck 함수가 정의되지 않았습니다.");
+            window.location.href = '/CusCom/mainPage'
+          }
+        });
 
         function deleteItem(button) {
           const listItem = button.closest('a.list-group-item');
@@ -254,11 +265,11 @@
             targetName: targetName,
             type: type
           };
-          fetch("/CusCom/admin/API/deleteParts", {
+          fetch("/CusCom/API/admin/deleteParts", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              'Authorization': `Bearer ${accessToken}`
+              'Authorization': `Bearer ${window.localStorage.getItem('cuscomAccessToken')}`
             },
             body: JSON.stringify(deleteData)
           })

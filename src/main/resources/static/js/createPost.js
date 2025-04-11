@@ -1,6 +1,5 @@
 const queryParams = new URLSearchParams(window.location.search);
 const dataId = queryParams.get("id");
-const accessToken = window.localStorage.getItem('cuscomAccessToken');
 
 const estimate = {
   _id: dataId,
@@ -17,6 +16,10 @@ const estimate = {
 };
 
 function initialSetup() {
+  if (!dataId) {
+    window.location.href = '/CusCom/mainPage';
+    return;
+  }
   fetch(`/CusCom/API/open/getUserEstimate?estimateID=${dataId}`)
     .then(response => response.json())
     .then(data => {
@@ -65,7 +68,7 @@ function handleSubmit(event) {
     method: "POST",
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${accessToken}`
+      'Authorization': `Bearer ${window.localStorage.getItem('cuscomAccessToken')}`
     },
     body: JSON.stringify(postData)
   })

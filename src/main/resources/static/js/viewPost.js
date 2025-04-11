@@ -2,6 +2,10 @@
         const postId = queryParams.get("estimateID");
 
         function initialSetup(){
+            if (!dataId) {
+                window.location.href = '/CusCom/mainPage';
+                return;
+            }
             fetch(`/CusCom/API/open/loadPost?id=${postId}`)
             .then(response => response.json())
             .then(data => {

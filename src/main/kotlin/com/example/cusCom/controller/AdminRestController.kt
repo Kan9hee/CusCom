@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/CusCom/admin/API")
+@RequestMapping("/CusCom/API/admin")
 class AdminRestController(private val desktopPartsService: DesktopPartsService,
                           private val jsonEditComponent: JsonEditComponent,
                           private val innerStringsConfig: InnerStringsConfig) {

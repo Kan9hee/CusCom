@@ -29,7 +29,7 @@ class UserService(private val authenticationManagerBuilder: AuthenticationManage
                 signInDTO.insertedID,
                 encodedPassword,
                 signInDTO.insertedNickname,
-                AccountRole.ADMIN
+                AccountRole.ROLE_USER
             )
             userRepo.save(newUser)
             true

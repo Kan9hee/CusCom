@@ -1,6 +1,7 @@
 package com.example.cusCom.service
 
 import org.springframework.data.crossstore.ChangeSetPersister
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
@@ -15,7 +16,7 @@ class CustomUserDetailsService(private val userService: UserService): UserDetail
         return User.builder()
             .username(foundUser.accountId)
             .password(foundUser.accountPassword)
-            .authorities(foundUser.accountRole.toString())
+            .authorities(SimpleGrantedAuthority(foundUser.accountRole.toString()))
             .build()
     }
 

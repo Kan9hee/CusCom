@@ -1,10 +1,25 @@
-        const accessToken = window.localStorage.getItem('cuscomAccessToken');
+        window.addEventListener("load", () => {
+          if (typeof window.adminCheck === "function") {
+            window.adminCheck().then(isAdmin => {
+              if (isAdmin) {
+              const adminArea = document.getElementById("admin-area");
+              const adminButton = document.createElement("a");
+              adminButton.href = "/CusCom/admin/main";
+              adminButton.textContent = "어드민 페이지";
+              adminArea.appendChild(adminButton);
+              }
+            });
+          } else {
+            console.error("adminCheck 함수가 정의되지 않았습니다.");
+            window.location.href = '/CusCom/mainPage'
+          }
+        });
 
         function fetchData() {
           fetch('/CusCom/API/getUserEstimateList', {
             method: "GET",
             headers: {
-              'Authorization': `Bearer ${accessToken}`
+              'Authorization': `Bearer ${window.localStorage.getItem('cuscomAccessToken')}`
             }
           })
             .then(response => response.json())
@@ -46,29 +61,13 @@
                 estimateList.appendChild(listItem);
               });
             })
-            .catch(error => console.error(error));
+            .catch(error => {
+              console.error(error);
+              window.location.href = '/CusCom/mainPage';
+            });
         }
 
         window.addEventListener('load', fetchData);
-        window.addEventListener('load', function() {
-          fetch("/CusCom/API/isAdmin", {
-            method: "GET",
-            headers: {
-              'Authorization': `Bearer ${logOutData.accessToken}`
-            }
-          })
-          .then(response => response.json())
-          .then(isAdmin => {
-            if (isAdmin) {
-              const adminArea = document.getElementById("admin-area");
-              const adminButton = document.createElement("a");
-              adminButton.href = "/CusCom/adminPage/main";
-              adminButton.textContent = "어드민 페이지";
-              adminArea.appendChild(adminButton);
-            }
-          })
-          .catch(error => console.error("Error:", error));
-        });
 
         function getEstimateID(button) {
           const mbElement = button.closest(".list-group-item").querySelector(".mb-1");
@@ -91,7 +90,7 @@
             method: "POST",
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${accessToken}`
+              'Authorization': `Bearer ${window.localStorage.getItem('cuscomAccessToken')}`
             },
             body: JSON.stringify(dataId)
           })

@@ -18,7 +18,7 @@ function handleJoin(event) {
   })
     .then(response => {
       if (response.ok) {
-        window.location.href = '/CusCom/login';
+        window.location.href = '/CusCom/loginPage';
       } else {
         return response.json();
       }

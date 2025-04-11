@@ -27,12 +27,11 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
                          private val jwtComponent: JwtComponent) {
 
     @GetMapping("/isAdmin")
-    fun isAdmin(): Boolean {
+    fun isAdmin(): ResponseEntity<Map<String, Boolean>> {
         val authentication = SecurityContextHolder.getContext().authentication
-        return authentication
-            ?.authorities
-            ?.any { it.authority == "ROLE_${AccountRole.ADMIN}" }
-            ?: false
+        println(authentication.authorities)
+        val isAdmin = authentication.authorities.any { it.authority == AccountRole.ROLE_ADMIN.toString() }
+        return ResponseEntity.ok(mapOf("isAdmin" to isAdmin))
     }
 
     @PostMapping("/open/join")

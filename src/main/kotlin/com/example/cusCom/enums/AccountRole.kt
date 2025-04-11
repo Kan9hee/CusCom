@@ -1,5 +1,5 @@
 package com.example.cusCom.enums
 
 enum class AccountRole {
-    USER, ADMIN
+    ROLE_USER, ROLE_ADMIN
 }

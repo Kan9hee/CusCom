@@ -16,7 +16,7 @@ class AwsService(private val innerStringsConfig: InnerStringsConfig,
                  private val s3Client: S3Client){
 
     fun uploadImage(image: MultipartFile): String {
-        val fullPath = "${innerStringsConfig.property.aws.folder}${image.originalFilename}"
+        val fullPath = "${innerStringsConfig.property.aws.folder}/${image.originalFilename}"
         val putObjectRequest = PutObjectRequest.builder()
             .bucket(innerStringsConfig.property.aws.bucket)
             .key(fullPath)

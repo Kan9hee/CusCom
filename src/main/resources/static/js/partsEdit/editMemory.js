@@ -1,10 +1,11 @@
-let firstCreate = false;
+let firstCreate = true;
 let beforePartsName = null;
 
 function initialSetup() {
   const queryParams = new URLSearchParams(window.location.search);
   const queryData = queryParams.get("Memory");
-  fetch(`/CusCom/API/searchMemory${queryData !== null ? `?memoryData=${queryData}` : ''}`)
+  if (queryData !== null && queryData !== "") {
+  fetch(`/CusCom/API/searchMemory?memoryData=${queryData}`)
     .then(response => response.json())
     .then(data => {
       document.getElementById('name').value = data.name;
@@ -12,9 +13,10 @@ function initialSetup() {
       document.getElementById('type').value = data.type;
       document.getElementById('capacity').value = data.capacity;
       document.getElementById('height').value = data.height;
-      firstCreate = (data.name === "");
+      firstCreate = false;
       beforePartsName = data.name;
     });
+  }
 }
 
 window.addEventListener("load", () => {
@@ -42,12 +44,13 @@ document.getElementById('confirm').addEventListener('click', function(event) {
     height: document.getElementById('height').value
   };
 
-  const requestFormat = {
-    partsType: 'Memory',
-    requestJSON: JSON.stringify(memoryData),
-    partsImage: document.getElementById('imageFile').files[0],
-    beforePartsName: beforePartsName
-  };
+  const formData = new FormData();
+  formData.append('partsType', 'Memory');
+  formData.append('requestJSON', JSON.stringify(memoryData));
+  formData.append('partsImage', document.getElementById('imageFile').files[0]);
+  if (!firstCreate) {
+    formData.append('beforePartsName', beforePartsName);
+  }
 
   const url = firstCreate
     ? "/CusCom/API/admin/createParts"
@@ -56,10 +59,9 @@ document.getElementById('confirm').addEventListener('click', function(event) {
   fetch(url, {
     method: "POST",
     headers: {
-      'Content-Type': 'application/json',
       'Authorization': `Bearer ${window.localStorage.getItem('cuscomAccessToken')}`
     },
-    body: JSON.stringify(requestFormat)
+    body: formData
   })
     .then(response => {
       if (response.ok) {

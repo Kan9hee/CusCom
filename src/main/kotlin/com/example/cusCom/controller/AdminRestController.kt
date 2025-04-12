@@ -3,12 +3,12 @@ package com.example.cusCom.controller
 import com.example.cusCom.component.JsonEditComponent
 import com.example.cusCom.config.InnerStringsConfig
 import com.example.cusCom.dto.parts.*
-import com.example.cusCom.dto.request.RequestPartsDTO
 import com.example.cusCom.service.DesktopPartsService
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.Gson
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @RequestMapping("/CusCom/API/admin")
@@ -17,9 +17,13 @@ class AdminRestController(private val desktopPartsService: DesktopPartsService,
                           private val innerStringsConfig: InnerStringsConfig) {
 
     @PostMapping("/createParts")
-    fun createParts(@RequestBody requestPartsDTO: RequestPartsDTO): ResponseEntity<String> {
-        val editedJson = jsonEditComponent.uploadImageAndInjectUrl(requestPartsDTO.requestJSON,requestPartsDTO.partsImage)
-        when(requestPartsDTO.partsType){
+    fun createParts(
+        @RequestPart("partsType") partsType: String,
+        @RequestPart("requestJSON") requestJSON: String,
+        @RequestPart("partsImage") partsImage: MultipartFile?
+    ): ResponseEntity<String> {
+        val editedJson = jsonEditComponent.uploadImageAndInjectUrl(requestJSON,partsImage)
+        when(partsType){
             innerStringsConfig.parts.case->
                 desktopPartsService.createCase(Gson().fromJson(editedJson, CaseDTO::class.java))
             innerStringsConfig.parts.cpu->
@@ -41,29 +45,34 @@ class AdminRestController(private val desktopPartsService: DesktopPartsService,
     }
 
     @PostMapping("/updateParts")
-    fun updateParts(@RequestBody requestPartsDTO: RequestPartsDTO): ResponseEntity<String> {
-        val editedJson = if (requestPartsDTO.partsImage!=null)
-            jsonEditComponent.uploadImageAndInjectUrl(requestPartsDTO.requestJSON,requestPartsDTO.partsImage)
+    fun updateParts(
+        @RequestPart("partsType") partsType: String,
+        @RequestPart("requestJSON") requestJSON: String,
+        @RequestPart("partsImage") partsImage: MultipartFile?,
+        @RequestPart("beforePartsName") beforePartsName: String?
+    ): ResponseEntity<String> {
+        val editedJson = if (partsImage!=null)
+            jsonEditComponent.uploadImageAndInjectUrl(requestJSON,partsImage)
         else
-            requestPartsDTO.requestJSON
+            requestJSON
 
-        when(requestPartsDTO.partsType){
+        when(partsType){
             innerStringsConfig.parts.case->
-                desktopPartsService.updateCase(Gson().fromJson(editedJson, CaseDTO::class.java),requestPartsDTO.beforePartsName)
+                desktopPartsService.updateCase(Gson().fromJson(editedJson, CaseDTO::class.java),beforePartsName)
             innerStringsConfig.parts.cpu->
-                desktopPartsService.updateCPU(Gson().fromJson(editedJson, CpuDTO::class.java),requestPartsDTO.beforePartsName)
+                desktopPartsService.updateCPU(Gson().fromJson(editedJson, CpuDTO::class.java),beforePartsName)
             innerStringsConfig.parts.cpuCooler->
-                desktopPartsService.updateCPUCooler(Gson().fromJson(editedJson, CpuCoolerDTO::class.java),requestPartsDTO.beforePartsName)
+                desktopPartsService.updateCPUCooler(Gson().fromJson(editedJson, CpuCoolerDTO::class.java),beforePartsName)
             innerStringsConfig.parts.dataStorage->
-                desktopPartsService.updateDataStorage(Gson().fromJson(editedJson, DataStorageDTO::class.java),requestPartsDTO.beforePartsName)
+                desktopPartsService.updateDataStorage(Gson().fromJson(editedJson, DataStorageDTO::class.java),beforePartsName)
             innerStringsConfig.parts.graphicsCard->
-                desktopPartsService.updateGraphicsCard(Gson().fromJson(editedJson, GraphicsCardDTO::class.java),requestPartsDTO.beforePartsName)
+                desktopPartsService.updateGraphicsCard(Gson().fromJson(editedJson, GraphicsCardDTO::class.java),beforePartsName)
             innerStringsConfig.parts.memory->
-                desktopPartsService.updateMemory(Gson().fromJson(editedJson, MemoryDTO::class.java),requestPartsDTO.beforePartsName)
+                desktopPartsService.updateMemory(Gson().fromJson(editedJson, MemoryDTO::class.java),beforePartsName)
             innerStringsConfig.parts.motherBoard->
-                desktopPartsService.updateMotherBoard(Gson().fromJson(editedJson, MotherBoardDTO::class.java),requestPartsDTO.beforePartsName)
+                desktopPartsService.updateMotherBoard(Gson().fromJson(editedJson, MotherBoardDTO::class.java),beforePartsName)
             innerStringsConfig.parts.powerSupply->
-                desktopPartsService.updatePowerSupply(Gson().fromJson(editedJson, PowerSupplyDTO::class.java),requestPartsDTO.beforePartsName)
+                desktopPartsService.updatePowerSupply(Gson().fromJson(editedJson, PowerSupplyDTO::class.java),beforePartsName)
         }
         return ResponseEntity.ok(innerStringsConfig.property.responseOk)
     }

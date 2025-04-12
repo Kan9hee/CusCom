@@ -1,10 +1,11 @@
-let firstCreate = false;
+let firstCreate = true;
 let beforePartsName = null;
 
 function initialSetup() {
   const queryParams = new URLSearchParams(window.location.search);
   const queryData = queryParams.get("PowerSupply");
-  fetch(`/CusCom/API/searchPowerSupply${queryData !== null ? `?powerSupplyData=${queryData}` : ''}`)
+  if (queryData !== null && queryData !== "") {
+    fetch(`/CusCom/API/searchPowerSupply?powerSupplyData=${queryData}`)
     .then(response => response.json())
     .then(data => {
       document.getElementById('name').value = data.name;
@@ -13,9 +14,10 @@ function initialSetup() {
       document.getElementById('efficiency').value = data.efficiency;
       document.getElementById('modular').value = data.modular;
       document.getElementById('length').value = data.length;
-      firstCreate = (data.name === "");
+      firstCreate = false;
       beforePartsName = data.name;
     });
+  }
 }
 
 window.addEventListener("load", () => {
@@ -44,12 +46,13 @@ document.getElementById('confirm').addEventListener('click', function(event) {
     length: document.getElementById('length').value
   };
 
-  const requestFormat = {
-    partsType: 'PowerSupply',
-    requestJSON: JSON.stringify(powerSupplyData),
-    partsImage: document.getElementById('imageFile').files[0],
-    beforePartsName: beforePartsName
-  };
+  const formData = new FormData();
+  formData.append('partsType', 'PowerSupply');
+  formData.append('requestJSON', JSON.stringify(powerSupplyData));
+  formData.append('partsImage', document.getElementById('imageFile').files[0]);
+  if (!firstCreate) {
+    formData.append('beforePartsName', beforePartsName);
+  }
 
   const url = firstCreate
     ? "/CusCom/API/admin/createParts"
@@ -58,13 +61,13 @@ document.getElementById('confirm').addEventListener('click', function(event) {
   fetch(url, {
     method: "POST",
     headers: {
-      'Content-Type': 'application/json',
       'Authorization': `Bearer ${window.localStorage.getItem('cuscomAccessToken')}`
     },
-    body: JSON.stringify(requestFormat)
+    body: formData
   })
     .then(response => {
       if (response.ok) {
+        alert("저장되었습니다.");
         window.location.href = "/CusCom/admin/main";
       } else {
         return response.json();

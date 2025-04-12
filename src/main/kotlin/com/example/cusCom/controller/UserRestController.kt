@@ -7,6 +7,7 @@ import com.example.cusCom.dto.*
 import com.example.cusCom.dto.parts.*
 import com.example.cusCom.dto.request.*
 import com.example.cusCom.dto.response.*
+import com.example.cusCom.dto.response.PartsListPageDTO
 import com.example.cusCom.enums.AccountRole
 import com.example.cusCom.exception.CusComErrorCode
 import com.example.cusCom.service.*
@@ -95,49 +96,49 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
 
     @GetMapping("/open/caseList")
     fun caseListApi(@RequestParam maxContent: Int,
-                    @RequestParam page: Int): List<CaseDTO> {
+                    @RequestParam page: Int): PartsListPageDTO<CaseDTO> {
         return desktopPartsService.getCaseList(maxContent,page)
     }
 
     @GetMapping("/open/cpuCoolerList")
     fun cpuCoolerListApi(@RequestParam maxContent: Int,
-                         @RequestParam page: Int): List<CpuCoolerDTO> {
+                         @RequestParam page: Int): PartsListPageDTO<CpuCoolerDTO> {
         return desktopPartsService.getCpuCoolerList(maxContent,page)
     }
 
     @GetMapping("/open/cpuList")
     fun cpuListApi(@RequestParam maxContent: Int,
-                   @RequestParam page: Int): List<CpuDTO> {
+                   @RequestParam page: Int): PartsListPageDTO<CpuDTO> {
         return desktopPartsService.getCPUList(maxContent,page)
     }
 
     @GetMapping("/open/dataStorageList")
     fun dataStorageListApi(@RequestParam maxContent: Int,
-                           @RequestParam page: Int): List<DataStorageDTO> {
+                           @RequestParam page: Int): PartsListPageDTO<DataStorageDTO> {
         return desktopPartsService.getDataStorageList(maxContent,page)
     }
 
     @GetMapping("/open/graphicsCardList")
     fun graphicsCardListApi(@RequestParam maxContent: Int,
-                            @RequestParam page: Int): List<GraphicsCardDTO> {
+                            @RequestParam page: Int): PartsListPageDTO<GraphicsCardDTO> {
         return desktopPartsService.getGraphicsCardList(maxContent,page)
     }
 
     @GetMapping("/open/memoryList")
     fun memoryListApi(@RequestParam maxContent: Int,
-                      @RequestParam page: Int): List<MemoryDTO> {
+                      @RequestParam page: Int): PartsListPageDTO<MemoryDTO> {
         return desktopPartsService.getMemoryList(maxContent,page)
     }
 
     @GetMapping("/open/motherBoardList")
     fun motherBoardListApi(@RequestParam maxContent: Int,
-                           @RequestParam page: Int): List<MotherBoardDTO> {
+                           @RequestParam page: Int): PartsListPageDTO<MotherBoardDTO> {
         return desktopPartsService.getMotherBoardList(maxContent,page)
     }
 
     @GetMapping("/open/powerSupplyList")
     fun powerSupplyListApi(@RequestParam maxContent: Int,
-                           @RequestParam page: Int): List<PowerSupplyDTO> {
+                           @RequestParam page: Int): PartsListPageDTO<PowerSupplyDTO> {
         return desktopPartsService.getPowerSupplyList(maxContent,page)
     }
 

@@ -1,10 +1,11 @@
-let firstCreate = false;
+let firstCreate = true;
 let beforePartsName = null;
 
 function initialSetup() {
   const queryParams = new URLSearchParams(window.location.search);
   const queryData = queryParams.get("MotherBoard");
-  fetch(`/CusCom/API/searchMotherBoard${queryData !== null ? `?motherBoardData=${queryData}` : ''}`)
+  if (queryData !== null && queryData !== "") {
+    fetch(`/CusCom/API/searchMotherBoard?motherBoardData=${queryData}`)
     .then(response => response.json())
     .then(data => {
       document.getElementById('name').value = data.name;
@@ -17,9 +18,10 @@ function initialSetup() {
       document.getElementById('memorySlot').value = data.memorySlot;
       document.getElementById('ssdM2Slot').value = data.ssdM2Slot;
       document.getElementById('ssdSATASlot').value = data.ssdSATASlot;
-      firstCreate = (data.name === "");
+      firstCreate = false;
       beforePartsName = data.name;
     });
+  }
 }
 
 window.addEventListener("load", () => {
@@ -52,12 +54,13 @@ document.getElementById('confirm').addEventListener('click', function(event) {
     ssdSATASlot: document.getElementById('ssdSATASlot').value,
   };
 
-  const requestFormat = {
-    partsType: 'MotherBoard',
-    requestJSON: JSON.stringify(motherBoardData),
-    partsImage: document.getElementById('imageFile').files[0],
-    beforePartsName: beforePartsName
-  };
+  const formData = new FormData();
+  formData.append('partsType', 'MotherBoard');
+  formData.append('requestJSON', JSON.stringify(motherBoardData));
+  formData.append('partsImage', document.getElementById('imageFile').files[0]);
+  if (!firstCreate) {
+    formData.append('beforePartsName', beforePartsName);
+  }
 
   const url = firstCreate
     ? "/CusCom/API/admin/createParts"
@@ -66,13 +69,13 @@ document.getElementById('confirm').addEventListener('click', function(event) {
   fetch(url, {
     method: "POST",
     headers: {
-      'Content-Type': 'application/json',
       'Authorization': `Bearer ${window.localStorage.getItem('cuscomAccessToken')}`
     },
-    body: JSON.stringify(requestFormat)
+    body: formData
   })
     .then(response => {
       if (response.ok) {
+        alert("저장되었습니다.");
         window.location.href = "/CusCom/admin/main";
       } else {
         return response.json();

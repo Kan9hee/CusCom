@@ -1,4 +1,3 @@
-    const accessToken = window.localStorage.getItem('cuscomAccessToken');
     const queryParams = new URLSearchParams(window.location.search);
     const dataId = queryParams.get("id");
     const currentPageMap = {};
@@ -15,8 +14,8 @@
         desktopCase:""
     }
 
-    var usageCapacity=[];
-    var spareCapacity=[];
+    var usageCapacity=[0,0,0,0];
+    var spareCapacity=[0,0,0,0];
     var ctxData = {
       labels: ["전력","쿨러 높이","그래픽카드 길이","파워 사이즈"],
       datasets: [
@@ -61,7 +60,7 @@
     }
 
     function getPartsList(partType, size, page) {
-      return fetch(`/CusCom/API/open/${partType}?size=${size}&page=${page}`)
+      return fetch(`/CusCom/API/open/${partType}?maxContent=${size}&page=${page}`)
         .then(res => res.json());
     }
 
@@ -208,6 +207,19 @@
     }
 
     window.addEventListener('load', function(){
+        const ctx = document.getElementById('estimateChart');
+        const chart = new Chart(ctx,{
+          type: 'bar',
+          data: ctxData,
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              }
+            }
+          }
+        });
         fetchData();
         if(dataId !== null){
             fetchEstimate();
@@ -265,24 +277,13 @@
         }
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const ctx = document.getElementById('estimateChart');
-        const chart = new Chart(ctx,{
-          type: 'bar',
-          data: ctxData,
-          options: {
-            responsive: true,
-            plugins: {
-              legend: {
-                position: 'top',
-              }
-            }
-          }
-        });
-    });
-
     document.getElementById('submitEstimate')
             .addEventListener('click',function(event){
+                let token = window.localStorage.getItem('cuscomAccessToken');
+                if (token === null) {
+                  alert("회원가입된 사용자만 견적을 저장할 수 있습니다.");
+                  return;
+                }
                 const formData = new FormData();
                 if(dataId!=null){
                     estimate._id=dataId;
@@ -293,8 +294,8 @@
                     fetch("/CusCom/API/createEstimate",{
                         method: "POST",
                         headers: {
-                            'Content-Type': 'application/json'
-                            'Authorization': `Bearer ${logOutData.accessToken}`
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
                         },
                         body: formData
                     })
@@ -313,8 +314,8 @@
                     fetch("/CusCom/API/updateEstimate",{
                         method: "POST",
                         headers: {
-                            'Content-Type': 'application/json'
-                            'Authorization': `Bearer ${logOutData.accessToken}`
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
                         },
                         body: formData
                     })

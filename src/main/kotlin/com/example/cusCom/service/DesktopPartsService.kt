@@ -4,6 +4,7 @@ import com.example.cusCom.config.InnerStringsConfig
 import com.example.cusCom.exception.CusComErrorCode
 import com.example.cusCom.exception.CusComException
 import com.example.cusCom.dto.parts.*
+import com.example.cusCom.dto.response.PartsListPageDTO
 import com.example.cusCom.entity.mySQL.parts.*
 import com.example.cusCom.repository.parts.*
 import org.springframework.data.domain.PageRequest
@@ -23,9 +24,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                           private val innerStringsConfig: InnerStringsConfig) {
 
     @Transactional(readOnly = true)
-    fun getCaseList(maxContent:Int, page:Int): List<CaseDTO> {
+    fun getCaseList(maxContent:Int, page:Int): PartsListPageDTO<CaseDTO> {
         val pageable = buildPageRequest(maxContent,page)
-        val caseDTOLists = caseRepo.findAll(pageable)
+        val caseDTOList = caseRepo.findAll(pageable)
             .map{
                 entity: CaseEntity -> CaseDTO(
                     entity.name,
@@ -42,7 +43,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                     entity.graphicsCardLength,
                     entity.imageUrl)
             }
-        return caseDTOLists.toList()
+        return PartsListPageDTO(caseDTOList.toList(),caseDTOList.totalPages)
     }
 
     @Transactional
@@ -101,9 +102,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
 
     @Transactional(readOnly = true)
-    fun getCpuCoolerList(maxContent:Int, page:Int): List<CpuCoolerDTO> {
+    fun getCpuCoolerList(maxContent:Int, page:Int): PartsListPageDTO<CpuCoolerDTO> {
         val pageable = buildPageRequest(maxContent,page)
-        val cpuCoolerDTOLists = cpuCoolerRepo.findAll(pageable)
+        val cpuCoolerDTOList = cpuCoolerRepo.findAll(pageable)
             .map{
                 entity: CPUCoolerEntity -> CpuCoolerDTO(
                     entity.name,
@@ -114,8 +115,10 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                     entity.height,
                     entity.length,
                     entity.width,
-                    entity.tdp) }
-        return cpuCoolerDTOLists.toList()
+                    entity.tdp)
+            }
+
+        return PartsListPageDTO(cpuCoolerDTOList.toList(),cpuCoolerDTOList.totalPages)
     }
 
     @Transactional
@@ -167,9 +170,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
 
     @Transactional(readOnly = true)
-    fun getCPUList(maxContent:Int, page:Int): List<CpuDTO> {
+    fun getCPUList(maxContent:Int, page:Int): PartsListPageDTO<CpuDTO> {
         val pageable = buildPageRequest(maxContent,page)
-        val cpuDTOLists = cpuRepo.findAll(pageable)
+        val cpuDTOList = cpuRepo.findAll(pageable)
             .map{
                 entity: CPUEntity -> CpuDTO(
                     entity.name,
@@ -181,8 +184,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                     entity.thread,
                     entity.isBuiltInGraphics,
                     entity.builtInGraphicName,
-                    entity.tdp) }
-        return cpuDTOLists.toList()
+                    entity.tdp)
+            }
+        return PartsListPageDTO(cpuDTOList.toList(),cpuDTOList.totalPages)
     }
 
     @Transactional
@@ -236,9 +240,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
 
     @Transactional(readOnly = true)
-    fun getDataStorageList(maxContent:Int, page:Int): List<DataStorageDTO> {
+    fun getDataStorageList(maxContent:Int, page:Int): PartsListPageDTO<DataStorageDTO> {
         val pageable = buildPageRequest(maxContent,page)
-        val dataStorageDTOLists = dataStorageRepo.findAll(pageable)
+        val dataStorageDTOList = dataStorageRepo.findAll(pageable)
             .map{
                 entity: DataStorageEntity -> DataStorageDTO(
                     entity.name,
@@ -248,8 +252,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                     entity.formFactor,
                     entity.capacity,
                     entity.readSpeed,
-                    entity.writeSpeed) }
-        return dataStorageDTOLists.toList()
+                    entity.writeSpeed)
+            }
+        return PartsListPageDTO(dataStorageDTOList.toList(),dataStorageDTOList.totalPages)
     }
 
     @Transactional
@@ -298,9 +303,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
 
     @Transactional(readOnly = true)
-    fun getGraphicsCardList(maxContent:Int, page:Int): List<GraphicsCardDTO> {
+    fun getGraphicsCardList(maxContent:Int, page:Int): PartsListPageDTO<GraphicsCardDTO> {
         val pageable = buildPageRequest(maxContent,page)
-        val graphicsCardDTOLists = graphicsCardRepo.findAll(pageable)
+        val graphicsCardDTOList = graphicsCardRepo.findAll(pageable)
             .map{
                 entity: GraphicsCardEntity -> GraphicsCardDTO(
                     entity.name,
@@ -311,8 +316,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                     entity.length,
                     entity.basicPower,
                     entity.maxPower,
-                    entity.phase) }
-        return graphicsCardDTOLists.toList()
+                    entity.phase)
+            }
+        return PartsListPageDTO(graphicsCardDTOList.toList(),graphicsCardDTOList.totalPages)
     }
 
     @Transactional
@@ -363,9 +369,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
 
     @Transactional(readOnly = true)
-    fun getMemoryList(maxContent:Int, page:Int): List<MemoryDTO> {
+    fun getMemoryList(maxContent:Int, page:Int): PartsListPageDTO<MemoryDTO> {
         val pageable = buildPageRequest(maxContent,page)
-        val memoryDTOLists = memoryRepo.findAll(pageable)
+        val memoryDTOList = memoryRepo.findAll(pageable)
             .map{
                 entity: MemoryEntity -> MemoryDTO(
                     entity.name,
@@ -373,8 +379,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                     entity.manufacturer,
                     entity.type,
                     entity.capacity,
-                    entity.height) }
-        return memoryDTOLists.toList()
+                    entity.height)
+            }
+        return PartsListPageDTO(memoryDTOList.toList(),memoryDTOList.totalPages)
     }
 
     @Transactional
@@ -419,9 +426,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
 
     @Transactional(readOnly = true)
-    fun getMotherBoardList(maxContent:Int, page:Int): List<MotherBoardDTO> {
+    fun getMotherBoardList(maxContent:Int, page:Int): PartsListPageDTO<MotherBoardDTO> {
         val pageable = buildPageRequest(maxContent,page)
-        val motherBoardDTOLists = motherBoardRepo.findAll(pageable)
+        val motherBoardDTOList = motherBoardRepo.findAll(pageable)
             .map{
                 entity: MotherBoardEntity -> MotherBoardDTO(
                     entity.name,
@@ -434,8 +441,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                     entity.memoryType,
                     entity.memorySlot,
                     entity.ssdM2Slot,
-                    entity.ssdSATASlot) }
-        return motherBoardDTOLists.toList()
+                    entity.ssdSATASlot)
+            }
+        return PartsListPageDTO(motherBoardDTOList.toList(),motherBoardDTOList.totalPages)
     }
 
     @Transactional
@@ -490,9 +498,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
 
 
     @Transactional(readOnly = true)
-    fun getPowerSupplyList(maxContent:Int, page:Int): List<PowerSupplyDTO> {
+    fun getPowerSupplyList(maxContent:Int, page:Int): PartsListPageDTO<PowerSupplyDTO> {
         val pageable = buildPageRequest(maxContent,page)
-        val powerSupplyDTOLists = powerSupplyRepo.findAll(pageable)
+        val powerSupplyDTOList = powerSupplyRepo.findAll(pageable)
             .map{
                 entity: PowerSupplyEntity -> PowerSupplyDTO(
                     entity.name,
@@ -501,8 +509,9 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
                     entity.power,
                     entity.efficiency,
                     entity.modular,
-                    entity.length) }
-        return powerSupplyDTOLists.toList()
+                    entity.length)
+            }
+        return PartsListPageDTO(powerSupplyDTOList.toList(),powerSupplyDTOList.totalPages)
     }
 
     @Transactional
@@ -547,7 +556,7 @@ class DesktopPartsService(private val caseRepo: CaseRepository,
         return powerSupplyRepo.deleteByName(name)
     }
 
-    private fun buildPageRequest(currentPage:Int,maxContent:Int): PageRequest {
+    private fun buildPageRequest(maxContent:Int,currentPage:Int): PageRequest {
         return PageRequest
             .of(currentPage - 1,
                 maxContent,

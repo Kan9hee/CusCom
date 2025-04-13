@@ -1,6 +1,7 @@
     const queryParams = new URLSearchParams(window.location.search);
     const dataId = queryParams.get("id");
     const currentPageMap = {};
+    let chart = null;
 
     var estimate = {
         estimateId:null,
@@ -14,8 +15,9 @@
         desktopCase:""
     }
 
-    var usageCapacity=[0,0,0,0];
-    var spareCapacity=[0,0,0,0];
+    const usageCapacity=[0,0,0,0];
+    const spareCapacity=[0,0,0,0];
+    const totalTdp=[0,0,0];
     var ctxData = {
       labels: ["전력","쿨러 높이","그래픽카드 길이","파워 사이즈"],
       datasets: [
@@ -73,9 +75,9 @@
             <small class="text-body-secondary">높이: ${item.height} mm</small>
             <small class="text-body-secondary">길이: ${item.length} mm</small>
             <small class="text-body-secondary">너비: ${item.width} mm</small>
-            <small class="text-body-secondary">최대 파워 크기: ${item.powerLength} mm</small>
-            <small class="text-body-secondary">최대 CPU 쿨러 크기: ${item.cpuCoolerHeight} mm</small>
-            <small class="text-body-secondary">최대 그래픽카드 크기: ${item.graphicsCardLength} mm</small>
+            <small class="text-body-secondary sparePowerSize">최대 파워 크기: ${item.powerLength} mm</small>
+            <small class="text-body-secondary spareCoolerSize">최대 CPU 쿨러 크기: ${item.cpuCoolerHeight} mm</small>
+            <small class="text-body-secondary spareGpuSize">최대 그래픽카드 크기: ${item.graphicsCardLength} mm</small>
           `;
         case "cpuList":
           return `
@@ -84,16 +86,16 @@
            <small class="text-body-secondary">내장그래픽: ${item.isBuiltInGraphics}</small>
            <small class="text-body-secondary">코어 수: ${item.core}</small>
            <small class="text-body-secondary">쓰레드 수: ${item.thread}</small>
-           <small class="text-body-secondary">TDP: ${item.tdp}</small>
+           <small class="text-body-secondary usageTdp">TDP: ${item.tdp}</small>
           `;
         case "cpuCoolerList":
           return `
             <small class="text-body-secondary">제조사: ${item.manufacturer}</small>
             <small class="text-body-secondary">냉각방식: ${item.coolingType}</small>
-            <small class="text-body-secondary">높이: ${item.height}</small>
+            <small class="text-body-secondary usageCoolerSize">높이: ${item.height}</small>
             <small class="text-body-secondary">길이: ${item.length}</small>
             <small class="text-body-secondary">너비: ${item.width}</small>
-            <small class="text-body-secondary">TDP: ${item.tdp}</small>
+            <small class="text-body-secondary usageTdp">TDP: ${item.tdp}</small>
           `;
         case "dataStorageList":
           return `
@@ -107,9 +109,9 @@
           return `
             <small class="text-body-secondary">제조사: ${item.manufacturer}</small>
             <small class="text-body-secondary">GPU: ${item.gpuType}</small>
-            <small class="text-body-secondary">길이: ${item.length}</small>
+            <small class="text-body-secondary usageGpuSize">길이: ${item.length}</small>
             <small class="text-body-secondary">기본 전력: ${item.basicPower}</small>
-            <small class="text-body-secondary">최대 전력: ${item.maxPower}</small>
+            <small class="text-body-secondary usageTdp">최대 전력: ${item.maxPower}</small>
           `;
         case "memoryList":
           return `
@@ -130,8 +132,8 @@
           return `
             <small class="text-body-secondary">제조사: ${item.manufacturer}</small>
             <small class="text-body-secondary">모듈러: ${item.modular}</small>
-            <small class="text-body-secondary">크기: ${item.length}</small>
-            <small class="text-body-secondary">전력: ${item.power}</small>
+            <small class="text-body-secondary usagePowerSize">크기: ${item.length}</small>
+            <small class="text-body-secondary spareTdp">전력: ${item.power}</small>
             <small class="text-body-secondary">효율: ${item.efficiency}</small>
           `;
         default:
@@ -183,9 +185,10 @@
             ${generateItemDetails(partType, item)}
           </div>
         `;
+        const button = listItem.querySelector('.btn-add');
+        button.addEventListener('click', addParts);
         listContainer.appendChild(listItem);
       });
-
       renderPagination(partType, totalPages, currentPage, listContainer);
     }
 
@@ -208,7 +211,7 @@
 
     window.addEventListener('load', function(){
         const ctx = document.getElementById('estimateChart');
-        const chart = new Chart(ctx,{
+        chart = new Chart(ctx,{
           type: 'bar',
           data: ctxData,
           options: {
@@ -237,39 +240,77 @@
         const listItem = this.closest('.list-group-item');
         const name = listItem.querySelector('.mb-1').textContent;
         const datatype = this.getAttribute('datatype');
-        console.log("상품명: "+name+"부품유형"+datatype);
+        console.log("상품명:"+name+", 부품유형: "+datatype);
+
+        const extractValue = (className) => {
+            const element = listItem.querySelector(`.${className}`);
+            if (element) {
+                const match = element.textContent.match(/\d+/);
+                return match ? parseInt(match[0]) : 0;
+            }
+            return 0;
+        };
+
         switch(datatype){
-            case 'cpu':
+            case 'cpuList':
                 estimate.cpu=name;
                 updateH6Text("cpuH6",name);
+                totalTdp[0] = extractValue("usageTdp");
+                usageCapacity[0] = totalTdp.reduce((x, y) => x + y, 0);
+                if (chart) {
+                    chart.update();
+                }
                 break;
-            case 'motherBoard':
+            case 'motherBoardList':
                 estimate.motherBoard=name;
                 updateH6Text("motherBoardH6",name);
                 break;
-            case 'memory':
+            case 'memoryList':
                 estimate.memory=name;
                 updateH6Text("memoryH6",name);
                 break;
-            case 'dataStorage':
+            case 'dataStorageList':
                 estimate.dataStorage=name;
                 updateH6Text("dataStorageH6",name);
                 break;
-            case 'graphicsCard':
+            case 'graphicsCardList':
                 estimate.graphicsCard=name;
                 updateH6Text("graphicsCardH6",name);
+                totalTdp[2] = extractValue("usageTdp");
+                usageCapacity[0] = totalTdp.reduce((x, y) => x + y, 0);
+                usageCapacity[2] = extractValue("usageGpuSize");
+                if (chart) {
+                    chart.update();
+                }
                 break;
-            case 'cpuCooler':
+            case 'cpuCoolerList':
                 estimate.cpuCooler=name;
                 updateH6Text("cpuCoolerH6",name);
+                totalTdp[1] = extractValue("usageTdp");
+                usageCapacity[0] = totalTdp.reduce((x, y) => x + y, 0);
+                usageCapacity[1] = extractValue("usageCoolerSize");
+                if (chart) {
+                    chart.update();
+                }
                 break;
-            case 'powerSupply':
+            case 'powerSupplyList':
                 estimate.powerSupply=name;
                 updateH6Text("powerSupplyH6",name);
+                spareCapacity[0] = extractValue("spareTdp");
+                usageCapacity[3] = extractValue("usagePowerSize");
+                if (chart) {
+                    chart.update();
+                }
                 break;
-            case 'case':
+            case 'caseList':
                 estimate.desktopCase=name;
                 updateH6Text("caseH6",name);
+                spareCapacity[3] = extractValue("sparePowerSize");
+                spareCapacity[1] = extractValue("spareCoolerSize");
+                spareCapacity[2] = extractValue("spareGpuSize");
+                if (chart) {
+                    chart.update();
+                }
                 break;
             default:
                 console.log("분류되지 않은 데이터");

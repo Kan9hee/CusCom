@@ -22,6 +22,7 @@ import org.springframework.data.mongodb.core.query.Update
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
+import java.util.regex.Pattern
 
 @Service
 class SharePlaceService(private val mongoTemplate: MongoTemplate,
@@ -130,7 +131,7 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
             return getPostList(searchPostDTO.maxContent,searchPostDTO.page)
 
         val condition=when(searchPostDTO.option){
-            innerStringsConfig.property.postSearchOption.title ->Criteria.where(searchPostDTO.option).regex(".*${searchPostDTO.keyword}*","i")
+            innerStringsConfig.property.postSearchOption.title ->Criteria.where(searchPostDTO.option).regex(".*${Pattern.quote(searchPostDTO.keyword)}*","i")
             innerStringsConfig.property.postSearchOption.tags -> Criteria.where(searchPostDTO.option).`in`(searchPostDTO.keyword)
             innerStringsConfig.property.userName->Criteria.where(searchPostDTO.option).`is`(searchPostDTO.keyword)
             innerStringsConfig.property.postSearchOption.parts->findInEstimates(searchPostDTO.keyword)
@@ -169,10 +170,10 @@ class SharePlaceService(private val mongoTemplate: MongoTemplate,
             throw CusComException(CusComErrorCode.NotWrittenComment)
 
         val commentEntity = CommentEntity(ObjectId(), saveCommentDTO.postID, userName, saveCommentDTO.content)
+        mongoTemplate.insert(commentEntity)
 
         val query= Query(Criteria.where(dbStringConfig.mongodb.id).`is`(ObjectId(saveCommentDTO.postID)))
         val update= Update()
-            .push(dbStringConfig.mongodb.collection.comment, commentEntity)
             .inc(innerStringsConfig.property.commentCount,innerStringsConfig.property.changeValue)
 
         mongoTemplate.findAndModify(

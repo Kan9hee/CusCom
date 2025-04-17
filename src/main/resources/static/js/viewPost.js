@@ -1,8 +1,8 @@
         const queryParams = new URLSearchParams(window.location.search);
-        const postId = queryParams.get("estimateID");
+        const postId = queryParams.get("postID");
 
         function initialSetup(){
-            if (!dataId) {
+            if (!postId) {
                 window.location.href = '/CusCom/mainPage';
                 return;
             }
@@ -72,9 +72,7 @@
             .addEventListener('click',function(event){
                 const accessToken = window.localStorage.getItem('cuscomAccessToken');
                 const commentData={
-                    _id:"",
                     postID:postId,
-                    userName: "",
                     content: document.getElementById('commentInputContent').value
                 };
 

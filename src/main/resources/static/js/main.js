@@ -5,6 +5,7 @@
     let searchJson = null;
 
     function fetchPage(){
+        const url = new URL(window.location.href);
         const queryParams = new URLSearchParams();
         queryParams.append("option", searchOption);
         if (searchData != null) {
@@ -50,7 +51,7 @@
               </div>
             `;
             postCard.addEventListener('click',()=>{
-              window.location.href=`/CusCom/post?estimateID=${post._id}`;
+              window.location.href=`/CusCom/post?postID=${post._id}`;
             });
             postList.appendChild(postCard);
           });

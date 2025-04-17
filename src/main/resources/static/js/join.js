@@ -16,21 +16,21 @@ function handleJoin(event) {
     },
     body: JSON.stringify(joinData)
   })
-    .then(response => {
-      if (response.ok) {
-        window.location.href = '/CusCom/loginPage';
-      } else {
-        return response.json();
-      }
-    })
-    .then(data => {
-      if (data?.message) {
-        alert("Error: " + data.message);
-      }
-    })
-    .catch(error => {
-      console.error("Join request failed:", error);
-    });
+  .then(response => {
+      if (!response.ok) {
+        return response.json().then(errorData => {
+          throw new Error(errorData.message || "알 수 없는 오류");
+      });
+    }
+    return response.text();
+  })
+  .then(result => {
+    alert("가입되었습니다.");
+    window.location.href = '/CusCom/loginPage';
+  })
+  .catch(error => {
+    alert(error.message);
+  });
 }
 
 document.getElementById('cancel').addEventListener('click', () => {

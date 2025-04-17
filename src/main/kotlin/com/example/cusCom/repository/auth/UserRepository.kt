@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface UserRepository: JpaRepository<UserEntity,Long> {
     fun findByAccountId(accountId: String): UserEntity?
+    fun findByAccountIdOrUserName(accountId: String,userName: String): UserEntity?
     fun deleteByAccountId(accountId:String)
 }

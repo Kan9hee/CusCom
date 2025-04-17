@@ -18,10 +18,15 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify(logInData)
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => {
+                    throw new Error(err.message);
+                });
+            }
+            return response.json();
+        })
         .then(data => {
-            window.localStorage.removeItem('cuscomAccessToken');
-            window.localStorage.removeItem('cuscomRefreshToken');
             window.localStorage.setItem('cuscomAccessToken', data.accessToken);
             window.localStorage.setItem('cuscomRefreshToken', data.refreshToken);
             window.location.href = '/CusCom/mainPage';

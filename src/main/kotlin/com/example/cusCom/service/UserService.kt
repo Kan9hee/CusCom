@@ -22,20 +22,23 @@ class UserService(private val authenticationManagerBuilder: AuthenticationManage
                   private val tokenService: TokenService) {
 
     @Transactional
-    fun joinUser(signInDTO: SignInDTO): Boolean {
-        return try{
-            val encodedPassword = securityConfig.passwordEncoder().encode(signInDTO.insertedPassword)
-            val newUser = UserEntity(
-                signInDTO.insertedID,
-                encodedPassword,
-                signInDTO.insertedNickname,
-                AccountRole.ROLE_USER
-            )
-            userRepo.save(newUser)
-            true
-        } catch (e:Exception) {
-            false
+    fun joinUser(signInDTO: SignInDTO) {
+        val duplicatedUser = userRepo.findByAccountIdOrUserName(signInDTO.insertedID, signInDTO.insertedNickname)
+        if (duplicatedUser != null) {
+            if (duplicatedUser.accountId == signInDTO.insertedID)
+                throw CusComException(CusComErrorCode.DuplicateAccountID)
+            if (duplicatedUser.userName == signInDTO.insertedNickname)
+                throw CusComException(CusComErrorCode.DuplicateNickName)
         }
+
+        val encodedPassword = securityConfig.passwordEncoder().encode(signInDTO.insertedPassword)
+        val newUser = UserEntity(
+            signInDTO.insertedID,
+            encodedPassword,
+            signInDTO.insertedNickname,
+            AccountRole.ROLE_USER
+        )
+        userRepo.save(newUser)
     }
 
     @Transactional
@@ -47,7 +50,7 @@ class UserService(private val authenticationManagerBuilder: AuthenticationManage
     }
 
     @Transactional
-    fun logIn(logInDTO: LogInDTO): Authentication? {
+    fun logIn(logInDTO: LogInDTO): Authentication {
         val userInfo = findUser(logInDTO.insertedID)
             ?: throw CusComException(CusComErrorCode.UserDataNotFound)
         val trimmedPassword = logInDTO.insertedPassword.trim()

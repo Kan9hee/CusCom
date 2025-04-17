@@ -33,6 +33,8 @@ enum class CusComErrorCode(private val status:Int,
     PasswordNotPatch(400,"U002","비밀번호가 일치하지 않습니다."),
     UnauthorizedToken(400,"U003","권한 없는 토큰입니다."),
     MisinformationToken(404,"U004","토큰에 저장된 계정 정보가 없습니다."),
+    DuplicateAccountID(409,"U005","이미 가입된 계정입니다."),
+    DuplicateNickName(409,"U006","이미 사용 중인 닉네임입니다."),
 
     UnfinishedPost(400,"P000","미완성된 게시물"),
     PostNotFound(404,"P001","게시물을 찾을 수 없음"),

@@ -30,7 +30,6 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     @GetMapping("/isAdmin")
     fun isAdmin(): ResponseEntity<Map<String, Boolean>> {
         val authentication = SecurityContextHolder.getContext().authentication
-        println(authentication.authorities)
         val isAdmin = authentication.authorities.any { it.authority == AccountRole.ROLE_ADMIN.toString() }
         return ResponseEntity.ok(mapOf("isAdmin" to isAdmin))
     }
@@ -50,13 +49,9 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     @PostMapping("/open/logIn")
     fun userLogIn(@RequestBody logInDTO: LogInDTO): JwtDTO {
         val authentication = userService.logIn(logInDTO)
-        if(authentication!=null){
-            val generatedJwt = jwtComponent.generateToken(authentication)
-            tokenService.saveRefreshToken(generatedJwt.refreshToken, logInDTO.insertedID)
-            return generatedJwt
-        }
-        else
-            throw CusComException(CusComErrorCode.UnauthorizedToken)
+        val generatedJwt = jwtComponent.generateToken(authentication)
+        tokenService.saveRefreshToken(generatedJwt.refreshToken, logInDTO.insertedID)
+        return generatedJwt
     }
 
     @PostMapping("/logOut")
@@ -74,13 +69,10 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
 
     @PostMapping("/open/reissueAccessToken")
     fun reissueAccessToken(@RequestBody jwtDTO: JwtDTO): JwtDTO{
-        try{
-            val accountIdString = tokenService.getAccountIdFromRefreshToken(jwtDTO.refreshToken)
+        val accountIdString = tokenService.getAccountIdFromRefreshToken(jwtDTO.refreshToken)
             ?: throw CusComException(CusComErrorCode.MisinformationToken)
-            val user = customUserDetailsService.loadUserByUsername(accountIdString)
-            return jwtComponent.reissueAccessToken(jwtDTO.accessToken,jwtDTO.refreshToken,user)
-        }
-        catch (e: CusComException) { throw e }
+        val user = customUserDetailsService.loadUserByUsername(accountIdString)
+        return jwtComponent.reissueAccessToken(jwtDTO.accessToken,jwtDTO.refreshToken,user)
     }
 
     @GetMapping("/getUserEstimateList")
@@ -185,64 +177,49 @@ class UserRestController(private val desktopPartsService: DesktopPartsService,
     @PostMapping("/createEstimate")
     fun createEstimate(@RequestBody estimateAnalyzeDTO: EstimateAnalyzeDTO): ResponseEntity<String> {
         val requestUser = customUserDetailsService.loadUserByAuthentication()
-        try{
-            estimateService.checkDesktopEstimate(estimateAnalyzeDTO)
-            estimateService.saveUserEstimate(estimateAnalyzeDTO,requestUser.username)
-            return ResponseEntity.ok(innerStringsConfig.property.responseOk)
-        }
-        catch (e: CusComException) { throw e }
+        estimateService.checkDesktopEstimate(estimateAnalyzeDTO)
+        estimateService.saveUserEstimate(estimateAnalyzeDTO,requestUser.username)
+        return ResponseEntity.ok(innerStringsConfig.property.responseOk)
     }
 
     @PostMapping("/updateEstimate")
     fun updateEstimate(@RequestBody estimateAnalyzeDTO: EstimateAnalyzeDTO): ResponseEntity<String> {
         val requestUser = customUserDetailsService.loadUserByAuthentication()
-        try{
-            estimateService.checkDesktopEstimate(estimateAnalyzeDTO)
-            estimateService.updateUserEstimate(
-                ObjectId(estimateAnalyzeDTO.estimateId),
-                estimateAnalyzeDTO,
-                requestUser.username)
-            return ResponseEntity.ok(innerStringsConfig.property.responseOk)
-        }
-        catch (e: CusComException) { throw e }
+        estimateService.checkDesktopEstimate(estimateAnalyzeDTO)
+        estimateService.updateUserEstimate(
+            ObjectId(estimateAnalyzeDTO.estimateId),
+            estimateAnalyzeDTO,
+            requestUser.username)
+        return ResponseEntity.ok(innerStringsConfig.property.responseOk)
     }
 
     @PostMapping("/deleteEstimate")
     fun deleteEstimate(@RequestBody estimateID:String): ResponseEntity<String>{
         val requestUser = customUserDetailsService.loadUserByAuthentication()
-        try{
-            sharePlaceService.loadPost(estimateID).let{ postInfo ->
-                if(postInfo.commentCount!=0L)
-                    sharePlaceService.deleteComment(postInfo._id,requestUser.username)
-                sharePlaceService.deletePost(postInfo._id,requestUser.username)
-            }
-            estimateService.deleteUserEstimate(estimateID,requestUser.username)
-            return ResponseEntity.ok(innerStringsConfig.property.responseOk)
+        sharePlaceService.loadPost(estimateID).let{ postInfo ->
+            if(postInfo.commentCount!=0L)
+                sharePlaceService.deleteComment(postInfo._id,requestUser.username)
+            sharePlaceService.deletePost(postInfo._id,requestUser.username)
         }
-        catch (e: CusComException) { throw e }
+        estimateService.deleteUserEstimate(estimateID,requestUser.username)
+        return ResponseEntity.ok(innerStringsConfig.property.responseOk)
     }
 
     @PostMapping("/uploadPost")
     fun uploadPost(@RequestBody saveSharePlacePostDTO: SaveSharePlacePostDTO): ResponseEntity<String> {
-        try{
-            val requestUser = customUserDetailsService.loadUserByAuthentication()
-            sharePlaceService.uploadPost(saveSharePlacePostDTO,requestUser.username)
-            return ResponseEntity.ok(innerStringsConfig.property.responseOk)
-        }
-        catch (e: CusComException) { throw e }
+        val requestUser = customUserDetailsService.loadUserByAuthentication()
+        sharePlaceService.uploadPost(saveSharePlacePostDTO,requestUser.username)
+        return ResponseEntity.ok(innerStringsConfig.property.responseOk)
     }
 
     @GetMapping("/open/loadPost")
     fun loadPost(@RequestParam("id") postID:String):HashMap<String,Any>{
-        try{
-            val map=HashMap<String,Any>()
-            val post = sharePlaceService.loadPost(postID)
-            map[innerStringsConfig.postListMapper.post]=post
-            map[innerStringsConfig.postListMapper.postEstimate]=estimateService.getUserEstimateById(post.estimateID)
-            map[innerStringsConfig.postListMapper.commentList]=sharePlaceService.getCommentList(postID)
-            return map
-        }
-        catch (e: CusComException) { throw e }
+        val map=HashMap<String,Any>()
+        val post = sharePlaceService.loadPost(postID)
+        map[innerStringsConfig.postListMapper.post]=post
+        map[innerStringsConfig.postListMapper.postEstimate]=estimateService.getUserEstimateById(post.estimateID)
+        map[innerStringsConfig.postListMapper.commentList]=sharePlaceService.getCommentList(postID)
+        return map
     }
 
     @GetMapping("/open/searchPost")

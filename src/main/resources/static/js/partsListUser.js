@@ -5,14 +5,14 @@
 
     var estimate = {
         estimateId:null,
-        cpu:"",
-        motherBoard:"",
-        memory:"",
-        dataStorage:"",
-        graphicsCard:"",
-        cpuCooler:"",
-        powerSupply:"",
-        desktopCase:""
+        cpu:null,
+        motherBoard:null,
+        memory:null,
+        dataStorage:null,
+        graphicsCard:null,
+        cpuCooler:null,
+        powerSupply:null,
+        desktopCase:null
     }
 
     const usageCapacity=[0,0,0,0];
@@ -174,6 +174,7 @@
       items.forEach(item => {
         const listItem = document.createElement('a');
         listItem.className = 'list-group-item py-3 lh-sm';
+        listItem.setAttribute('data-item', JSON.stringify(item));
         listItem.innerHTML = `
           <div class="d-flex w-100 align-items-center justify-content-between">
             <strong class="mb-1">${item.name}</strong>
@@ -241,7 +242,7 @@
         const name = listItem.querySelector('.mb-1').textContent;
         const datatype = this.getAttribute('datatype');
         console.log("상품명:"+name+", 부품유형: "+datatype);
-
+        const itemData = JSON.parse(listItem.getAttribute('data-item'));
         const extractValue = (className) => {
             const element = listItem.querySelector(`.${className}`);
             if (element) {
@@ -253,7 +254,7 @@
 
         switch(datatype){
             case 'cpuList':
-                estimate.cpu=name;
+                estimate.cpu=itemData;
                 updateH6Text("cpuH6",name);
                 totalTdp[0] = extractValue("usageTdp");
                 usageCapacity[0] = totalTdp.reduce((x, y) => x + y, 0);
@@ -262,19 +263,19 @@
                 }
                 break;
             case 'motherBoardList':
-                estimate.motherBoard=name;
+                estimate.motherBoard=itemData;
                 updateH6Text("motherBoardH6",name);
                 break;
             case 'memoryList':
-                estimate.memory=name;
+                estimate.memory=itemData;
                 updateH6Text("memoryH6",name);
                 break;
             case 'dataStorageList':
-                estimate.dataStorage=name;
+                estimate.dataStorage=itemData;
                 updateH6Text("dataStorageH6",name);
                 break;
             case 'graphicsCardList':
-                estimate.graphicsCard=name;
+                estimate.graphicsCard=itemData;
                 updateH6Text("graphicsCardH6",name);
                 totalTdp[2] = extractValue("usageTdp");
                 usageCapacity[0] = totalTdp.reduce((x, y) => x + y, 0);
@@ -284,7 +285,7 @@
                 }
                 break;
             case 'cpuCoolerList':
-                estimate.cpuCooler=name;
+                estimate.cpuCooler=itemData;
                 updateH6Text("cpuCoolerH6",name);
                 totalTdp[1] = extractValue("usageTdp");
                 usageCapacity[0] = totalTdp.reduce((x, y) => x + y, 0);
@@ -294,7 +295,7 @@
                 }
                 break;
             case 'powerSupplyList':
-                estimate.powerSupply=name;
+                estimate.powerSupply=itemData;
                 updateH6Text("powerSupplyH6",name);
                 spareCapacity[0] = extractValue("spareTdp");
                 usageCapacity[3] = extractValue("usagePowerSize");
@@ -303,7 +304,7 @@
                 }
                 break;
             case 'caseList':
-                estimate.desktopCase=name;
+                estimate.desktopCase=itemData;
                 updateH6Text("caseH6",name);
                 spareCapacity[3] = extractValue("sparePowerSize");
                 spareCapacity[1] = extractValue("spareCoolerSize");
@@ -319,59 +320,43 @@
     }
 
     document.getElementById('submitEstimate')
-            .addEventListener('click',function(event){
-                let token = window.localStorage.getItem('cuscomAccessToken');
-                if (token === null) {
-                  alert("회원가입된 사용자만 견적을 저장할 수 있습니다.");
-                  return;
-                }
-                const formData = new FormData();
-                if(dataId!=null){
-                    estimate._id=dataId;
-                }
-                formData.append('estimate', JSON.stringify(estimate));
+    .addEventListener('click', function(event) {
+        let token = window.localStorage.getItem('cuscomAccessToken');
+        if (token === null) {
+            alert("회원가입된 사용자만 견적을 저장할 수 있습니다.");
+            return;
+        }
 
-                if(dataId==null){
-                    fetch("/CusCom/API/createEstimate",{
-                        method: "POST",
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`
-                        },
-                        body: formData
-                    })
-                    .then(response => {
-                        if(response.ok){ window.location.href='/CusCom/mainPage'; }
-                        else { return response.json(); }
-                    })
-                    .then(data => {
-                        alert("Error: " + data.message);
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-                    });
-                }
-                else{
-                    fetch("/CusCom/API/updateEstimate",{
-                        method: "POST",
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`
-                        },
-                        body: formData
-                    })
-                    .then(response => {
-                        if(response.ok){ window.location.href='/CusCom/mainPage'; }
-                        else { return response.json(); }
-                    })
-                    .then(data => {
-                        alert("Error: " + data.message);
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-                    });
-                }
-            });
+        if (dataId != null) {
+            estimate.estimateId = dataId;
+        }
+
+        const url = dataId == null ? "/CusCom/API/createEstimate" : "/CusCom/API/updateEstimate";
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(estimate)
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = '/CusCom/mainPage';
+            } else {
+                return response.json();
+            }
+        })
+        .then(data => {
+            if (data && data.message) {
+                alert("Error: " + data.message);
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+    });
 
     document.getElementById('cancel')
             .addEventListener('click',function(event){
